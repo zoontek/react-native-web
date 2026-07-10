@@ -4,3 +4,4 @@
 ../node_modules
 ../packages/**/vendor/*
 ../packages/**/.next
+../pnpm-lock.yaml
