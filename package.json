@@ -5,21 +5,21 @@
   "name": "react-ui-monorepo",
   "scripts": {
     "clean": "del-cli ./packages/*/dist",
-    "build": "pnpm run clean && pnpm run --recursive --if-present build",
-    "compile": "pnpm run build",
-    "dev": "pnpm run --recursive --if-present dev",
+    "build": "pnpm clean && pnpm --recursive --if-present build",
+    "compile": "pnpm build",
+    "dev": "pnpm --recursive --if-present dev",
     "flow": "flow --flowconfig-name ./configs/.flowconfig",
     "format": "prettier --check --ignore-path ./configs/.prettierignore \"**/*.js\"",
     "format:fix": "prettier --write --ignore-path ./configs/.prettierignore \"**/*.js\"",
     "lint": "eslint configs packages scripts --config ./configs/.eslintrc",
-    "lint:fix": "pnpm run lint -- --fix",
-    "prerelease": "pnpm run test && pnpm run build",
+    "lint:fix": "pnpm lint --fix",
+    "prerelease": "pnpm test && pnpm build",
     "release": "node ./scripts/releaseReactNativeWebPackages.js",
     "release:benchmarks": "git checkout gh-pages && rm -rf ./docs/benchmarks && mv packages/benchmarks/dist ./docs/benchmarks && git add -A && git commit -m \"Deploy benchmarks\" && git push origin gh-pages && git checkout -",
     "release:react-native-web-docs": "git checkout gh-pages && rm -rf ./docs && mv packages/react-native-web-docs/dist ./docs && git add ./docs && git commit -m \"Deploy documentation\" && git push origin gh-pages && git checkout -",
-    "postrelease": "pnpm run release:react-native-web-docs && pnpm run release:benchmarks",
+    "postrelease": "pnpm release:react-native-web-docs && pnpm release:benchmarks",
     "prepare": "husky install configs/husky",
-    "test": "pnpm run flow && pnpm run format && pnpm run lint && pnpm run unit --runInBand",
+    "test": "pnpm flow && pnpm format && pnpm lint && pnpm unit --runInBand",
     "unit": "npm-run-all \"unit:* {@}\" --",
     "unit:dom": "jest --config ./configs/jest.config.js",
     "unit:node": "jest --config ./configs/jest.config.node.js"
@@ -71,8 +71,8 @@
       "prettier --write ./packages/babel-plugin-react-native-web/src/moduleMap.js"
     ],
     "**/*.js": [
-      "pnpm run format:fix",
-      "pnpm run lint:fix"
+      "pnpm format:fix",
+      "pnpm lint:fix"
     ]
   },
   "prettier": {

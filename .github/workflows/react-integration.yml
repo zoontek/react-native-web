@@ -19,4 +19,4 @@ jobs:
     # Update react-native-web to use react@next
     - run: pnpm install --force react@next react-dom@next -w react-native-web
     # Run the unit tests
-    - run: pnpm run unit
+    - run: pnpm unit
