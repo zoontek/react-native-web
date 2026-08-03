@@ -36,10 +36,8 @@
     "@babel/preset-flow": "^7.18.6",
     "@babel/preset-react": "^7.18.6",
     "@testing-library/react": "^16.3.0",
-    "babel-eslint": "^10.1.0",
     "babel-jest": "^29.7.0",
     "babel-plugin-add-module-exports": "^1.0.4",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "caniuse-api": "^3.0.0",
     "cross-env": "^7.0.3",
     "del-cli": "^4.0.1",
@@ -66,10 +64,6 @@
     }
   },
   "lint-staged": {
-    "packages/react-native-web/src/index.js": [
-      "node ./scripts/createBabelReactNativeWebModuleMap.js",
-      "prettier --write ./packages/babel-plugin-react-native-web/src/moduleMap.js"
-    ],
     "**/*.js": [
       "pnpm format:fix",
       "pnpm lint:fix"
