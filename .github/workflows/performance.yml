@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v7
     - uses: pnpm/action-setup@v6
-    - uses: necolas/compressed-size-action@master
+    - uses: preactjs/compressed-size-action@v2
       with:
         build-script: "compile"
         exclude: "./packages/react-native-web/dist/cjs/{index.js,**/*.js}"
