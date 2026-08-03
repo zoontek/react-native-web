@@ -5,8 +5,8 @@ Try the [benchmarks app](https://necolas.github.io/react-native-web/benchmarks) 
 To work on the benchmarks locally from monorepo root:
 
 ```
-npm run dev -w react-native-web
-npm run build -w benchmarks
+pnpm --filter react-native-web dev
+pnpm --filter benchmarks build
 open ./packages/benchmarks/dist/index.html
 ```
 

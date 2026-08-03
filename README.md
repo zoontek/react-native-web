@@ -18,13 +18,13 @@ This is the development monorepo for "React Native for Web" and related projects
 ## Tasks
 
 * `build`
-  * Use `npm run build` to run the build script in every package.
-  * Use `npm run build -w <package-name>` to run the build script for a specific package.
+  * Use `pnpm build` to run the build script in every package.
+  * Use `pnpm --filter <package-name> build` to run the build script for a specific package.
 * `dev`
-  * Use `npm run dev` to run the dev script in every package.
-  * Use `npm run dev -w <package-name>` to run the dev script for a specific package.
+  * Use `pnpm dev` to run the dev script in every package.
+  * Use `pnpm --filter <package-name> dev` to run the dev script for a specific package.
 * `test`
-  * Use `npm run test` to run tests for every package.
+  * Use `pnpm test` to run tests for every package.
 
 More details can be found in the contributing guide below.
 
