@@ -1,0 +1,10 @@
+**/dist
+
+node_modules
+coverage
+flow-typed
+pnpm-lock.yaml
+
+packages/**/*.html
+packages/**/.next
+packages/**/vendor/*

@@ -4,27 +4,27 @@ This is the development monorepo for "React Native for Web" and related projects
 
 ## Structure
 
-* `.github`
-  * Contains workflows used by GitHub Actions.
-  * Contains issue templates.
-* `configs`
-  * Contains configuration files used by the monorepo tooling (compiling, linting, testing, etc.)
-* `packages`
-  * [react-native-web](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web)
-  * Contains the individual packages managed in the monorepo.
-* `scripts`
-  * Contains Node.js scripts for miscellaneous tasks.
+- `.github`
+  - Contains workflows used by GitHub Actions.
+  - Contains issue templates.
+- `configs`
+  - Contains configuration files used by the monorepo tooling (compiling, linting, testing, etc.)
+- `packages`
+  - [react-native-web](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web)
+  - Contains the individual packages managed in the monorepo.
+- `scripts`
+  - Contains Node.js scripts for miscellaneous tasks.
 
 ## Tasks
 
-* `build`
-  * Use `pnpm build` to run the build script in every package.
-  * Use `pnpm --filter <package-name> build` to run the build script for a specific package.
-* `dev`
-  * Use `pnpm dev` to run the dev script in every package.
-  * Use `pnpm --filter <package-name> dev` to run the dev script for a specific package.
-* `test`
-  * Use `pnpm test` to run tests for every package.
+- `build`
+  - Use `pnpm build` to run the build script in every package.
+  - Use `pnpm --filter <package-name> build` to run the build script for a specific package.
+- `dev`
+  - Use `pnpm dev` to run the dev script in every package.
+  - Use `pnpm --filter <package-name> dev` to run the dev script for a specific package.
+- `test`
+  - Use `pnpm test` to run tests for every package.
 
 More details can be found in the contributing guide below.
 
