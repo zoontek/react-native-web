@@ -134,6 +134,9 @@ const createReactDOMStyle = (style: Style, isInline?: boolean): Style => {
         resolvedStyle.backgroundClip = value;
         resolvedStyle.WebkitBackgroundClip = value;
       }
+    } else if (prop === 'boxDecorationBreak') {
+      resolvedStyle.boxDecorationBreak = value;
+      resolvedStyle.WebkitBoxDecorationBreak = value;
     } else if (prop === 'flex') {
       if (value === -1) {
         resolvedStyle.flexGrow = 0;
@@ -162,6 +165,9 @@ const createReactDOMStyle = (style: Style, isInline?: boolean): Style => {
       } else {
         resolvedStyle.textDecorationLine = value;
       }
+    } else if (prop === 'userSelect') {
+      resolvedStyle.userSelect = value;
+      resolvedStyle.WebkitUserSelect = value;
     } else if (prop === 'writingDirection') {
       resolvedStyle.direction = value;
     } else {

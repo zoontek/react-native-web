@@ -71,8 +71,8 @@ describe('AppRegistry', () => {
         .r-right-zchlnj{right:0px;}
         .r-textOverflow-1udbk01{text-overflow:ellipsis;}
         .r-top-ipm5af{top:0px;}
-        .r-userSelect-1xnzce8{-moz-user-select:text;-webkit-user-select:text;user-select:text;}
-        .r-userSelect-lrvibr{-moz-user-select:none;-webkit-user-select:none;user-select:none;}
+        .r-userSelect-1xnzce8{-webkit-user-select:text;user-select:text;}
+        .r-userSelect-lrvibr{-webkit-user-select:none;user-select:none;}
         .r-whiteSpace-3s2u2q{white-space:nowrap;}
         .r-wordWrap-1iln25a{word-wrap:normal;}</style>"
       `);
@@ -130,8 +130,8 @@ describe('AppRegistry', () => {
         .r-right-zchlnj{right:0px;}
         .r-textOverflow-1udbk01{text-overflow:ellipsis;}
         .r-top-ipm5af{top:0px;}
-        .r-userSelect-1xnzce8{-moz-user-select:text;-webkit-user-select:text;user-select:text;}
-        .r-userSelect-lrvibr{-moz-user-select:none;-webkit-user-select:none;user-select:none;}
+        .r-userSelect-1xnzce8{-webkit-user-select:text;user-select:text;}
+        .r-userSelect-lrvibr{-webkit-user-select:none;user-select:none;}
         .r-whiteSpace-3s2u2q{white-space:nowrap;}
         .r-wordWrap-1iln25a{word-wrap:normal;}"
       `);
@@ -182,8 +182,8 @@ describe('AppRegistry', () => {
         .r-right-zchlnj{right:0px;}
         .r-textOverflow-1udbk01{text-overflow:ellipsis;}
         .r-top-ipm5af{top:0px;}
-        .r-userSelect-1xnzce8{-moz-user-select:text;-webkit-user-select:text;user-select:text;}
-        .r-userSelect-lrvibr{-moz-user-select:none;-webkit-user-select:none;user-select:none;}
+        .r-userSelect-1xnzce8{-webkit-user-select:text;user-select:text;}
+        .r-userSelect-lrvibr{-webkit-user-select:none;user-select:none;}
         .r-whiteSpace-3s2u2q{white-space:nowrap;}
         .r-wordWrap-1iln25a{word-wrap:normal;}"
       `);
