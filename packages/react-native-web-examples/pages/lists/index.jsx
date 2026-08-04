@@ -20,8 +20,21 @@ import {
   TextInput,
   View
 } from 'react-native';
+import bandaged from '../../assets/lists/bandaged.png';
+import call from '../../assets/lists/call.png';
+import dislike from '../../assets/lists/dislike.png';
+import fist from '../../assets/lists/fist.png';
+import flowers from '../../assets/lists/flowers.png';
+import heart from '../../assets/lists/heart.png';
+import like from '../../assets/lists/like.png';
+import liking from '../../assets/lists/liking.png';
+import party from '../../assets/lists/party.png';
+import poke from '../../assets/lists/poke.png';
+import superlike from '../../assets/lists/superlike.png';
+import victory from '../../assets/lists/victory.png';
 import Example from '../../shared/example';
 
+/*::
 type Item = {
   title: string,
   text: string,
@@ -29,6 +42,7 @@ type Item = {
   pressed: boolean,
   noImage?: ?boolean
 };
+*/
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -42,18 +56,18 @@ const VIEWABILITY_CONFIG = {
   waitForInteraction: true
 };
 const THUMB_URLS = [
-  './lists/like.png',
-  './lists/dislike.png',
-  './lists/call.png',
-  './lists/fist.png',
-  './lists/bandaged.png',
-  './lists/flowers.png',
-  './lists/heart.png',
-  './lists/liking.png',
-  './lists/party.png',
-  './lists/poke.png',
-  './lists/superlike.png',
-  './lists/victory.png'
+  like,
+  dislike,
+  call,
+  fist,
+  bandaged,
+  flowers,
+  heart,
+  liking,
+  party,
+  poke,
+  superlike,
+  victory
 ];
 const LOREM_IPSUM =
   'Lorem ipsum dolor sit amet, ius ad pertinax oportere accommodare, an vix ' +
@@ -62,7 +76,10 @@ const LOREM_IPSUM =
   'vulputate est, vel an accusam intellegam interesset. Nam eu stet pericula reprimique, ea vim illud ' +
   'modus, putant invidunt reprehendunt ne qui.';
 
-function genItemData(count: number, start: number = 0): Array<Item> {
+function genItemData(
+  count /*: number */,
+  start /*: number */ = 0
+) /*: Array<Item> */ {
   const dataBlob = [];
   for (let ii = start; ii < count + start; ii++) {
     const itemHash = Math.abs(hashCode('Item ' + ii));
@@ -76,14 +93,18 @@ function genItemData(count: number, start: number = 0): Array<Item> {
   return dataBlob;
 }
 
-class ItemComponent extends React.PureComponent<{
+/*::
+type ItemComponentProps = {
   fixedHeight?: ?boolean,
   horizontal?: ?boolean,
   item: Item,
   onPress: (key: string) => void,
   onShowUnderlay?: () => void,
   onHideUnderlay?: () => void
-}> {
+};
+*/
+
+class ItemComponent extends React.PureComponent /*:: <ItemComponentProps> */ {
   _onPress = () => {
     this.props.onPress(this.props.item.key);
   };
@@ -118,7 +139,7 @@ class ItemComponent extends React.PureComponent<{
   }
 }
 
-class FooterComponent extends React.PureComponent<{}> {
+class FooterComponent extends React.PureComponent /*:: <{}> */ {
   render() {
     return (
       <View style={styles.headerFooterContainer}>
@@ -131,7 +152,7 @@ class FooterComponent extends React.PureComponent<{}> {
   }
 }
 
-class HeaderComponent extends React.PureComponent<{}> {
+class HeaderComponent extends React.PureComponent /*:: <{}> */ {
   render() {
     return (
       <View style={styles.headerFooterContainer}>
@@ -144,13 +165,13 @@ class HeaderComponent extends React.PureComponent<{}> {
   }
 }
 
-class SeparatorComponent extends React.PureComponent<{}> {
+class SeparatorComponent extends React.PureComponent /*:: <{}> */ {
   render() {
     return <View style={styles.separator} />;
   }
 }
 
-class ItemSeparatorComponent extends React.PureComponent<{}> {
+class ItemSeparatorComponent extends React.PureComponent /*:: <{}> */ {
   render() {
     const style = this.props.highlighted
       ? [
@@ -162,7 +183,7 @@ class ItemSeparatorComponent extends React.PureComponent<{}> {
   }
 }
 
-class Spindicator extends React.PureComponent<{}> {
+class Spindicator extends React.PureComponent /*:: <{}> */ {
   render() {
     return (
       <Animated.View
@@ -181,7 +202,7 @@ class Spindicator extends React.PureComponent<{}> {
   }
 }
 
-function hashCode(str: string): number {
+function hashCode(str /*: string */) /*: number */ {
   let hash = 15;
   for (let ii = str.length - 1; ii >= 0; ii--) {
     hash = (hash << 5) - hash + str.charCodeAt(ii);
@@ -189,14 +210,18 @@ function hashCode(str: string): number {
   return hash;
 }
 
-function getItemLayout(data: any, index: number, horizontal?: boolean) {
+function getItemLayout(
+  data /*: any */,
+  index /*: number */,
+  horizontal /*: void | boolean */
+) {
   const [length, separator, header] = horizontal
     ? [HORIZ_WIDTH, 0, HEADER.width]
     : [ITEM_HEIGHT, SEPARATOR_HEIGHT, HEADER.height];
   return { length, offset: (length + separator) * index + header, index };
 }
 
-function pressItem(context: Object, key: string) {
+function pressItem(context /*: Object */, key /*: string */) {
   const index = Number(key);
   const pressed = !context.state.data[index].pressed;
   context.setState((state) => {
@@ -210,7 +235,7 @@ function pressItem(context: Object, key: string) {
   });
 }
 
-function renderSmallSwitchOption(context: Object, key: string) {
+function renderSmallSwitchOption(context /*: Object */, key /*: string */) {
   return (
     <View style={styles.option}>
       <Text>{key}:</Text>
@@ -223,7 +248,7 @@ function renderSmallSwitchOption(context: Object, key: string) {
   );
 }
 
-function PlainInput(props: Object) {
+function PlainInput(props /*: Object */) {
   return (
     <TextInput
       autoCapitalize="none"
@@ -345,7 +370,7 @@ class SingleColumnExample extends React.PureComponent {
   _captureRef = (ref) => {
     this._listRef = ref;
   };
-  _getItemLayout = (data: any, index: number) => {
+  _getItemLayout = (data /*: any */, index /*: number */) => {
     return getItemLayout(data, index, this.state.horizontal);
   };
   _onEndReached = () => {
@@ -371,7 +396,8 @@ class SingleColumnExample extends React.PureComponent {
   };
   // This is called when items change viewability by scrolling into or out of
   // the viewable area.
-  _onViewableItemsChanged = (info: {
+  _onViewableItemsChanged = (
+    info /*: {
     changed: Array<{
       key: string,
       isViewable: boolean,
@@ -379,7 +405,8 @@ class SingleColumnExample extends React.PureComponent {
       index: ?number,
       section?: any
     }>
-  }) => {
+  } */
+  ) => {
     // Impressions can be logged here
     if (this.state.logViewable) {
       console.log(
@@ -388,11 +415,11 @@ class SingleColumnExample extends React.PureComponent {
       );
     }
   };
-  _pressItem = (key: string) => {
+  _pressItem = (key /*: string */) => {
     this._listRef.recordInteraction();
     pressItem(this, key);
   };
-  _listRef: AnimatedFlatList;
+  /*:: _listRef: AnimatedFlatList; */
 }
 
 const styles = StyleSheet.create({
