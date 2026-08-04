@@ -4,8 +4,9 @@
   "version": "0.21.2",
   "description": "Documentation website for React Native for Web",
   "scripts": {
-    "dev": "eleventy --serve",
-    "build": "ELEVENTY_PRODUCTION=true eleventy",
+    "build:examples": "pnpm --filter react-native-web-examples build",
+    "dev": "pnpm run build:examples && eleventy --serve",
+    "build": "pnpm run build:examples && ELEVENTY_PRODUCTION=true eleventy",
     "debug": "DEBUG=* eleventy"
   },
   "homepage": "https://github.com/necolas/react-native-web",
