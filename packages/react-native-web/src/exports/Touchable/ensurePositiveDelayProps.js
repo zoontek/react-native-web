@@ -9,7 +9,7 @@
 
 import invariant from 'fbjs/lib/invariant';
 
-const ensurePositiveDelayProps = (props: any) => {
+const ensurePositiveDelayProps = (props /*: any */) => {
   invariant(
     !(
       props.delayPressIn < 0 ||

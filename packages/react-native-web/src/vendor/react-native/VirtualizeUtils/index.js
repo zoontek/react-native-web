@@ -10,7 +10,7 @@
 
 'use strict';
 
-import type {FrameMetricProps} from '../VirtualizedList/VirtualizedListProps';
+/*:: import type {FrameMetricProps} from '../VirtualizedList/VirtualizedListProps'; */
 
 /**
  * Used to find the indices of the frames that overlap the given offsets. Useful for finding the
@@ -18,18 +18,18 @@ import type {FrameMetricProps} from '../VirtualizedList/VirtualizedListProps';
  * area.
  */
 export function elementsThatOverlapOffsets(
-  offsets: Array<number>,
-  props: FrameMetricProps,
-  getFrameMetrics: (
+  offsets/*: Array<number> */,
+  props/*: FrameMetricProps */,
+  getFrameMetrics/*: (
     index: number,
     props: FrameMetricProps,
   ) => {
     length: number,
     offset: number,
     ...
-  },
-  zoomScale: number = 1,
-): Array<number> {
+  } */,
+  zoomScale/*: number */ = 1,
+)/*: Array<number> */ {
   const itemCount = props.getItemCount(props.data);
   const result = [];
   for (let offsetIndex = 0; offsetIndex < offsets.length; offsetIndex++) {
@@ -70,17 +70,17 @@ export function elementsThatOverlapOffsets(
  * faster.
  */
 export function newRangeCount(
-  prev: {
+  prev/*: {
     first: number,
     last: number,
     ...
-  },
-  next: {
+  } */,
+  next/*: {
     first: number,
     last: number,
     ...
-  },
-): number {
+  } */,
+)/*: number */ {
   return (
     next.last -
     next.first +
@@ -99,33 +99,33 @@ export function newRangeCount(
  * biased in the direction of scroll.
  */
 export function computeWindowedRenderLimits(
-  props: FrameMetricProps,
-  maxToRenderPerBatch: number,
-  windowSize: number,
-  prev: {
+  props/*: FrameMetricProps */,
+  maxToRenderPerBatch/*: number */,
+  windowSize/*: number */,
+  prev/*: {
     first: number,
     last: number,
-  },
-  getFrameMetricsApprox: (
+  } */,
+  getFrameMetricsApprox/*: (
     index: number,
     props: FrameMetricProps,
   ) => {
     length: number,
     offset: number,
     ...
-  },
-  scrollMetrics: {
+  } */,
+  scrollMetrics/*: {
     dt: number,
     offset: number,
     velocity: number,
     visibleLength: number,
     zoomScale: number,
     ...
-  },
-): {
+  } */,
+)/*: {
   first: number,
   last: number,
-} {
+} */ {
   const itemCount = props.getItemCount(props.data);
   if (itemCount === 0) {
     return {first: 0, last: -1};
@@ -247,7 +247,7 @@ export function computeWindowedRenderLimits(
   return {first, last};
 }
 
-export function keyExtractor(item: any, index: number): string {
+export function keyExtractor(item/*: any */, index/*: number */)/*: string */ {
   if (typeof item === 'object' && item?.key != null) {
     return item.key;
   }

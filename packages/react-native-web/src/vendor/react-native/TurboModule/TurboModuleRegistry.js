@@ -10,14 +10,14 @@
 
 'use strict';
 
-import type {TurboModule} from './RCTExport';
+/*:: import type {TurboModule} from './RCTExport'; */
 import invariant from 'fbjs/lib/invariant';
 
-export function get<T: TurboModule>(name: string): ?T {
+export function get/*:: <T: TurboModule> */(name/*: string */)/*: ?T */ {
   return null;
 }
 
-export function getEnforcing<T: TurboModule>(name: string): T {
+export function getEnforcing/*:: <T: TurboModule> */(name/*: string */)/*: T */ {
   const module = get(name);
   invariant(
     module != null,

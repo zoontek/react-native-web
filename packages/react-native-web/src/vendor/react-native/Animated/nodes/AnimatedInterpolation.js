@@ -12,7 +12,7 @@
 
 'use strict';
 
-import type AnimatedNode from './AnimatedNode';
+/*:: import type AnimatedNode from './AnimatedNode'; */
 
 import AnimatedWithChildren from './AnimatedWithChildren';
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
@@ -20,35 +20,35 @@ import NativeAnimatedHelper from '../NativeAnimatedHelper';
 import invariant from 'fbjs/lib/invariant';
 import normalizeColor from '@react-native/normalize-colors';
 
-import type {PlatformConfig} from '../AnimatedPlatformConfig';
+/*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
-type ExtrapolateType = 'extend' | 'identity' | 'clamp';
+/*:: type ExtrapolateType = 'extend' | 'identity' | 'clamp'; */
 
-export type InterpolationConfigType<OutputT: number | string> = $ReadOnly<{
+/*:: export type InterpolationConfigType<OutputT: number | string> = $ReadOnly<{
   inputRange: $ReadOnlyArray<number>,
   outputRange: $ReadOnlyArray<OutputT>,
   easing?: (input: number) => number,
   extrapolate?: ExtrapolateType,
   extrapolateLeft?: ExtrapolateType,
   extrapolateRight?: ExtrapolateType,
-}>;
+}>; */
 
-const linear = (t: number) => t;
+const linear = (t/*: number */) => t;
 
 /**
  * Very handy helper to map input ranges to output ranges with an easing
  * function and custom behavior outside of the ranges.
  */
-function createInterpolation<OutputT: number | string>(
-  config: InterpolationConfigType<OutputT>,
-): (input: number) => OutputT {
+function createInterpolation/*:: <OutputT: number | string> */(
+  config/*: InterpolationConfigType<OutputT> */,
+)/*: (input: number) => OutputT */ {
   if (config.outputRange && typeof config.outputRange[0] === 'string') {
-    return (createInterpolationFromStringOutputRange((config: any)): any);
+    return (createInterpolationFromStringOutputRange((config/*: any */))/*: any */);
   }
 
-  const outputRange: $ReadOnlyArray<number> = (config.outputRange: any);
+  const outputRange/*: $ReadOnlyArray<number> */ = (config.outputRange/*: any */);
 
   const inputRange = config.inputRange;
 
@@ -69,14 +69,14 @@ function createInterpolation<OutputT: number | string>(
 
   const easing = config.easing || linear;
 
-  let extrapolateLeft: ExtrapolateType = 'extend';
+  let extrapolateLeft/*: ExtrapolateType */ = 'extend';
   if (config.extrapolateLeft !== undefined) {
     extrapolateLeft = config.extrapolateLeft;
   } else if (config.extrapolate !== undefined) {
     extrapolateLeft = config.extrapolate;
   }
 
-  let extrapolateRight: ExtrapolateType = 'extend';
+  let extrapolateRight/*: ExtrapolateType */ = 'extend';
   if (config.extrapolateRight !== undefined) {
     extrapolateRight = config.extrapolateRight;
   } else if (config.extrapolate !== undefined) {
@@ -99,19 +99,19 @@ function createInterpolation<OutputT: number | string>(
       easing,
       extrapolateLeft,
       extrapolateRight,
-    ): any);
+    )/*: any */);
   };
 }
 
 function interpolate(
-  input: number,
-  inputMin: number,
-  inputMax: number,
-  outputMin: number,
-  outputMax: number,
-  easing: (input: number) => number,
-  extrapolateLeft: ExtrapolateType,
-  extrapolateRight: ExtrapolateType,
+  input/*: number */,
+  inputMin/*: number */,
+  inputMax/*: number */,
+  outputMin/*: number */,
+  outputMax/*: number */,
+  easing/*: (input: number) => number */,
+  extrapolateLeft/*: ExtrapolateType */,
+  extrapolateRight/*: ExtrapolateType */,
 ) {
   let result = input;
 
@@ -171,7 +171,7 @@ function interpolate(
   return result;
 }
 
-function colorToRgba(input: string): string {
+function colorToRgba(input/*: string */)/*: string */ {
   let normalizedColor = normalizeColor(input);
   if (normalizedColor === null || typeof normalizedColor !== 'number') {
     return input;
@@ -198,9 +198,9 @@ const stringShapeRegex = /[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g;
  *   -45deg                  // values with units
  */
 function createInterpolationFromStringOutputRange(
-  config: InterpolationConfigType<string>,
-): (input: number) => string {
-  let outputRange: Array<string> = (config.outputRange: any);
+  config/*: InterpolationConfigType<string> */,
+)/*: (input: number) => string */ {
+  let outputRange/*: Array<string> */ = (config.outputRange/*: any */);
   invariant(outputRange.length >= 2, 'Bad output range');
   outputRange = outputRange.map(colorToRgba);
   checkPattern(outputRange);
@@ -256,11 +256,11 @@ function createInterpolationFromStringOutputRange(
   };
 }
 
-function isRgbOrRgba(range: string) {
+function isRgbOrRgba(range/*: string */) {
   return typeof range === 'string' && range.startsWith('rgb');
 }
 
-function checkPattern(arr: $ReadOnlyArray<string>) {
+function checkPattern(arr/*: $ReadOnlyArray<string> */) {
   const pattern = arr[0].replace(stringShapeRegex, '');
   for (let i = 1; i < arr.length; ++i) {
     invariant(
@@ -270,7 +270,7 @@ function checkPattern(arr: $ReadOnlyArray<string>) {
   }
 }
 
-function findRange(input: number, inputRange: $ReadOnlyArray<number>) {
+function findRange(input/*: number */, inputRange/*: $ReadOnlyArray<number> */) {
   let i;
   for (i = 1; i < inputRange.length - 1; ++i) {
     if (inputRange[i] >= input) {
@@ -280,7 +280,7 @@ function findRange(input: number, inputRange: $ReadOnlyArray<number>) {
   return i - 1;
 }
 
-function checkValidInputRange(arr: $ReadOnlyArray<number>) {
+function checkValidInputRange(arr/*: $ReadOnlyArray<number> */) {
   invariant(arr.length >= 2, 'inputRange must have at least 2 elements');
   const message =
     'inputRange must be monotonically non-decreasing ' + String(arr);
@@ -289,7 +289,7 @@ function checkValidInputRange(arr: $ReadOnlyArray<number>) {
   }
 }
 
-function checkInfiniteRange(name: string, arr: $ReadOnlyArray<number>) {
+function checkInfiniteRange(name/*: string */, arr/*: $ReadOnlyArray<number> */) {
   invariant(arr.length >= 2, name + ' must have at least 2 elements');
   invariant(
     arr.length !== 2 || arr[0] !== -Infinity || arr[1] !== Infinity,
@@ -302,32 +302,32 @@ function checkInfiniteRange(name: string, arr: $ReadOnlyArray<number>) {
   );
 }
 
-class AnimatedInterpolation<
+class AnimatedInterpolation/*:: <
   OutputT: number | string,
-> extends AnimatedWithChildren {
+> */ extends AnimatedWithChildren {
   // Export for testing.
-  static __createInterpolation: (
+  static __createInterpolation/*: (
     config: InterpolationConfigType<OutputT>,
-  ) => (input: number) => OutputT = createInterpolation;
+  ) => (input: number) => OutputT */ = createInterpolation;
 
-  _parent: AnimatedNode;
-  _config: InterpolationConfigType<OutputT>;
-  _interpolation: (input: number) => OutputT;
+  _parent/*: AnimatedNode */;
+  _config/*: InterpolationConfigType<OutputT> */;
+  _interpolation/*: (input: number) => OutputT */;
 
-  constructor(parent: AnimatedNode, config: InterpolationConfigType<OutputT>) {
+  constructor(parent/*: AnimatedNode */, config/*: InterpolationConfigType<OutputT> */) {
     super();
     this._parent = parent;
     this._config = config;
     this._interpolation = createInterpolation(config);
   }
 
-  __makeNative(platformConfig: ?PlatformConfig) {
+  __makeNative(platformConfig/*: ?PlatformConfig */) {
     this._parent.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
 
-  __getValue(): number | string {
-    const parentValue: number = this._parent.__getValue();
+  __getValue()/*: number | string */ {
+    const parentValue/*: number */ = this._parent.__getValue();
     invariant(
       typeof parentValue === 'number',
       'Cannot interpolate an input which is not a number.',
@@ -335,26 +335,26 @@ class AnimatedInterpolation<
     return this._interpolation(parentValue);
   }
 
-  interpolate<NewOutputT: number | string>(
-    config: InterpolationConfigType<NewOutputT>,
-  ): AnimatedInterpolation<NewOutputT> {
+  interpolate/*:: <NewOutputT: number | string> */(
+    config/*: InterpolationConfigType<NewOutputT> */,
+  )/*: AnimatedInterpolation<NewOutputT> */ {
     return new AnimatedInterpolation(this, config);
   }
 
-  __attach(): void {
+  __attach()/*: void */ {
     this._parent.__addChild(this);
   }
 
-  __detach(): void {
+  __detach()/*: void */ {
     this._parent.__removeChild(this);
     super.__detach();
   }
 
-  __transformDataType(range: $ReadOnlyArray<OutputT>): Array<any> {
+  __transformDataType(range/*: $ReadOnlyArray<OutputT> */)/*: Array<any> */ {
     return range.map(NativeAnimatedHelper.transformDataType);
   }
 
-  __getNativeConfig(): any {
+  __getNativeConfig()/*: any */ {
     if (__DEV__) {
       NativeAnimatedHelper.validateInterpolation(this._config);
     }

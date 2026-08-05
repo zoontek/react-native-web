@@ -10,7 +10,7 @@
 import { addEventListener } from '../addEventListener';
 import canUseDOM from '../canUseDom';
 
-export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen';
+/*:: export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen'; */
 
 const supportsPointerEvent = () =>
   !!(typeof window !== 'undefined' && window.PointerEvent != null);
@@ -90,7 +90,7 @@ function onVisibilityChange() {
   }
 }
 
-function onPointerish(event: any) {
+function onPointerish(event /*: any */) {
   const eventType = event.type;
 
   if (supportsPointerEvent()) {
@@ -191,17 +191,17 @@ function callListeners() {
   });
 }
 
-export function getActiveModality(): Modality {
+export function getActiveModality() /*: Modality */ {
   return activeModality;
 }
 
-export function getModality(): Modality {
+export function getModality() /*: Modality */ {
   return modality;
 }
 
 export function addModalityListener(
-  listener: ({ activeModality: Modality, modality: Modality }) => void
-): () => void {
+  listener /*: ({ activeModality: Modality, modality: Modality }) => void */
+) /*: () => void */ {
   listeners.add(listener);
   return () => {
     listeners.delete(listener);

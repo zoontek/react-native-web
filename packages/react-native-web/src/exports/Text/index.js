@@ -10,8 +10,8 @@
 
 'use client';
 
-import type { PlatformMethods } from '../../types';
-import type { TextProps } from './types';
+/*:: import type { PlatformMethods } from '../../types'; */
+/*:: import type { TextProps } from './types'; */
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -45,7 +45,7 @@ const forwardPropsList = Object.assign(
 
 const pickProps = (props) => pick(props, forwardPropsList);
 
-const Text: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods> =
+const Text /*: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods> */ =
   React.forwardRef((props, forwardedRef) => {
     const {
       hrefAttrs,

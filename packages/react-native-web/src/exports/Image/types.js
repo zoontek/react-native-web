@@ -8,15 +8,15 @@
  * @flow
  */
 
-import type { ColorValue, GenericStyleProp } from '../../types';
-import type { ViewProps, ViewStyle } from '../View/types';
+/*:: import type { ColorValue, GenericStyleProp } from '../../types'; */
+/*:: import type { ViewProps, ViewStyle } from '../View/types'; */
 
-type SourceObject = {
+/*:: type SourceObject = {
   /**
    * `body` is the HTTP body to send with the request. This must be a valid
    * UTF-8 string, and will be sent exactly as specified, with no
    * additional encoding (e.g. URL-escaping or base64) applied.
-   */
+   *-/
   body?: string,
   /**
    * `cache` determines how the requests handles potentially cached
@@ -37,55 +37,55 @@ type SourceObject = {
    * and the load is considered to have failed.
    *
    * @platform ios
-   */
+   *-/
   cache?: 'default' | 'reload' | 'force-cache' | 'only-if-cached',
   /**
    * `headers` is an object representing the HTTP headers to send along with the
    * request for a remote image.
-   */
+   *-/
   headers?: { [key: string]: string },
   /**
    * `method` is the HTTP Method to use. Defaults to GET if not specified.
-   */
+   *-/
   method?: string,
   /**
    * `scale` is used to indicate the scale factor of the image. Defaults to 1.0 if
    * unspecified, meaning that one image pixel equates to one display point / DIP.
-   */
+   *-/
   scale?: number,
   /**
    * `uri` is a string representing the resource identifier for the image, which
    * could be an http address, a local file path, or the name of a static image
    * resource (which should be wrapped in the `require('./path/to/image.png')`
    * function).
-   */
+   *-/
   uri: string,
   /**
    * `width` and `height` can be specified if known at build time, in which case
    * these will be used to set the default `<Image/>` component dimensions.
-   */
+   *-/
   height?: number,
   width?: number
-};
+}; */
 
-export type ResizeMode =
+/*:: export type ResizeMode =
   | 'center'
   | 'contain'
   | 'cover'
   | 'none'
   | 'repeat'
-  | 'stretch';
+  | 'stretch'; */
 
-export type Source = number | string | SourceObject | Array<SourceObject>;
+/*:: export type Source = number | string | SourceObject | Array<SourceObject>; */
 
-export type ImageStyle = {
+/*:: export type ImageStyle = {
   ...ViewStyle,
   // @deprecated
   resizeMode?: ResizeMode,
   tintColor?: ColorValue
-};
+}; */
 
-export type ImageProps = {
+/*:: export type ImageProps = {
   ...ViewProps,
   blurRadius?: number,
   defaultSource?: Source,
@@ -100,4 +100,4 @@ export type ImageProps = {
   source?: Source,
   style?: GenericStyleProp<ImageStyle>,
   tintColor?: ColorValue
-};
+}; */

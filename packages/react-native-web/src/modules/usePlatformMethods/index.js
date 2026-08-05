@@ -7,8 +7,8 @@
  * @flow
  */
 
-import type { GenericStyleProp } from '../../types';
-import type { ViewProps } from '../../exports/View';
+/*:: import type { GenericStyleProp } from '../../types'; */
+/*:: import type { ViewProps } from '../../exports/View'; */
 
 import UIManager from '../../exports/UIManager';
 import useStable from '../useStable';
@@ -17,15 +17,14 @@ import useStable from '../useStable';
  * Adds non-standard methods to the hode element. This is temporarily until an
  * API like `ReactNative.measure(hostRef, callback)` is added to React Native.
  */
-export default function usePlatformMethods({
-  pointerEvents,
-  style
-}: {
+export default function usePlatformMethods(
+  { pointerEvents, style } /*: {
   style?: GenericStyleProp<*>,
   pointerEvents?: $PropertyType<ViewProps, 'pointerEvents'>
-}): (hostNode: any) => void {
+} */
+) /*: (hostNode: any) => void */ {
   // Avoid creating a new ref on every render.
-  const ref = useStable(() => (hostNode: any) => {
+  const ref = useStable(() => (hostNode /*: any */) => {
     if (hostNode != null) {
       hostNode.measure = (callback) => UIManager.measure(hostNode, callback);
       hostNode.measureLayout = (relativeToNode, success, failure) =>

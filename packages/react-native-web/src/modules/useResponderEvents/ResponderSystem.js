@@ -131,7 +131,7 @@ to return true:wantsResponderID|                            |
                                |                            |
                                +                            + */
 
-import type { ResponderEvent } from './createResponderEvent';
+/*:: import type { ResponderEvent } from './createResponderEvent'; */
 
 import createResponderEvent from './createResponderEvent';
 import {
@@ -155,23 +155,23 @@ import canUseDOM from '../canUseDom';
 
 /* ------------ TYPES ------------ */
 
-type ResponderId = number;
+/*:: type ResponderId = number; */
 
-type ActiveResponderInstance = {
+/*:: type ActiveResponderInstance = {
   id: ResponderId,
   idPath: Array<number>,
   node: any
-};
+}; */
 
-type EmptyResponderInstance = {
+/*:: type EmptyResponderInstance = {
   id: null,
   idPath: null,
   node: null
-};
+}; */
 
-type ResponderInstance = ActiveResponderInstance | EmptyResponderInstance;
+/*:: type ResponderInstance = ActiveResponderInstance | EmptyResponderInstance; */
 
-export type ResponderConfig = {
+/*:: export type ResponderConfig = {
   // Direct responder events dispatched directly to responder. Do not bubble.
   onResponderEnd?: ?(e: ResponderEvent) => void,
   onResponderGrant?: ?(e: ResponderEvent) => void | boolean,
@@ -193,7 +193,7 @@ export type ResponderConfig = {
   // On text selection change, should this element become the responder?
   onSelectionChangeShouldSetResponder?: ?(e: ResponderEvent) => boolean,
   onSelectionChangeShouldSetResponderCapture?: ?(e: ResponderEvent) => boolean
-};
+}; */
 
 const emptyObject = {};
 
@@ -227,18 +227,20 @@ const responderListenersMap = new Map();
 
 let isEmulatingMouseEvents = false;
 let trackedTouchCount = 0;
-let currentResponder: ResponderInstance = {
+let currentResponder /*: ResponderInstance */ = {
   id: null,
   node: null,
   idPath: null
 };
 const responderTouchHistoryStore = new ResponderTouchHistoryStore();
 
-function changeCurrentResponder(responder: ResponderInstance) {
+function changeCurrentResponder(responder /*: ResponderInstance */) {
   currentResponder = responder;
 }
 
-function getResponderConfig(id: ResponderId): ResponderConfig | Object {
+function getResponderConfig(
+  id /*: ResponderId */
+) /*: ResponderConfig | Object */ {
   const config = responderListenersMap.get(id);
   return config != null ? config : emptyObject;
 }
@@ -253,7 +255,7 @@ function getResponderConfig(id: ResponderId): ResponderConfig | Object {
  * the Responder System has an ID, which is used to look up its associated
  * callbacks.
  */
-function eventListener(domEvent: any) {
+function eventListener(domEvent /*: any */) {
   const eventType = domEvent.type;
   const eventTarget = domEvent.target;
 
@@ -477,7 +479,8 @@ function eventListener(domEvent: any) {
  * call "stopPropagation" on the event, stop searching for a responder.
  */
 function findWantsResponder(eventPaths, domEvent, responderEvent) {
-  const shouldSetCallbacks = shouldSetResponderEvents[(domEvent.type: any)]; // for Flow
+  const shouldSetCallbacks =
+    shouldSetResponderEvents[(domEvent.type /*: any */)]; // for Flow
 
   if (shouldSetCallbacks != null) {
     const { idPath, nodePath } = eventPaths;
@@ -540,8 +543,8 @@ function findWantsResponder(eventPaths, domEvent, responderEvent) {
  * Attempt to transfer the responder.
  */
 function attemptTransfer(
-  responderEvent: ResponderEvent,
-  wantsResponder: ActiveResponderInstance
+  responderEvent /*: ResponderEvent */,
+  wantsResponder /*: ActiveResponderInstance */
 ) {
   const { id: currentId, node: currentNode } = currentResponder;
   const { id, node } = wantsResponder;
@@ -642,7 +645,11 @@ export function attachListeners() {
 /**
  * Register a node with the ResponderSystem.
  */
-export function addNode(id: ResponderId, node: any, config: ResponderConfig) {
+export function addNode(
+  id /*: ResponderId */,
+  node /*: any */,
+  config /*: ResponderConfig */
+) {
   setResponderId(node, id);
   responderListenersMap.set(id, config);
 }
@@ -650,7 +657,7 @@ export function addNode(id: ResponderId, node: any, config: ResponderConfig) {
 /**
  * Unregister a node with the ResponderSystem.
  */
-export function removeNode(id: ResponderId) {
+export function removeNode(id /*: ResponderId */) {
   if (currentResponder.id === id) {
     terminateResponder();
   }
@@ -683,6 +690,6 @@ export function terminateResponder() {
  * Allow unit tests to inspect the current responder in the system.
  * FOR TESTING ONLY.
  */
-export function getResponderNode(): any {
+export function getResponderNode() /*: any */ {
   return currentResponder.node;
 }

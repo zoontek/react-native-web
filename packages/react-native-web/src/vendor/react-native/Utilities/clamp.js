@@ -10,7 +10,7 @@
 
 'use strict';
 
-function clamp(min: number, value: number, max: number): number {
+function clamp(min/*: number */, value/*: number */, max/*: number */)/*: number */ {
   if (value < min) {
     return min;
   }

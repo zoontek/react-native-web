@@ -8,24 +8,24 @@
  * @flow
  */
 
-type I18nManagerStatus = {
+/*:: type I18nManagerStatus = {
   allowRTL: (allowRTL: boolean) => void,
   forceRTL: (forceRTL: boolean) => void,
   getConstants: () => Constants
-};
+}; */
 
-type Constants = {
+/*:: type Constants = {
   isRTL: boolean
-};
+}; */
 
-const I18nManager: I18nManagerStatus = {
+const I18nManager /*: I18nManagerStatus */ = {
   allowRTL() {
     return;
   },
   forceRTL() {
     return;
   },
-  getConstants(): Constants {
+  getConstants() /*: Constants */ {
     return { isRTL: false };
   }
 };

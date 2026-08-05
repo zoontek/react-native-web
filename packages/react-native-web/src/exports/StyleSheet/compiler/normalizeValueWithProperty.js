@@ -24,9 +24,9 @@ const colorProps = {
 };
 
 export default function normalizeValueWithProperty(
-  value: any,
-  property?: ?string
-): any {
+  value /*: any */,
+  property /*:: ?: ?string */
+) /*: any */ {
   let returnValue = value;
   if (
     (property == null || !unitlessNumbers[property]) &&

@@ -8,7 +8,7 @@
  * @flow
  */
 
-import type { ComponentType, Node } from 'react';
+/*:: import type { ComponentType, Node } from 'react'; */
 
 import AppContainer from './AppContainer';
 import invariant from 'fbjs/lib/invariant';
@@ -16,20 +16,20 @@ import render, { hydrate } from '../render';
 import StyleSheet from '../StyleSheet';
 import React from 'react';
 
-export type Application = {
+/*:: export type Application = {
   unmount: () => void
-};
+}; */
 
-export default function renderApplication<Props: Object>(
-  RootComponent: ComponentType<Props>,
-  WrapperComponent?: ?ComponentType<*>,
-  callback?: () => void,
-  options: {
+export default function renderApplication /*:: <Props: Object> */(
+  RootComponent /*: ComponentType<Props> */,
+  WrapperComponent /*:: ?: ?ComponentType<*> */,
+  callback /*:: ?: () => void */,
+  options /*: {
     hydrate: boolean,
     initialProps: Props,
     rootTag: any
-  }
-): Application {
+  } */
+) /*: Application */ {
   const { hydrate: shouldHydrate, initialProps, rootTag } = options;
   const renderFn = shouldHydrate ? hydrate : render;
 
@@ -48,10 +48,10 @@ export default function renderApplication<Props: Object>(
 }
 
 export function getApplication(
-  RootComponent: ComponentType<Object>,
-  initialProps: Object,
-  WrapperComponent?: ?ComponentType<*>
-): {| element: Node, getStyleElement: (Object) => Node |} {
+  RootComponent /*: ComponentType<Object> */,
+  initialProps /*: Object */,
+  WrapperComponent /*:: ?: ?ComponentType<*> */
+) /*: {| element: Node, getStyleElement: (Object) => Node |} */ {
   const element = (
     <AppContainer WrapperComponent={WrapperComponent} rootTag={{}}>
       <RootComponent {...initialProps} />

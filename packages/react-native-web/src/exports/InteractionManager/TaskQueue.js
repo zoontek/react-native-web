@@ -10,31 +10,31 @@
 
 import invariant from 'fbjs/lib/invariant';
 
-type SimpleTask = {|
+/*:: type SimpleTask = {|
   name: string,
   run: () => void
-|};
-type PromiseTask = {|
+|}; */
+/*:: type PromiseTask = {|
   name: string,
   gen: () => Promise<void>
-|};
-export type Task = SimpleTask | PromiseTask | (() => void);
+|}; */
+/*:: export type Task = SimpleTask | PromiseTask | (() => void); */
 
 class TaskQueue {
-  constructor({ onMoreTasks }: { onMoreTasks: () => void, ... }) {
+  constructor({ onMoreTasks } /*: { onMoreTasks: () => void, ... } */) {
     this._onMoreTasks = onMoreTasks;
     this._queueStack = [{ tasks: [], popable: true }];
   }
 
-  enqueue(task: Task): void {
+  enqueue(task /*: Task */) /*: void */ {
     this._getCurrentQueue().push(task);
   }
 
-  enqueueTasks(tasks: Array<Task>): void {
+  enqueueTasks(tasks /*: Array<Task> */) /*: void */ {
     tasks.forEach((task) => this.enqueue(task));
   }
 
-  cancelTasks(tasksToCancel: Array<Task>): void {
+  cancelTasks(tasksToCancel /*: Array<Task> */) /*: void */ {
     this._queueStack = this._queueStack
       .map((queue) => ({
         ...queue,
@@ -43,14 +43,14 @@ class TaskQueue {
       .filter((queue, idx) => queue.tasks.length > 0 || idx === 0);
   }
 
-  hasTasksToProcess(): boolean {
+  hasTasksToProcess() /*: boolean */ {
     return this._getCurrentQueue().length > 0;
   }
 
   /**
    * Executes the next task in the queue.
    */
-  processNext(): void {
+  processNext() /*: void */ {
     const queue = this._getCurrentQueue();
     if (queue.length) {
       const task = queue.shift();
@@ -75,14 +75,14 @@ class TaskQueue {
     }
   }
 
-  _queueStack: Array<{
+  _queueStack /*: Array<{
     tasks: Array<Task>,
     popable: boolean,
     ...
-  }>;
-  _onMoreTasks: () => void;
+  }> */;
+  _onMoreTasks /*: () => void */;
 
-  _getCurrentQueue(): Array<Task> {
+  _getCurrentQueue() /*: Array<Task> */ {
     const stackIdx = this._queueStack.length - 1;
     const queue = this._queueStack[stackIdx];
     if (queue.popable && queue.tasks.length === 0 && stackIdx > 0) {
@@ -93,7 +93,7 @@ class TaskQueue {
     }
   }
 
-  _genPromise(task: PromiseTask) {
+  _genPromise(task /*: PromiseTask */) {
     const length = this._queueStack.push({ tasks: [], popable: false });
     const stackIdx = length - 1;
     const stackItem = this._queueStack[stackIdx];

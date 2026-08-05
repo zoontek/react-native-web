@@ -14,19 +14,19 @@ import TouchableOpacity from '../TouchableOpacity';
 import Text from '../Text';
 //import { warnOnce } from '../../modules/warnOnce';
 
-type ButtonProps = {|
+/*:: type ButtonProps = {|
   accessibilityLabel?: ?string,
   color?: ?string,
   disabled?: boolean,
   onPress?: ?(e: any) => void,
   testID?: ?string,
   title: string
-|};
+|}; */
 
-const Button: React.AbstractComponent<
+const Button /*: React.AbstractComponent<
   ButtonProps,
   React.ElementRef<typeof TouchableOpacity>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   // warnOnce('Button', 'Button is deprecated. Please use Pressable.');
 
   const { accessibilityLabel, color, disabled, onPress, testID, title } = props;
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
   }
 });
 
-export type { ButtonProps };
+/*:: export type { ButtonProps }; */
 
 export default Button;

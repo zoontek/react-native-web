@@ -10,16 +10,16 @@
 const dataUriPattern = /^data:/;
 
 export class ImageUriCache {
-  static _maximumEntries: number = 256;
+  static _maximumEntries /*: number */ = 256;
   static _entries = {};
 
-  static has(uri: string): boolean {
+  static has(uri /*: string */) /*: boolean */ {
     const entries = ImageUriCache._entries;
     const isDataUri = dataUriPattern.test(uri);
     return isDataUri || Boolean(entries[uri]);
   }
 
-  static add(uri: string) {
+  static add(uri /*: string */) {
     const entries = ImageUriCache._entries;
     const lastUsedTimestamp = Date.now();
     if (entries[uri]) {
@@ -33,7 +33,7 @@ export class ImageUriCache {
     }
   }
 
-  static remove(uri: string) {
+  static remove(uri /*: string */) {
     const entries = ImageUriCache._entries;
     if (entries[uri]) {
       entries[uri].refCount -= 1;
@@ -74,7 +74,7 @@ let id = 0;
 const requests = {};
 
 const ImageLoader = {
-  abort(requestId: number) {
+  abort(requestId /*: number */) {
     let image = requests[`${requestId}`];
     if (image) {
       image.onerror = null;
@@ -84,9 +84,9 @@ const ImageLoader = {
     }
   },
   getSize(
-    uri: string,
-    success: (width: number, height: number) => void,
-    failure: () => void
+    uri /*: string */,
+    success /*: (width: number, height: number) => void */,
+    failure /*: () => void */
   ) {
     let complete = false;
     const interval = setInterval(callback, 16);
@@ -115,10 +115,14 @@ const ImageLoader = {
       clearInterval(interval);
     }
   },
-  has(uri: string): boolean {
+  has(uri /*: string */) /*: boolean */ {
     return ImageUriCache.has(uri);
   },
-  load(uri: string, onLoad: Function, onError: Function): number {
+  load(
+    uri /*: string */,
+    onLoad /*: Function */,
+    onError /*: Function */
+  ) /*: number */ {
     id += 1;
     const image = new window.Image();
     image.onerror = onError;
@@ -138,7 +142,7 @@ const ImageLoader = {
     requests[`${id}`] = image;
     return id;
   },
-  prefetch(uri: string): Promise<void> {
+  prefetch(uri /*: string */) /*: Promise<void> */ {
     return new Promise((resolve, reject) => {
       ImageLoader.load(
         uri,
@@ -153,7 +157,9 @@ const ImageLoader = {
       );
     });
   },
-  queryCache(uris: Array<string>): Promise<{| [uri: string]: 'disk/memory' |}> {
+  queryCache(
+    uris /*: Array<string> */
+  ) /*: Promise<{| [uri: string]: 'disk/memory' |}> */ {
     const result = {};
     uris.forEach((u) => {
       if (ImageUriCache.has(u)) {

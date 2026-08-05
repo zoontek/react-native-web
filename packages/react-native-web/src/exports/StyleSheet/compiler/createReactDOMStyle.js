@@ -10,7 +10,7 @@
 import normalizeValueWithProperty from './normalizeValueWithProperty';
 import canUseDOM from '../../../modules/canUseDom';
 
-type Style = { [key: string]: any };
+/*:: type Style = { [key: string]: any }; */
 
 /**
  * The browser implements the CSS cascade, where the order of properties is a
@@ -110,7 +110,10 @@ const STYLE_SHORT_FORM_EXPANSIONS = {
  * Reducer
  */
 
-const createReactDOMStyle = (style: Style, isInline?: boolean): Style => {
+const createReactDOMStyle = (
+  style /*: Style */,
+  isInline /*:: ?: boolean */
+) /*: Style */ => {
   if (!style) {
     return emptyObject;
   }

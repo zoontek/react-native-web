@@ -15,7 +15,7 @@ function toHyphenLower(match) {
   return '-' + match.toLowerCase();
 }
 
-function hyphenateStyleName(name: string): string {
+function hyphenateStyleName(name /*: string */) /*: string */ {
   if (name in cache) {
     return cache[name];
   }

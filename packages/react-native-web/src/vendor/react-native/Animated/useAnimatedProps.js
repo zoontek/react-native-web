@@ -24,18 +24,18 @@ import {
 
 import useLayoutEffect from '../../../modules/useLayoutEffect';
 
-type ReducedProps<TProps> = {
+/*:: type ReducedProps<TProps> = {
   ...TProps,
   collapsable: boolean,
   ...
-};
-type CallbackRef<T> = T => mixed;
+}; */
+/*:: type CallbackRef<T> = T => mixed; */
 
-export default function useAnimatedProps<TProps: {...}, TInstance>(
-  props: TProps,
-): [ReducedProps<TProps>, CallbackRef<TInstance | null>] {
+export default function useAnimatedProps/*:: <TProps: {...}, TInstance> */(
+  props/*: TProps */,
+)/*: [ReducedProps<TProps>, CallbackRef<TInstance | null>] */ {
   const [, scheduleUpdate] = useReducer(count => count + 1, 0);
-  const onUpdateRef = useRef<?() => void>(null);
+  const onUpdateRef = useRef/*:: <?() => void> */(null);
 
   // TODO: Only invalidate `node` if animated props or `style` change. In the
   // previous implementation, we permitted `style` to override props with the
@@ -95,14 +95,14 @@ export default function useAnimatedProps<TProps: {...}, TInstance>(
     },
     [props, node],
   );
-  const callbackRef = useRefEffect<TInstance>(refEffect);
+  const callbackRef = useRefEffect/*:: <TInstance> */(refEffect);
 
-  return [reduceAnimatedProps<TProps>(node), callbackRef];
+  return [reduceAnimatedProps/*:: <TProps> */(node), callbackRef];
 }
 
-function reduceAnimatedProps<TProps>(
-  node: AnimatedProps,
-): ReducedProps<TProps> {
+function reduceAnimatedProps/*:: <TProps> */(
+  node/*: AnimatedProps */,
+)/*: ReducedProps<TProps> */ {
   // Force `collapsable` to be false so that the native view is not flattened.
   // Flattened views cannot be accurately referenced by the native driver.
   return {
@@ -118,9 +118,9 @@ function reduceAnimatedProps<TProps>(
  * nodes. So in order to optimize this, we avoid detaching until the next attach
  * unless we are unmounting.
  */
-function useAnimatedPropsLifecycle(node: AnimatedProps): void {
-  const prevNodeRef = useRef<?AnimatedProps>(null);
-  const isUnmountingRef = useRef<boolean>(false);
+function useAnimatedPropsLifecycle(node/*: AnimatedProps */)/*: void */ {
+  const prevNodeRef = useRef/*:: <?AnimatedProps> */(null);
+  const isUnmountingRef = useRef/*:: <boolean> */(false);
 
   useEffect(() => {
     // It is ok for multiple components to call `flushQueue` because it noops
@@ -156,7 +156,7 @@ function useAnimatedPropsLifecycle(node: AnimatedProps): void {
   }, [node]);
 }
 
-function getEventTarget<TInstance>(instance: TInstance): TInstance {
+function getEventTarget/*:: <TInstance> */(instance/*: TInstance */)/*: TInstance */ {
   return typeof instance === 'object' &&
     typeof instance?.getScrollableNode === 'function'
     ? // $FlowFixMe[incompatible-use] - Legacy instance assumptions.
@@ -165,7 +165,7 @@ function getEventTarget<TInstance>(instance: TInstance): TInstance {
 }
 
 // $FlowFixMe[unclear-type] - Legacy instance assumptions.
-function isFabricInstance(instance: any): boolean {
+function isFabricInstance(instance/*: any */)/*: boolean */ {
   return (
     hasFabricHandle(instance) ||
     // Some components have a setNativeProps function but aren't a host component
@@ -182,7 +182,7 @@ function isFabricInstance(instance: any): boolean {
 }
 
 // $FlowFixMe[unclear-type] - Legacy instance assumptions.
-function hasFabricHandle(instance: any): boolean {
+function hasFabricHandle(instance/*: any */)/*: boolean */ {
   // eslint-disable-next-line dot-notation
   return instance?.['_internalInstanceHandle']?.stateNode?.canonical != null;
 }

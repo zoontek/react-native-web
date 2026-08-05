@@ -19,7 +19,7 @@ import StyleSheet from '../../../../exports/StyleSheet';
 
 const flattenStyle = StyleSheet.flatten;
 
-function createAnimatedStyle(inputStyle: any): Object {
+function createAnimatedStyle(inputStyle/*: any */)/*: Object */ {
   const style = flattenStyle(inputStyle);
   const animatedStyles = {}
   for (const key in style) {
@@ -38,10 +38,10 @@ function createAnimatedStyle(inputStyle: any): Object {
 }
 
 class AnimatedStyle extends AnimatedWithChildren {
-  _inputStyle: any;
-  _style: Object;
+  _inputStyle/*: any */;
+  _style/*: Object */;
 
-  constructor(style: any) {
+  constructor(style/*: any */) {
     super();
     this._inputStyle = style;
     this._style = createAnimatedStyle(style);
@@ -68,7 +68,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     return updatedStyle;
   }
 
-  __getValue(): Array<Object> {
+  __getValue()/*: Array<Object> */ {
     return [
       this._inputStyle,
       this._walkStyleAndGetValues(this._style)
@@ -90,11 +90,11 @@ class AnimatedStyle extends AnimatedWithChildren {
     return updatedStyle;
   }
 
-  __getAnimatedValue(): Object {
+  __getAnimatedValue()/*: Object */ {
     return this._walkStyleAndGetAnimatedValues(this._style);
   }
 
-  __attach(): void {
+  __attach()/*: void */ {
     for (const key in this._style) {
       const value = this._style[key];
       if (value instanceof AnimatedNode) {
@@ -103,7 +103,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     }
   }
 
-  __detach(): void {
+  __detach()/*: void */ {
     for (const key in this._style) {
       const value = this._style[key];
       if (value instanceof AnimatedNode) {
@@ -123,7 +123,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     super.__makeNative();
   }
 
-  __getNativeConfig(): Object {
+  __getNativeConfig()/*: Object */ {
     const styleConfig = {};
     for (const styleKey in this._style) {
       if (this._style[styleKey] instanceof AnimatedNode) {
