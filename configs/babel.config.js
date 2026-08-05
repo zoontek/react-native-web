@@ -17,6 +17,7 @@ const createConfig = ({ modules }) => {
       iterableIsArray: true
     },
     comments: true,
+    shouldPrintComment: (contents) => !/^:{1,2}/.test(contents.trim()),
     presets: [
       [
         '@babel/preset-env',
