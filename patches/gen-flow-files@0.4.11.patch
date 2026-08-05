@@ -1,0 +1,13 @@
+diff --git a/dist/cli.js b/dist/cli.js
+index a675ac5caa0acafc0c667a7b72ecbd779dbdfc9b..605b64c6205020c1a0d146ccb2cb14dc3d0d4848 100644
+--- a/dist/cli.js
++++ b/dist/cli.js
+@@ -40,7 +40,7 @@ var _default = function _default(options) {
+           var ast = (0, _parser.parse)(code, {
+             sourceType: "module",
+             plugins: [// enable common plugins
+-            "flow", "jsx", "asyncFunctions", "asyncGenerators", "classConstructorCall", "classProperties", "decorators-legacy", "doExpressions", "exponentiationOperator", "exportExtensions", "functionBind", "functionSent", "objectRestSpread", "trailingFunctionCommas", "dynamicImport", "numericSeparator", "optionalChaining", "importMeta", "classPrivateProperties", "bigInt", "optionalCatchBinding", "partialApplication", "throwExpressions"]
++            "flow", "flowComments", "jsx", "asyncFunctions", "asyncGenerators", "classConstructorCall", "classProperties", "decorators-legacy", "doExpressions", "exponentiationOperator", "exportExtensions", "functionBind", "functionSent", "objectRestSpread", "trailingFunctionCommas", "dynamicImport", "numericSeparator", "optionalChaining", "importMeta", "classPrivateProperties", "bigInt", "optionalCatchBinding", "partialApplication", "throwExpressions"]
+           });
+           var result = (0, _traverse._traverse)(ast);
+ 
