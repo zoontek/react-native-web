@@ -10,11 +10,11 @@
 
 'use strict';
 
-type SpringConfigType = {
+/*:: type SpringConfigType = {
   stiffness: number,
   damping: number,
   ...
-};
+}; */
 
 function stiffnessFromOrigamiValue(oValue) {
   return (oValue - 30) * 3.62 + 194;
@@ -25,9 +25,9 @@ function dampingFromOrigamiValue(oValue) {
 }
 
 function fromOrigamiTensionAndFriction(
-  tension: number,
-  friction: number,
-): SpringConfigType {
+  tension/*: number */,
+  friction/*: number */,
+)/*: SpringConfigType */ {
   return {
     stiffness: stiffnessFromOrigamiValue(tension),
     damping: dampingFromOrigamiValue(friction),
@@ -35,9 +35,9 @@ function fromOrigamiTensionAndFriction(
 }
 
 function fromBouncinessAndSpeed(
-  bounciness: number,
-  speed: number,
-): SpringConfigType {
+  bounciness/*: number */,
+  speed/*: number */,
+)/*: SpringConfigType */ {
   function normalize(value, startValue, endValue) {
     return (value - startValue) / (endValue - startValue);
   }

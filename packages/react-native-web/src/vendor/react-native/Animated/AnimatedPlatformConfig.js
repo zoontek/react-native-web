@@ -10,4 +10,4 @@
 
 'use strict';
 
-export type PlatformConfig = {};
+/*:: export type PlatformConfig = {}; */

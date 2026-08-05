@@ -15,35 +15,35 @@ import UIManager from '../../../exports/UIManager';
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
-type Type =
+/*:: type Type =
   | 'spring'
   | 'linear'
   | 'easeInEaseOut'
   | 'easeIn'
   | 'easeOut'
-  | 'keyboard';
+  | 'keyboard'; */
 
-type Property = 'opacity' | 'scaleX' | 'scaleY' | 'scaleXY';
+/*:: type Property = 'opacity' | 'scaleX' | 'scaleY' | 'scaleXY'; */
 
-type AnimationConfig = $ReadOnly<{|
+/*:: type AnimationConfig = $ReadOnly<{|
   duration?: number,
   delay?: number,
   springDamping?: number,
   initialVelocity?: number,
   type?: Type,
   property?: Property,
-|}>;
+|}>; */
 
-type LayoutAnimationConfig = $ReadOnly<{|
+/*:: type LayoutAnimationConfig = $ReadOnly<{|
   duration: number,
   create?: AnimationConfig,
   update?: AnimationConfig,
   delete?: AnimationConfig,
-|}>;
+|}>; */
 
 function configureNext(
-  config: LayoutAnimationConfig,
-  onAnimationDidEnd?: Function,
+  config/*: LayoutAnimationConfig */,
+  onAnimationDidEnd/*:: ?: Function */,
 ) {
   if (!Platform.isTesting) {
     UIManager.configureNextLayoutAnimation(
@@ -55,10 +55,10 @@ function configureNext(
 }
 
 function create(
-  duration: number,
-  type: Type,
-  property: Property,
-): LayoutAnimationConfig {
+  duration/*: number */,
+  type/*: Type */,
+  property/*: Property */,
+)/*: LayoutAnimationConfig */ {
   return {
     duration,
     create: {type, property},
@@ -68,8 +68,8 @@ function create(
 }
 
 const Presets = {
-  easeInEaseOut: (create(300, 'easeInEaseOut', 'opacity'): LayoutAnimationConfig),
-  linear: (create(500, 'linear', 'opacity'): LayoutAnimationConfig),
+  easeInEaseOut: (create(300, 'easeInEaseOut', 'opacity')/*: LayoutAnimationConfig */),
+  linear: (create(500, 'linear', 'opacity')/*: LayoutAnimationConfig */),
   spring: {
     duration: 700,
     create: {
@@ -130,13 +130,13 @@ const LayoutAnimation = {
     scaleY: 'scaleY',
     scaleXY: 'scaleXY',
   }),
-  checkConfig(...args: Array<mixed>) {
+  checkConfig(...args/*: Array<mixed> */) {
     console.error('LayoutAnimation.checkConfig(...) has been disabled.');
   },
   Presets,
-  easeInEaseOut: (configureNext.bind(null, Presets.easeInEaseOut): (onAnimationDidEnd?: any) => void),
-  linear: (configureNext.bind(null, Presets.linear): (onAnimationDidEnd?: any) => void),
-  spring: (configureNext.bind(null, Presets.spring): (onAnimationDidEnd?: any) => void),
+  easeInEaseOut: (configureNext.bind(null, Presets.easeInEaseOut)/*: (onAnimationDidEnd?: any) => void */),
+  linear: (configureNext.bind(null, Presets.linear)/*: (onAnimationDidEnd?: any) => void */),
+  spring: (configureNext.bind(null, Presets.spring)/*: (onAnimationDidEnd?: any) => void */),
 };
 
 export default LayoutAnimation;

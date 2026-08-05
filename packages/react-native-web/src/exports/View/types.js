@@ -8,23 +8,23 @@
  * @flow
  */
 
-import type { ColorValue, GenericStyleProp, LayoutEvent } from '../../types';
+/*:: import type { ColorValue, GenericStyleProp, LayoutEvent } from '../../types'; */
 
-import type {
+/*:: import type {
   AnimationStyles,
   BorderStyles,
   InteractionStyles,
   LayoutStyles,
   ShadowStyles,
   TransformStyles
-} from '../../types/styles';
+} from '../../types/styles'; */
 
-type NumberOrString = number | string;
-type OverscrollBehaviorValue = 'auto' | 'contain' | 'none';
-type idRef = string;
-type idRefList = idRef | Array<idRef>;
+/*:: type NumberOrString = number | string; */
+/*:: type OverscrollBehaviorValue = 'auto' | 'contain' | 'none'; */
+/*:: type idRef = string; */
+/*:: type idRefList = idRef | Array<idRef>; */
 
-export type AccessibilityProps = {|
+/*:: export type AccessibilityProps = {|
   'aria-activedescendant'?: ?idRef,
   'aria-atomic'?: ?boolean,
   'aria-autocomplete'?: ?('none' | 'list' | 'inline' | 'both'),
@@ -133,9 +133,9 @@ export type AccessibilityProps = {|
   accessibilityValueMin?: ?number,
   accessibilityValueNow?: ?number,
   accessibilityValueText?: ?string
-|};
+|}; */
 
-export type EventProps = {|
+/*:: export type EventProps = {|
   onAuxClick?: (e: any) => void,
   onBlur?: (e: any) => void,
   onClick?: (e: any) => void,
@@ -188,9 +188,9 @@ export type EventProps = {|
   onTouchStart?: (e: any) => void,
   onTouchStartCapture?: (e: any) => void,
   onWheel?: (e: any) => void
-|};
+|}; */
 
-export type ViewStyle = {
+/*:: export type ViewStyle = {
   ...AnimationStyles,
   ...BorderStyles,
   ...InteractionStyles,
@@ -224,9 +224,9 @@ export type ViewStyle = {
   scrollSnapType?: ?string,
   WebkitMaskImage?: ?string,
   WebkitOverflowScrolling?: 'auto' | 'touch'
-};
+}; */
 
-export type ViewProps = {
+/*:: export type ViewProps = {
   ...AccessibilityProps,
   ...EventProps,
   children?: ?any,
@@ -244,4 +244,4 @@ export type ViewProps = {
   focusable?: ?boolean,
   pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto',
   nativeID?: ?string
-};
+}; */

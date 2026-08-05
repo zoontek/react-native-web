@@ -10,14 +10,15 @@
 
 const Platform = {
   OS: 'web',
-  select: (obj: Object): any => ('web' in obj ? obj.web : obj.default),
-  get isTesting(): boolean {
+  select: (obj /*: Object */) /*: any */ =>
+    'web' in obj ? obj.web : obj.default,
+  get isTesting() /*: boolean */ {
     if (process.env.NODE_ENV === 'test') {
       return true;
     }
     return false;
   },
-  get Version(): string {
+  get Version() /*: string */ {
     return '0.0.0';
   }
 };

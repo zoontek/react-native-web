@@ -8,24 +8,24 @@
  * @format
  */
 
-import type {TurboModule} from '../TurboModule/RCTExport';
+/*:: import type {TurboModule} from '../TurboModule/RCTExport'; */
 import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry';
 
-type EndResult = {finished: boolean, ...};
-type EndCallback = (result: EndResult) => void;
-type SaveValueCallback = (value: number) => void;
+/*:: type EndResult = {finished: boolean, ...}; */
+/*:: type EndCallback = (result: EndResult) => void; */
+/*:: type SaveValueCallback = (value: number) => void; */
 
-export type EventMapping = {|
+/*:: export type EventMapping = {|
   nativeEventPath: Array<string>,
   animatedValueTag: ?number,
-|};
+|}; */
 
 // The config has different keys depending on the type of the Node
 // TODO(T54896888): Make these types strict
-export type AnimatedNodeConfig = Object;
-export type AnimatingNodeConfig = Object;
+/*:: export type AnimatedNodeConfig = Object; */
+/*:: export type AnimatingNodeConfig = Object; */
 
-export interface Spec extends TurboModule {
+/*:: export interface Spec extends TurboModule {
   +startOperationBatch: () => void;
   +finishOperationBatch: () => void;
   +createAnimatedNode: (tag: number, config: AnimatedNodeConfig) => void;
@@ -63,8 +63,8 @@ export interface Spec extends TurboModule {
   // Events
   +addListener: (eventName: string) => void;
   +removeListeners: (count: number) => void;
-}
+} */
 
-export default (TurboModuleRegistry.get<Spec>(
+export default (TurboModuleRegistry.get/*:: <Spec> */(
   'NativeAnimatedTurboModule',
-): ?Spec);
+)/*: ?Spec */);

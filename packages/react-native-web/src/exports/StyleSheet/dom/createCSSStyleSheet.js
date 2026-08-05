@@ -10,10 +10,10 @@ import canUseDOM from '../../../modules/canUseDom';
 
 // $FlowFixMe: HTMLStyleElement is incorrectly typed - https://github.com/facebook/flow/issues/2696
 export default function createCSSStyleSheet(
-  id: string,
-  rootNode?: Document | ShadowRoot,
-  textContent?: string
-): ?CSSStyleSheet {
+  id /*: string */,
+  rootNode /*:: ?: Document | ShadowRoot */,
+  textContent /*:: ?: string */
+) /*: ?CSSStyleSheet */ {
   if (canUseDOM) {
     const root = rootNode != null ? rootNode : document;
     let element = root.getElementById(id);

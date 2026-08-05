@@ -7,7 +7,9 @@
  * @flow strict
  */
 
-const getBoundingClientRect = (node: ?HTMLElement): void | ClientRect => {
+const getBoundingClientRect = (
+  node /*: ?HTMLElement */
+) /*: void | ClientRect */ => {
   if (node != null) {
     const isElement = node.nodeType === 1; /* Node.ELEMENT_NODE */
     if (isElement && typeof node.getBoundingClientRect === 'function') {

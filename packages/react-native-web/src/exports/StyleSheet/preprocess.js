@@ -19,7 +19,9 @@ const emptyObject = {};
 
 const defaultOffset = { height: 0, width: 0 };
 
-export const createBoxShadowValue = (style: Object): void | string => {
+export const createBoxShadowValue = (
+  style /*: Object */
+) /*: void | string */ => {
   const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style;
   const { height, width } = shadowOffset || defaultOffset;
   const offsetX = normalizeValueWithProperty(width);
@@ -36,7 +38,9 @@ export const createBoxShadowValue = (style: Object): void | string => {
   }
 };
 
-export const createTextShadowValue = (style: Object): void | string => {
+export const createTextShadowValue = (
+  style /*: Object */
+) /*: void | string */ => {
   const { textShadowColor, textShadowOffset, textShadowRadius } = style;
   const { height, width } = textShadowOffset || defaultOffset;
   const radius = textShadowRadius || 0;
@@ -58,7 +62,7 @@ export const createTextShadowValue = (style: Object): void | string => {
 
 // { offsetX: 1, offsetY: 2, blurRadius: 3, spreadDistance: 4, color: 'rgba(255, 0, 0)', inset: true }
 // => 'rgba(255, 0, 0) 1px 2px 3px 4px inset'
-const mapBoxShadow = (boxShadow: Object | string): string => {
+const mapBoxShadow = (boxShadow /*: Object | string */) /*: string */ => {
   if (typeof boxShadow === 'string') {
     return boxShadow;
   }
@@ -71,14 +75,16 @@ const mapBoxShadow = (boxShadow: Object | string): string => {
   const position = boxShadow.inset ? 'inset ' : '';
   return `${position}${offsetX} ${offsetY} ${blurRadius} ${spreadDistance} ${color}`;
 };
-export const createBoxShadowArrayValue = (value: Array<Object>): string => {
+export const createBoxShadowArrayValue = (
+  value /*: Array<Object> */
+) /*: string */ => {
   return value.map(mapBoxShadow).join(', ');
 };
 
 // { scale: 2 } => 'scale(2)'
 // { translateX: 20 } => 'translateX(20px)'
 // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-const mapTransform = (transform: Object): string => {
+const mapTransform = (transform /*: Object */) /*: string */ => {
   const type = Object.keys(transform)[0];
   const value = transform[type];
   if (type === 'matrix' || type === 'matrix3d') {
@@ -88,18 +94,20 @@ const mapTransform = (transform: Object): string => {
     return `${type}(${normalizedValue})`;
   }
 };
-export const createTransformValue = (value: Array<Object>): string => {
+export const createTransformValue = (
+  value /*: Array<Object> */
+) /*: string */ => {
   return value.map(mapTransform).join(' ');
 };
 
 // [2, '30%', 10] => '2px 30% 10px'
 export const createTransformOriginValue = (
-  value: Array<number | string>
-): string => {
+  value /*: Array<number | string> */
+) /*: string */ => {
   return value.map((v) => normalizeValueWithProperty(v)).join(' ');
 };
 
-const PROPERTIES_STANDARD: { [key: string]: string } = {
+const PROPERTIES_STANDARD /*: { [key: string]: string } */ = {
   borderBottomEndRadius: 'borderEndEndRadius',
   borderBottomStartRadius: 'borderEndStartRadius',
   borderTopEndRadius: 'borderStartEndRadius',
@@ -132,10 +140,10 @@ const ignoredProps = {
 /**
  * Preprocess styles
  */
-export const preprocess = <T: {| [key: string]: any |}>(
-  originalStyle: T,
-  options?: { shadow?: boolean, textShadow?: boolean } = {}
-): T => {
+export const preprocess = /*:: <T: {| [key: string]: any |}> */ (
+  originalStyle /*: T */,
+  options /*:: ?: { shadow?: boolean, textShadow?: boolean } */ = {}
+) /*: T */ => {
   const style = originalStyle || emptyObject;
   const nextStyle = {};
 

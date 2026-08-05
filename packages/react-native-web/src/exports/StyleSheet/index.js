@@ -15,12 +15,12 @@ import { styleq } from 'styleq';
 import { validate } from './validate';
 import canUseDOM from '../../modules/canUseDom';
 
-const staticStyleMap: WeakMap<Object, Object> = new WeakMap();
+const staticStyleMap /*: WeakMap<Object, Object> */ = new WeakMap();
 const sheet = createSheet();
 
 const defaultPreprocessOptions = { shadow: true, textShadow: true };
 
-function customStyleq(styles, options: Options = {}) {
+function customStyleq(styles, options /*: Options */ = {}) {
   const { writingDirection, ...preprocessOptions } = options;
   const isRTL = writingDirection === 'rtl';
   return styleq.factory({
@@ -76,7 +76,7 @@ const absoluteFill = create({ x: { ...absoluteFillObject } }).x;
 /**
  * create
  */
-function create<T: Object>(styles: T): $ReadOnly<T> {
+function create /*:: <T: Object> */(styles /*: T */) /*: $ReadOnly<T> */ {
   Object.keys(styles).forEach((key) => {
     const styleObj = styles[key];
     // Only compile at runtime if the style is not already compiled
@@ -100,7 +100,7 @@ function create<T: Object>(styles: T): $ReadOnly<T> {
 /**
  * compose
  */
-function compose(style1: any, style2: any): any {
+function compose(style1 /*: any */, style2 /*: any */) /*: any */ {
   if (process.env.NODE_ENV !== 'production') {
     /* eslint-disable prefer-rest-params */
     const len = arguments.length;
@@ -125,7 +125,7 @@ function compose(style1: any, style2: any): any {
 /**
  * flatten
  */
-function flatten(...styles: any): { [key: string]: any } {
+function flatten(...styles /*: any */) /*: { [key: string]: any } */ {
   const flatArray = styles.flat(Infinity);
   const result = {};
   for (let i = 0; i < flatArray.length; i++) {
@@ -141,7 +141,7 @@ function flatten(...styles: any): { [key: string]: any } {
 /**
  * getSheet
  */
-function getSheet(): { id: string, textContent: string } {
+function getSheet() /*: { id: string, textContent: string } */ {
   return {
     id: sheet.id,
     textContent: sheet.getTextContent()
@@ -151,16 +151,19 @@ function getSheet(): { id: string, textContent: string } {
 /**
  * resolve
  */
-type StyleProps = [string, { [key: string]: mixed } | null];
-type Options = {
+/*:: type StyleProps = [string, { [key: string]: mixed } | null]; */
+/*:: type Options = {
   shadow?: boolean,
   textShadow?: boolean,
   writingDirection: 'ltr' | 'rtl'
-};
+}; */
 
-function StyleSheet(styles: any, options?: Options = {}): StyleProps {
+function StyleSheet(
+  styles /*: any */,
+  options /*:: ?: Options */ = {}
+) /*: StyleProps */ {
   const isRTL = options.writingDirection === 'rtl';
-  const styleProps: StyleProps = customStyleq(styles, options);
+  const styleProps /*: StyleProps */ = customStyleq(styles, options);
   if (Array.isArray(styleProps) && styleProps[1] != null) {
     styleProps[1] = inline(styleProps[1], isRTL);
   }
@@ -181,7 +184,7 @@ if (canUseDOM && window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
   window.__REACT_DEVTOOLS_GLOBAL_HOOK__.resolveRNStyle = StyleSheet.flatten;
 }
 
-export type IStyleSheet = {
+/*:: export type IStyleSheet = {
   (styles: $ReadOnlyArray<any>, options?: Options): StyleProps,
   absoluteFill: Object,
   absoluteFillObject: Object,
@@ -190,8 +193,8 @@ export type IStyleSheet = {
   flatten: typeof flatten,
   getSheet: typeof getSheet,
   hairlineWidth: number
-};
+}; */
 
-const stylesheet: IStyleSheet = StyleSheet;
+const stylesheet /*: IStyleSheet */ = StyleSheet;
 
 export default stylesheet;

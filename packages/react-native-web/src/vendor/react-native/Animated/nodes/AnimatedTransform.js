@@ -15,9 +15,9 @@ import AnimatedWithChildren from './AnimatedWithChildren';
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
 
 class AnimatedTransform extends AnimatedWithChildren {
-  _transforms: $ReadOnlyArray<Object>;
+  _transforms/*: $ReadOnlyArray<Object> */;
 
-  constructor(transforms: $ReadOnlyArray<Object>) {
+  constructor(transforms/*: $ReadOnlyArray<Object> */) {
     super();
     this._transforms = transforms;
   }
@@ -34,7 +34,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__makeNative();
   }
 
-  __getValue(): $ReadOnlyArray<Object> {
+  __getValue()/*: $ReadOnlyArray<Object> */ {
     return this._transforms.map(transform => {
       const result = {};
       for (const key in transform) {
@@ -49,7 +49,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __getAnimatedValue(): $ReadOnlyArray<Object> {
+  __getAnimatedValue()/*: $ReadOnlyArray<Object> */ {
     return this._transforms.map(transform => {
       const result = {};
       for (const key in transform) {
@@ -65,7 +65,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __attach(): void {
+  __attach()/*: void */ {
     this._transforms.forEach(transform => {
       for (const key in transform) {
         const value = transform[key];
@@ -76,7 +76,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __detach(): void {
+  __detach()/*: void */ {
     this._transforms.forEach(transform => {
       for (const key in transform) {
         const value = transform[key];
@@ -88,7 +88,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__detach();
   }
 
-  __getNativeConfig(): any {
+  __getNativeConfig()/*: any */ {
     const transConfigs = [];
 
     this._transforms.forEach(transform => {

@@ -34,8 +34,8 @@ const roleComponents = {
 const emptyObject = {};
 
 const propsToAccessibilityComponent = (
-  props: Object = emptyObject
-): void | string => {
+  props /*: Object */ = emptyObject
+) /*: void | string */ => {
   const roleProp = props.role || props.accessibilityRole;
   // special-case for "label" role which doesn't map to an ARIA role
   if (roleProp === 'label') {

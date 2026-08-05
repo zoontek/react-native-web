@@ -10,11 +10,11 @@
 
 'use strict';
 
-type ClickEvent = any;
-type KeyboardEvent = any;
-type ResponderEvent = any;
+/*:: type ClickEvent = any; */
+/*:: type KeyboardEvent = any; */
+/*:: type ResponderEvent = any; */
 
-export type PressResponderConfig = $ReadOnly<{|
+/*:: export type PressResponderConfig = $ReadOnly<{|
   // The gesture can be interrupted by a parent gesture, e.g., scroll.
   // Defaults to true.
   cancelable?: ?boolean,
@@ -39,9 +39,9 @@ export type PressResponderConfig = $ReadOnly<{|
   onPressMove?: ?(event: ResponderEvent) => void,
   // Called when the press is deactivated to undo visual feedback.
   onPressEnd?: ?(event: ResponderEvent) => void
-|}>;
+|}>; */
 
-export type EventHandlers = $ReadOnly<{|
+/*:: export type EventHandlers = $ReadOnly<{|
   onClick: (event: ClickEvent) => void,
   onContextMenu: (event: ClickEvent) => void,
   onKeyDown: (event: KeyboardEvent) => void,
@@ -51,21 +51,21 @@ export type EventHandlers = $ReadOnly<{|
   onResponderTerminate: (event: ResponderEvent) => void,
   onResponderTerminationRequest: (event: ResponderEvent) => boolean,
   onStartShouldSetResponder: (event: ResponderEvent) => boolean
-|}>;
+|}>; */
 
-type TouchState =
+/*:: type TouchState =
   | 'NOT_RESPONDER'
   | 'RESPONDER_INACTIVE_PRESS_START'
   | 'RESPONDER_ACTIVE_PRESS_START'
   | 'RESPONDER_ACTIVE_LONG_PRESS_START'
-  | 'ERROR';
+  | 'ERROR'; */
 
-type TouchSignal =
+/*:: type TouchSignal =
   | 'DELAY'
   | 'RESPONDER_GRANT'
   | 'RESPONDER_RELEASE'
   | 'RESPONDER_TERMINATED'
-  | 'LONG_PRESS_DETECTED';
+  | 'LONG_PRESS_DETECTED'; */
 
 const DELAY = 'DELAY';
 const ERROR = 'ERROR';
@@ -220,33 +220,33 @@ const DEFAULT_PRESS_DELAY_MS = 50;
  * `click` event is `onPress` invoked.
  */
 export default class PressResponder {
-  _config: PressResponderConfig;
-  _eventHandlers: ?EventHandlers = null;
-  _isPointerTouch: ?boolean = false;
-  _longPressDelayTimeout: ?TimeoutID = null;
-  _longPressDispatched: ?boolean = false;
-  _pressDelayTimeout: ?TimeoutID = null;
-  _pressOutDelayTimeout: ?TimeoutID = null;
-  _selectionTerminated: ?boolean;
-  _touchActivatePosition: ?$ReadOnly<{|
+  _config /*: PressResponderConfig */;
+  _eventHandlers /*: ?EventHandlers */ = null;
+  _isPointerTouch /*: ?boolean */ = false;
+  _longPressDelayTimeout /*: ?TimeoutID */ = null;
+  _longPressDispatched /*: ?boolean */ = false;
+  _pressDelayTimeout /*: ?TimeoutID */ = null;
+  _pressOutDelayTimeout /*: ?TimeoutID */ = null;
+  _selectionTerminated /*: ?boolean */;
+  _touchActivatePosition /*: ?$ReadOnly<{|
     pageX: number,
     pageY: number
-  |}>;
-  _touchState: TouchState = NOT_RESPONDER;
-  _responderElement: ?HTMLElement = null;
+  |}> */;
+  _touchState /*: TouchState */ = NOT_RESPONDER;
+  _responderElement /*: ?HTMLElement */ = null;
 
-  constructor(config: PressResponderConfig) {
+  constructor(config /*: PressResponderConfig */) {
     this.configure(config);
   }
 
-  configure(config: PressResponderConfig): void {
+  configure(config /*: PressResponderConfig */) /*: void */ {
     this._config = config;
   }
 
   /**
    * Resets any pending timers. This should be called on unmount.
    */
-  reset(): void {
+  reset() /*: void */ {
     this._cancelLongPressDelayTimeout();
     this._cancelPressDelayTimeout();
     this._cancelPressOutDelayTimeout();
@@ -255,15 +255,18 @@ export default class PressResponder {
   /**
    * Returns a set of props to spread into the interactive element.
    */
-  getEventHandlers(): EventHandlers {
+  getEventHandlers() /*: EventHandlers */ {
     if (this._eventHandlers == null) {
       this._eventHandlers = this._createEventHandlers();
     }
     return this._eventHandlers;
   }
 
-  _createEventHandlers(): EventHandlers {
-    const start = (event: ResponderEvent, shouldDelay?: boolean): void => {
+  _createEventHandlers() /*: EventHandlers */ {
+    const start = (
+      event /*: ResponderEvent */,
+      shouldDelay /*:: ?: boolean */
+    ) /*: void */ => {
       event.persist();
 
       this._cancelPressOutDelayTimeout();
@@ -299,11 +302,11 @@ export default class PressResponder {
       }, delayLongPress + delayPressStart);
     };
 
-    const end = (event: ResponderEvent): void => {
+    const end = (event /*: ResponderEvent */) /*: void */ => {
       this._receiveSignal(RESPONDER_RELEASE, event);
     };
 
-    const keyupHandler = (event: KeyboardEvent) => {
+    const keyupHandler = (event /*: KeyboardEvent */) => {
       const { onPress } = this._config;
       const { target } = event;
 
@@ -332,7 +335,7 @@ export default class PressResponder {
     };
 
     return {
-      onStartShouldSetResponder: (event): boolean => {
+      onStartShouldSetResponder: (event) /*: boolean */ => {
         const { disabled } = this._config;
         if (disabled && isButtonRole(event.currentTarget)) {
           event.stopPropagation();
@@ -394,7 +397,7 @@ export default class PressResponder {
         this._receiveSignal(RESPONDER_TERMINATED, event);
       },
 
-      onResponderTerminationRequest: (event): boolean => {
+      onResponderTerminationRequest: (event) /*: boolean */ => {
         const { cancelable, disabled, onLongPress } = this._config;
         // If `onLongPress` is provided, don't terminate on `contextmenu` as default
         // behavior will be prevented for non-mouse pointers.
@@ -420,7 +423,7 @@ export default class PressResponder {
       // * The `onPress` callback is only be called on the first ancestor of the native
       //   `click` target that is using the PressResponder.
       // * The event's `nativeEvent` is a `MouseEvent` not a `TouchEvent`.
-      onClick: (event: any): void => {
+      onClick: (event /*: any */) /*: void */ => {
         const { disabled, onPress } = this._config;
         if (!disabled) {
           // If long press dispatched, cancel default click behavior.
@@ -441,7 +444,7 @@ export default class PressResponder {
 
       // If `onLongPress` is provided and a touch pointer is being used, prevent the
       // default context menu from opening.
-      onContextMenu: (event: any): void => {
+      onContextMenu: (event /*: any */) /*: void */ => {
         const { disabled, onLongPress } = this._config;
         if (!disabled) {
           if (
@@ -465,7 +468,10 @@ export default class PressResponder {
    * Receives a state machine signal, performs side effects of the transition
    * and stores the new state. Validates the transition as well.
    */
-  _receiveSignal(signal: TouchSignal, event: ResponderEvent): void {
+  _receiveSignal(
+    signal /*: TouchSignal */,
+    event /*: ResponderEvent */
+  ) /*: void */ {
     const prevState = this._touchState;
     let nextState = null;
     if (Transitions[prevState] != null) {
@@ -489,11 +495,11 @@ export default class PressResponder {
    * or deactivations (and callback invocations).
    */
   _performTransitionSideEffects(
-    prevState: TouchState,
-    nextState: TouchState,
-    signal: TouchSignal,
-    event: ResponderEvent
-  ): void {
+    prevState /*: TouchState */,
+    nextState /*: TouchState */,
+    signal /*: TouchSignal */,
+    event /*: ResponderEvent */
+  ) /*: void */ {
     if (isTerminalSignal(signal)) {
       // Pressable suppression of contextmenu on windows.
       // On Windows, the contextmenu is displayed after pointerup.
@@ -543,7 +549,7 @@ export default class PressResponder {
     this._cancelPressDelayTimeout();
   }
 
-  _activate(event: ResponderEvent): void {
+  _activate(event /*: ResponderEvent */) /*: void */ {
     const { onPressChange, onPressStart } = this._config;
     const touch = getTouchFromResponderEvent(event);
     this._touchActivatePosition = {
@@ -558,7 +564,7 @@ export default class PressResponder {
     }
   }
 
-  _deactivate(event: ResponderEvent): void {
+  _deactivate(event /*: ResponderEvent */) /*: void */ {
     const { onPressChange, onPressEnd } = this._config;
     function end() {
       if (onPressEnd != null) {
@@ -578,7 +584,7 @@ export default class PressResponder {
     }
   }
 
-  _handleLongPress(event: ResponderEvent): void {
+  _handleLongPress(event /*: ResponderEvent */) /*: void */ {
     if (
       this._touchState === RESPONDER_ACTIVE_PRESS_START ||
       this._touchState === RESPONDER_ACTIVE_LONG_PRESS_START
@@ -587,21 +593,21 @@ export default class PressResponder {
     }
   }
 
-  _cancelLongPressDelayTimeout(): void {
+  _cancelLongPressDelayTimeout() /*: void */ {
     if (this._longPressDelayTimeout != null) {
       clearTimeout(this._longPressDelayTimeout);
       this._longPressDelayTimeout = null;
     }
   }
 
-  _cancelPressDelayTimeout(): void {
+  _cancelPressDelayTimeout() /*: void */ {
     if (this._pressDelayTimeout != null) {
       clearTimeout(this._pressDelayTimeout);
       this._pressDelayTimeout = null;
     }
   }
 
-  _cancelPressOutDelayTimeout(): void {
+  _cancelPressOutDelayTimeout() /*: void */ {
     if (this._pressOutDelayTimeout != null) {
       clearTimeout(this._pressOutDelayTimeout);
       this._pressOutDelayTimeout = null;
@@ -609,11 +615,15 @@ export default class PressResponder {
   }
 }
 
-function normalizeDelay(delay: ?number, min = 0, fallback = 0): number {
+function normalizeDelay(
+  delay /*: ?number */,
+  min = 0,
+  fallback = 0
+) /*: number */ {
   return Math.max(min, delay ?? fallback);
 }
 
-function getTouchFromResponderEvent(event: ResponderEvent) {
+function getTouchFromResponderEvent(event /*: ResponderEvent */) {
   const { changedTouches, touches } = event.nativeEvent;
   if (touches != null && touches.length > 0) {
     return touches[0];

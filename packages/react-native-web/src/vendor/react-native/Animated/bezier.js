@@ -82,11 +82,11 @@ function newtonRaphsonIterate(aX, _aGuessT, mX1, mX2) {
 }
 
 export default function bezier(
-  mX1: number,
-  mY1: number,
-  mX2: number,
-  mY2: number,
-): (x: number) => number {
+  mX1/*: number */,
+  mY1/*: number */,
+  mX2/*: number */,
+  mY2/*: number */,
+)/*: (x: number) => number */ {
   if (!(mX1 >= 0 && mX1 <= 1 && mX2 >= 0 && mX2 <= 1)) {
     throw new Error('bezier x values must be in [0, 1] range');
   }
@@ -137,7 +137,7 @@ export default function bezier(
     }
   }
 
-  return function BezierEasing(x: number): number {
+  return function BezierEasing(x/*: number */)/*: number */ {
     if (mX1 === mY1 && mX2 === mY2) {
       return x; // linear
     }
