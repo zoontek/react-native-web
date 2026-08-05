@@ -53,7 +53,7 @@ export default class AppState {
     }
   }
 
-  static addEventListener(type: string, handler: Function) {
+  static addEventListener(type /*: string */, handler /*: Function */) {
     if (AppState.isAvailable) {
       invariant(
         EVENT_TYPES.indexOf(type) !== -1,
