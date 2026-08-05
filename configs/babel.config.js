@@ -1,6 +1,5 @@
 const createConfig = ({ modules }) => {
   const plugins = [
-    '@babel/plugin-transform-flow-strip-types',
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
     '@babel/plugin-proposal-nullish-coalescing-operator',
@@ -39,8 +38,7 @@ const createConfig = ({ modules }) => {
           }
         }
       ],
-      '@babel/preset-react',
-      '@babel/preset-flow'
+      '@babel/preset-react'
     ],
     plugins: plugins
   };
