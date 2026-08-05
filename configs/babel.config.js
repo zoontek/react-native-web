@@ -1,14 +1,6 @@
 const createConfig = ({ modules }) => {
   const plugins = [
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
-    '@babel/plugin-proposal-nullish-coalescing-operator',
-    [
-      '@babel/plugin-transform-runtime',
-      {
-        version: '7.18.6'
-      }
-    ]
+    ['@babel/plugin-transform-runtime', { version: '7.18.6' }]
   ].concat(modules ? ['babel-plugin-add-module-exports'] : []);
 
   return {
