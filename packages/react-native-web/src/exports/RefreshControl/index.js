@@ -8,14 +8,14 @@
  * @flow
  */
 
-import type { ColorValue } from '../../types';
-import type { ViewProps } from '../View';
-import type { Node } from 'React';
+/*:: import type { ColorValue } from '../../types'; */
+/*:: import type { ViewProps } from '../View'; */
+/*:: import type { Node } from 'React'; */
 
 import View from '../View';
 import React from 'react';
 
-type RefreshControlProps = {
+/*:: type RefreshControlProps = {
   ...ViewProps,
   colors?: Array<ColorValue>,
   enabled?: boolean,
@@ -27,9 +27,9 @@ type RefreshControlProps = {
   tintColor?: ColorValue,
   title?: string,
   titleColor?: ColorValue
-};
+}; */
 
-function RefreshControl(props: RefreshControlProps): Node {
+function RefreshControl(props /*: RefreshControlProps */) /*: Node */ {
   const {
     /* eslint-disable */
     colors,

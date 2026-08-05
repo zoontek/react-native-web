@@ -24,15 +24,15 @@ function getAnimationStyle(animationType, visible) {
   return visible ? styles.container : styles.hidden;
 }
 
-export type ModalAnimationProps = {|
+/*:: export type ModalAnimationProps = {|
   animationType?: ?('none' | 'slide' | 'fade'),
   children?: any,
   onDismiss?: ?() => void,
   onShow?: ?() => void,
   visible?: ?boolean
-|};
+|}; */
 
-function ModalAnimation(props: ModalAnimationProps): React.Node {
+function ModalAnimation(props /*: ModalAnimationProps */) /*: React.Node */ {
   const { animationType, children, onDismiss, onShow, visible } = props;
 
   const [isRendering, setIsRendering] = React.useState(false);
@@ -42,7 +42,7 @@ function ModalAnimation(props: ModalAnimationProps): React.Node {
   const isAnimated = animationType && animationType !== 'none';
 
   const animationEndCallback = React.useCallback(
-    (e: any) => {
+    (e /*: any */) => {
       if (e && e.currentTarget !== e.target) {
         // If the event was generated for something NOT this element we
         // should ignore it as it's not relevant to us

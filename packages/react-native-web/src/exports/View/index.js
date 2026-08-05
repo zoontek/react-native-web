@@ -10,8 +10,8 @@
 
 'use client';
 
-import type { PlatformMethods } from '../../types';
-import type { ViewProps } from './types';
+/*:: import type { PlatformMethods } from '../../types'; */
+/*:: import type { ViewProps } from './types'; */
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -46,7 +46,7 @@ const forwardPropsList = Object.assign(
 
 const pickProps = (props) => pick(props, forwardPropsList);
 
-const View: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods> =
+const View /*: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods> */ =
   React.forwardRef((props, forwardedRef) => {
     const {
       hrefAttrs,
@@ -170,6 +170,6 @@ const styles = StyleSheet.create({
   }
 });
 
-export type { ViewProps };
+/*:: export type { ViewProps }; */
 
 export default View;

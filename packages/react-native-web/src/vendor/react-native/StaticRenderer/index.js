@@ -12,24 +12,24 @@
 
 import * as React from 'react';
 
-type Props = $ReadOnly<{|
+/*:: type Props = $ReadOnly<{|
   /**
    * Indicates whether the render function needs to be called again
-   */
+   *-/
   shouldUpdate: boolean,
   /**
    * () => renderable
    * A function that returns a renderable component
-   */
+   *-/
   render: () => React.Node,
-|}>;
+|}>; */
 
-class StaticRenderer extends React.Component<Props> {
-  shouldComponentUpdate(nextProps: Props): boolean {
+class StaticRenderer extends React.Component/*:: <Props> */ {
+  shouldComponentUpdate(nextProps/*: Props */)/*: boolean */ {
     return nextProps.shouldUpdate;
   }
 
-  render(): React.Node {
+  render()/*: React.Node */ {
     return this.props.render();
   }
 }

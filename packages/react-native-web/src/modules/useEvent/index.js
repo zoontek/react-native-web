@@ -11,11 +11,11 @@ import { addEventListener } from '../addEventListener';
 import useLayoutEffect from '../useLayoutEffect';
 import useStable from '../useStable';
 
-type Callback = null | ((any) => void);
-type AddListener = (
+/*:: type Callback = null | ((any) => void); */
+/*:: type AddListener = (
   target: EventTarget,
   listener: null | ((any) => void)
-) => () => void;
+) => () => void; */
 
 /**
  * This can be used with any event type include custom events.
@@ -27,17 +27,17 @@ type AddListener = (
  * }).
  */
 export default function useEvent(
-  eventType: string,
-  options?: ?{
+  eventType /*: string */,
+  options /*:: ?: ?{
     capture?: boolean,
     passive?: boolean,
     once?: boolean
-  }
-): AddListener {
+  } */
+) /*: AddListener */ {
   const targetListeners = useStable(() => new Map());
 
   const addListener = useStable(() => {
-    return (target: EventTarget, callback: Callback) => {
+    return (target /*: EventTarget */, callback /*: Callback */) => {
       const removeTargetListener = targetListeners.get(target);
       if (removeTargetListener != null) {
         removeTargetListener();

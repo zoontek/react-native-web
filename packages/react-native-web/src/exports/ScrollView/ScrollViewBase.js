@@ -7,14 +7,14 @@
  * @flow
  */
 
-import type { ViewProps } from '../View';
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 import useMergeRefs from '../../modules/useMergeRefs';
 
-type Props = {
+/*:: type Props = {
   ...ViewProps,
   onMomentumScrollBegin?: (e: any) => void,
   onMomentumScrollEnd?: (e: any) => void,
@@ -27,7 +27,7 @@ type Props = {
   scrollEventThrottle?: number,
   showsHorizontalScrollIndicator?: boolean,
   showsVerticalScrollIndicator?: boolean
-};
+}; */
 
 function normalizeScrollEvent(e) {
   return {
@@ -61,7 +61,10 @@ function normalizeScrollEvent(e) {
   };
 }
 
-function shouldEmitScrollEvent(lastTick: number, eventThrottle: number) {
+function shouldEmitScrollEvent(
+  lastTick /*: number */,
+  eventThrottle /*: number */
+) {
   const timeSinceLastTick = Date.now() - lastTick;
   return eventThrottle > 0 && timeSinceLastTick >= eventThrottle;
 }
@@ -69,10 +72,10 @@ function shouldEmitScrollEvent(lastTick: number, eventThrottle: number) {
 /**
  * Encapsulates the Web-specific scroll throttling and disabling logic
  */
-const ScrollViewBase: React.AbstractComponent<
+const ScrollViewBase /*: React.AbstractComponent<
   Props,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const {
     onScroll,
     onTouchMove,
@@ -89,8 +92,8 @@ const ScrollViewBase: React.AbstractComponent<
   const scrollTimeout = React.useRef(null);
   const scrollRef = React.useRef(null);
 
-  function createPreventableScrollHandler(handler: Function) {
-    return (e: Object) => {
+  function createPreventableScrollHandler(handler /*: Function */) {
+    return (e /*: Object */) => {
       if (scrollEnabled) {
         if (handler) {
           handler(e);
@@ -99,7 +102,7 @@ const ScrollViewBase: React.AbstractComponent<
     };
   }
 
-  function handleScroll(e: Object) {
+  function handleScroll(e /*: Object */) {
     e.stopPropagation();
     if (e.target === scrollRef.current) {
       e.persist();
@@ -127,19 +130,19 @@ const ScrollViewBase: React.AbstractComponent<
     }
   }
 
-  function handleScrollStart(e: Object) {
+  function handleScrollStart(e /*: Object */) {
     scrollState.current.isScrolling = true;
     handleScrollTick(e);
   }
 
-  function handleScrollTick(e: Object) {
+  function handleScrollTick(e /*: Object */) {
     scrollState.current.scrollLastTick = Date.now();
     if (onScroll) {
       onScroll(normalizeScrollEvent(e));
     }
   }
 
-  function handleScrollEnd(e: Object) {
+  function handleScrollEnd(e /*: Object */) {
     scrollState.current.isScrolling = false;
     if (onScroll) {
       onScroll(normalizeScrollEvent(e));

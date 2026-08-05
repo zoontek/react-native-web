@@ -10,11 +10,11 @@
 
 import invariant from 'fbjs/lib/invariant';
 
-export default class ChildListCollection<TList> {
-  _cellKeyToChildren: Map<string, Set<TList>> = new Map();
-  _childrenToCellKey: Map<TList, string> = new Map();
+export default class ChildListCollection/*:: <TList> */ {
+  _cellKeyToChildren/*: Map<string, Set<TList>> */ = new Map();
+  _childrenToCellKey/*: Map<TList, string> */ = new Map();
 
-  add(list: TList, cellKey: string): void {
+  add(list/*: TList */, cellKey/*: string */)/*: void */ {
     invariant(
       !this._childrenToCellKey.has(list),
       'Trying to add already present child list',
@@ -27,7 +27,7 @@ export default class ChildListCollection<TList> {
     this._childrenToCellKey.set(list, cellKey);
   }
 
-  remove(list: TList): void {
+  remove(list/*: TList */)/*: void */ {
     const cellKey = this._childrenToCellKey.get(list);
     invariant(cellKey != null, 'Trying to remove non-present child list');
     this._childrenToCellKey.delete(list);
@@ -41,7 +41,7 @@ export default class ChildListCollection<TList> {
     }
   }
 
-  forEach(fn: TList => void): void {
+  forEach(fn/*: TList => void */)/*: void */ {
     for (const listSet of this._cellKeyToChildren.values()) {
       for (const list of listSet) {
         fn(list);
@@ -49,14 +49,14 @@ export default class ChildListCollection<TList> {
     }
   }
 
-  forEachInCell(cellKey: string, fn: TList => void): void {
+  forEachInCell(cellKey/*: string */, fn/*: TList => void */)/*: void */ {
     const listSet = this._cellKeyToChildren.get(cellKey) ?? [];
     for (const list of listSet) {
       fn(list);
     }
   }
 
-  anyInCell(cellKey: string, fn: TList => boolean): boolean {
+  anyInCell(cellKey/*: string */, fn/*: TList => boolean */)/*: boolean */ {
     const listSet = this._cellKeyToChildren.get(cellKey) ?? [];
     for (const list of listSet) {
       if (fn(list)) {
@@ -66,7 +66,7 @@ export default class ChildListCollection<TList> {
     return false;
   }
 
-  size(): number {
+  size()/*: number */ {
     return this._childrenToCellKey.size;
   }
 }

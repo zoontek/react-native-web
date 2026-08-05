@@ -12,24 +12,24 @@ import hash from './hash';
 import hyphenateStyleName from './hyphenateStyleName';
 import normalizeValueWithProperty from './normalizeValueWithProperty';
 
-type Value = Object | Array<any> | string | number;
-type Style = { [key: string]: Value };
-type Rule = string;
-type Rules = Array<Rule>;
-type RulesData = [Rules, number];
-type CompiledStyle = {
+/*:: type Value = Object | Array<any> | string | number; */
+/*:: type Style = { [key: string]: Value }; */
+/*:: type Rule = string; */
+/*:: type Rules = Array<Rule>; */
+/*:: type RulesData = [Rules, number]; */
+/*:: type CompiledStyle = {
   $$css: boolean,
   $$css$localize?: boolean,
   [key: string]: string | Array<string>
-};
-type CompilerOutput = [CompiledStyle, Array<RulesData>];
+}; */
+/*:: type CompilerOutput = [CompiledStyle, Array<RulesData>]; */
 
 const cache = new Map();
 const emptyObject = {};
 
 const classicGroup = 1;
 const atomicGroup = 3;
-const customGroup: { [key: string]: number } = {
+const customGroup /*: { [key: string]: number } */ = {
   borderColor: 2,
   borderRadius: 2,
   borderStyle: 2,
@@ -95,7 +95,7 @@ const paddingRight = 'paddingRight';
 const left = 'left';
 
 // Map of LTR property names to their BiDi equivalent.
-const PROPERTIES_FLIP: { [key: string]: string } = {
+const PROPERTIES_FLIP /*: { [key: string]: string } */ = {
   [borderTopLeftRadius]: borderTopRightRadius,
   [borderTopRightRadius]: borderTopLeftRadius,
   [borderBottomLeftRadius]: borderBottomRightRadius,
@@ -115,7 +115,7 @@ const PROPERTIES_FLIP: { [key: string]: string } = {
 };
 
 // Map of I18N property names to their LTR equivalent.
-const PROPERTIES_I18N: { [key: string]: string } = {
+const PROPERTIES_I18N /*: { [key: string]: string } */ = {
   borderStartStartRadius: borderTopLeftRadius,
   borderStartEndRadius: borderTopRightRadius,
   borderEndStartRadius: borderBottomLeftRadius,
@@ -136,8 +136,8 @@ const PROPERTIES_I18N: { [key: string]: string } = {
 
 const PROPERTIES_VALUE = ['clear', 'float', 'textAlign'];
 
-export function atomic(style: Style): CompilerOutput {
-  const compiledStyle: CompiledStyle = { $$css: true };
+export function atomic(style /*: Style */) /*: CompilerOutput */ {
+  const compiledStyle /*: CompiledStyle */ = { $$css: true };
   const compiledRules = [];
 
   function atomicCompile(srcProp, prop, value) {
@@ -234,7 +234,10 @@ export function atomic(style: Style): CompilerOutput {
  * Compile simple style object to classic CSS rules.
  * No support for 'placeholderTextColor', 'scrollbarWidth', or 'pointerEvents'.
  */
-export function classic(style: Style, name: string): CompilerOutput {
+export function classic(
+  style /*: Style */,
+  name /*: string */
+) /*: CompilerOutput */ {
   const compiledStyle = { $$css: true };
   const compiledRules = [];
 
@@ -260,9 +263,9 @@ export function classic(style: Style, name: string): CompilerOutput {
  * No support for 'animationKeyframes', 'placeholderTextColor', 'scrollbarWidth', or 'pointerEvents'.
  */
 export function inline(
-  originalStyle: Style,
-  isRTL?: boolean
-): { [key: string]: mixed } {
+  originalStyle /*: Style */,
+  isRTL /*:: ?: boolean */
+) /*: { [key: string]: mixed } */ {
   const style = originalStyle || emptyObject;
   const frozenProps = {};
   const nextStyle = {};
@@ -334,9 +337,9 @@ export function inline(
  * output.
  */
 export function stringifyValueWithProperty(
-  value: Value,
-  property: ?string
-): string {
+  value /*: Value */,
+  property /*: ?string */
+) /*: string */ {
   // e.g., 0 => '0px', 'black' => 'rgba(0,0,0,1)'
   const normalizedValue = normalizeValueWithProperty(value, property);
   return typeof normalizedValue !== 'string'
@@ -348,7 +351,11 @@ export function stringifyValueWithProperty(
  * Create the Atomic CSS rules needed for a given StyleSheet rule.
  * Translates StyleSheet declarations to CSS.
  */
-function createAtomicRules(identifier: string, property, value): Rules {
+function createAtomicRules(
+  identifier /*: string */,
+  property,
+  value
+) /*: Rules */ {
   const rules = [];
   const selector = `.${identifier}`;
 
@@ -425,7 +432,7 @@ function createAtomicRules(identifier: string, property, value): Rules {
 /**
  * Creates a CSS declaration block from a StyleSheet object.
  */
-function createDeclarationBlock(style: Style): string {
+function createDeclarationBlock(style /*: Style */) /*: string */ {
   const domStyle = createReactDOMStyle(style);
   const declarationsString = Object.keys(domStyle)
     .map((property) => {
@@ -452,7 +459,11 @@ function createDeclarationBlock(style: Style): string {
 /**
  * An identifier is associated with a unique set of styles.
  */
-function createIdentifier(prefix: string, name: string, key: string): string {
+function createIdentifier(
+  prefix /*: string */,
+  name /*: string */,
+  key /*: string */
+) /*: string */ {
   const hashedString = hash(name + key);
   return process.env.NODE_ENV !== 'production'
     ? `${prefix}-${name}-${hashedString}`
@@ -462,7 +473,7 @@ function createIdentifier(prefix: string, name: string, key: string): string {
 /**
  * Create individual CSS keyframes rules.
  */
-function createKeyframes(keyframes: Object): [string, Rules] {
+function createKeyframes(keyframes /*: Object */) /*: [string, Rules] */ {
   const prefixes = ['-webkit-', ''];
   const identifier = createIdentifier(
     'r',

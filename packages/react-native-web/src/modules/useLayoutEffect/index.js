@@ -13,7 +13,7 @@
 import { useEffect, useLayoutEffect } from 'react';
 import canUseDOM from '../canUseDom';
 
-const useLayoutEffectImpl: typeof useLayoutEffect = canUseDOM
+const useLayoutEffectImpl /*: typeof useLayoutEffect */ = canUseDOM
   ? useLayoutEffect
   : useEffect;
 

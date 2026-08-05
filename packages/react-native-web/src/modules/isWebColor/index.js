@@ -7,7 +7,7 @@
  * @flow
  */
 
-const isWebColor = (color: string): boolean =>
+const isWebColor = (color /*: string */) /*: boolean */ =>
   color === 'currentcolor' ||
   color === 'currentColor' ||
   color === 'inherit' ||

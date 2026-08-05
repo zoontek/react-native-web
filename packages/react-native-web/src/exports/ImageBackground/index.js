@@ -7,8 +7,8 @@
  * @flow
  */
 
-import type { ImageProps } from '../Image';
-import type { ViewProps } from '../View';
+/*:: import type { ImageProps } from '../Image'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import { forwardRef } from 'react';
@@ -16,22 +16,22 @@ import Image from '../Image';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-type ImageBackgroundProps = {
+/*:: type ImageBackgroundProps = {
   ...ImageProps,
   imageRef?: any,
   imageStyle?: $PropertyType<ImageProps, 'style'>,
   style?: $PropertyType<ViewProps, 'style'>
-};
+}; */
 
 const emptyObject = {};
 
 /**
  * Very simple drop-in replacement for <Image> which supports nesting views.
  */
-const ImageBackground: React.AbstractComponent<
+const ImageBackground /*: React.AbstractComponent<
   ImageBackgroundProps,
   React.ElementRef<typeof View>
-> = forwardRef((props, forwardedRef) => {
+> */ = forwardRef((props, forwardedRef) => {
   const {
     children,
     style = emptyObject,

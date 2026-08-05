@@ -7,18 +7,19 @@
  * @flow strict-local
  */
 
-import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet';
+/*:: import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet'; */
 import canUseDOM from '../../../modules/canUseDom';
 import createCSSStyleSheet from './createCSSStyleSheet';
 import createOrderedCSSStyleSheet from './createOrderedCSSStyleSheet';
 
-type Sheet = {
+/*:: type Sheet = {
   ...OrderedCSSStyleSheet,
   id: string
-};
+}; */
 
 const defaultId = 'react-native-stylesheet';
-const roots = new WeakMap<Node, number>();
+// prettier-ignore
+const roots = new WeakMap /*:: <Node, number> */();
 const sheets = [];
 
 const initialRules = [
@@ -31,13 +32,13 @@ const initialRules = [
 ];
 
 export function createSheet(
-  root?: HTMLElement,
-  id?: string = defaultId
-): Sheet {
+  root /*:: ?: HTMLElement */,
+  id /*:: ?: string */ = defaultId
+) /*: Sheet */ {
   let sheet;
 
   if (canUseDOM) {
-    const rootNode: Node = root != null ? root.getRootNode() : document;
+    const rootNode /*: Node */ = root != null ? root.getRootNode() : document;
     // Create the initial style sheet
     if (sheets.length === 0) {
       sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id));
@@ -55,7 +56,7 @@ export function createSheet(
           initialSheet != null ? initialSheet.getTextContent() : '';
         // Cast rootNode to 'any' because Flow types for getRootNode are wrong
         sheet = createOrderedCSSStyleSheet(
-          createCSSStyleSheet(id, (rootNode: any), textContent)
+          createCSSStyleSheet(id, (rootNode /*: any */), textContent)
         );
         roots.set(rootNode, sheets.length);
         sheets.push(sheet);
@@ -81,7 +82,7 @@ export function createSheet(
       return sheet.getTextContent();
     },
     id,
-    insert(cssText: string, groupValue: number) {
+    insert(cssText /*: string */, groupValue /*: number */) {
       sheets.forEach((s) => {
         s.insert(cssText, groupValue);
       });

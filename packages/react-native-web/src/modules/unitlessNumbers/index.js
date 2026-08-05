@@ -64,7 +64,7 @@ const unitlessNumbers = {
  * of vendor prefixes.
  */
 const prefixes = ['ms', 'Moz', 'O', 'Webkit'];
-const prefixKey = (prefix: string, key: string) => {
+const prefixKey = (prefix /*: string */, key /*: string */) => {
   return prefix + key.charAt(0).toUpperCase() + key.substring(1);
 };
 Object.keys(unitlessNumbers).forEach((prop) => {

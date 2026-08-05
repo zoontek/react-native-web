@@ -8,12 +8,12 @@
  * @flow
  */
 
-import type { Node } from 'React';
+/*:: import type { Node } from 'React'; */
 
 import React from 'react';
 import UnimplementedView from '../../modules/UnimplementedView';
 
-function YellowBox(props: Object): Node {
+function YellowBox(props /*: Object */) /*: Node */ {
   return <UnimplementedView {...props} />;
 }
 

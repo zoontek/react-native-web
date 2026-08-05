@@ -8,14 +8,14 @@
  * @flow
  */
 
-import type { ViewProps } from '../View';
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 import canUseDOM from '../../modules/canUseDom';
 
-const cssFunction: 'constant' | 'env' = (function () {
+const cssFunction /*: 'constant' | 'env' */ = (function () {
   if (
     canUseDOM &&
     window.CSS &&
@@ -27,10 +27,10 @@ const cssFunction: 'constant' | 'env' = (function () {
   return 'env';
 })();
 
-const SafeAreaView: React.AbstractComponent<
+const SafeAreaView /*: React.AbstractComponent<
   ViewProps,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, ref) => {
+> */ = React.forwardRef((props, ref) => {
   const { style, ...rest } = props;
   return <View {...rest} ref={ref} style={[styles.root, style]} />;
 });

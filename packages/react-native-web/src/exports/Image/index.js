@@ -10,7 +10,7 @@
 
 'use client';
 
-import type { ImageProps } from './types';
+/*:: import type { ImageProps } from './types'; */
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -24,7 +24,7 @@ import useLayoutEffect from '../../modules/useLayoutEffect';
 import View from '../View';
 import { warnOnce } from '../../modules/warnOnce';
 
-export type { ImageProps };
+/*:: export type { ImageProps }; */
 
 const ERRORED = 'ERRORED';
 const LOADED = 'LOADED';
@@ -118,7 +118,7 @@ function resolveAssetDimensions(source) {
   }
 }
 
-function resolveAssetUri(source): ?string {
+function resolveAssetUri(source) /*: ?string */ {
   let uri = null;
   if (typeof source === 'number') {
     // get the URI from the packager
@@ -161,7 +161,7 @@ function resolveAssetUri(source): ?string {
   return uri;
 }
 
-interface ImageStatics {
+/*:: interface ImageStatics {
   getSize: (
     uri: string,
     success: (width: number, height: number) => void,
@@ -171,12 +171,12 @@ interface ImageStatics {
   queryCache: (
     uris: Array<string>
   ) => Promise<{| [uri: string]: 'disk/memory' |}>;
-}
+} */
 
-const Image: React.AbstractComponent<
+const Image /*: React.AbstractComponent<
   ImageProps,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, ref) => {
+> */ = React.forwardRef((props, ref) => {
   const {
     'aria-label': _ariaLabel,
     accessibilityLabel,
@@ -246,7 +246,7 @@ const Image: React.AbstractComponent<
       })
     : null;
 
-  function getBackgroundSize(): ?string {
+  function getBackgroundSize() /*: ?string */ {
     if (
       hiddenImageRef.current != null &&
       (resizeMode === 'center' || resizeMode === 'repeat')
@@ -373,12 +373,13 @@ const Image: React.AbstractComponent<
 
 Image.displayName = 'Image';
 
+// prettier-ignore
 // $FlowIgnore: This is the correct type, but casting makes it unhappy since the variables aren't defined yet
-const ImageWithStatics = (Image: React.AbstractComponent<
+const ImageWithStatics = (Image/*: React.AbstractComponent<
   ImageProps,
   React.ElementRef<typeof View>
 > &
-  ImageStatics);
+  ImageStatics */);
 
 ImageWithStatics.getSize = function (uri, success, failure) {
   ImageLoader.getSize(uri, success, failure);

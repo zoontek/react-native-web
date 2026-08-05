@@ -11,19 +11,19 @@
 'use strict';
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
-import type {PlatformConfig} from '../AnimatedPlatformConfig';
-import type AnimatedValue from '../nodes/AnimatedValue';
+/*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
+/*:: import type AnimatedValue from '../nodes/AnimatedValue'; */
 
-export type EndResult = {finished: boolean, ...};
-export type EndCallback = (result: EndResult) => void;
+/*:: export type EndResult = {finished: boolean, ...}; */
+/*:: export type EndCallback = (result: EndResult) => void; */
 
-export type AnimationConfig = {
+/*:: export type AnimationConfig = {
   isInteraction?: boolean,
   useNativeDriver: boolean,
   platformConfig?: PlatformConfig,
   onComplete?: ?EndCallback,
   iterations?: number,
-};
+}; */
 
 let startNativeAnimationNextId = 1;
 
@@ -31,35 +31,35 @@ let startNativeAnimationNextId = 1;
 // Once an animation has been stopped or finished its course, it will
 // not be reused.
 class Animation {
-  __active: boolean;
-  __isInteraction: boolean;
-  __nativeId: number;
-  __onEnd: ?EndCallback;
-  __iterations: number;
+  __active/*: boolean */;
+  __isInteraction/*: boolean */;
+  __nativeId/*: number */;
+  __onEnd/*: ?EndCallback */;
+  __iterations/*: number */;
   start(
-    fromValue: number,
-    onUpdate: (value: number) => void,
-    onEnd: ?EndCallback,
-    previousAnimation: ?Animation,
-    animatedValue: AnimatedValue,
-  ): void {}
-  stop(): void {
+    fromValue/*: number */,
+    onUpdate/*: (value: number) => void */,
+    onEnd/*: ?EndCallback */,
+    previousAnimation/*: ?Animation */,
+    animatedValue/*: AnimatedValue */,
+  )/*: void */ {}
+  stop()/*: void */ {
     if (this.__nativeId) {
       NativeAnimatedHelper.API.stopAnimation(this.__nativeId);
     }
   }
-  __getNativeAnimationConfig(): any {
+  __getNativeAnimationConfig()/*: any */ {
     // Subclasses that have corresponding animation implementation done in native
     // should override this method
     throw new Error('This animation type cannot be offloaded to native');
   }
   // Helper function for subclasses to make sure onEnd is only called once.
-  __debouncedOnEnd(result: EndResult): void {
+  __debouncedOnEnd(result/*: EndResult */)/*: void */ {
     const onEnd = this.__onEnd;
     this.__onEnd = null;
     onEnd && onEnd(result);
   }
-  __startNativeAnimation(animatedValue: AnimatedValue): void {
+  __startNativeAnimation(animatedValue/*: AnimatedValue */)/*: void */ {
     const startNativeAnimationWaitId = `${startNativeAnimationNextId}:startAnimation`;
     startNativeAnimationNextId += 1;
     NativeAnimatedHelper.API.setWaitingForIdentifier(

@@ -8,24 +8,24 @@
  * @format
  */
 
-import type {ViewToken} from '../ViewabilityHelper';
+/*:: import type {ViewToken} from '../ViewabilityHelper'; */
 import View from '../../../exports/View';
 import VirtualizedList from '../VirtualizedList';
 import {keyExtractor as defaultKeyExtractor} from '../VirtualizeUtils';
 import invariant from 'fbjs/lib/invariant';
 import * as React from 'react';
 
-type Item = any;
+/*:: type Item = any; */
 
-export type SectionBase<SectionItemT> = {
+/*:: export type SectionBase<SectionItemT> = {
   /**
    * The data for rendering items in this section.
-   */
+   *-/
   data: $ReadOnlyArray<SectionItemT>,
   /**
    * Optional key to keep track of section re-ordering. If you don't plan on re-ordering sections,
    * the array index will be used by default.
-   */
+   *-/
   key?: string,
   // Optional props will override list-wide props just for this section.
   renderItem?: ?(info: {
@@ -43,16 +43,16 @@ export type SectionBase<SectionItemT> = {
   ItemSeparatorComponent?: ?React.ComponentType<any>,
   keyExtractor?: (item: SectionItemT, index?: ?number) => string,
   ...
-};
+}; */
 
-type RequiredProps<SectionT: SectionBase<any>> = {|
+/*:: type RequiredProps<SectionT: SectionBase<any>> = {|
   sections: $ReadOnlyArray<SectionT>,
-|};
+|}; */
 
-type OptionalProps<SectionT: SectionBase<any>> = {|
+/*:: type OptionalProps<SectionT: SectionBase<any>> = {|
   /**
    * Default renderer for every item in every section.
-   */
+   *-/
   renderItem?: (info: {
     item: Item,
     index: number,
@@ -68,14 +68,14 @@ type OptionalProps<SectionT: SectionBase<any>> = {|
   /**
    * Rendered at the top of each section. These stick to the top of the `ScrollView` by default on
    * iOS. See `stickySectionHeadersEnabled`.
-   */
+   *-/
   renderSectionHeader?: ?(info: {
     section: SectionT,
     ...
   }) => null | React.Element<any>,
   /**
    * Rendered at the bottom of each section.
-   */
+   *-/
   renderSectionFooter?: ?(info: {
     section: SectionT,
     ...
@@ -86,19 +86,19 @@ type OptionalProps<SectionT: SectionBase<any>> = {|
    * sections from the headers above and below and typically have the same highlight response as
    * `ItemSeparatorComponent`. Also receives `highlighted`, `[leading/trailing][Item/Separator]`,
    * and any custom props from `separators.updateProps`.
-   */
+   *-/
   SectionSeparatorComponent?: ?React.ComponentType<any>,
   /**
    * Makes section headers stick to the top of the screen until the next one pushes it off. Only
    * enabled by default on iOS because that is the platform standard there.
-   */
+   *-/
   stickySectionHeadersEnabled?: boolean,
   onEndReached?: ?({distanceFromEnd: number, ...}) => void,
-|};
+|}; */
 
-type VirtualizedListProps = React.ElementConfig<typeof VirtualizedList>;
+/*:: type VirtualizedListProps = React.ElementConfig<typeof VirtualizedList>; */
 
-export type Props<SectionT> = {|
+/*:: export type Props<SectionT> = {|
   ...RequiredProps<SectionT>,
   ...OptionalProps<SectionT>,
   ...$Diff<
@@ -109,26 +109,26 @@ export type Props<SectionT> = {|
       ...
     },
   >,
-|};
-export type ScrollToLocationParamsType = {|
+|}; */
+/*:: export type ScrollToLocationParamsType = {|
   animated?: ?boolean,
   itemIndex: number,
   sectionIndex: number,
   viewOffset?: number,
   viewPosition?: number,
-|};
+|}; */
 
-type State = {childProps: VirtualizedListProps, ...};
+/*:: type State = {childProps: VirtualizedListProps, ...}; */
 
 /**
  * Right now this just flattens everything into one list and uses VirtualizedList under the
  * hood. The only operation that might not scale well is concatting the data arrays of all the
  * sections when new props are received, which should be plenty fast for up to ~10,000 items.
  */
-class VirtualizedSectionList<
+class VirtualizedSectionList/*:: <
   SectionT: SectionBase<any>,
-> extends React.PureComponent<Props<SectionT>, State> {
-  scrollToLocation(params: ScrollToLocationParamsType) {
+> */ extends React.PureComponent/*:: <Props<SectionT>, State> */ {
+  scrollToLocation(params/*: ScrollToLocationParamsType */) {
     let index = params.itemIndex;
     for (let i = 0; i < params.sectionIndex; i++) {
       index += this.props.getItemCount(this.props.sections[i].data) + 2;
@@ -153,11 +153,11 @@ class VirtualizedSectionList<
     this._listRef.scrollToIndex(toIndexParams);
   }
 
-  getListRef(): ?React.ElementRef<typeof VirtualizedList> {
+  getListRef()/*: ?React.ElementRef<typeof VirtualizedList> */ {
     return this._listRef;
   }
 
-  render(): React.Node {
+  render()/*: React.Node */ {
     const {
       ItemSeparatorComponent, // don't pass through, rendered with renderItem
       SectionSeparatorComponent,
@@ -172,7 +172,7 @@ class VirtualizedSectionList<
     const listHeaderOffset = this.props.ListHeaderComponent ? 1 : 0;
 
     const stickyHeaderIndices = this.props.stickySectionHeadersEnabled
-      ? ([]: Array<number>)
+      ? ([]/*: Array<number> */)
       : undefined;
 
     let itemCount = 0;
@@ -210,10 +210,10 @@ class VirtualizedSectionList<
   }
 
   _getItem(
-    props: Props<SectionT>,
-    sections: ?$ReadOnlyArray<Item>,
-    index: number,
-  ): ?Item {
+    props/*: Props<SectionT> */,
+    sections/*: ?$ReadOnlyArray<Item> */,
+    index/*: number */,
+  )/*: ?Item */ {
     if (!sections) {
       return null;
     }
@@ -238,12 +238,12 @@ class VirtualizedSectionList<
   }
 
   // $FlowFixMe[missing-local-annot]
-  _keyExtractor = (item: Item, index: number) => {
+  _keyExtractor = (item/*: Item */, index/*: number */) => {
     const info = this._subExtractor(index);
     return (info && info.key) || String(index);
   };
 
-  _subExtractor(index: number): ?{
+  _subExtractor(index/*: number */)/*: ?{
     section: SectionT,
     // Key of the section or combined key for section + item
     key: string,
@@ -256,7 +256,7 @@ class VirtualizedSectionList<
     trailingItem?: ?Item,
     trailingSection?: ?SectionT,
     ...
-  } {
+  } */ {
     let itemIndex = index;
     const {getItem, getItemCount, keyExtractor, sections} = this.props;
     for (let i = 0; i < sections.length; i++) {
@@ -299,7 +299,7 @@ class VirtualizedSectionList<
     }
   }
 
-  _convertViewable = (viewable: ViewToken): ?ViewToken => {
+  _convertViewable = (viewable/*: ViewToken */)/*: ?ViewToken */ => {
     invariant(viewable.index != null, 'Received a broken ViewToken');
     const info = this._subExtractor(viewable.index);
     if (!info) {
@@ -324,11 +324,11 @@ class VirtualizedSectionList<
   _onViewableItemsChanged = ({
     viewableItems,
     changed,
-  }: {
+  }/*: {
     viewableItems: Array<ViewToken>,
     changed: Array<ViewToken>,
     ...
-  }) => {
+  } */) => {
     const onViewableItemsChanged = this.props.onViewableItemsChanged;
     if (onViewableItemsChanged != null) {
       onViewableItemsChanged({
@@ -341,9 +341,9 @@ class VirtualizedSectionList<
   };
 
   _renderItem =
-    (listItemCount: number): $FlowFixMe =>
+    (listItemCount/*: number */)/*: $FlowFixMe */ =>
     // eslint-disable-next-line react/no-unstable-nested-components
-    ({item, index}: {item: Item, index: number, ...}) => {
+    ({item, index}/*: {item: Item, index: number, ...} */) => {
       const info = this._subExtractor(index);
       if (!info) {
         return null;
@@ -394,14 +394,14 @@ class VirtualizedSectionList<
       }
     };
 
-  _updatePropsFor = (cellKey: string, value: any) => {
+  _updatePropsFor = (cellKey/*: string */, value/*: any */) => {
     const updateProps = this._updatePropsMap[cellKey];
     if (updateProps != null) {
       updateProps(value);
     }
   };
 
-  _updateHighlightFor = (cellKey: string, value: boolean) => {
+  _updateHighlightFor = (cellKey/*: string */, value/*: boolean */) => {
     const updateHighlight = this._updateHighlightMap[cellKey];
     if (updateHighlight != null) {
       updateHighlight(value);
@@ -409,8 +409,8 @@ class VirtualizedSectionList<
   };
 
   _setUpdateHighlightFor = (
-    cellKey: string,
-    updateHighlightFn: ?(boolean) => void,
+    cellKey/*: string */,
+    updateHighlightFn/*: ?(boolean) => void */,
   ) => {
     if (updateHighlightFn != null) {
       this._updateHighlightMap[cellKey] = updateHighlightFn;
@@ -420,7 +420,7 @@ class VirtualizedSectionList<
     }
   };
 
-  _setUpdatePropsFor = (cellKey: string, updatePropsFn: ?(boolean) => void) => {
+  _setUpdatePropsFor = (cellKey/*: string */, updatePropsFn/*: ?(boolean) => void */) => {
     if (updatePropsFn != null) {
       this._updatePropsMap[cellKey] = updatePropsFn;
     } else {
@@ -429,10 +429,10 @@ class VirtualizedSectionList<
   };
 
   _getSeparatorComponent(
-    index: number,
-    info?: ?Object,
-    listItemCount: number,
-  ): ?React.ComponentType<any> {
+    index/*: number */,
+    info/*:: ?: ?Object */,
+    listItemCount/*: number */,
+  )/*: ?React.ComponentType<any> */ {
     info = info || this._subExtractor(index);
     if (!info) {
       return null;
@@ -452,23 +452,23 @@ class VirtualizedSectionList<
     return null;
   }
 
-  _updateHighlightMap: {[string]: (boolean) => void} = {};
-  _updatePropsMap: {[string]: void | (boolean => void)} = {};
-  _listRef: ?React.ElementRef<typeof VirtualizedList>;
-  _captureRef = (ref: null | React$ElementRef<Class<VirtualizedList>>) => {
+  _updateHighlightMap/*: {[string]: (boolean) => void} */ = {};
+  _updatePropsMap/*: {[string]: void | (boolean => void)} */ = {};
+  _listRef/*: ?React.ElementRef<typeof VirtualizedList> */;
+  _captureRef = (ref/*: null | React$ElementRef<Class<VirtualizedList>> */) => {
     this._listRef = ref;
   };
 }
 
-type ItemWithSeparatorCommonProps = $ReadOnly<{|
+/*:: type ItemWithSeparatorCommonProps = $ReadOnly<{|
   leadingItem: ?Item,
   leadingSection: ?Object,
   section: Object,
   trailingItem: ?Item,
   trailingSection: ?Object,
-|}>;
+|}>; */
 
-type ItemWithSeparatorProps = $ReadOnly<{|
+/*:: type ItemWithSeparatorProps = $ReadOnly<{|
   ...ItemWithSeparatorCommonProps,
   LeadingSeparatorComponent: ?React.ComponentType<any>,
   SeparatorComponent: ?React.ComponentType<any>,
@@ -488,9 +488,9 @@ type ItemWithSeparatorProps = $ReadOnly<{|
   updatePropsFor: (prevCellKey: string, value: Object) => void,
   renderItem: Function,
   inverted: boolean,
-|}>;
+|}>; */
 
-function ItemWithSeparator(props: ItemWithSeparatorProps): React.Node {
+function ItemWithSeparator(props/*: ItemWithSeparatorProps */)/*: React.Node */ {
   const {
     LeadingSeparatorComponent,
     // this is the trailing separator and is associated with this item
@@ -559,8 +559,8 @@ function ItemWithSeparator(props: ItemWithSeparatorProps): React.Node {
       }
     },
     updateProps: (
-      select: 'leading' | 'trailing',
-      newProps: $Shape<ItemWithSeparatorCommonProps>,
+      select/*: 'leading' | 'trailing' */,
+      newProps/*: $Shape<ItemWithSeparatorCommonProps> */,
     ) => {
       if (select === 'leading') {
         if (LeadingSeparatorComponent != null) {
@@ -606,11 +606,11 @@ function ItemWithSeparator(props: ItemWithSeparatorProps): React.Node {
 /* $FlowFixMe[class-object-subtyping] added when improving typing for this
  * parameters */
 // $FlowFixMe[method-unbinding]
-export default (VirtualizedSectionList: React.AbstractComponent<
+export default (VirtualizedSectionList/*: React.AbstractComponent<
   React.ElementConfig<typeof VirtualizedSectionList>,
   $ReadOnly<{
     getListRef: () => ?React.ElementRef<typeof VirtualizedList>,
     scrollToLocation: (params: ScrollToLocationParamsType) => void,
     ...
   }>,
->);
+> */);

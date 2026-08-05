@@ -8,30 +8,30 @@
  * @flow
  */
 
-import type { ViewProps } from '../View';
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import View from '../View';
 import StyleSheet from '../StyleSheet';
 import canUseDOM from '../../modules/canUseDom';
 
-export type ModalContentProps = {
+/*:: export type ModalContentProps = {
   ...ViewProps,
   active?: ?(boolean | (() => boolean)),
   children?: any,
   onRequestClose?: ?() => void,
   transparent?: ?boolean
-};
+}; */
 
-const ModalContent: React.AbstractComponent<
+const ModalContent /*: React.AbstractComponent<
   ModalContentProps,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const { active, children, onRequestClose, transparent, ...rest } = props;
 
   React.useEffect(() => {
     if (canUseDOM) {
-      const closeOnEscape = (e: KeyboardEvent) => {
+      const closeOnEscape = (e /*: KeyboardEvent */) => {
         if (active && e.key === 'Escape') {
           e.stopPropagation();
           if (onRequestClose) {

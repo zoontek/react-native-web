@@ -10,7 +10,7 @@
 
 'use client';
 
-import type { ViewProps } from '../View';
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import ModalPortal from './ModalPortal';
@@ -18,7 +18,7 @@ import ModalAnimation from './ModalAnimation';
 import ModalContent from './ModalContent';
 import ModalFocusTrap from './ModalFocusTrap';
 
-export type ModalProps = {
+/*:: export type ModalProps = {
   ...ViewProps,
   animationType?: 'none' | 'slide' | 'fade',
   children: any,
@@ -45,7 +45,7 @@ export type ModalProps = {
   >,
   transparent?: ?boolean,
   visible?: ?boolean
-};
+}; */
 
 let uniqueModalIdentifier = 0;
 
@@ -85,10 +85,10 @@ function addActiveModal(modalId, listener) {
   notifyActiveModalListeners();
 }
 
-const Modal: React.AbstractComponent<
+const Modal /*: React.AbstractComponent<
   ModalProps,
   React.ElementRef<typeof ModalContent>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const {
     animationType,
     children,
