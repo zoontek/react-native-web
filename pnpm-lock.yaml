@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  gen-flow-files@0.4.11: 32b1411cb1c0ac9d344cb7870942eef121abe22f528f174fd5d8c6d90d76d697
+
 importers:
 
   .:
@@ -79,7 +82,7 @@ importers:
         version: 0.148.0
       gen-flow-files:
         specifier: ^0.4.11
-        version: 0.4.11(supports-color@8.1.1)
+        version: 0.4.11(patch_hash=32b1411cb1c0ac9d344cb7870942eef121abe22f528f174fd5d8c6d90d76d697)(supports-color@8.1.1)
       glob:
         specifier: ^8.0.3
         version: 8.1.0
@@ -8357,7 +8360,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  gen-flow-files@0.4.11(supports-color@8.1.1):
+  gen-flow-files@0.4.11(patch_hash=32b1411cb1c0ac9d344cb7870942eef121abe22f528f174fd5d8c6d90d76d697)(supports-color@8.1.1):
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/generator': 7.29.8
