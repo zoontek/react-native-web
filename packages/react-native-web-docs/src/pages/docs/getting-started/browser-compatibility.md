@@ -24,12 +24,6 @@ If specific exports have a different browser support expectation, it will be doc
 
 ---
 
-## JavaScript
-
-Your application may need to polyfill `Promise`, `Object.assign`, `Array.from`, and [`ResizeObserver`](https://github.com/que-etc/resize-observer-polyfill) as necessary for your desired browser support.
-
----
-
 ## CSS
 
 Most CSS properties and values are supported. Vendor prefixes are automatically provided where necessary. For example, if you use the following style:
