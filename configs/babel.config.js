@@ -26,14 +26,11 @@ const createConfig = ({ modules }) => {
           exclude: ['transform-typeof-symbol'],
           targets: {
             browsers: [
-              'chrome 49',
-              // https://www.mozilla.org/en-US/firefox/all/#product-desktop-esr
-              'firefox 91',
-              'ios_saf 10',
-              'safari 10',
-              // https://docs.microsoft.com/en-us/DeployEdge/microsoft-edge-support-lifecycle
-              'edge 94',
-              'opera 36'
+              'chrome 95',
+              'edge 95',
+              'firefox 93',
+              'safari 15.1',
+              'ios_saf 15.1'
             ]
           }
         }
