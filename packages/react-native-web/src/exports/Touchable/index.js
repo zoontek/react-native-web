@@ -291,8 +291,6 @@ const Transitions = {
 };
 
 // ==== Typical Constants for integrating into UI components ====
-// var HIT_EXPAND_PX = 20;
-// var HIT_VERT_OFFSET_PX = 10;
 const HIGHLIGHT_DELAY_MS = 130;
 
 const PRESS_EXPAND_PX = 20;
