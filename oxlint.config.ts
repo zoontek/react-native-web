@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: ['promise', 'react'],
   categories: {
     correctness: 'error',
-    // perf: 'error',
+    perf: 'error',
     suspicious: 'error'
   },
   rules: {
