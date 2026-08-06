@@ -45,7 +45,7 @@ const setSelection = (node, selection) => {
     const { start, end } = selection;
     try {
       node.setSelectionRange(start, end || start);
-    } catch (e) {}
+    } catch {}
   }
 };
 
@@ -351,7 +351,7 @@ const TextInput /*: React.AbstractComponent<
       if (prevSecureTextEntry.current === secureTextEntry) {
         prevSelection.current = selection;
       }
-    } catch (e) {}
+    } catch {}
   }
 
   useLayoutEffect(() => {

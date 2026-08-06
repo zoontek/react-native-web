@@ -38,7 +38,7 @@ function attemptFocus(element /*: any */) {
 
   try {
     element.focus();
-  } catch (e) {
+  } catch {
     // Do nothing
   }
 
