@@ -7,23 +7,24 @@
     "build:examples": "pnpm --filter react-native-web-examples build",
     "dev": "pnpm run build:examples && eleventy --serve",
     "build": "pnpm run build:examples && ELEVENTY_PRODUCTION=true eleventy",
-    "debug": "DEBUG=* eleventy"
+    "preview": "vite preview"
   },
   "homepage": "https://github.com/necolas/react-native-web",
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.1",
-    "@11ty/eleventy-navigation": "^0.3.3",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^4.1.0",
-    "csso": "^5.0.3",
+    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy-navigation": "^1.0.5",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "csso": "^5.0.5",
     "eleventy-plugin-svg-contents": "^0.7.0",
     "html-minifier": "^4.0.0",
-    "markdown-it": "^13.0.1",
-    "markdown-it-anchor": "^8.6.4",
-    "markdown-it-attrs": "^4.1.4",
-    "markdown-it-container": "^3.0.0",
-    "markdown-it-emoji": "^2.0.2",
-    "markdown-it-footnote": "^3.0.3",
+    "markdown-it": "^15.0.0",
+    "markdown-it-anchor": "^9.2.1",
+    "markdown-it-attrs": "^5.0.1",
+    "markdown-it-container": "^4.0.0",
+    "markdown-it-emoji": "^3.1.0",
+    "markdown-it-footnote": "^4.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "uglify-es": "^3.3.9"
+    "uglify-es": "^3.3.9",
+    "vite": "^8.2.0"
   }
 }
