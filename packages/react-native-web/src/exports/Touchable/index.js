@@ -964,9 +964,9 @@ const TouchableMixin = {
  * `Touchable`.
  */
 const {
-  // eslint-disable-next-line no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   touchableHandleFocus,
-  // eslint-disable-next-line no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   touchableHandleBlur,
   ...TouchableMixinWithoutDefaultFocusAndBlur
 } = TouchableMixin;
