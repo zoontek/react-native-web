@@ -30,7 +30,7 @@ jobs:
           node-version: 24
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm flow
+      - run: pnpm typecheck
 
   lint:
     runs-on: ubuntu-latest
