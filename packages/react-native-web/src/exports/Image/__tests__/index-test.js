@@ -321,6 +321,7 @@ describe('components/Image', () => {
     });
 
     test('it correctly selects the source scale', () => {
+      // oxlint-disable-next-line no-import-assign
       AssetRegistry.getAssetByID = jest.fn(() => ({
         httpServerLocation: 'static',
         name: 'img',
