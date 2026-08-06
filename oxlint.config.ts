@@ -94,20 +94,16 @@ export default defineConfig({
     'promise/param-names': 'error',
 
     // react
-    'react/display-name': 'off',
     'react/jsx-no-duplicate-props': 'error',
     'react/jsx-no-undef': 'error',
     'react/jsx-pascal-case': 'error',
     'react/no-children-prop': 'off',
-    'react/no-did-mount-set-state': 'off',
     'react/no-did-update-set-state': 'error',
     'react/no-direct-mutation-state': 'error',
-    'react/no-multi-comp': 'off',
     'react/no-string-refs': 'error',
     'react/no-this-in-sfc': 'off',
     'react/no-unknown-property': 'error',
     'react/prefer-es6-class': 'error',
-    'react/react-in-jsx-scope': 'off',
     'react/self-closing-comp': 'error',
 
     // react-hooks
