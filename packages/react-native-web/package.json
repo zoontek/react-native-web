@@ -23,15 +23,18 @@
   "dependencies": {
     "@babel/runtime": "^7.29.7",
     "@react-native/normalize-colors": "^0.74.1",
-    "fbjs": "^3.0.4",
+    "fbjs": "^3.0.5",
     "memoize-one": "^6.0.0",
     "nullthrows": "^1.1.1",
     "postcss-value-parser": "^4.2.0",
     "styleq": "^0.1.3"
   },
+  "devDependencies": {
+    "@types/fbjs": "3.0.11"
+  },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "author": "Nicolas Gallagher",
   "license": "MIT",
