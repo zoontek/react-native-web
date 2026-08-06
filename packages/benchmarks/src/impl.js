@@ -3,7 +3,6 @@
 /*:: import { type Component } from 'react'; */
 import packageJson from '../package.json';
 
-const context = require.context('./implementations/', true, /index\.js$/);
 const { dependencies } = packageJson;
 
 /*:: type ComponentsType = {
@@ -20,11 +19,11 @@ const { dependencies } = packageJson;
 }; */
 
 const toImplementations = (
-  context /*: Object */
+  modules /*: Object */
 ) /*: Array<ImplementationType> */ =>
-  context.keys().map((path) => {
-    const components = context(path).default;
-    const name = path.split('/')[1];
+  Object.keys(modules).map((path) => {
+    const components = modules[path].default;
+    const name = path.split('/')[2];
     const version = dependencies[name] || '';
     return { components, name, version };
   });
@@ -35,6 +34,10 @@ const toObject = (impls /*: Array<ImplementationType> */) /*: Object */ =>
     return acc;
   }, {});
 
-const map = toObject(toImplementations(context));
+const map = toObject(
+  toImplementations(
+    import.meta.glob('./implementations/*/index.js', { eager: true })
+  )
+);
 
 export default map;
