@@ -9,7 +9,7 @@
 
 /*:: import type { Node } from 'react'; */
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { isLocaleRTL } from './isLocaleRTL';
 
 /*:: type Locale = string; */
@@ -44,14 +44,16 @@ export function LocaleProvider(props /*: ProviderProps */) /*: Node */ {
   const { direction, locale, children } = props;
   const needsContext = direction || locale;
 
+  const value = useMemo(
+    () => ({
+      direction: locale ? getLocaleDirection(locale) : direction,
+      locale
+    }),
+    [direction, locale]
+  );
+
   return needsContext ? (
-    <LocaleContext.Provider
-      children={children}
-      value={{
-        direction: locale ? getLocaleDirection(locale) : direction,
-        locale
-      }}
-    />
+    <LocaleContext.Provider children={children} value={value} />
   ) : (
     children
   );
