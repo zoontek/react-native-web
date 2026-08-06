@@ -74,5 +74,10 @@ export default defineConfig({
 
     // temporarily disabled
     'no-unused-expressions': 'off'
+
+    // 'no-unused-vars': [
+    //   'error',
+    //   { argsIgnorePattern: '^_', ignoreRestSiblings: true }
+    // ]
   }
 });
