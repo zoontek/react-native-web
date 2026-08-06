@@ -111,7 +111,7 @@ export function contextmenu(target, defaultPayload = {}) {
 
   const {
     ctrlKey,
-    // eslint-disable-next-line
+    // oxlint-disable-next-line no-unused-vars
     pointerType: _,
     ...restPayload
   } = defaultPayload;

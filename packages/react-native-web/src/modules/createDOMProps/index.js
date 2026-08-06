@@ -117,10 +117,10 @@ const createDOMProps = (elementType, props, options) => {
     accessibilityReadOnly,
     'aria-required': ariaRequired,
     accessibilityRequired,
-    /* eslint-disable */
+    /* oxlint-disable no-unused-vars */
     role: ariaRole,
     accessibilityRole,
-    /* eslint-enable */
+    /* oxlint-enable no-unused-vars */
     'aria-roledescription': ariaRoleDescription,
     accessibilityRoleDescription,
     'aria-rowcount': ariaRowCount,

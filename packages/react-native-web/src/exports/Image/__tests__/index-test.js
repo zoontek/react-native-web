@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/* eslint-disable react/jsx-no-bind */
-
 import * as AssetRegistry from '../../../modules/AssetRegistry';
 import Image from '../';
 import ImageLoader, { ImageUriCache } from '../../../modules/ImageLoader';
