@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './dot-styles.css';
+import styles from './dot-styles.module.css';
 
 const Dot = ({ size, x, y, children, color }) => (
   <div
