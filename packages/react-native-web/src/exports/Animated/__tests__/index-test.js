@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-'use strict';
-
 import Animated from '..';
 import Easing from '../../Easing';
 import AnimatedImplementation from '../../../vendor/react-native/Animated/AnimatedImplementation';

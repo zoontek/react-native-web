@@ -8,7 +8,6 @@
  * @format
  */
 
-'use strict';
 /*:: import type { Node } from 'React'; */
 
 import AccessibilityUtil from '../../modules/AccessibilityUtil';

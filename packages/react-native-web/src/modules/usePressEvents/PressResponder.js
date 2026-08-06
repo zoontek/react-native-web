@@ -8,8 +8,6 @@
  * @format
  */
 
-'use strict';
-
 /*:: type ClickEvent = any; */
 /*:: type KeyboardEvent = any; */
 /*:: type ResponderEvent = any; */
