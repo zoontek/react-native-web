@@ -102,7 +102,7 @@ function create /*:: <T: Object> */(styles /*: T */) /*: $ReadOnly<T> */ {
  */
 function compose(style1 /*: any */, style2 /*: any */) /*: any */ {
   if (process.env.NODE_ENV !== 'production') {
-    /* eslint-disable prefer-rest-params */
+    /* oxlint-disable prefer-rest-params */
     const len = arguments.length;
     if (len > 2) {
       const readableStyles = [...arguments].map((a) => flatten(a));
@@ -112,7 +112,7 @@ function compose(style1 /*: any */, style2 /*: any */) /*: any */ {
         )}`
       );
     }
-    /* eslint-enable prefer-rest-params */
+    /* oxlint-enable prefer-rest-params */
   }
   return [style1, style2];
 }

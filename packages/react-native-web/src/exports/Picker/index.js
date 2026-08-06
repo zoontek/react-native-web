@@ -44,11 +44,11 @@ const Picker /*: React.AbstractComponent<
     selectedValue,
     style,
     testID,
-    /* eslint-disable */
+    /* oxlint-disable no-unused-vars */
     itemStyle,
     mode,
     prompt,
-    /* eslint-enable */
+    /* oxlint-enable no-unused-vars */
     ...other
   } = props;
 
