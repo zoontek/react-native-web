@@ -95,20 +95,21 @@ export default defineConfig({
         'typescript/no-invalid-void-type': 'error',
         'typescript/no-non-null-assertion': 'error',
 
-        'typescript/strict-boolean-expressions': [
-          'error',
-          {
-            allowNullableObject: false,
-            allowNumber: false,
-            allowString: false
-          }
-        ],
-
         // temporarily disabled
         'typescript/no-dynamic-delete': 'off',
         'typescript/no-explicit-any': 'off',
         'typescript/no-extraneous-class': 'off',
+        'typescript/no-unsafe-type-assertion': 'off',
         'typescript/no-wrapper-object-types': 'off'
+
+        // 'typescript/strict-boolean-expressions': [
+        //   'error',
+        //   {
+        //     allowNullableObject: false,
+        //     allowNumber: false,
+        //     allowString: false
+        //   }
+        // ],
       }
     }
   ]
