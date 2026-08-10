@@ -41,7 +41,6 @@ export { default as KeyboardAvoidingView } from './exports/KeyboardAvoidingView'
 export { default as Modal } from './exports/Modal';
 export { default as Picker } from './exports/Picker';
 export { default as Pressable } from './exports/Pressable';
-export { default as ProgressBar } from './exports/ProgressBar';
 export { default as RefreshControl } from './exports/RefreshControl';
 export { default as SafeAreaView } from './exports/SafeAreaView';
 export { default as ScrollView } from './exports/ScrollView';
