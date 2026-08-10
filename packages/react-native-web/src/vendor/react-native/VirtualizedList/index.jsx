@@ -41,7 +41,7 @@ import {
   VirtualizedListCellContextProvider,
   VirtualizedListContext,
   VirtualizedListContextProvider,
-} from './VirtualizedListContext.js';
+} from './VirtualizedListContext';
 import {
   computeWindowedRenderLimits,
   keyExtractor as defaultKeyExtractor,
