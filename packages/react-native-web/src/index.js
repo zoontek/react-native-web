@@ -59,7 +59,6 @@ export { default as TouchableOpacity } from './exports/TouchableOpacity';
 export { default as TouchableWithoutFeedback } from './exports/TouchableWithoutFeedback';
 export { default as View } from './exports/View';
 export { default as VirtualizedList } from './exports/VirtualizedList';
-export { default as YellowBox } from './exports/YellowBox';
 export { default as LogBox } from './exports/LogBox';
 
 // plugins
