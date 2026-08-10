@@ -14,6 +14,7 @@ export { default as Appearance } from './exports/Appearance';
 export { default as AppRegistry } from './exports/AppRegistry';
 export { default as AppState } from './exports/AppState';
 export { default as BackHandler } from './exports/BackHandler';
+export { default as Clipboard } from './exports/Clipboard';
 export { default as Dimensions } from './exports/Dimensions';
 export { default as Easing } from './exports/Easing';
 export { default as I18nManager } from './exports/I18nManager';
