@@ -7,7 +7,7 @@
     "build:examples": "pnpm --filter react-native-web-examples build",
     "dev": "pnpm run build:examples && eleventy --serve",
     "build": "pnpm run build:examples && ELEVENTY_PRODUCTION=true eleventy",
-    "preview": "vite preview"
+    "preview": "eleventy --serve"
   },
   "homepage": "https://github.com/necolas/react-native-web",
   "devDependencies": {
@@ -24,7 +24,7 @@
     "markdown-it-emoji": "^3.1.0",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "uglify-es": "^3.3.9",
-    "vite": "^8.2.0"
+    "react-native-web-examples": "workspace:*",
+    "uglify-es": "^3.3.9"
   }
 }
