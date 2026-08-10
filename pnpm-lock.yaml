@@ -186,12 +186,12 @@ importers:
       markdown-it-task-lists:
         specifier: ^2.1.1
         version: 2.1.1
+      react-native-web-examples:
+        specifier: workspace:*
+        version: link:../react-native-web-examples
       uglify-es:
         specifier: ^3.3.9
         version: 3.3.9
-      vite:
-        specifier: ^8.2.0
-        version: 8.2.0(@types/node@22.20.1)(terser@5.49.0)(yaml@2.9.0)
 
   packages/react-native-web-examples:
     dependencies:
