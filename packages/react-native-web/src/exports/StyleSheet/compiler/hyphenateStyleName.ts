@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,15 +7,17 @@
 
 const uppercasePattern = /[A-Z]/g;
 const msPattern = /^ms-/;
-const cache = {};
+const cache: Record<string, string> = {};
 
-function toHyphenLower(match) {
+function toHyphenLower(match: string) {
   return '-' + match.toLowerCase();
 }
 
-function hyphenateStyleName(name /*: string */) /*: string */ {
-  if (name in cache) {
-    return cache[name];
+function hyphenateStyleName(name: string): string {
+  const cached = cache[name];
+
+  if (cached != null) {
+    return cached;
   }
 
   const hName = name.replace(uppercasePattern, toHyphenLower);
