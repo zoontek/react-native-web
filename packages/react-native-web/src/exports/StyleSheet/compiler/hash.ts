@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /* oxlint-disable */
 
 /**
@@ -15,11 +13,11 @@
  * @return {number} 32-bit positive integer hash
  */
 
-function murmurhash2_32_gc(str, seed) {
+function murmurhash2_32_gc(str: string, seed: number): number {
   var l = str.length,
     h = seed ^ l,
     i = 0,
-    k;
+    k: number;
 
   while (l >= 4) {
     k =
@@ -62,7 +60,6 @@ function murmurhash2_32_gc(str, seed) {
   return h >>> 0;
 }
 
-const hash = (str /*: string */) /*: string */ =>
-  murmurhash2_32_gc(str, 1).toString(36);
+const hash = (str: string): string => murmurhash2_32_gc(str, 1).toString(36);
 
 export default hash;
