@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -16,7 +14,7 @@ const insertStyleElement = () => {
   return element;
 };
 
-const removeStyleElement = (element) => {
+const removeStyleElement = (element: HTMLStyleElement) => {
   document.head.removeChild(element);
 };
 
@@ -115,7 +113,7 @@ describe('createOrderedCSSStyleSheet', () => {
   });
 
   describe('client-side hydration', () => {
-    let element;
+    let element: HTMLStyleElement;
 
     beforeEach(() => {
       if (element != null) {
