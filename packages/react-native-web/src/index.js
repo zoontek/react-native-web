@@ -40,7 +40,6 @@ export { default as ImageBackground } from './exports/ImageBackground';
 export { default as InputAccessoryView } from './exports/InputAccessoryView';
 export { default as KeyboardAvoidingView } from './exports/KeyboardAvoidingView';
 export { default as Modal } from './exports/Modal';
-export { default as Picker } from './exports/Picker';
 export { default as Pressable } from './exports/Pressable';
 export { default as RefreshControl } from './exports/RefreshControl';
 export { default as SafeAreaView } from './exports/SafeAreaView';
