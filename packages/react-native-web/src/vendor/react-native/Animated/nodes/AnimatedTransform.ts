@@ -16,15 +16,15 @@ import AnimatedWithChildren from './AnimatedWithChildren';
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
 
 class AnimatedTransform extends AnimatedWithChildren {
-  _transforms/*: $ReadOnlyArray<Object> */;
+  _transforms /*: $ReadOnlyArray<Object> */;
 
-  constructor(transforms/*: $ReadOnlyArray<Object> */) {
+  constructor(transforms /*: $ReadOnlyArray<Object> */) {
     super();
     this._transforms = transforms;
   }
 
   __makeNative() {
-    this._transforms.forEach(transform => {
+    this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
         if (value instanceof AnimatedNode) {
@@ -35,8 +35,8 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__makeNative();
   }
 
-  __getValue()/*: $ReadOnlyArray<Object> */ {
-    return this._transforms.map(transform => {
+  __getValue() /*: $ReadOnlyArray<Object> */ {
+    return this._transforms.map((transform) => {
       const result = {};
       for (const key in transform) {
         const value = transform[key];
@@ -50,8 +50,8 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __getAnimatedValue()/*: $ReadOnlyArray<Object> */ {
-    return this._transforms.map(transform => {
+  __getAnimatedValue() /*: $ReadOnlyArray<Object> */ {
+    return this._transforms.map((transform) => {
       const result = {};
       for (const key in transform) {
         const value = transform[key];
@@ -66,8 +66,8 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __attach()/*: void */ {
-    this._transforms.forEach(transform => {
+  __attach() /*: void */ {
+    this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
         if (value instanceof AnimatedNode) {
@@ -77,8 +77,8 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __detach()/*: void */ {
-    this._transforms.forEach(transform => {
+  __detach() /*: void */ {
+    this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
         if (value instanceof AnimatedNode) {
@@ -89,23 +89,23 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__detach();
   }
 
-  __getNativeConfig()/*: any */ {
+  __getNativeConfig() /*: any */ {
     const transConfigs = [];
 
-    this._transforms.forEach(transform => {
+    this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
         if (value instanceof AnimatedNode) {
           transConfigs.push({
             type: 'animated',
             property: key,
-            nodeTag: value.__getNativeTag(),
+            nodeTag: value.__getNativeTag()
           });
         } else {
           transConfigs.push({
             type: 'static',
             property: key,
-            value: NativeAnimatedHelper.transformDataType(value),
+            value: NativeAnimatedHelper.transformDataType(value)
           });
         }
       }
@@ -114,7 +114,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     NativeAnimatedHelper.validateTransform(transConfigs);
     return {
       type: 'transform',
-      transforms: transConfigs,
+      transforms: transConfigs
     };
   }
 }

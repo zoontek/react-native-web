@@ -13,7 +13,7 @@
 
 import Animation from './Animation';
 
-import {shouldUseNativeDriver} from '../NativeAnimatedHelper';
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
 
 /*:: import type AnimatedValue from '../nodes/AnimatedValue'; */
 /*:: import type {AnimationConfig, EndCallback} from './Animation'; */
@@ -37,16 +37,16 @@ import {shouldUseNativeDriver} from '../NativeAnimatedHelper';
 }; */
 
 class DecayAnimation extends Animation {
-  _startTime/*: number */;
-  _lastValue/*: number */;
-  _fromValue/*: number */;
-  _deceleration/*: number */;
-  _velocity/*: number */;
-  _onUpdate/*: (value: number) => void */;
-  _animationFrame/*: any */;
-  _useNativeDriver/*: boolean */;
+  _startTime /*: number */;
+  _lastValue /*: number */;
+  _fromValue /*: number */;
+  _deceleration /*: number */;
+  _velocity /*: number */;
+  _onUpdate /*: (value: number) => void */;
+  _animationFrame /*: any */;
+  _useNativeDriver /*: boolean */;
 
-  constructor(config/*: DecayAnimationConfigSingle */) {
+  constructor(config /*: DecayAnimationConfigSingle */) {
     super();
     this._deceleration = config.deceleration ?? 0.998;
     this._velocity = config.velocity;
@@ -55,7 +55,7 @@ class DecayAnimation extends Animation {
     this.__iterations = config.iterations ?? 1;
   }
 
-  __getNativeAnimationConfig()/*: {|
+  __getNativeAnimationConfig() /*: {|
     deceleration: number,
     iterations: number,
     type: $TEMPORARY$string<'decay'>,
@@ -65,17 +65,17 @@ class DecayAnimation extends Animation {
       type: 'decay',
       deceleration: this._deceleration,
       velocity: this._velocity,
-      iterations: this.__iterations,
+      iterations: this.__iterations
     };
   }
 
   start(
-    fromValue/*: number */,
-    onUpdate/*: (value: number) => void */,
-    onEnd/*: ?EndCallback */,
-    previousAnimation/*: ?Animation */,
-    animatedValue/*: AnimatedValue */,
-  )/*: void */ {
+    fromValue /*: number */,
+    onUpdate /*: (value: number) => void */,
+    onEnd /*: ?EndCallback */,
+    previousAnimation /*: ?Animation */,
+    animatedValue /*: AnimatedValue */
+  ) /*: void */ {
     this.__active = true;
     this._lastValue = fromValue;
     this._fromValue = fromValue;
@@ -89,7 +89,7 @@ class DecayAnimation extends Animation {
     }
   }
 
-  onUpdate()/*: void */ {
+  onUpdate() /*: void */ {
     const now = Date.now();
 
     const value =
@@ -100,7 +100,7 @@ class DecayAnimation extends Animation {
     this._onUpdate(value);
 
     if (Math.abs(this._lastValue - value) < 0.1) {
-      this.__debouncedOnEnd({finished: true});
+      this.__debouncedOnEnd({ finished: true });
       return;
     }
 
@@ -110,11 +110,11 @@ class DecayAnimation extends Animation {
     }
   }
 
-  stop()/*: void */ {
+  stop() /*: void */ {
     super.stop();
     this.__active = false;
     global.cancelAnimationFrame(this._animationFrame);
-    this.__debouncedOnEnd({finished: false});
+    this.__debouncedOnEnd({ finished: false });
   }
 }
 

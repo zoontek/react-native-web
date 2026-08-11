@@ -64,14 +64,14 @@ class Easing {
   /**
    * A stepping function, returns 1 for any positive value of `n`.
    */
-  static step0(n/*: number */)/*: number */ {
+  static step0(n /*: number */) /*: number */ {
     return n > 0 ? 1 : 0;
   }
 
   /**
    * A stepping function, returns 1 if `n` is greater than or equal to 1.
    */
-  static step1(n/*: number */)/*: number */ {
+  static step1(n /*: number */) /*: number */ {
     return n >= 1 ? 1 : 0;
   }
 
@@ -81,7 +81,7 @@ class Easing {
    *
    * http://cubic-bezier.com/#0,0,1,1
    */
-  static linear(t/*: number */)/*: number */ {
+  static linear(t /*: number */) /*: number */ {
     return t;
   }
 
@@ -91,7 +91,7 @@ class Easing {
    *
    * http://cubic-bezier.com/#.42,0,1,1
    */
-  static ease(t/*: number */)/*: number */ {
+  static ease(t /*: number */) /*: number */ {
     if (!ease) {
       ease = Easing.bezier(0.42, 0, 1, 1);
     }
@@ -104,7 +104,7 @@ class Easing {
    *
    * http://easings.net/#easeInQuad
    */
-  static quad(t/*: number */)/*: number */ {
+  static quad(t /*: number */) /*: number */ {
     return t * t;
   }
 
@@ -114,7 +114,7 @@ class Easing {
    *
    * http://easings.net/#easeInCubic
    */
-  static cubic(t/*: number */)/*: number */ {
+  static cubic(t /*: number */) /*: number */ {
     return t * t * t;
   }
 
@@ -124,8 +124,8 @@ class Easing {
    * n = 4: http://easings.net/#easeInQuart
    * n = 5: http://easings.net/#easeInQuint
    */
-  static poly(n/*: number */)/*: (t: number) => number */ {
-    return (t/*: number */) => Math.pow(t, n);
+  static poly(n /*: number */) /*: (t: number) => number */ {
+    return (t /*: number */) => Math.pow(t, n);
   }
 
   /**
@@ -133,7 +133,7 @@ class Easing {
    *
    * http://easings.net/#easeInSine
    */
-  static sin(t/*: number */)/*: number */ {
+  static sin(t /*: number */) /*: number */ {
     return 1 - Math.cos((t * Math.PI) / 2);
   }
 
@@ -142,7 +142,7 @@ class Easing {
    *
    * http://easings.net/#easeInCirc
    */
-  static circle(t/*: number */)/*: number */ {
+  static circle(t /*: number */) /*: number */ {
     return 1 - Math.sqrt(1 - t * t);
   }
 
@@ -151,7 +151,7 @@ class Easing {
    *
    * http://easings.net/#easeInExpo
    */
-  static exp(t/*: number */)/*: number */ {
+  static exp(t /*: number */) /*: number */ {
     return Math.pow(2, 10 * (t - 1));
   }
 
@@ -165,9 +165,10 @@ class Easing {
    *
    * http://easings.net/#easeInElastic
    */
-  static elastic(bounciness/*: number */ = 1)/*: (t: number) => number */ {
+  static elastic(bounciness /*: number */ = 1) /*: (t: number) => number */ {
     const p = bounciness * Math.PI;
-    return t => 1 - Math.pow(Math.cos((t * Math.PI) / 2), 3) * Math.cos(t * p);
+    return (t) =>
+      1 - Math.pow(Math.cos((t * Math.PI) / 2), 3) * Math.cos(t * p);
   }
 
   /**
@@ -178,8 +179,8 @@ class Easing {
    *
    * - http://tiny.cc/back_default (s = 1.70158, default)
    */
-  static back(s/*: number */ = 1.70158)/*: (t: number) => number */ {
-    return t => t * t * ((s + 1) * t - s);
+  static back(s /*: number */ = 1.70158) /*: (t: number) => number */ {
+    return (t) => t * t * ((s + 1) * t - s);
   }
 
   /**
@@ -187,7 +188,7 @@ class Easing {
    *
    * http://easings.net/#easeInBounce
    */
-  static bounce(t/*: number */)/*: number */ {
+  static bounce(t /*: number */) /*: number */ {
     if (t < 1 / 2.75) {
       return 7.5625 * t * t;
     }
@@ -214,26 +215,26 @@ class Easing {
    * http://cubic-bezier.com/
    */
   static bezier(
-    x1/*: number */,
-    y1/*: number */,
-    x2/*: number */,
-    y2/*: number */,
-  )/*: (t: number) => number */ {
+    x1 /*: number */,
+    y1 /*: number */,
+    x2 /*: number */,
+    y2 /*: number */
+  ) /*: (t: number) => number */ {
     return _bezier(x1, y1, x2, y2);
   }
 
   /**
    * Runs an easing function forwards.
    */
-  static in(easing/*: (t: number) => number */)/*: (t: number) => number */ {
+  static in(easing /*: (t: number) => number */) /*: (t: number) => number */ {
     return easing;
   }
 
   /**
    * Runs an easing function backwards.
    */
-  static out(easing/*: (t: number) => number */)/*: (t: number) => number */ {
-    return t => 1 - easing(1 - t);
+  static out(easing /*: (t: number) => number */) /*: (t: number) => number */ {
+    return (t) => 1 - easing(1 - t);
   }
 
   /**
@@ -241,8 +242,10 @@ class Easing {
    * forwards for half of the duration, then backwards for the rest of the
    * duration.
    */
-  static inOut(easing/*: (t: number) => number */)/*: (t: number) => number */ {
-    return t => {
+  static inOut(
+    easing /*: (t: number) => number */
+  ) /*: (t: number) => number */ {
+    return (t) => {
       if (t < 0.5) {
         return easing(t * 2) / 2;
       }

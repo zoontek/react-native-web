@@ -19,9 +19,9 @@
  * area.
  */
 export function elementsThatOverlapOffsets(
-  offsets/*: Array<number> */,
-  props/*: FrameMetricProps */,
-  getFrameMetrics/*: (
+  offsets /*: Array<number> */,
+  props /*: FrameMetricProps */,
+  getFrameMetrics /*: (
     index: number,
     props: FrameMetricProps,
   ) => {
@@ -29,8 +29,8 @@ export function elementsThatOverlapOffsets(
     offset: number,
     ...
   } */,
-  zoomScale/*: number */ = 1,
-)/*: Array<number> */ {
+  zoomScale /*: number */ = 1
+) /*: Array<number> */ {
   const itemCount = props.getItemCount(props.data);
   const result = [];
   for (let offsetIndex = 0; offsetIndex < offsets.length; offsetIndex++) {
@@ -71,24 +71,24 @@ export function elementsThatOverlapOffsets(
  * faster.
  */
 export function newRangeCount(
-  prev/*: {
+  prev /*: {
     first: number,
     last: number,
     ...
   } */,
-  next/*: {
+  next /*: {
     first: number,
     last: number,
     ...
-  } */,
-)/*: number */ {
+  } */
+) /*: number */ {
   return (
     next.last -
     next.first +
     1 -
     Math.max(
       0,
-      1 + Math.min(next.last, prev.last) - Math.max(next.first, prev.first),
+      1 + Math.min(next.last, prev.last) - Math.max(next.first, prev.first)
     )
   );
 }
@@ -100,14 +100,14 @@ export function newRangeCount(
  * biased in the direction of scroll.
  */
 export function computeWindowedRenderLimits(
-  props/*: FrameMetricProps */,
-  maxToRenderPerBatch/*: number */,
-  windowSize/*: number */,
-  prev/*: {
+  props /*: FrameMetricProps */,
+  maxToRenderPerBatch /*: number */,
+  windowSize /*: number */,
+  prev /*: {
     first: number,
     last: number,
   } */,
-  getFrameMetricsApprox/*: (
+  getFrameMetricsApprox /*: (
     index: number,
     props: FrameMetricProps,
   ) => {
@@ -115,23 +115,23 @@ export function computeWindowedRenderLimits(
     offset: number,
     ...
   } */,
-  scrollMetrics/*: {
+  scrollMetrics /*: {
     dt: number,
     offset: number,
     velocity: number,
     visibleLength: number,
     zoomScale: number,
     ...
-  } */,
-)/*: {
+  } */
+) /*: {
   first: number,
   last: number,
 } */ {
   const itemCount = props.getItemCount(props.data);
   if (itemCount === 0) {
-    return {first: 0, last: -1};
+    return { first: 0, last: -1 };
   }
-  const {offset, velocity, visibleLength, zoomScale = 1} = scrollMetrics;
+  const { offset, velocity, visibleLength, zoomScale = 1 } = scrollMetrics;
 
   // Start with visible area, then compute maximum overscan region by expanding from there, biased
   // in the direction of scroll. Total overscan area is capped, which should cap memory consumption
@@ -148,7 +148,7 @@ export function computeWindowedRenderLimits(
 
   const overscanBegin = Math.max(
     0,
-    visibleBegin - (1 - leadFactor) * overscanLength,
+    visibleBegin - (1 - leadFactor) * overscanLength
   );
   const overscanEnd = Math.max(0, visibleEnd + leadFactor * overscanLength);
 
@@ -158,7 +158,7 @@ export function computeWindowedRenderLimits(
     // Entire list is before our overscan window
     return {
       first: Math.max(0, itemCount - 1 - maxToRenderPerBatch),
-      last: itemCount - 1,
+      last: itemCount - 1
     };
   }
 
@@ -167,7 +167,7 @@ export function computeWindowedRenderLimits(
     [overscanBegin, visibleBegin, visibleEnd, overscanEnd],
     props,
     getFrameMetricsApprox,
-    zoomScale,
+    zoomScale
   );
   overscanFirst = overscanFirst == null ? 0 : overscanFirst;
   first = first == null ? Math.max(0, overscanFirst) : first;
@@ -176,7 +176,7 @@ export function computeWindowedRenderLimits(
     last == null
       ? Math.min(overscanLast, first + maxToRenderPerBatch - 1)
       : last;
-  const visible = {first, last};
+  const visible = { first, last };
 
   // We want to limit the number of new cells we're rendering per batch so that we can fill the
   // content on the screen quickly. If we rendered the entire overscan window at once, the user
@@ -241,14 +241,17 @@ export function computeWindowedRenderLimits(
           itemCount,
           overscanFirst,
           overscanLast,
-          visible,
-        }),
+          visible
+        })
     );
   }
-  return {first, last};
+  return { first, last };
 }
 
-export function keyExtractor(item/*: any */, index/*: number */)/*: string */ {
+export function keyExtractor(
+  item /*: any */,
+  index /*: number */
+) /*: string */ {
   if (typeof item === 'object' && item?.key != null) {
     return item.key;
   }

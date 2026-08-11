@@ -17,28 +17,28 @@ import AnimatedNode from './AnimatedNode';
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
 
 class AnimatedWithChildren extends AnimatedNode {
-  _children/*: Array<AnimatedNode> */;
+  _children /*: Array<AnimatedNode> */;
 
   constructor() {
     super();
     this._children = [];
   }
 
-  __makeNative(platformConfig/*: ?PlatformConfig */) {
+  __makeNative(platformConfig /*: ?PlatformConfig */) {
     if (!this.__isNative) {
       this.__isNative = true;
       for (const child of this._children) {
         child.__makeNative(platformConfig);
         NativeAnimatedHelper.API.connectAnimatedNodes(
           this.__getNativeTag(),
-          child.__getNativeTag(),
+          child.__getNativeTag()
         );
       }
     }
     super.__makeNative(platformConfig);
   }
 
-  __addChild(child/*: AnimatedNode */)/*: void */ {
+  __addChild(child /*: AnimatedNode */) /*: void */ {
     if (this._children.length === 0) {
       this.__attach();
     }
@@ -48,12 +48,12 @@ class AnimatedWithChildren extends AnimatedNode {
       child.__makeNative(this.__getPlatformConfig());
       NativeAnimatedHelper.API.connectAnimatedNodes(
         this.__getNativeTag(),
-        child.__getNativeTag(),
+        child.__getNativeTag()
       );
     }
   }
 
-  __removeChild(child/*: AnimatedNode */)/*: void */ {
+  __removeChild(child /*: AnimatedNode */) /*: void */ {
     const index = this._children.indexOf(child);
     if (index === -1) {
       console.warn("Trying to remove a child that doesn't exist");
@@ -62,7 +62,7 @@ class AnimatedWithChildren extends AnimatedNode {
     if (this.__isNative && child.__isNative) {
       NativeAnimatedHelper.API.disconnectAnimatedNodes(
         this.__getNativeTag(),
-        child.__getNativeTag(),
+        child.__getNativeTag()
       );
     }
     this._children.splice(index, 1);
@@ -71,11 +71,11 @@ class AnimatedWithChildren extends AnimatedNode {
     }
   }
 
-  __getChildren()/*: Array<AnimatedNode> */ {
+  __getChildren() /*: Array<AnimatedNode> */ {
     return this._children;
   }
 
-  __callListeners(value/*: number */)/*: void */ {
+  __callListeners(value /*: number */) /*: void */ {
     super.__callListeners(value);
     if (!this.__isNative) {
       for (const child of this._children) {
