@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const unitlessNumbers = {
+const unitlessNumbers: Record<string, boolean> = {
   animationIterationCount: true,
   aspectRatio: true,
   borderImageOutset: true,
@@ -61,11 +59,14 @@ const unitlessNumbers = {
  * Support style names that may come passed in prefixed with 'Webkit', which
  * is still required for some properties (e.g. 'WebkitLineClamp').
  */
-const prefixKey = (prefix /*: string */, key /*: string */) => {
+const prefixKey = (prefix: string, key: string) => {
   return prefix + key.charAt(0).toUpperCase() + key.substring(1);
 };
 Object.keys(unitlessNumbers).forEach((prop) => {
-  unitlessNumbers[prefixKey('Webkit', prop)] = unitlessNumbers[prop];
+  const value = unitlessNumbers[prop];
+  if (value !== undefined) {
+    unitlessNumbers[prefixKey('Webkit', prop)] = value;
+  }
 });
 
 export default unitlessNumbers;

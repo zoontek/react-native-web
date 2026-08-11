@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -13,14 +11,15 @@ import { render } from '@testing-library/react';
 
 describe('modules/mergeRefs', () => {
   test('merges refs of different types', () => {
-    const ref = React.createRef(null);
-    let functionRefValue = null;
-    let hookRef;
+    const ref = React.createRef<HTMLDivElement>();
+    let functionRefValue: HTMLDivElement | null = null;
+    // Assigned by 'Component' during 'render'
+    let hookRef!: React.RefObject<HTMLDivElement | null>;
     function Component() {
-      const functionRef = (x) => {
+      const functionRef = (x: HTMLDivElement | null) => {
         functionRefValue = x;
       };
-      hookRef = React.useRef(null);
+      hookRef = React.useRef<HTMLDivElement | null>(null);
       return <div ref={mergeRefs(ref, hookRef, functionRef)} />;
     }
 
