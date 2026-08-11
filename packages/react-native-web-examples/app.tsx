@@ -6,7 +6,8 @@ import HomePage from './pages/index';
 const modules = import.meta.glob('./pages/*/index.tsx', { eager: true });
 
 const pages = Object.keys(modules)
-  .map((path) => path.match(/^\.\/pages\/(.+)\/index\.tsx$/)[1])
+  .map((path) => (path.match(/^\.\/pages\/(.+)\/index\.tsx$/) ?? [])[0])
+  .filter((page) => page != null)
   .sort();
 
 function getPageFromHash() {
