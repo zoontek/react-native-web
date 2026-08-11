@@ -41,12 +41,12 @@
   animatedShouldUseSingleOp: () => boolean,
 |}; */
 
-const ReactNativeFeatureFlags/*: FeatureFlags */ = {
+const ReactNativeFeatureFlags /*: FeatureFlags */ = {
   isLayoutAnimationEnabled: () => true,
   shouldEmitW3CPointerEvents: () => false,
   shouldPressibilityUseW3CPointerEventsForHover: () => false,
   animatedShouldDebounceQueueFlush: () => false,
-  animatedShouldUseSingleOp: () => false,
+  animatedShouldUseSingleOp: () => false
 };
 
 export default ReactNativeFeatureFlags;

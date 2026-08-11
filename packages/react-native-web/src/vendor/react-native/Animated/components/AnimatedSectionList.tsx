@@ -23,9 +23,9 @@ const SectionListWithEventThrottle = React.forwardRef((props, ref) => (
   <SectionList scrollEventThrottle={0.0001} {...props} ref={ref} />
 ));
 
-export default (createAnimatedComponent(
-  SectionListWithEventThrottle,
-)/*: AnimatedComponentType<
+export default createAnimatedComponent(
+  SectionListWithEventThrottle
+) /*: AnimatedComponentType<
   React.ElementConfig<typeof SectionList>,
   React.ElementRef<typeof SectionList>,
-> */);
+> */;

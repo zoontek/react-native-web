@@ -14,16 +14,18 @@
 /*:: import type {TurboModule} from './RCTExport'; */
 import invariant from 'fbjs/lib/invariant';
 
-export function get/*:: <T: TurboModule> */(name/*: string */)/*: ?T */ {
+export function get /*:: <T: TurboModule> */(name /*: string */) /*: ?T */ {
   return null;
 }
 
-export function getEnforcing/*:: <T: TurboModule> */(name/*: string */)/*: T */ {
+export function getEnforcing /*:: <T: TurboModule> */(
+  name /*: string */
+) /*: T */ {
   const module = get(name);
   invariant(
     module != null,
     `TurboModuleRegistry.getEnforcing(...): '${name}' could not be found. ` +
-      'Verify that a module by this name is registered in the native binary.',
+      'Verify that a module by this name is registered in the native binary.'
   );
   return module;
 }

@@ -20,7 +20,7 @@ import SpringConfig from '../SpringConfig';
 
 import invariant from 'fbjs/lib/invariant';
 
-import {shouldUseNativeDriver} from '../NativeAnimatedHelper';
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
 
 /*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
 /*:: import type {AnimationConfig, EndCallback} from './Animation'; */
@@ -85,29 +85,29 @@ import AnimatedColor from '../nodes/AnimatedColor';
 }; */
 
 class SpringAnimation extends Animation {
-  _overshootClamping/*: boolean */;
-  _restDisplacementThreshold/*: number */;
-  _restSpeedThreshold/*: number */;
-  _lastVelocity/*: number */;
-  _startPosition/*: number */;
-  _lastPosition/*: number */;
-  _fromValue/*: number */;
-  _toValue/*: number */;
-  _stiffness/*: number */;
-  _damping/*: number */;
-  _mass/*: number */;
-  _initialVelocity/*: number */;
-  _delay/*: number */;
-  _timeout/*: any */;
-  _startTime/*: number */;
-  _lastTime/*: number */;
-  _frameTime/*: number */;
-  _onUpdate/*: (value: number) => void */;
-  _animationFrame/*: any */;
-  _useNativeDriver/*: boolean */;
-  _platformConfig/*: ?PlatformConfig */;
+  _overshootClamping /*: boolean */;
+  _restDisplacementThreshold /*: number */;
+  _restSpeedThreshold /*: number */;
+  _lastVelocity /*: number */;
+  _startPosition /*: number */;
+  _lastPosition /*: number */;
+  _fromValue /*: number */;
+  _toValue /*: number */;
+  _stiffness /*: number */;
+  _damping /*: number */;
+  _mass /*: number */;
+  _initialVelocity /*: number */;
+  _delay /*: number */;
+  _timeout /*: any */;
+  _startTime /*: number */;
+  _lastTime /*: number */;
+  _frameTime /*: number */;
+  _onUpdate /*: (value: number) => void */;
+  _animationFrame /*: any */;
+  _useNativeDriver /*: boolean */;
+  _platformConfig /*: ?PlatformConfig */;
 
-  constructor(config/*: SpringAnimationConfigSingle */) {
+  constructor(config /*: SpringAnimationConfigSingle */) {
     super();
 
     this._overshootClamping = config.overshootClamping ?? false;
@@ -132,7 +132,7 @@ class SpringAnimation extends Animation {
           config.speed === undefined &&
           config.tension === undefined &&
           config.friction === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
       );
       this._stiffness = config.stiffness ?? 100;
       this._damping = config.damping ?? 10;
@@ -146,11 +146,11 @@ class SpringAnimation extends Animation {
           config.stiffness === undefined &&
           config.damping === undefined &&
           config.mass === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
       );
       const springConfig = SpringConfig.fromBouncinessAndSpeed(
         config.bounciness ?? 8,
-        config.speed ?? 12,
+        config.speed ?? 12
       );
       this._stiffness = springConfig.stiffness;
       this._damping = springConfig.damping;
@@ -160,7 +160,7 @@ class SpringAnimation extends Animation {
       // We assume mass is 1.
       const springConfig = SpringConfig.fromOrigamiTensionAndFriction(
         config.tension ?? 40,
-        config.friction ?? 7,
+        config.friction ?? 7
       );
       this._stiffness = springConfig.stiffness;
       this._damping = springConfig.damping;
@@ -172,7 +172,7 @@ class SpringAnimation extends Animation {
     invariant(this._mass > 0, 'Mass value must be greater than 0');
   }
 
-  __getNativeAnimationConfig()/*: {|
+  __getNativeAnimationConfig() /*: {|
     damping: number,
     initialVelocity: number,
     iterations: number,
@@ -196,17 +196,17 @@ class SpringAnimation extends Animation {
       initialVelocity: this._initialVelocity ?? this._lastVelocity,
       toValue: this._toValue,
       iterations: this.__iterations,
-      platformConfig: this._platformConfig,
+      platformConfig: this._platformConfig
     };
   }
 
   start(
-    fromValue/*: number */,
-    onUpdate/*: (value: number) => void */,
-    onEnd/*: ?EndCallback */,
-    previousAnimation/*: ?Animation */,
-    animatedValue/*: AnimatedValue */,
-  )/*: void */ {
+    fromValue /*: number */,
+    onUpdate /*: (value: number) => void */,
+    onEnd /*: ?EndCallback */,
+    previousAnimation /*: ?Animation */,
+    animatedValue /*: AnimatedValue */
+  ) /*: void */ {
     this.__active = true;
     this._startPosition = fromValue;
     this._lastPosition = this._startPosition;
@@ -241,11 +241,11 @@ class SpringAnimation extends Animation {
     }
   }
 
-  getInternalState()/*: Object */ {
+  getInternalState() /*: Object */ {
     return {
       lastPosition: this._lastPosition,
       lastVelocity: this._lastVelocity,
-      lastTime: this._lastTime,
+      lastTime: this._lastTime
     };
   }
 
@@ -270,7 +270,7 @@ class SpringAnimation extends Animation {
    * This algorithm happens to match the algorithm used by CASpringAnimation,
    * a QuartzCore (iOS) API that creates spring animations.
    */
-  onUpdate()/*: void */ {
+  onUpdate() /*: void */ {
     // If for some reason we lost a lot of frames (e.g. process large payload or
     // stopped in the debugger), we only advance by 4 frames worth of
     // computation and will continue on the next frame. It's better to have it
@@ -284,10 +284,10 @@ class SpringAnimation extends Animation {
     const deltaTime = (now - this._lastTime) / 1000;
     this._frameTime += deltaTime;
 
-    const c/*: number */ = this._damping;
-    const m/*: number */ = this._mass;
-    const k/*: number */ = this._stiffness;
-    const v0/*: number */ = -this._initialVelocity;
+    const c /*: number */ = this._damping;
+    const m /*: number */ = this._mass;
+    const k /*: number */ = this._stiffness;
+    const v0 /*: number */ = -this._initialVelocity;
 
     const zeta = c / (2 * Math.sqrt(k * m)); // damping ratio
     const omega0 = Math.sqrt(k / m); // undamped angular frequency of the oscillator (rad/ms)
@@ -358,19 +358,19 @@ class SpringAnimation extends Animation {
         this._onUpdate(this._toValue);
       }
 
-      this.__debouncedOnEnd({finished: true});
+      this.__debouncedOnEnd({ finished: true });
       return;
     }
     // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
   }
 
-  stop()/*: void */ {
+  stop() /*: void */ {
     super.stop();
     this.__active = false;
     clearTimeout(this._timeout);
     global.cancelAnimationFrame(this._animationFrame);
-    this.__debouncedOnEnd({finished: false});
+    this.__debouncedOnEnd({ finished: false });
   }
 }
 

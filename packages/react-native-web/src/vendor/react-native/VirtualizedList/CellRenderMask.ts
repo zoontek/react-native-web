@@ -18,13 +18,13 @@ import invariant from 'fbjs/lib/invariant';
 }; */
 
 export class CellRenderMask {
-  _numCells/*: number */;
-  _regions/*: Array<CellRegion> */;
+  _numCells /*: number */;
+  _regions /*: Array<CellRegion> */;
 
-  constructor(numCells/*: number */) {
+  constructor(numCells /*: number */) {
     invariant(
       numCells >= 0,
-      'CellRenderMask must contain a non-negative number os cells',
+      'CellRenderMask must contain a non-negative number os cells'
     );
 
     this._numCells = numCells;
@@ -36,24 +36,24 @@ export class CellRenderMask {
         {
           first: 0,
           last: numCells - 1,
-          isSpacer: true,
-        },
+          isSpacer: true
+        }
       ];
     }
   }
 
-  enumerateRegions()/*: $ReadOnlyArray<CellRegion> */ {
+  enumerateRegions() /*: $ReadOnlyArray<CellRegion> */ {
     return this._regions;
   }
 
-  addCells(cells/*: {first: number, last: number} */)/*: void */ {
+  addCells(cells /*: {first: number, last: number} */) /*: void */ {
     invariant(
       cells.first >= 0 &&
         cells.first < this._numCells &&
         cells.last >= -1 &&
         cells.last < this._numCells &&
         cells.last >= cells.first - 1,
-      'CellRenderMask.addCells called with invalid cell range',
+      'CellRenderMask.addCells called with invalid cell range'
     );
 
     // VirtualizedList uses inclusive ranges, where zero-count states are
@@ -73,11 +73,11 @@ export class CellRenderMask {
 
     // We need to replace the existing covered regions with 1-3 new regions
     // depending whether we need to split spacers out of overlapping regions.
-    const newLeadRegion/*: Array<CellRegion> */ = [];
-    const newTailRegion/*: Array<CellRegion> */ = [];
-    const newMainRegion/*: CellRegion */ = {
+    const newLeadRegion /*: Array<CellRegion> */ = [];
+    const newTailRegion /*: Array<CellRegion> */ = [];
+    const newMainRegion /*: CellRegion */ = {
       ...cells,
-      isSpacer: false,
+      isSpacer: false
     };
 
     if (firstIntersect.first < newMainRegion.first) {
@@ -85,7 +85,7 @@ export class CellRenderMask {
         newLeadRegion.push({
           first: firstIntersect.first,
           last: newMainRegion.first - 1,
-          isSpacer: true,
+          isSpacer: true
         });
       } else {
         newMainRegion.first = firstIntersect.first;
@@ -97,31 +97,31 @@ export class CellRenderMask {
         newTailRegion.push({
           first: newMainRegion.last + 1,
           last: lastIntersect.last,
-          isSpacer: true,
+          isSpacer: true
         });
       } else {
         newMainRegion.last = lastIntersect.last;
       }
     }
 
-    const replacementRegions/*: Array<CellRegion> */ = [
+    const replacementRegions /*: Array<CellRegion> */ = [
       ...newLeadRegion,
       newMainRegion,
-      ...newTailRegion,
+      ...newTailRegion
     ];
     const numRegionsToDelete = lastIntersectIdx - firstIntersectIdx + 1;
     this._regions.splice(
       firstIntersectIdx,
       numRegionsToDelete,
-      ...replacementRegions,
+      ...replacementRegions
     );
   }
 
-  numCells()/*: number */ {
+  numCells() /*: number */ {
     return this._numCells;
   }
 
-  equals(other/*: CellRenderMask */)/*: boolean */ {
+  equals(other /*: CellRenderMask */) /*: boolean */ {
     return (
       this._numCells === other._numCells &&
       this._regions.length === other._regions.length &&
@@ -129,12 +129,12 @@ export class CellRenderMask {
         (region, i) =>
           region.first === other._regions[i].first &&
           region.last === other._regions[i].last &&
-          region.isSpacer === other._regions[i].isSpacer,
+          region.isSpacer === other._regions[i].isSpacer
       )
     );
   }
 
-  _findRegion(cellIdx/*: number */)/*: [CellRegion, number] */ {
+  _findRegion(cellIdx /*: number */) /*: [CellRegion, number] */ {
     let firstIdx = 0;
     let lastIdx = this._regions.length - 1;
 

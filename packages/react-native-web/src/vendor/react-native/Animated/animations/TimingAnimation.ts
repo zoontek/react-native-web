@@ -18,7 +18,7 @@ import Easing from '../../../../exports/Easing';
 
 import Animation from './Animation';
 
-import {shouldUseNativeDriver} from '../NativeAnimatedHelper';
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
 
 /*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
 /*:: import type {AnimationConfig, EndCallback} from './Animation'; */
@@ -62,19 +62,19 @@ function easeInOut() {
 }
 
 class TimingAnimation extends Animation {
-  _startTime/*: number */;
-  _fromValue/*: number */;
-  _toValue/*: number */;
-  _duration/*: number */;
-  _delay/*: number */;
-  _easing/*: (value: number) => number */;
-  _onUpdate/*: (value: number) => void */;
-  _animationFrame/*: any */;
-  _timeout/*: any */;
-  _useNativeDriver/*: boolean */;
-  _platformConfig/*: ?PlatformConfig */;
+  _startTime /*: number */;
+  _fromValue /*: number */;
+  _toValue /*: number */;
+  _duration /*: number */;
+  _delay /*: number */;
+  _easing /*: (value: number) => number */;
+  _onUpdate /*: (value: number) => void */;
+  _animationFrame /*: any */;
+  _timeout /*: any */;
+  _useNativeDriver /*: boolean */;
+  _platformConfig /*: ?PlatformConfig */;
 
-  constructor(config/*: TimingAnimationConfigSingle */) {
+  constructor(config /*: TimingAnimationConfigSingle */) {
     super();
     this._toValue = config.toValue;
     this._easing = config.easing ?? easeInOut();
@@ -86,7 +86,7 @@ class TimingAnimation extends Animation {
     this.__isInteraction = config.isInteraction ?? !this._useNativeDriver;
   }
 
-  __getNativeAnimationConfig()/*: any */ {
+  __getNativeAnimationConfig() /*: any */ {
     const frameDuration = 1000.0 / 60.0;
     const frames = [];
     const numFrames = Math.round(this._duration / frameDuration);
@@ -99,17 +99,17 @@ class TimingAnimation extends Animation {
       frames,
       toValue: this._toValue,
       iterations: this.__iterations,
-      platformConfig: this._platformConfig,
+      platformConfig: this._platformConfig
     };
   }
 
   start(
-    fromValue/*: number */,
-    onUpdate/*: (value: number) => void */,
-    onEnd/*: ?EndCallback */,
-    previousAnimation/*: ?Animation */,
-    animatedValue/*: AnimatedValue */,
-  )/*: void */ {
+    fromValue /*: number */,
+    onUpdate /*: (value: number) => void */,
+    onEnd /*: ?EndCallback */,
+    previousAnimation /*: ?Animation */,
+    animatedValue /*: AnimatedValue */
+  ) /*: void */ {
     this.__active = true;
     this._fromValue = fromValue;
     this._onUpdate = onUpdate;
@@ -121,7 +121,7 @@ class TimingAnimation extends Animation {
       // not cause intermixed JS and native animations.
       if (this._duration === 0 && !this._useNativeDriver) {
         this._onUpdate(this._toValue);
-        this.__debouncedOnEnd({finished: true});
+        this.__debouncedOnEnd({ finished: true });
       } else {
         this._startTime = Date.now();
         if (this._useNativeDriver) {
@@ -129,7 +129,7 @@ class TimingAnimation extends Animation {
         } else {
           this._animationFrame = requestAnimationFrame(
             // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-            this.onUpdate.bind(this),
+            this.onUpdate.bind(this)
           );
         }
       }
@@ -141,24 +141,24 @@ class TimingAnimation extends Animation {
     }
   }
 
-  onUpdate()/*: void */ {
+  onUpdate() /*: void */ {
     const now = Date.now();
     if (now >= this._startTime + this._duration) {
       if (this._duration === 0) {
         this._onUpdate(this._toValue);
       } else {
         this._onUpdate(
-          this._fromValue + this._easing(1) * (this._toValue - this._fromValue),
+          this._fromValue + this._easing(1) * (this._toValue - this._fromValue)
         );
       }
-      this.__debouncedOnEnd({finished: true});
+      this.__debouncedOnEnd({ finished: true });
       return;
     }
 
     this._onUpdate(
       this._fromValue +
         this._easing((now - this._startTime) / this._duration) *
-          (this._toValue - this._fromValue),
+          (this._toValue - this._fromValue)
     );
     if (this.__active) {
       // $FlowFixMe[method-unbinding] added when improving typing for this parameters
@@ -166,12 +166,12 @@ class TimingAnimation extends Animation {
     }
   }
 
-  stop()/*: void */ {
+  stop() /*: void */ {
     super.stop();
     this.__active = false;
     clearTimeout(this._timeout);
     global.cancelAnimationFrame(this._animationFrame);
-    this.__debouncedOnEnd({finished: false});
+    this.__debouncedOnEnd({ finished: false });
   }
 }
 

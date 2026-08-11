@@ -66,6 +66,7 @@ import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry';
   +removeListeners: (count: number) => void;
 } */
 
+// prettier-ignore
 export default (TurboModuleRegistry.get/*:: <Spec> */(
   'NativeAnimatedTurboModule',
 )/*: ?Spec */);
