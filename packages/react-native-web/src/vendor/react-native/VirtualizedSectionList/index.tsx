@@ -12,7 +12,7 @@
 /*:: import type {ViewToken} from '../ViewabilityHelper'; */
 import View from '../../../exports/View';
 import VirtualizedList from '../VirtualizedList';
-import {keyExtractor as defaultKeyExtractor} from '../VirtualizeUtils';
+import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
 import invariant from 'fbjs/lib/invariant';
 import * as React from 'react';
 
@@ -126,10 +126,13 @@ import * as React from 'react';
  * hood. The only operation that might not scale well is concatting the data arrays of all the
  * sections when new props are received, which should be plenty fast for up to ~10,000 items.
  */
-class VirtualizedSectionList/*:: <
+class VirtualizedSectionList /*:: <
   SectionT: SectionBase<any>,
-> */ extends React.PureComponent/*:: <Props<SectionT>, State> */ {
-  scrollToLocation(params/*: ScrollToLocationParamsType */) {
+> */
+  extends React.PureComponent
+{
+  /*:: <Props<SectionT>, State> */
+  scrollToLocation(params /*: ScrollToLocationParamsType */) {
     let index = params.itemIndex;
     for (let i = 0; i < params.sectionIndex; i++) {
       index += this.props.getItemCount(this.props.sections[i].data) + 2;
@@ -141,24 +144,24 @@ class VirtualizedSectionList/*:: <
     if (params.itemIndex > 0 && this.props.stickySectionHeadersEnabled) {
       const frame = this._listRef.__getFrameMetricsApprox(
         index - params.itemIndex,
-        this._listRef.props,
+        this._listRef.props
       );
       viewOffset += frame.length;
     }
     const toIndexParams = {
       ...params,
       viewOffset,
-      index,
+      index
     };
     // $FlowFixMe[incompatible-use]
     this._listRef.scrollToIndex(toIndexParams);
   }
 
-  getListRef()/*: ?React.ElementRef<typeof VirtualizedList> */ {
+  getListRef() /*: ?React.ElementRef<typeof VirtualizedList> */ {
     return this._listRef;
   }
 
-  render()/*: React.Node */ {
+  render() /*: React.Node */ {
     const {
       ItemSeparatorComponent, // don't pass through, rendered with renderItem
       SectionSeparatorComponent,
@@ -173,7 +176,7 @@ class VirtualizedSectionList/*:: <
     const listHeaderOffset = this.props.ListHeaderComponent ? 1 : 0;
 
     const stickyHeaderIndices = this.props.stickySectionHeadersEnabled
-      ? ([]/*: Array<number> */)
+      ? [] /*: Array<number> */
       : undefined;
 
     let itemCount = 0;
@@ -211,10 +214,10 @@ class VirtualizedSectionList/*:: <
   }
 
   _getItem(
-    props/*: Props<SectionT> */,
-    sections/*: ?$ReadOnlyArray<Item> */,
-    index/*: number */,
-  )/*: ?Item */ {
+    props /*: Props<SectionT> */,
+    sections /*: ?$ReadOnlyArray<Item> */,
+    index /*: number */
+  ) /*: ?Item */ {
     if (!sections) {
       return null;
     }
@@ -239,12 +242,12 @@ class VirtualizedSectionList/*:: <
   }
 
   // $FlowFixMe[missing-local-annot]
-  _keyExtractor = (item/*: Item */, index/*: number */) => {
+  _keyExtractor = (item /*: Item */, index /*: number */) => {
     const info = this._subExtractor(index);
     return (info && info.key) || String(index);
   };
 
-  _subExtractor(index/*: number */)/*: ?{
+  _subExtractor(index /*: number */) /*: ?{
     section: SectionT,
     // Key of the section or combined key for section + item
     key: string,
@@ -259,7 +262,7 @@ class VirtualizedSectionList/*:: <
     ...
   } */ {
     let itemIndex = index;
-    const {getItem, getItemCount, keyExtractor, sections} = this.props;
+    const { getItem, getItemCount, keyExtractor, sections } = this.props;
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
       const sectionData = section.data;
@@ -273,7 +276,7 @@ class VirtualizedSectionList/*:: <
           key: key + ':header',
           index: null,
           header: true,
-          trailingSection: sections[i + 1],
+          trailingSection: sections[i + 1]
         };
       } else if (itemIndex === getItemCount(sectionData)) {
         return {
@@ -281,7 +284,7 @@ class VirtualizedSectionList/*:: <
           key: key + ':footer',
           index: null,
           header: false,
-          trailingSection: sections[i + 1],
+          trailingSection: sections[i + 1]
         };
       } else {
         const extractor =
@@ -294,13 +297,13 @@ class VirtualizedSectionList/*:: <
           leadingItem: getItem(sectionData, itemIndex - 1),
           leadingSection: sections[i - 1],
           trailingItem: getItem(sectionData, itemIndex + 1),
-          trailingSection: sections[i + 1],
+          trailingSection: sections[i + 1]
         };
       }
     }
   }
 
-  _convertViewable = (viewable/*: ViewToken */)/*: ?ViewToken */ => {
+  _convertViewable = (viewable /*: ViewToken */) /*: ?ViewToken */ => {
     invariant(viewable.index != null, 'Received a broken ViewToken');
     const info = this._subExtractor(viewable.index);
     if (!info) {
@@ -318,53 +321,52 @@ class VirtualizedSectionList/*:: <
       ...viewable,
       index: info.index,
       key,
-      section: info.section,
+      section: info.section
     };
   };
 
-  _onViewableItemsChanged = ({
-    viewableItems,
-    changed,
-  }/*: {
+  _onViewableItemsChanged = (
+    { viewableItems, changed } /*: {
     viewableItems: Array<ViewToken>,
     changed: Array<ViewToken>,
     ...
-  } */) => {
+  } */
+  ) => {
     const onViewableItemsChanged = this.props.onViewableItemsChanged;
     if (onViewableItemsChanged != null) {
       onViewableItemsChanged({
         viewableItems: viewableItems
           .map(this._convertViewable, this)
           .filter(Boolean),
-        changed: changed.map(this._convertViewable, this).filter(Boolean),
+        changed: changed.map(this._convertViewable, this).filter(Boolean)
       });
     }
   };
 
   _renderItem =
-    (listItemCount/*: number */)/*: $FlowFixMe */ =>
+    (listItemCount /*: number */) /*: $FlowFixMe */ =>
     // eslint-disable-next-line react/no-unstable-nested-components
-    ({item, index}/*: {item: Item, index: number, ...} */) => {
+    ({ item, index } /*: {item: Item, index: number, ...} */) => {
       const info = this._subExtractor(index);
       if (!info) {
         return null;
       }
       const infoIndex = info.index;
       if (infoIndex == null) {
-        const {section} = info;
+        const { section } = info;
         if (info.header === true) {
-          const {renderSectionHeader} = this.props;
-          return renderSectionHeader ? renderSectionHeader({section}) : null;
+          const { renderSectionHeader } = this.props;
+          return renderSectionHeader ? renderSectionHeader({ section }) : null;
         } else {
-          const {renderSectionFooter} = this.props;
-          return renderSectionFooter ? renderSectionFooter({section}) : null;
+          const { renderSectionFooter } = this.props;
+          return renderSectionFooter ? renderSectionFooter({ section }) : null;
         }
       } else {
         const renderItem = info.section.renderItem || this.props.renderItem;
         const SeparatorComponent = this._getSeparatorComponent(
           index,
           info,
-          listItemCount,
+          listItemCount
         );
         invariant(renderItem, 'no renderItem!');
         return (
@@ -395,14 +397,14 @@ class VirtualizedSectionList/*:: <
       }
     };
 
-  _updatePropsFor = (cellKey/*: string */, value/*: any */) => {
+  _updatePropsFor = (cellKey /*: string */, value /*: any */) => {
     const updateProps = this._updatePropsMap[cellKey];
     if (updateProps != null) {
       updateProps(value);
     }
   };
 
-  _updateHighlightFor = (cellKey/*: string */, value/*: boolean */) => {
+  _updateHighlightFor = (cellKey /*: string */, value /*: boolean */) => {
     const updateHighlight = this._updateHighlightMap[cellKey];
     if (updateHighlight != null) {
       updateHighlight(value);
@@ -410,8 +412,8 @@ class VirtualizedSectionList/*:: <
   };
 
   _setUpdateHighlightFor = (
-    cellKey/*: string */,
-    updateHighlightFn/*: ?(boolean) => void */,
+    cellKey /*: string */,
+    updateHighlightFn /*: ?(boolean) => void */
   ) => {
     if (updateHighlightFn != null) {
       this._updateHighlightMap[cellKey] = updateHighlightFn;
@@ -421,7 +423,10 @@ class VirtualizedSectionList/*:: <
     }
   };
 
-  _setUpdatePropsFor = (cellKey/*: string */, updatePropsFn/*: ?(boolean) => void */) => {
+  _setUpdatePropsFor = (
+    cellKey /*: string */,
+    updatePropsFn /*: ?(boolean) => void */
+  ) => {
     if (updatePropsFn != null) {
       this._updatePropsMap[cellKey] = updatePropsFn;
     } else {
@@ -430,17 +435,17 @@ class VirtualizedSectionList/*:: <
   };
 
   _getSeparatorComponent(
-    index/*: number */,
-    info/*:: ?: ?Object */,
-    listItemCount/*: number */,
-  )/*: ?React.ComponentType<any> */ {
+    index /*: number */,
+    info /*:: ?: ?Object */,
+    listItemCount /*: number */
+  ) /*: ?React.ComponentType<any> */ {
     info = info || this._subExtractor(index);
     if (!info) {
       return null;
     }
     const ItemSeparatorComponent =
       info.section.ItemSeparatorComponent || this.props.ItemSeparatorComponent;
-    const {SectionSeparatorComponent} = this.props;
+    const { SectionSeparatorComponent } = this.props;
     const isLastItemInList = index === listItemCount - 1;
     const isLastItemInSection =
       info.index === this.props.getItemCount(info.section.data) - 1;
@@ -453,10 +458,12 @@ class VirtualizedSectionList/*:: <
     return null;
   }
 
-  _updateHighlightMap/*: {[string]: (boolean) => void} */ = {};
-  _updatePropsMap/*: {[string]: void | (boolean => void)} */ = {};
-  _listRef/*: ?React.ElementRef<typeof VirtualizedList> */;
-  _captureRef = (ref/*: null | React$ElementRef<Class<VirtualizedList>> */) => {
+  _updateHighlightMap /*: {[string]: (boolean) => void} */ = {};
+  _updatePropsMap /*: {[string]: void | (boolean => void)} */ = {};
+  _listRef /*: ?React.ElementRef<typeof VirtualizedList> */;
+  _captureRef = (
+    ref /*: null | React$ElementRef<Class<VirtualizedList>> */
+  ) => {
     this._listRef = ref;
   };
 }
@@ -491,7 +498,9 @@ class VirtualizedSectionList/*:: <
   inverted: boolean,
 |}>; */
 
-function ItemWithSeparator(props/*: ItemWithSeparatorProps */)/*: React.Node */ {
+function ItemWithSeparator(
+  props /*: ItemWithSeparatorProps */
+) /*: React.Node */ {
   const {
     LeadingSeparatorComponent,
     // this is the trailing separator and is associated with this item
@@ -505,7 +514,7 @@ function ItemWithSeparator(props/*: ItemWithSeparatorProps */)/*: React.Node */ 
     item,
     index,
     section,
-    inverted,
+    inverted
   } = props;
 
   const [leadingSeparatorHiglighted, setLeadingSeparatorHighlighted] =
@@ -518,14 +527,14 @@ function ItemWithSeparator(props/*: ItemWithSeparatorProps */)/*: React.Node */ 
     leadingSection: props.leadingSection,
     section: props.section,
     trailingItem: props.item,
-    trailingSection: props.trailingSection,
+    trailingSection: props.trailingSection
   });
   const [separatorProps, setSeparatorProps] = React.useState({
     leadingItem: props.item,
     leadingSection: props.leadingSection,
     section: props.section,
     trailingItem: props.trailingItem,
-    trailingSection: props.trailingSection,
+    trailingSection: props.trailingSection
   });
 
   React.useEffect(() => {
@@ -541,7 +550,7 @@ function ItemWithSeparator(props/*: ItemWithSeparatorProps */)/*: React.Node */ 
     cellKey,
     setSelfHighlightCallback,
     setSeparatorProps,
-    setSelfUpdatePropsCallback,
+    setSelfUpdatePropsCallback
   ]);
 
   const separators = {
@@ -560,26 +569,29 @@ function ItemWithSeparator(props/*: ItemWithSeparatorProps */)/*: React.Node */ 
       }
     },
     updateProps: (
-      select/*: 'leading' | 'trailing' */,
-      newProps/*: $Shape<ItemWithSeparatorCommonProps> */,
+      select /*: 'leading' | 'trailing' */,
+      newProps /*: $Shape<ItemWithSeparatorCommonProps> */
     ) => {
       if (select === 'leading') {
         if (LeadingSeparatorComponent != null) {
-          setLeadingSeparatorProps({...leadingSeparatorProps, ...newProps});
+          setLeadingSeparatorProps({ ...leadingSeparatorProps, ...newProps });
         } else if (prevCellKey != null) {
           // update the previous item's separator
-          updatePropsFor(prevCellKey, {...leadingSeparatorProps, ...newProps});
+          updatePropsFor(prevCellKey, {
+            ...leadingSeparatorProps,
+            ...newProps
+          });
         }
       } else if (select === 'trailing' && SeparatorComponent != null) {
-        setSeparatorProps({...separatorProps, ...newProps});
+        setSeparatorProps({ ...separatorProps, ...newProps });
       }
-    },
+    }
   };
   const element = props.renderItem({
     item,
     index,
     section,
-    separators,
+    separators
   });
   const leadingSeparator = LeadingSeparatorComponent != null && (
     <LeadingSeparatorComponent
@@ -607,11 +619,11 @@ function ItemWithSeparator(props/*: ItemWithSeparatorProps */)/*: React.Node */ 
 /* $FlowFixMe[class-object-subtyping] added when improving typing for this
  * parameters */
 // $FlowFixMe[method-unbinding]
-export default (VirtualizedSectionList/*: React.AbstractComponent<
+export default VirtualizedSectionList /*: React.AbstractComponent<
   React.ElementConfig<typeof VirtualizedSectionList>,
   $ReadOnly<{
     getListRef: () => ?React.ElementRef<typeof VirtualizedList>,
     scrollToLocation: (params: ScrollToLocationParamsType) => void,
     ...
   }>,
-> */);
+> */;

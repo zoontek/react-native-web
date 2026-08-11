@@ -27,9 +27,9 @@ import View from './components/AnimatedView';
 import AnimatedMock from './AnimatedMock';
 import AnimatedImplementation from './AnimatedImplementation';
 
-const Animated = ((Platform.isTesting
+const Animated = Platform.isTesting
   ? AnimatedMock
-  : AnimatedImplementation)/*: typeof AnimatedMock */);
+  : AnimatedImplementation; /*: typeof AnimatedMock */
 
 export default {
   FlatList,
@@ -38,5 +38,5 @@ export default {
   SectionList,
   Text,
   View,
-  ...Animated,
+  ...Animated
 };

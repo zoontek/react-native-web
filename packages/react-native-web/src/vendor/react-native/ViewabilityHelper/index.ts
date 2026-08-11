@@ -76,14 +76,14 @@ import invariant from 'fbjs/lib/invariant';
  * - Entirely visible on screen
  */
 class ViewabilityHelper {
-  _config/*: ViewabilityConfig */;
-  _hasInteracted/*: boolean */ = false;
-  _timers/*: Set<number> */ = new Set();
-  _viewableIndices/*: Array<number> */ = [];
-  _viewableItems/*: Map<string, ViewToken> */ = new Map();
+  _config /*: ViewabilityConfig */;
+  _hasInteracted /*: boolean */ = false;
+  _timers /*: Set<number> */ = new Set();
+  _viewableIndices /*: Array<number> */ = [];
+  _viewableItems /*: Map<string, ViewToken> */ = new Map();
 
   constructor(
-    config/*: ViewabilityConfig */ = {viewAreaCoveragePercentThreshold: 0},
+    config /*: ViewabilityConfig */ = { viewAreaCoveragePercentThreshold: 0 }
   ) {
     this._config = config;
   }
@@ -102,10 +102,10 @@ class ViewabilityHelper {
    * Determines which items are viewable based on the current metrics and config.
    */
   computeViewableItems(
-    props/*: FrameMetricProps */,
-    scrollOffset/*: number */,
-    viewportHeight/*: number */,
-    getFrameMetrics/*: (
+    props /*: FrameMetricProps */,
+    scrollOffset /*: number */,
+    viewportHeight /*: number */,
+    getFrameMetrics /*: (
       index: number,
       props: FrameMetricProps,
     ) => ?{
@@ -114,14 +114,14 @@ class ViewabilityHelper {
       ...
     } */,
     // Optional optimization to reduce the scan size
-    renderRange/*:: ?: {
+    renderRange /*:: ?: {
       first: number,
       last: number,
       ...
-    } */,
-  )/*: Array<number> */ {
+    } */
+  ) /*: Array<number> */ {
     const itemCount = props.getItemCount(props.data);
-    const {itemVisiblePercentThreshold, viewAreaCoveragePercentThreshold} =
+    const { itemVisiblePercentThreshold, viewAreaCoveragePercentThreshold } =
       this._config;
     const viewAreaMode = viewAreaCoveragePercentThreshold != null;
     const viewablePercentThreshold = viewAreaMode
@@ -131,18 +131,18 @@ class ViewabilityHelper {
       viewablePercentThreshold != null &&
         (itemVisiblePercentThreshold != null) !==
           (viewAreaCoveragePercentThreshold != null),
-      'Must set exactly one of itemVisiblePercentThreshold or viewAreaCoveragePercentThreshold',
+      'Must set exactly one of itemVisiblePercentThreshold or viewAreaCoveragePercentThreshold'
     );
     const viewableIndices = [];
     if (itemCount === 0) {
       return viewableIndices;
     }
     let firstVisible = -1;
-    const {first, last} = renderRange || {first: 0, last: itemCount - 1};
+    const { first, last } = renderRange || { first: 0, last: itemCount - 1 };
     if (last >= itemCount) {
       console.warn(
         'Invalid render range computing viewability ' +
-          JSON.stringify({renderRange, itemCount}),
+          JSON.stringify({ renderRange, itemCount })
       );
       return [];
     }
@@ -162,7 +162,7 @@ class ViewabilityHelper {
             top,
             bottom,
             viewportHeight,
-            metrics.length,
+            metrics.length
           )
         ) {
           viewableIndices.push(idx);
@@ -179,10 +179,10 @@ class ViewabilityHelper {
    * `onViewableItemsChanged` as appropriate.
    */
   onUpdate(
-    props/*: FrameMetricProps */,
-    scrollOffset/*: number */,
-    viewportHeight/*: number */,
-    getFrameMetrics/*: (
+    props /*: FrameMetricProps */,
+    scrollOffset /*: number */,
+    viewportHeight /*: number */,
+    getFrameMetrics /*: (
       index: number,
       props: FrameMetricProps,
     ) => ?{
@@ -190,23 +190,23 @@ class ViewabilityHelper {
       offset: number,
       ...
     } */,
-    createViewToken/*: (
+    createViewToken /*: (
       index: number,
       isViewable: boolean,
       props: FrameMetricProps,
     ) => ViewToken */,
-    onViewableItemsChanged/*: ({
+    onViewableItemsChanged /*: ({
       viewableItems: Array<ViewToken>,
       changed: Array<ViewToken>,
       ...
     }) => void */,
     // Optional optimization to reduce the scan size
-    renderRange/*:: ?: {
+    renderRange /*:: ?: {
       first: number,
       last: number,
       ...
-    } */,
-  )/*: void */ {
+    } */
+  ) /*: void */ {
     const itemCount = props.getItemCount(props.data);
     if (
       (this._config.waitForInteraction && !this._hasInteracted) ||
@@ -215,14 +215,14 @@ class ViewabilityHelper {
     ) {
       return;
     }
-    let viewableIndices/*: Array<number> */ = [];
+    let viewableIndices /*: Array<number> */ = [];
     if (itemCount) {
       viewableIndices = this.computeViewableItems(
         props,
         scrollOffset,
         viewportHeight,
         getFrameMetrics,
-        renderRange,
+        renderRange
       );
     }
     if (
@@ -235,7 +235,7 @@ class ViewabilityHelper {
     }
     this._viewableIndices = viewableIndices;
     if (this._config.minimumViewTime) {
-      const handle/*: TimeoutID */ = setTimeout(() => {
+      const handle /*: TimeoutID */ = setTimeout(() => {
         /* $FlowFixMe[incompatible-call] (>=0.63.0 site=react_native_fb) This
          * comment suppresses an error found when Flow v0.63 was deployed. To
          * see the error delete this comment and run Flow. */
@@ -244,7 +244,7 @@ class ViewabilityHelper {
           props,
           viewableIndices,
           onViewableItemsChanged,
-          createViewToken,
+          createViewToken
         );
       }, this._config.minimumViewTime);
       /* $FlowFixMe[incompatible-call] (>=0.63.0 site=react_native_fb) This
@@ -256,7 +256,7 @@ class ViewabilityHelper {
         props,
         viewableIndices,
         onViewableItemsChanged,
-        createViewToken,
+        createViewToken
       );
     }
   }
@@ -276,29 +276,29 @@ class ViewabilityHelper {
   }
 
   _onUpdateSync(
-    props/*: FrameMetricProps */,
-    viewableIndicesToCheck/*: Array<number> */,
-    onViewableItemsChanged/*: ({
+    props /*: FrameMetricProps */,
+    viewableIndicesToCheck /*: Array<number> */,
+    onViewableItemsChanged /*: ({
       changed: Array<ViewToken>,
       viewableItems: Array<ViewToken>,
       ...
     }) => void */,
-    createViewToken/*: (
+    createViewToken /*: (
       index: number,
       isViewable: boolean,
       props: FrameMetricProps,
-    ) => ViewToken */,
+    ) => ViewToken */
   ) {
     // Filter out indices that have gone out of view since this call was scheduled.
-    viewableIndicesToCheck = viewableIndicesToCheck.filter(ii =>
-      this._viewableIndices.includes(ii),
+    viewableIndicesToCheck = viewableIndicesToCheck.filter((ii) =>
+      this._viewableIndices.includes(ii)
     );
     const prevItems = this._viewableItems;
     const nextItems = new Map(
-      viewableIndicesToCheck.map(ii => {
+      viewableIndicesToCheck.map((ii) => {
         const viewable = createViewToken(ii, true, props);
         return [viewable.key, viewable];
-      }),
+      })
     );
 
     const changed = [];
@@ -309,7 +309,7 @@ class ViewabilityHelper {
     }
     for (const [key, viewable] of prevItems) {
       if (!nextItems.has(key)) {
-        changed.push({...viewable, isViewable: false});
+        changed.push({ ...viewable, isViewable: false });
       }
     }
     if (changed.length > 0) {
@@ -317,20 +317,20 @@ class ViewabilityHelper {
       onViewableItemsChanged({
         viewableItems: Array.from(nextItems.values()),
         changed,
-        viewabilityConfig: this._config,
+        viewabilityConfig: this._config
       });
     }
   }
 }
 
 function _isViewable(
-  viewAreaMode/*: boolean */,
-  viewablePercentThreshold/*: number */,
-  top/*: number */,
-  bottom/*: number */,
-  viewportHeight/*: number */,
-  itemLength/*: number */,
-)/*: boolean */ {
+  viewAreaMode /*: boolean */,
+  viewablePercentThreshold /*: number */,
+  top /*: number */,
+  bottom /*: number */,
+  viewportHeight /*: number */,
+  itemLength /*: number */
+) /*: boolean */ {
   if (_isEntirelyVisible(top, bottom, viewportHeight)) {
     return true;
   } else {
@@ -342,19 +342,19 @@ function _isViewable(
 }
 
 function _getPixelsVisible(
-  top/*: number */,
-  bottom/*: number */,
-  viewportHeight/*: number */,
-)/*: number */ {
+  top /*: number */,
+  bottom /*: number */,
+  viewportHeight /*: number */
+) /*: number */ {
   const visibleHeight = Math.min(bottom, viewportHeight) - Math.max(top, 0);
   return Math.max(0, visibleHeight);
 }
 
 function _isEntirelyVisible(
-  top/*: number */,
-  bottom/*: number */,
-  viewportHeight/*: number */,
-)/*: boolean */ {
+  top /*: number */,
+  bottom /*: number */,
+  viewportHeight /*: number */
+) /*: boolean */ {
   return top >= 0 && bottom <= viewportHeight && bottom > top;
 }
 

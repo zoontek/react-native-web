@@ -15,25 +15,25 @@ import AnimatedValue from './AnimatedValue';
 import AnimatedNode from './AnimatedNode';
 import {
   generateNewAnimationId,
-  shouldUseNativeDriver,
+  shouldUseNativeDriver
 } from '../NativeAnimatedHelper';
 
 /*:: import type {EndCallback} from '../animations/Animation'; */
 
 class AnimatedTracking extends AnimatedNode {
-  _value/*: AnimatedValue */;
-  _parent/*: AnimatedNode */;
-  _callback/*: ?EndCallback */;
-  _animationConfig/*: Object */;
-  _animationClass/*: any */;
-  _useNativeDriver/*: boolean */;
+  _value /*: AnimatedValue */;
+  _parent /*: AnimatedNode */;
+  _callback /*: ?EndCallback */;
+  _animationConfig /*: Object */;
+  _animationClass /*: any */;
+  _useNativeDriver /*: boolean */;
 
   constructor(
-    value/*: AnimatedValue */,
-    parent/*: AnimatedNode */,
-    animationClass/*: any */,
-    animationConfig/*: Object */,
-    callback/*:: ?: ?EndCallback */,
+    value /*: AnimatedValue */,
+    parent /*: AnimatedNode */,
+    animationClass /*: any */,
+    animationConfig /*: Object */,
+    callback /*:: ?: ?EndCallback */
   ) {
     super();
     this._value = value;
@@ -52,11 +52,11 @@ class AnimatedTracking extends AnimatedNode {
     this._value.__makeNative();
   }
 
-  __getValue()/*: Object */ {
+  __getValue() /*: Object */ {
     return this._parent.__getValue();
   }
 
-  __attach()/*: void */ {
+  __attach() /*: void */ {
     this._parent.__addChild(this);
     if (this._useNativeDriver) {
       // when the tracking starts we need to convert this node to a "native node"
@@ -68,26 +68,27 @@ class AnimatedTracking extends AnimatedNode {
     }
   }
 
-  __detach()/*: void */ {
+  __detach() /*: void */ {
     this._parent.__removeChild(this);
     super.__detach();
   }
 
-  update()/*: void */ {
+  update() /*: void */ {
     this._value.animate(
       new this._animationClass({
         ...this._animationConfig,
-        toValue: (this._animationConfig.toValue/*: any */).__getValue(),
+        toValue: this._animationConfig.toValue /*: any */
+          .__getValue()
       }),
-      this._callback,
+      this._callback
     );
   }
 
-  __getNativeConfig()/*: any */ {
+  __getNativeConfig() /*: any */ {
     const animation = new this._animationClass({
       ...this._animationConfig,
       // remove toValue from the config as it's a ref to Animated.Value
-      toValue: undefined,
+      toValue: undefined
     });
     const animationConfig = animation.__getNativeAnimationConfig();
     return {
@@ -95,7 +96,7 @@ class AnimatedTracking extends AnimatedNode {
       animationId: generateNewAnimationId(),
       animationConfig,
       toValue: this._parent.__getNativeTag(),
-      value: this._value.__getNativeTag(),
+      value: this._value.__getNativeTag()
     };
   }
 }

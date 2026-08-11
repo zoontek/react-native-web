@@ -43,49 +43,53 @@ const __DEV__ = process.env.NODE_ENV !== 'production';
 |}>; */
 
 function configureNext(
-  config/*: LayoutAnimationConfig */,
-  onAnimationDidEnd/*:: ?: Function */,
+  config /*: LayoutAnimationConfig */,
+  onAnimationDidEnd /*:: ?: Function */
 ) {
   if (!Platform.isTesting) {
     UIManager.configureNextLayoutAnimation(
       config,
-      onAnimationDidEnd ?? function() {},
-      function() {} /* unused onError */,
+      onAnimationDidEnd ?? function () {},
+      function () {} /* unused onError */
     );
   }
 }
 
 function create(
-  duration/*: number */,
-  type/*: Type */,
-  property/*: Property */,
-)/*: LayoutAnimationConfig */ {
+  duration /*: number */,
+  type /*: Type */,
+  property /*: Property */
+) /*: LayoutAnimationConfig */ {
   return {
     duration,
-    create: {type, property},
-    update: {type},
-    delete: {type, property},
+    create: { type, property },
+    update: { type },
+    delete: { type, property }
   };
 }
 
 const Presets = {
-  easeInEaseOut: (create(300, 'easeInEaseOut', 'opacity')/*: LayoutAnimationConfig */),
-  linear: (create(500, 'linear', 'opacity')/*: LayoutAnimationConfig */),
+  easeInEaseOut: create(
+    300,
+    'easeInEaseOut',
+    'opacity'
+  ) /*: LayoutAnimationConfig */,
+  linear: create(500, 'linear', 'opacity') /*: LayoutAnimationConfig */,
   spring: {
     duration: 700,
     create: {
       type: 'linear',
-      property: 'opacity',
+      property: 'opacity'
     },
     update: {
       type: 'spring',
-      springDamping: 0.4,
+      springDamping: 0.4
     },
     delete: {
       type: 'linear',
-      property: 'opacity',
-    },
-  },
+      property: 'opacity'
+    }
+  }
 };
 
 /**
@@ -123,21 +127,30 @@ const LayoutAnimation = {
     easeInEaseOut: 'easeInEaseOut',
     easeIn: 'easeIn',
     easeOut: 'easeOut',
-    keyboard: 'keyboard',
+    keyboard: 'keyboard'
   }),
   Properties: Object.freeze({
     opacity: 'opacity',
     scaleX: 'scaleX',
     scaleY: 'scaleY',
-    scaleXY: 'scaleXY',
+    scaleXY: 'scaleXY'
   }),
-  checkConfig(...args/*: Array<mixed> */) {
+  checkConfig(...args /*: Array<mixed> */) {
     console.error('LayoutAnimation.checkConfig(...) has been disabled.');
   },
   Presets,
-  easeInEaseOut: (configureNext.bind(null, Presets.easeInEaseOut)/*: (onAnimationDidEnd?: any) => void */),
-  linear: (configureNext.bind(null, Presets.linear)/*: (onAnimationDidEnd?: any) => void */),
-  spring: (configureNext.bind(null, Presets.spring)/*: (onAnimationDidEnd?: any) => void */),
+  easeInEaseOut: configureNext.bind(
+    null,
+    Presets.easeInEaseOut
+  ) /*: (onAnimationDidEnd?: any) => void */,
+  linear: configureNext.bind(
+    null,
+    Presets.linear
+  ) /*: (onAnimationDidEnd?: any) => void */,
+  spring: configureNext.bind(
+    null,
+    Presets.spring
+  ) /*: (onAnimationDidEnd?: any) => void */
 };
 
 export default LayoutAnimation;

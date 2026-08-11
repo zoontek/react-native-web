@@ -16,7 +16,7 @@ import NativeAnimatedHelper from './NativeAnimatedHelper';
 
 import invariant from 'fbjs/lib/invariant';
 
-import {shouldUseNativeDriver}from  './NativeAnimatedHelper';
+import { shouldUseNativeDriver } from './NativeAnimatedHelper';
 
 /*:: export type Mapping = {[key: string]: Mapping, ...} | AnimatedValue; */
 /*:: export type EventConfig = {
@@ -27,10 +27,10 @@ import {shouldUseNativeDriver}from  './NativeAnimatedHelper';
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
 export function attachNativeEvent(
-  viewRef/*: any */,
-  eventName/*: string */,
-  argMapping/*: $ReadOnlyArray<?Mapping> */,
-)/*: {detach: () => void} */ {
+  viewRef /*: any */,
+  eventName /*: string */,
+  argMapping /*: $ReadOnlyArray<?Mapping> */
+) /*: {detach: () => void} */ {
   // Find animated values in `argMapping` and create an array representing their
   // key path inside the `nativeEvent` object. Ex.: ['contentOffset', 'x'].
   const eventMappings = [];
@@ -41,7 +41,7 @@ export function attachNativeEvent(
 
       eventMappings.push({
         nativeEventPath: path,
-        animatedValueTag: value.__getNativeTag(),
+        animatedValueTag: value.__getNativeTag()
       });
     } else if (typeof value === 'object') {
       for (const key in value) {
@@ -52,18 +52,18 @@ export function attachNativeEvent(
 
   invariant(
     argMapping[0] && argMapping[0].nativeEvent,
-    'Native driven events only support animated values contained inside `nativeEvent`.',
+    'Native driven events only support animated values contained inside `nativeEvent`.'
   );
 
   // Assume that the event containing `nativeEvent` is always the first argument.
   traverse(argMapping[0].nativeEvent, []);
 
   if (viewRef != null) {
-    eventMappings.forEach(mapping => {
+    eventMappings.forEach((mapping) => {
       NativeAnimatedHelper.API.addAnimatedEventToView(
         viewRef,
         eventName,
-        mapping,
+        mapping
       );
     });
   }
@@ -71,16 +71,16 @@ export function attachNativeEvent(
   return {
     detach() {
       if (viewRef != null) {
-        eventMappings.forEach(mapping => {
+        eventMappings.forEach((mapping) => {
           NativeAnimatedHelper.API.removeAnimatedEventFromView(
             viewRef,
             eventName,
             // $FlowFixMe[incompatible-call]
-            mapping.animatedValueTag,
+            mapping.animatedValueTag
           );
         });
       }
-    },
+    }
   };
 }
 
@@ -92,7 +92,7 @@ function validateMapping(argMapping, args) {
         'Bad mapping of event key ' +
           key +
           ', should be number but got ' +
-          typeof recEvt,
+          typeof recEvt
       );
       return;
     }
@@ -103,17 +103,17 @@ function validateMapping(argMapping, args) {
           typeof recMapping +
           ' for key ' +
           key +
-          ', event value must map to AnimatedValue',
+          ', event value must map to AnimatedValue'
       );
       return;
     }
     invariant(
       typeof recMapping === 'object',
-      'Bad mapping of type ' + typeof recMapping + ' for key ' + key,
+      'Bad mapping of type ' + typeof recMapping + ' for key ' + key
     );
     invariant(
       typeof recEvt === 'object',
-      'Bad event of type ' + typeof recEvt + ' for key ' + key,
+      'Bad event of type ' + typeof recEvt + ' for key ' + key
     );
     for (const mappingKey in recMapping) {
       validate(recMapping[mappingKey], recEvt[mappingKey], mappingKey);
@@ -122,7 +122,7 @@ function validateMapping(argMapping, args) {
 
   invariant(
     args.length >= argMapping.length,
-    'Event has less arguments than mapping',
+    'Event has less arguments than mapping'
   );
   argMapping.forEach((mapping, idx) => {
     validate(mapping, args[idx], 'arg' + idx);
@@ -130,18 +130,21 @@ function validateMapping(argMapping, args) {
 }
 
 export class AnimatedEvent {
-  _argMapping/*: $ReadOnlyArray<?Mapping> */;
-  _listeners/*: Array<Function> */ = [];
-  _callListeners/*: Function */;
-  _attachedEvent/*: ?{detach: () => void, ...} */;
-  __isNative/*: boolean */;
+  _argMapping /*: $ReadOnlyArray<?Mapping> */;
+  _listeners /*: Array<Function> */ = [];
+  _callListeners /*: Function */;
+  _attachedEvent /*: ?{detach: () => void, ...} */;
+  __isNative /*: boolean */;
 
-  constructor(argMapping/*: $ReadOnlyArray<?Mapping> */, config/*: EventConfig */) {
+  constructor(
+    argMapping /*: $ReadOnlyArray<?Mapping> */,
+    config /*: EventConfig */
+  ) {
     this._argMapping = argMapping;
 
     if (config == null) {
       console.warn('Animated.event now requires a second argument for options');
-      config = {useNativeDriver: false};
+      config = { useNativeDriver: false };
     }
 
     if (config.listener) {
@@ -152,41 +155,43 @@ export class AnimatedEvent {
     this.__isNative = shouldUseNativeDriver(config);
   }
 
-  __addListener(callback/*: Function */)/*: void */ {
+  __addListener(callback /*: Function */) /*: void */ {
     this._listeners.push(callback);
   }
 
-  __removeListener(callback/*: Function */)/*: void */ {
-    this._listeners = this._listeners.filter(listener => listener !== callback);
+  __removeListener(callback /*: Function */) /*: void */ {
+    this._listeners = this._listeners.filter(
+      (listener) => listener !== callback
+    );
   }
 
-  __attach(viewRef/*: any */, eventName/*: string */) {
+  __attach(viewRef /*: any */, eventName /*: string */) {
     invariant(
       this.__isNative,
-      'Only native driven events need to be attached.',
+      'Only native driven events need to be attached.'
     );
 
     this._attachedEvent = attachNativeEvent(
       viewRef,
       eventName,
-      this._argMapping,
+      this._argMapping
     );
   }
 
-  __detach(viewTag/*: any */, eventName/*: string */) {
+  __detach(viewTag /*: any */, eventName /*: string */) {
     invariant(
       this.__isNative,
-      'Only native driven events need to be detached.',
+      'Only native driven events need to be detached.'
     );
 
     this._attachedEvent && this._attachedEvent.detach();
   }
 
-  __getHandler()/*: ((...args: any) => void) */ {
+  __getHandler() /*: ((...args: any) => void) */ {
     if (this.__isNative) {
       if (__DEV__) {
         let validatedMapping = false;
-        return (...args/*: any */) => {
+        return (...args /*: any */) => {
           if (!validatedMapping) {
             validateMapping(this._argMapping, args);
             validatedMapping = true;
@@ -199,7 +204,7 @@ export class AnimatedEvent {
     }
 
     let validatedMapping = false;
-    return (...args/*: any */) => {
+    return (...args /*: any */) => {
       if (__DEV__ && !validatedMapping) {
         validateMapping(this._argMapping, args);
         validatedMapping = true;
@@ -227,7 +232,7 @@ export class AnimatedEvent {
     };
   }
 
-  _callListeners(...args/*: any */) {
-    this._listeners.forEach(listener => listener(...args));
+  _callListeners(...args /*: any */) {
+    this._listeners.forEach((listener) => listener(...args));
   }
 }
