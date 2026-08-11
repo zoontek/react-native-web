@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import createEvent from './createEvent';
 import {
   buttonType,
   buttonsType,
-  defaultPointerSize,
-  defaultBrowserChromeSize
+  defaultBrowserChromeSize,
+  defaultPointerSize
 } from './constants';
+import createEvent, { type EventPayload } from './createEvent';
+import type { Touch } from './touchStore';
 
 /**
  * Native event object mocks for higher-level events.
@@ -30,9 +29,67 @@ import {
  * 3. PointerEvent and TouchEvent fields are normalized (e.g., 'rotationAngle' -> 'twist')
  */
 
+export type PointerType = 'mouse' | 'pen' | 'touch';
+
+type ModifierStatePayload = {
+  altKey?: boolean;
+  ctrlKey?: boolean;
+  metaKey?: boolean;
+  shiftKey?: boolean;
+};
+
+export type FocusEventPayload = {
+  relatedTarget?: Node | null;
+};
+
+export type KeyboardEventPayload = ModifierStatePayload & {
+  isComposing?: boolean;
+  key?: string;
+  preventDefault?: () => void;
+};
+
+export type MouseEventPayload = ModifierStatePayload & {
+  button?: number;
+  buttons?: number;
+  detail?: number;
+  movementX?: number;
+  movementY?: number;
+  offsetX?: number;
+  offsetY?: number;
+  pageX?: number;
+  pageY?: number;
+  preventDefault?: () => void;
+  relatedTarget?: Node | null;
+  screenX?: number;
+  screenY?: number;
+  timeStamp?: number;
+  x?: number;
+  y?: number;
+};
+
+export type PointerEventPayload = MouseEventPayload & {
+  height?: number;
+  pointerId?: number;
+  pointerType?: PointerType;
+  pressure?: number;
+  tangentialPressure?: number;
+  tiltX?: number;
+  tiltY?: number;
+  twist?: number;
+  width?: number;
+};
+
+export type TouchEventPayload = ModifierStatePayload & {
+  changedTouches: Touch[];
+  preventDefault?: () => void;
+  targetTouches: Touch[];
+  timeStamp?: number;
+  touches: Touch[];
+};
+
 function emptyFunction() {}
 
-function createGetModifierState(keyArg, data) {
+function createGetModifierState(keyArg: string, data: ModifierStatePayload) {
   if (keyArg === 'Alt') {
     return data.altKey || false;
   }
@@ -52,7 +109,7 @@ function createGetModifierState(keyArg, data) {
  */
 
 function createKeyboardEvent(
-  type,
+  type: string,
   {
     altKey = false,
     ctrlKey = false,
@@ -61,14 +118,14 @@ function createKeyboardEvent(
     metaKey = false,
     preventDefault = emptyFunction,
     shiftKey = false
-  } = {}
+  }: KeyboardEventPayload = {}
 ) {
   const modifierState = { altKey, ctrlKey, metaKey, shiftKey };
 
-  const eventPayload = {
+  const eventPayload: EventPayload = {
     altKey,
     ctrlKey,
-    getModifierState(keyArg) {
+    getModifierState(keyArg: string) {
       return createGetModifierState(keyArg, modifierState);
     },
     isComposing,
@@ -90,7 +147,7 @@ function createKeyboardEvent(
  */
 
 function createMouseEvent(
-  type,
+  type: string,
   {
     altKey = false,
     button = buttonType.none,
@@ -112,7 +169,7 @@ function createMouseEvent(
     timeStamp,
     x = 0,
     y = 0
-  } = {}
+  }: MouseEventPayload = {}
 ) {
   const modifierState = { altKey, ctrlKey, metaKey, shiftKey };
 
@@ -124,7 +181,7 @@ function createMouseEvent(
     clientY: y,
     ctrlKey,
     detail,
-    getModifierState(keyArg) {
+    getModifierState(keyArg: string) {
       return createGetModifierState(keyArg, modifierState);
     },
     metaKey,
@@ -148,7 +205,7 @@ function createMouseEvent(
  */
 
 function createPointerEvent(
-  type,
+  type: string,
   {
     altKey = false,
     button = buttonType.none,
@@ -179,7 +236,7 @@ function createPointerEvent(
     width,
     x = 0,
     y = 0
-  } = {}
+  }: PointerEventPayload = {}
 ) {
   const modifierState = { altKey, ctrlKey, metaKey, shiftKey };
   const isMouse = pointerType === 'mouse';
@@ -192,7 +249,7 @@ function createPointerEvent(
     clientY: y,
     ctrlKey,
     detail,
-    getModifierState(keyArg) {
+    getModifierState(keyArg: string) {
       return createGetModifierState(keyArg, modifierState);
     },
     height: isMouse ? 1 : height != null ? height : defaultPointerSize,
@@ -226,7 +283,7 @@ function createPointerEvent(
  * TouchEvent
  */
 
-function createTouchEvent(type, payload) {
+function createTouchEvent(type: string, payload: TouchEventPayload) {
   return createEvent(type, {
     ...payload,
     detail: 0,
@@ -240,25 +297,25 @@ function createTouchEvent(type, payload) {
  * DOM events
  */
 
-export function blur({ relatedTarget } = {}) {
+export function blur({ relatedTarget }: FocusEventPayload = {}) {
   return createEvent('blur', { relatedTarget });
 }
 
-export function click(payload) {
+export function click(payload?: MouseEventPayload) {
   return createMouseEvent('click', {
     button: buttonType.primary,
     ...payload
   });
 }
 
-export function contextmenu(payload) {
+export function contextmenu(payload?: MouseEventPayload) {
   return createMouseEvent('contextmenu', {
     ...payload,
     detail: 0
   });
 }
 
-export function dragstart(payload) {
+export function dragstart(payload?: MouseEventPayload) {
   return createMouseEvent('dragstart', {
     ...payload,
     detail: 0
@@ -269,39 +326,39 @@ export function error() {
   return createEvent('error');
 }
 
-export function focus({ relatedTarget } = {}) {
+export function focus({ relatedTarget }: FocusEventPayload = {}) {
   return createEvent('focus', { relatedTarget });
 }
 
-export function focusin({ relatedTarget } = {}) {
+export function focusin({ relatedTarget }: FocusEventPayload = {}) {
   return createEvent('focusin', { relatedTarget });
 }
 
-export function focusout({ relatedTarget } = {}) {
+export function focusout({ relatedTarget }: FocusEventPayload = {}) {
   return createEvent('focusout', { relatedTarget });
 }
 
-export function gotpointercapture(payload) {
+export function gotpointercapture(payload?: PointerEventPayload) {
   return createPointerEvent('gotpointercapture', payload);
 }
 
-export function keydown(payload) {
+export function keydown(payload?: KeyboardEventPayload) {
   return createKeyboardEvent('keydown', payload);
 }
 
-export function keyup(payload) {
+export function keyup(payload?: KeyboardEventPayload) {
   return createKeyboardEvent('keyup', payload);
 }
 
-export function load(payload) {
+export function load(payload?: EventPayload) {
   return createEvent('load', payload);
 }
 
-export function lostpointercapture(payload) {
+export function lostpointercapture(payload?: PointerEventPayload) {
   return createPointerEvent('lostpointercapture', payload);
 }
 
-export function mousedown(payload) {
+export function mousedown(payload?: MouseEventPayload) {
   // The value of 'button' and 'buttons' for 'mousedown' must not be none.
   const button =
     payload != null && payload.button !== buttonType.none
@@ -319,15 +376,15 @@ export function mousedown(payload) {
   });
 }
 
-export function mouseenter(payload) {
+export function mouseenter(payload?: MouseEventPayload) {
   return createMouseEvent('mouseenter', payload);
 }
 
-export function mouseleave(payload) {
+export function mouseleave(payload?: MouseEventPayload) {
   return createMouseEvent('mouseleave', payload);
 }
 
-export function mousemove(payload) {
+export function mousemove(payload?: MouseEventPayload) {
   return createMouseEvent('mousemove', {
     // 0 is also the uninitialized value (i.e., don't assume it means primary button down)
     button: 0,
@@ -336,22 +393,22 @@ export function mousemove(payload) {
   });
 }
 
-export function mouseout(payload) {
+export function mouseout(payload?: MouseEventPayload) {
   return createMouseEvent('mouseout', payload);
 }
 
-export function mouseover(payload) {
+export function mouseover(payload?: MouseEventPayload) {
   return createMouseEvent('mouseover', payload);
 }
 
-export function mouseup(payload) {
+export function mouseup(payload?: MouseEventPayload) {
   return createMouseEvent('mouseup', {
     button: buttonType.primary,
     ...payload,
     buttons: buttonsType.none
   });
 }
-export function pointercancel(payload) {
+export function pointercancel(payload?: PointerEventPayload) {
   return createPointerEvent('pointercancel', {
     ...payload,
     buttons: 0,
@@ -368,7 +425,7 @@ export function pointercancel(payload) {
   });
 }
 
-export function pointerdown(payload) {
+export function pointerdown(payload?: PointerEventPayload) {
   const isTouch = payload != null && payload.pointerType === 'touch';
   return createPointerEvent('pointerdown', {
     button: buttonType.primary,
@@ -378,15 +435,15 @@ export function pointerdown(payload) {
   });
 }
 
-export function pointerenter(payload) {
+export function pointerenter(payload?: PointerEventPayload) {
   return createPointerEvent('pointerenter', payload);
 }
 
-export function pointerleave(payload) {
+export function pointerleave(payload?: PointerEventPayload) {
   return createPointerEvent('pointerleave', payload);
 }
 
-export function pointermove(payload) {
+export function pointermove(payload?: PointerEventPayload) {
   return createPointerEvent('pointermove', {
     ...payload,
     button: buttonType.none,
@@ -394,15 +451,15 @@ export function pointermove(payload) {
   });
 }
 
-export function pointerout(payload) {
+export function pointerout(payload?: PointerEventPayload) {
   return createPointerEvent('pointerout', payload);
 }
 
-export function pointerover(payload) {
+export function pointerover(payload?: PointerEventPayload) {
   return createPointerEvent('pointerover', payload);
 }
 
-export function pointerup(payload) {
+export function pointerup(payload?: PointerEventPayload) {
   return createPointerEvent('pointerup', {
     button: buttonType.primary,
     ...payload,
@@ -411,47 +468,44 @@ export function pointerup(payload) {
   });
 }
 
-export function scroll() {
-  return createEvent('scroll', { bubbles: false });
+export function scroll(payload?: EventPayload) {
+  return createEvent('scroll', { bubbles: false, ...payload });
 }
 
-export function select() {
-  return createEvent('select');
+export function select(payload?: EventPayload) {
+  return createEvent('select', payload);
 }
 
-export function selectionchange() {
-  return createEvent('selectionchange');
+export function selectionchange(payload?: EventPayload) {
+  return createEvent('selectionchange', payload);
 }
 
-export function touchcancel(payload) {
+export function touchcancel(payload: TouchEventPayload) {
   return createTouchEvent('touchcancel', payload);
 }
 
-export function touchend(payload) {
+export function touchend(payload: TouchEventPayload) {
   return createTouchEvent('touchend', payload);
 }
 
-export function touchmove(payload) {
+export function touchmove(payload: TouchEventPayload) {
   return createTouchEvent('touchmove', payload);
 }
 
-export function touchstart(payload) {
+export function touchstart(payload: TouchEventPayload) {
   return createTouchEvent('touchstart', payload);
 }
 
-export function virtualclick(payload) {
+export function virtualclick(payload?: MouseEventPayload) {
   return createMouseEvent('click', {
     button: 0,
     ...payload,
     buttons: 0,
     detail: 0,
-    height: 1,
     pageX: 0,
     pageY: 0,
-    pressure: 0,
     screenX: 0,
     screenY: 0,
-    width: 1,
     x: 0,
     y: 0
   });

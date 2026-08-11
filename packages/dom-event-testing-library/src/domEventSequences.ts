@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -10,23 +8,25 @@
 import {
   buttonType,
   buttonsType,
+  defaultBrowserChromeSize,
   defaultPointerId,
-  defaultPointerSize,
-  defaultBrowserChromeSize
+  defaultPointerSize
 } from './constants';
-import * as domEvents from './domEvents';
 import { hasPointerEvent, platform } from './domEnvironment';
+import type { PointerEventPayload, PointerType } from './domEvents';
+import * as domEvents from './domEvents';
+import type { Touch } from './touchStore';
 import * as touchStore from './touchStore';
 
 /**
  * Converts a PointerEvent payload to a Touch
  */
-function createTouch(target, payload) {
+function createTouch(target: Node, payload: PointerEventPayload): Touch {
   const {
     height = defaultPointerSize,
     pageX,
     pageY,
-    pointerId,
+    pointerId = defaultPointerId,
     pressure = 1,
     twist = 0,
     width = defaultPointerSize,
@@ -53,7 +53,11 @@ function createTouch(target, payload) {
 /**
  * Converts a PointerEvent to a TouchEvent
  */
-function createTouchEventPayload(target, touch, payload) {
+function createTouchEventPayload(
+  target: Node,
+  touch: Touch,
+  payload: PointerEventPayload
+) {
   const {
     altKey = false,
     ctrlKey = false,
@@ -76,8 +80,8 @@ function createTouchEventPayload(target, touch, payload) {
   };
 }
 
-function getPointerType(payload) {
-  let pointerType = 'mouse';
+function getPointerType(payload?: PointerEventPayload): PointerType {
+  let pointerType: PointerType = 'mouse';
   if (payload != null && payload.pointerType != null) {
     pointerType = payload.pointerType;
   }
@@ -105,8 +109,11 @@ function getPointerType(payload) {
  * - 'targetTouches' contains any of the remaining active pointers for the target.
  */
 
-export function contextmenu(target, defaultPayload = {}) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function contextmenu(
+  target: Node,
+  defaultPayload: PointerEventPayload = {}
+) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
   const pointerType = getPointerType(defaultPayload);
 
   const {
@@ -176,8 +183,8 @@ export function contextmenu(target, defaultPayload = {}) {
   }
 }
 
-export function focus(target, defaultPayload = {}) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function focus(target: Node, defaultPayload: PointerEventPayload = {}) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
   const { relatedTarget, ...payload } = defaultPayload;
   const blurPayload = { ...payload, relatedTarget: target };
   const focusPayload = { ...payload, relatedTarget };
@@ -191,8 +198,11 @@ export function focus(target, defaultPayload = {}) {
   dispatch(domEvents.focus(focusPayload));
 }
 
-export function pointercancel(target, defaultPayload) {
-  const dispatchEvent = (arg) => target.dispatchEvent(arg);
+export function pointercancel(
+  target: Node,
+  defaultPayload?: PointerEventPayload
+) {
+  const dispatchEvent = (arg: Event) => target.dispatchEvent(arg);
   const pointerType = getPointerType(defaultPayload);
 
   const payload = {
@@ -214,8 +224,11 @@ export function pointercancel(target, defaultPayload) {
   }
 }
 
-export function pointerdown(target, defaultPayload) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function pointerdown(
+  target: Node,
+  defaultPayload?: PointerEventPayload
+) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
   const pointerType = getPointerType(defaultPayload);
 
   const payload = {
@@ -254,8 +267,11 @@ export function pointerdown(target, defaultPayload) {
   }
 }
 
-export function pointerover(target, defaultPayload) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function pointerover(
+  target: Node,
+  defaultPayload?: PointerEventPayload
+) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
 
   const payload = {
     pointerId: defaultPointerId,
@@ -273,15 +289,15 @@ export function pointerover(target, defaultPayload) {
   dispatch(domEvents.mouseenter(payload));
 }
 
-export function pointerout(target, defaultPayload) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function pointerout(target: Node, defaultPayload?: PointerEventPayload) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
 
   const payload = {
     pointerId: defaultPointerId,
     ...defaultPayload
   };
 
-  const { relatedTarget } = payload;
+  const { relatedTarget = null } = payload;
 
   if (hasPointerEvent()) {
     dispatch(domEvents.pointerout(payload));
@@ -298,8 +314,11 @@ export function pointerout(target, defaultPayload) {
 }
 
 // pointer is not down while moving
-export function pointerhover(target, defaultPayload) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function pointerhover(
+  target: Node,
+  defaultPayload?: PointerEventPayload
+) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
 
   const payload = {
     pointerId: defaultPointerId,
@@ -313,8 +332,11 @@ export function pointerhover(target, defaultPayload) {
 }
 
 // pointer is down while moving
-export function pointermove(target, defaultPayload) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function pointermove(
+  target: Node,
+  defaultPayload?: PointerEventPayload
+) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
   const pointerType = getPointerType(defaultPayload);
 
   const payload = {
@@ -327,9 +349,7 @@ export function pointermove(target, defaultPayload) {
 
   if (pointerType === 'mouse') {
     if (hasPointerEvent()) {
-      dispatch(
-        domEvents.pointermove({ pressure: 0.5, button: -1, ...payload })
-      );
+      dispatch(domEvents.pointermove({ pressure: 0.5, ...payload }));
     }
     dispatch(domEvents.mousemove(payload));
   } else {
@@ -337,7 +357,6 @@ export function pointermove(target, defaultPayload) {
       dispatch(
         domEvents.pointermove({
           pressure: 1,
-          button: -1,
           ...payload
         })
       );
@@ -349,8 +368,8 @@ export function pointermove(target, defaultPayload) {
   }
 }
 
-export function pointerup(target, defaultPayload) {
-  const dispatch = (arg) => target.dispatchEvent(arg);
+export function pointerup(target: Node, defaultPayload?: PointerEventPayload) {
+  const dispatch = (arg: Event) => target.dispatchEvent(arg);
   const pointerType = getPointerType(defaultPayload);
 
   const payload = {
