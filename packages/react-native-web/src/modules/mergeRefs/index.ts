@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,11 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default function mergeRefs(
-  ...args /*: $ReadOnlyArray<React.ElementRef<any>> */
-) /*: (node: HTMLElement | null) => void */ {
-  return function forwardRef(node /*: HTMLElement | null */) {
-    args.forEach((ref /*: React.ElementRef<any> */) => {
+import type * as React from 'react';
+
+export default function mergeRefs<T = HTMLElement>(
+  ...args: ReadonlyArray<React.Ref<T> | undefined>
+): (node: T | null) => void {
+  return function forwardRef(node: T | null) {
+    args.forEach((ref) => {
       if (ref == null) {
         return;
       }

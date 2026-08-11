@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../types';
+
 const getBoundingClientRect = (
-  node /*: ?HTMLElement */
-) /*: void | ClientRect */ => {
+  node: Nullable<HTMLElement>
+): DOMRect | undefined => {
   if (node != null) {
     const isElement = node.nodeType === 1; /* Node.ELEMENT_NODE */
     if (isElement && typeof node.getBoundingClientRect === 'function') {
