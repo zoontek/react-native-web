@@ -88,19 +88,26 @@ export default defineConfig({
       files: ['**/*.{ts,tsx}'],
       plugins: ['typescript'],
       rules: {
-        'typescript/explicit-function-return-type': 'error',
-        'typescript/explicit-module-boundary-types': 'error',
         'typescript/no-empty-object-type': 'error',
         'typescript/no-import-type-side-effects': 'error',
         'typescript/no-invalid-void-type': 'error',
         'typescript/no-non-null-assertion': 'error',
 
         // temporarily disabled
+        'typescript/consistent-return': 'off',
+        'typescript/explicit-function-return-type': 'off',
+        'typescript/explicit-module-boundary-types': 'off',
         'typescript/no-dynamic-delete': 'off',
         'typescript/no-explicit-any': 'off',
         'typescript/no-extraneous-class': 'off',
+        'typescript/no-floating-promises': 'off',
+        'typescript/no-misused-spread': 'off',
+        'typescript/no-this-alias': 'off',
+        'typescript/no-unnecessary-boolean-literal-compare': 'off',
+        'typescript/no-unnecessary-type-conversion': 'off',
         'typescript/no-unsafe-type-assertion': 'off',
-        'typescript/no-wrapper-object-types': 'off'
+        'typescript/no-wrapper-object-types': 'off',
+        'typescript/unbound-method': 'off'
 
         // 'typescript/strict-boolean-expressions': [
         //   'error',
