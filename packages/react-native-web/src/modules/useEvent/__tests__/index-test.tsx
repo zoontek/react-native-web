@@ -12,11 +12,7 @@ import useEvent from '..';
 import type { Nullable } from '../../../types';
 
 const createEventTarget = (node: Nullable<Node>) =>
-  node != null
-    ? createEventTargetImpl(node)
-    : new Proxy({} as ReturnType<typeof createEventTargetImpl>, {
-        get: () => {}
-      });
+  createEventTargetImpl(node as Node);
 
 describe('use-event', () => {
   describe('setListener()', () => {
