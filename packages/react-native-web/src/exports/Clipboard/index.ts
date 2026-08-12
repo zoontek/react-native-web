@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,10 +8,10 @@
 
 'use client';
 
-let clipboardAvailable;
+let clipboardAvailable: boolean | undefined;
 
 export default class Clipboard {
-  static isAvailable() /*: boolean */ {
+  static isAvailable(): boolean {
     if (clipboardAvailable === undefined) {
       clipboardAvailable =
         typeof document.queryCommandSupported === 'function' &&
@@ -22,11 +20,11 @@ export default class Clipboard {
     return clipboardAvailable;
   }
 
-  static getString() /*: Promise<string> */ {
+  static getString(): Promise<string> {
     return Promise.resolve('');
   }
 
-  static setString(text /*: string */) /*: boolean */ {
+  static setString(text: string): boolean {
     let success = false;
     const body = document.body;
 
@@ -42,19 +40,24 @@ export default class Clipboard {
 
       // select the text
       const selection = window.getSelection();
-      selection.removeAllRanges();
-      const range = document.createRange();
-      range.selectNodeContents(node);
-      selection.addRange(range);
 
-      // attempt to copy
-      try {
-        document.execCommand('copy');
-        success = true;
-      } catch {}
+      if (selection != null) {
+        selection.removeAllRanges();
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        selection.addRange(range);
 
-      // remove selection and node
-      selection.removeAllRanges();
+        // attempt to copy
+        try {
+          document.execCommand('copy');
+          success = true;
+        } catch {}
+
+        // remove selection
+        selection.removeAllRanges();
+      }
+
+      // remove node
       body.removeChild(node);
     }
 
