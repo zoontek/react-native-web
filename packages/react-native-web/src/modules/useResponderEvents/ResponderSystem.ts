@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher
  *
@@ -131,9 +129,11 @@ to return true:wantsResponderID|                            |
                                |                            |
                                +                            + */
 
-/*:: import type { ResponderEvent } from './createResponderEvent'; */
-
+import type { Nullable } from '../../types';
+import canUseDOM from '../canUseDom';
+import type { ResponderEvent } from './createResponderEvent';
 import createResponderEvent from './createResponderEvent';
+import type { ResponderDOMEvent } from './ResponderEventTypes';
 import {
   isCancelish,
   isEndish,
@@ -142,6 +142,8 @@ import {
   isSelectionChange,
   isStartish
 } from './ResponderEventTypes';
+import { ResponderTouchHistoryStore } from './ResponderTouchHistoryStore';
+import type { ResponderNode } from './utils';
 import {
   getLowestCommonAncestor,
   getResponderPaths,
@@ -150,71 +152,93 @@ import {
   isPrimaryPointerDown,
   setResponderId
 } from './utils';
-import { ResponderTouchHistoryStore } from './ResponderTouchHistoryStore';
-import canUseDOM from '../canUseDom';
 
 /* ------------ TYPES ------------ */
 
-/*:: type ResponderId = number; */
+type ResponderId = number;
 
-/*:: type ActiveResponderInstance = {
-  id: ResponderId,
-  idPath: Array<number>,
-  node: any
-}; */
+type ActiveResponderInstance = {
+  id: ResponderId;
+  idPath: Array<number>;
+  node: ResponderNode;
+};
 
-/*:: type EmptyResponderInstance = {
-  id: null,
-  idPath: null,
-  node: null
-}; */
+type EmptyResponderInstance = {
+  id: null;
+  idPath: null;
+  node: null;
+};
 
-/*:: type ResponderInstance = ActiveResponderInstance | EmptyResponderInstance; */
+type ResponderInstance = ActiveResponderInstance | EmptyResponderInstance;
 
-/*:: export type ResponderConfig = {
+type ShouldSetResponderName =
+  | 'onMoveShouldSetResponder'
+  | 'onMoveShouldSetResponderCapture'
+  | 'onScrollShouldSetResponder'
+  | 'onScrollShouldSetResponderCapture'
+  | 'onStartShouldSetResponder'
+  | 'onStartShouldSetResponderCapture';
+
+type ShouldSetRegistration = [
+  ShouldSetResponderName,
+  ShouldSetResponderName,
+  { bubbles: boolean }
+];
+
+export type ResponderConfig = {
   // Direct responder events dispatched directly to responder. Do not bubble.
-  onResponderEnd?: ?(e: ResponderEvent) => void,
-  onResponderGrant?: ?(e: ResponderEvent) => void | boolean,
-  onResponderMove?: ?(e: ResponderEvent) => void,
-  onResponderRelease?: ?(e: ResponderEvent) => void,
-  onResponderReject?: ?(e: ResponderEvent) => void,
-  onResponderStart?: ?(e: ResponderEvent) => void,
-  onResponderTerminate?: ?(e: ResponderEvent) => void,
-  onResponderTerminationRequest?: ?(e: ResponderEvent) => boolean,
+  onResponderEnd?: Nullable<(e: ResponderEvent) => void>;
+  onResponderGrant?: Nullable<(e: ResponderEvent) => void>;
+  onResponderMove?: Nullable<(e: ResponderEvent) => void>;
+  onResponderRelease?: Nullable<(e: ResponderEvent) => void>;
+  onResponderReject?: Nullable<(e: ResponderEvent) => void>;
+  onResponderStart?: Nullable<(e: ResponderEvent) => void>;
+  onResponderTerminate?: Nullable<(e: ResponderEvent) => void>;
+  onResponderTerminationRequest?: Nullable<(e: ResponderEvent) => boolean>;
   // On pointer down, should this element become the responder?
-  onStartShouldSetResponder?: ?(e: ResponderEvent) => boolean,
-  onStartShouldSetResponderCapture?: ?(e: ResponderEvent) => boolean,
+  onStartShouldSetResponder?: Nullable<(e: ResponderEvent) => boolean>;
+  onStartShouldSetResponderCapture?: Nullable<(e: ResponderEvent) => boolean>;
   // On pointer move, should this element become the responder?
-  onMoveShouldSetResponder?: ?(e: ResponderEvent) => boolean,
-  onMoveShouldSetResponderCapture?: ?(e: ResponderEvent) => boolean,
+  onMoveShouldSetResponder?: Nullable<(e: ResponderEvent) => boolean>;
+  onMoveShouldSetResponderCapture?: Nullable<(e: ResponderEvent) => boolean>;
   // On scroll, should this element become the responder? Do no bubble
-  onScrollShouldSetResponder?: ?(e: ResponderEvent) => boolean,
-  onScrollShouldSetResponderCapture?: ?(e: ResponderEvent) => boolean,
+  onScrollShouldSetResponder?: Nullable<(e: ResponderEvent) => boolean>;
+  onScrollShouldSetResponderCapture?: Nullable<(e: ResponderEvent) => boolean>;
   // On text selection change, should this element become the responder?
-  onSelectionChangeShouldSetResponder?: ?(e: ResponderEvent) => boolean,
-  onSelectionChangeShouldSetResponderCapture?: ?(e: ResponderEvent) => boolean
-}; */
+  onSelectionChangeShouldSetResponder?: Nullable<
+    (e: ResponderEvent) => boolean
+  >;
+  onSelectionChangeShouldSetResponderCapture?: Nullable<
+    (e: ResponderEvent) => boolean
+  >;
+};
+
+declare global {
+  interface Window {
+    __reactResponderSystemActive?: boolean;
+  }
+}
 
 const emptyObject = {};
 
 /* ------------ IMPLEMENTATION ------------ */
 
-const startRegistration = [
+const startRegistration: ShouldSetRegistration = [
   'onStartShouldSetResponderCapture',
   'onStartShouldSetResponder',
   { bubbles: true }
 ];
-const moveRegistration = [
+const moveRegistration: ShouldSetRegistration = [
   'onMoveShouldSetResponderCapture',
   'onMoveShouldSetResponder',
   { bubbles: true }
 ];
-const scrollRegistration = [
+const scrollRegistration: ShouldSetRegistration = [
   'onScrollShouldSetResponderCapture',
   'onScrollShouldSetResponder',
   { bubbles: false }
 ];
-const shouldSetResponderEvents = {
+const shouldSetResponderEvents: Record<string, ShouldSetRegistration> = {
   touchstart: startRegistration,
   mousedown: startRegistration,
   touchmove: moveRegistration,
@@ -222,25 +246,27 @@ const shouldSetResponderEvents = {
   scroll: scrollRegistration
 };
 
-const emptyResponder = { id: null, idPath: null, node: null };
-const responderListenersMap = new Map();
+const emptyResponder: EmptyResponderInstance = {
+  id: null,
+  idPath: null,
+  node: null
+};
+const responderListenersMap = new Map<ResponderId, ResponderConfig>();
 
 let isEmulatingMouseEvents = false;
 let trackedTouchCount = 0;
-let currentResponder /*: ResponderInstance */ = {
+let currentResponder: ResponderInstance = {
   id: null,
   node: null,
   idPath: null
 };
 const responderTouchHistoryStore = new ResponderTouchHistoryStore();
 
-function changeCurrentResponder(responder /*: ResponderInstance */) {
+function changeCurrentResponder(responder: ResponderInstance) {
   currentResponder = responder;
 }
 
-function getResponderConfig(
-  id /*: ResponderId */
-) /*: ResponderConfig | Object */ {
+function getResponderConfig(id: ResponderId): ResponderConfig {
   const config = responderListenersMap.get(id);
   return config != null ? config : emptyObject;
 }
@@ -255,7 +281,7 @@ function getResponderConfig(
  * the Responder System has an ID, which is used to look up its associated
  * callbacks.
  */
-function eventListener(domEvent /*: any */) {
+function eventListener(domEvent: Event & Partial<ResponderDOMEvent>) {
   const eventType = domEvent.type;
   const eventTarget = domEvent.target;
 
@@ -298,7 +324,7 @@ function eventListener(domEvent /*: any */) {
   const isScrollEvent = isScroll(eventType);
   const isSelectionChangeEvent = isSelectionChange(eventType);
   const responderEvent = createResponderEvent(
-    domEvent,
+    domEvent as ResponderDOMEvent,
     responderTouchHistoryStore
   );
 
@@ -326,9 +352,12 @@ function eventListener(domEvent /*: any */) {
    * Responder System logic
    */
 
-  let eventPaths = getResponderPaths(domEvent);
+  let eventPaths: Nullable<{
+    idPath: Array<number>;
+    nodePath: Array<ResponderNode>;
+  }> = getResponderPaths(domEvent);
   let wasNegotiated = false;
-  let wantsResponder;
+  let wantsResponder: Nullable<ActiveResponderInstance>;
 
   // If an event occured that might change the current responder...
   if (isStartEvent || isMoveEvent || (isScrollEvent && trackedTouchCount > 0)) {
@@ -407,12 +436,14 @@ function eventListener(domEvent /*: any */) {
         (eventType === 'blur' && eventTarget === window) ||
         // responder (or ancestors) blur
         (eventType === 'blur' &&
-          eventTarget.contains(node) &&
+          (eventTarget as Node).contains(node) &&
           domEvent.relatedTarget !== node) ||
         // native scroll without using a pointer
         (isScrollEvent && trackedTouchCount === 0) ||
         // native scroll on node that is parent of the responder (allow siblings to scroll)
-        (isScrollEvent && eventTarget.contains(node) && eventTarget !== node) ||
+        (isScrollEvent &&
+          (eventTarget as Node).contains(node) &&
+          eventTarget !== node) ||
         // native select/selectionchange on node
         (isSelectionChangeEvent && hasValidSelection(domEvent));
 
@@ -478,8 +509,12 @@ function eventListener(domEvent /*: any */) {
  * relevant "shouldSet" functions for the given event type. If any of those functions
  * call "stopPropagation" on the event, stop searching for a responder.
  */
-function findWantsResponder(eventPaths, domEvent, responderEvent) {
-  const shouldSetCallbacks = shouldSetResponderEvents[domEvent.type /*: any */]; // for Flow
+function findWantsResponder(
+  eventPaths: { idPath: Array<number>; nodePath: Array<ResponderNode> },
+  domEvent: Event & Partial<ResponderDOMEvent>,
+  responderEvent: ResponderEvent
+): Nullable<ActiveResponderInstance> {
+  const shouldSetCallbacks = shouldSetResponderEvents[domEvent.type];
 
   if (shouldSetCallbacks != null) {
     const { idPath, nodePath } = eventPaths;
@@ -488,7 +523,14 @@ function findWantsResponder(eventPaths, domEvent, responderEvent) {
     const shouldSetCallbackBubbleName = shouldSetCallbacks[1];
     const { bubbles } = shouldSetCallbacks[2];
 
-    const check = function (id, node, callbackName) {
+    const check = function (
+      id: Nullable<number>,
+      node: Nullable<ResponderNode>,
+      callbackName: ShouldSetResponderName
+    ): Nullable<ActiveResponderInstance> {
+      if (id == null || node == null) {
+        return;
+      }
       const config = getResponderConfig(id);
       const shouldSetCallback = config[callbackName];
       if (shouldSetCallback != null) {
@@ -542,8 +584,8 @@ function findWantsResponder(eventPaths, domEvent, responderEvent) {
  * Attempt to transfer the responder.
  */
 function attemptTransfer(
-  responderEvent /*: ResponderEvent */,
-  wantsResponder /*: ActiveResponderInstance */
+  responderEvent: ResponderEvent,
+  wantsResponder: ActiveResponderInstance
 ) {
   const { id: currentId, node: currentNode } = currentResponder;
   const { id, node } = wantsResponder;
@@ -645,9 +687,9 @@ export function attachListeners() {
  * Register a node with the ResponderSystem.
  */
 export function addNode(
-  id /*: ResponderId */,
-  node /*: any */,
-  config /*: ResponderConfig */
+  id: ResponderId,
+  node: Nullable<ResponderNode>,
+  config: ResponderConfig
 ) {
   setResponderId(node, id);
   responderListenersMap.set(id, config);
@@ -656,7 +698,7 @@ export function addNode(
 /**
  * Unregister a node with the ResponderSystem.
  */
-export function removeNode(id /*: ResponderId */) {
+export function removeNode(id: ResponderId) {
   if (currentResponder.id === id) {
     terminateResponder();
   }
@@ -675,7 +717,10 @@ export function terminateResponder() {
   if (id != null && node != null) {
     const { onResponderTerminate } = getResponderConfig(id);
     if (onResponderTerminate != null) {
-      const event = createResponderEvent({}, responderTouchHistoryStore);
+      const event = createResponderEvent(
+        {} as ResponderDOMEvent,
+        responderTouchHistoryStore
+      );
       event.currentTarget = node;
       onResponderTerminate(event);
     }
@@ -689,6 +734,6 @@ export function terminateResponder() {
  * Allow unit tests to inspect the current responder in the system.
  * FOR TESTING ONLY.
  */
-export function getResponderNode() /*: any */ {
+export function getResponderNode(): Nullable<ResponderNode> {
   return currentResponder.node;
 }
