@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -10,21 +8,59 @@
 import AccessibilityUtil from '../AccessibilityUtil';
 import StyleSheet from '../../exports/StyleSheet';
 import { warnOnce } from '../warnOnce';
+import type { ComponentType } from 'react';
+import type { GenericStyleProp, Nullable } from '../../types';
+import type { Options, StyleObject } from '../../exports/StyleSheet';
+import type { WritingDirection } from '../useLocale';
+
+export type ElementProps = {
+  'aria-controls'?: Nullable<string | Array<string>>;
+  accessibilityControls?: Nullable<string | Array<string>>;
+  'aria-describedby'?: Nullable<string | Array<string>>;
+  accessibilityDescribedBy?: Nullable<string | Array<string>>;
+  'aria-flowto'?: Nullable<string | Array<string>>;
+  accessibilityFlowTo?: Nullable<string | Array<string>>;
+  'aria-keyshortcuts'?: Nullable<string | Array<string>>;
+  accessibilityKeyShortcuts?: Nullable<string | Array<string>>;
+  'aria-labelledby'?: Nullable<string | Array<string>>;
+  accessibilityLabelledBy?: Nullable<string | Array<string>>;
+  'aria-level'?: Nullable<number>;
+  accessibilityLevel?: Nullable<number>;
+  'aria-owns'?: Nullable<string | Array<string>>;
+  accessibilityOwns?: Nullable<string | Array<string>>;
+  role?: Nullable<string>;
+  accessibilityRole?: Nullable<string>;
+  dataSet?: Nullable<Record<string, unknown>>;
+  dir?: WritingDirection;
+  focusable?: Nullable<boolean>;
+  id?: Nullable<string>;
+  lang?: string;
+  nativeID?: Nullable<string>;
+  pointerEvents?: Nullable<'auto' | 'box-none' | 'box-only' | 'none'>;
+  style?: GenericStyleProp<StyleObject>;
+  tabIndex?: Nullable<number | string>;
+  testID?: Nullable<string>;
+  [key: string]: unknown;
+};
+
+export type DOMProps = {
+  dir?: WritingDirection;
+  lang?: string;
+  [key: string]: unknown;
+};
 
 const emptyObject = {};
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 const isArray = Array.isArray;
 
 const uppercasePattern = /[A-Z]/g;
-function toHyphenLower(match) {
+function toHyphenLower(match: string) {
   return '-' + match.toLowerCase();
 }
-function hyphenateString(str /*: string */) /*: string */ {
+function hyphenateString(str: string): string {
   return str.replace(uppercasePattern, toHyphenLower);
 }
-function processIDRefList(
-  idRefList /*: string | Array<string> */
-) /*: string */ {
+function processIDRefList(idRefList: string | Array<string>): string {
   return isArray(idRefList) ? idRefList.join(' ') : idRefList;
 }
 
@@ -43,7 +79,11 @@ const pointerEventsStyles = StyleSheet.create({
   }
 });
 
-const createDOMProps = (elementType, props, options) => {
+const createDOMProps = (
+  elementType: Nullable<ComponentType | string>,
+  props?: Nullable<ElementProps>,
+  options?: Options
+): DOMProps => {
   if (!props) {
     props = emptyObject;
   }

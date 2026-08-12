@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../types';
+
 const accessibilityRoleToWebRole: Record<string, string | null> = {
   adjustable: 'slider',
   button: 'button',
@@ -24,8 +26,8 @@ const propsToAriaRole = ({
   accessibilityRole,
   role
 }: {
-  accessibilityRole?: string;
-  role?: string;
+  accessibilityRole?: Nullable<string>;
+  role?: Nullable<string>;
 }): string | undefined => {
   const _role = role || accessibilityRole;
   if (_role) {
