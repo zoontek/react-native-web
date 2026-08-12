@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,7 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const isDisabled = (props /*: Object */) /*: boolean */ =>
+const isDisabled = (props: {
+  accessibilityStates?: readonly string[];
+  disabled?: boolean;
+}): boolean =>
   props.disabled ||
   (Array.isArray(props.accessibilityStates) &&
     props.accessibilityStates.indexOf('disabled') > -1);

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,7 +7,7 @@
 
 import propsToAriaRole from './propsToAriaRole';
 
-const roleComponents = {
+const roleComponents: Record<string, string> = {
   article: 'article',
   banner: 'header',
   blockquote: 'blockquote',
@@ -34,8 +32,13 @@ const roleComponents = {
 const emptyObject = {};
 
 const propsToAccessibilityComponent = (
-  props /*: Object */ = emptyObject
-) /*: void | string */ => {
+  props: {
+    accessibilityLevel?: number;
+    accessibilityRole?: string;
+    'aria-level'?: number;
+    role?: string;
+  } = emptyObject
+): string | undefined => {
   const roleProp = props.role || props.accessibilityRole;
   // special-case for "label" role which doesn't map to an ARIA role
   if (roleProp === 'label') {
