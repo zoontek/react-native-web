@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -14,11 +12,13 @@ import { addEventListener } from '..';
 describe('addEventListener', () => {
   test('can render correctly using ReactDOMServer', () => {
     const listener = jest.fn();
-    const targetRef = React.createRef();
+    const targetRef = React.createRef<HTMLDivElement>();
 
     function Component() {
       React.useEffect(() => {
-        return addEventListener(targetRef.current, 'click', listener);
+        if (targetRef.current != null) {
+          return addEventListener(targetRef.current, 'click', listener);
+        }
       });
       return <div ref={targetRef} />;
     }

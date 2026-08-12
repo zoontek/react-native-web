@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -9,19 +7,25 @@
 
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
-import { createEventTarget } from 'dom-event-testing-library';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import useEvent from '..';
+import type { Nullable } from '../../../types';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  node != null ? createEventTargetImpl(node) : { click: () => {} };
 
 describe('use-event', () => {
   describe('setListener()', () => {
     test('event dispatched on target', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
 
       function Component() {
         const addClickListener = useEvent('click');
         React.useEffect(() => {
-          addClickListener(targetRef.current, listener);
+          if (targetRef.current != null) {
+            addClickListener(targetRef.current, listener);
+          }
         });
         return <div ref={targetRef} />;
       }
@@ -40,16 +44,18 @@ describe('use-event', () => {
     test('event dispatched on parent', () => {
       const listener = jest.fn();
       const listenerCapture = jest.fn();
-      const targetRef = React.createRef();
-      const parentRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
+      const parentRef = React.createRef<HTMLDivElement>();
 
       function Component() {
         const addClickListener = useEvent('click');
         const addClickCaptureListener = useEvent('click', { capture: true });
 
         React.useEffect(() => {
-          addClickListener(targetRef.current, listener);
-          addClickCaptureListener(targetRef.current, listenerCapture);
+          if (targetRef.current != null) {
+            addClickListener(targetRef.current, listener);
+            addClickCaptureListener(targetRef.current, listenerCapture);
+          }
         });
         return (
           <div ref={parentRef}>
@@ -71,23 +77,25 @@ describe('use-event', () => {
     });
 
     test('event dispatched on child', () => {
-      const log = [];
+      const log: string[] = [];
       const listener = jest.fn(() => {
         log.push('bubble');
       });
       const listenerCapture = jest.fn(() => {
         log.push('capture');
       });
-      const targetRef = React.createRef();
-      const childRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
+      const childRef = React.createRef<HTMLDivElement>();
 
       function Component() {
         const addClickListener = useEvent('click');
         const addClickCaptureListener = useEvent('click', { capture: true });
 
         React.useEffect(() => {
-          addClickListener(targetRef.current, listener);
-          addClickCaptureListener(targetRef.current, listenerCapture);
+          if (targetRef.current != null) {
+            addClickListener(targetRef.current, listener);
+            addClickCaptureListener(targetRef.current, listenerCapture);
+          }
         });
         return (
           <div ref={targetRef}>
@@ -111,13 +119,15 @@ describe('use-event', () => {
 
     test('event dispatched on text node', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef();
-      const childRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
+      const childRef = React.createRef<HTMLDivElement>();
 
       function Component() {
         const addClickListener = useEvent('click');
         React.useEffect(() => {
-          addClickListener(targetRef.current, listener);
+          if (targetRef.current != null) {
+            addClickListener(targetRef.current, listener);
+          }
         });
         return (
           <div ref={targetRef}>
@@ -128,7 +138,7 @@ describe('use-event', () => {
 
       render(<Component />);
 
-      const text = createEventTarget(childRef.current.firstChild);
+      const text = createEventTarget(childRef.current?.firstChild);
 
       act(() => {
         text.click();
@@ -139,9 +149,9 @@ describe('use-event', () => {
 
     test('listener can be attached to document ', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
 
-      function Component({ target }) {
+      function Component({ target }: { target: EventTarget }) {
         const addClickListener = useEvent('click');
         React.useEffect(() => {
           addClickListener(target, listener);
@@ -152,6 +162,7 @@ describe('use-event', () => {
       render(<Component target={document} />);
 
       const target = createEventTarget(targetRef.current);
+
       act(() => {
         target.click();
       });
@@ -161,9 +172,9 @@ describe('use-event', () => {
 
     test('listener can be attached to window ', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
 
-      function Component({ target }) {
+      function Component({ target }: { target: EventTarget }) {
         const addClickListener = useEvent('click');
         React.useEffect(() => {
           addClickListener(target, listener);
@@ -174,6 +185,7 @@ describe('use-event', () => {
       render(<Component target={window} />);
 
       const target = createEventTarget(targetRef.current);
+
       act(() => {
         target.click();
       });
@@ -184,12 +196,14 @@ describe('use-event', () => {
     test('listener is replaceable', () => {
       const listener = jest.fn();
       const listenerAlt = jest.fn();
-      const targetRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
 
-      function Component({ onClick }) {
+      function Component({ onClick }: { onClick: (e: Event) => void }) {
         const addClickListener = useEvent('click');
         React.useEffect(() => {
-          addClickListener(targetRef.current, onClick);
+          if (targetRef.current != null) {
+            addClickListener(targetRef.current, onClick);
+          }
         });
         return <div ref={targetRef} />;
       }
@@ -197,6 +211,7 @@ describe('use-event', () => {
       const { rerender } = render(<Component onClick={listener} />);
 
       const target = createEventTarget(targetRef.current);
+
       act(() => {
         target.click();
       });
@@ -213,12 +228,14 @@ describe('use-event', () => {
 
     test('listener is removed when value is null', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
 
-      function Component({ off }) {
+      function Component({ off }: { off: boolean }) {
         const addClickListener = useEvent('click');
         React.useEffect(() => {
-          addClickListener(targetRef.current, off ? null : listener);
+          if (targetRef.current != null) {
+            addClickListener(targetRef.current, off ? null : listener);
+          }
         });
         return <div ref={targetRef} />;
       }
@@ -226,6 +243,7 @@ describe('use-event', () => {
       const { unmount } = render(<Component off={false} />);
 
       const target = createEventTarget(targetRef.current);
+
       act(() => {
         target.click();
       });
@@ -243,12 +261,14 @@ describe('use-event', () => {
 
     test('custom event dispatched on target', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
 
       function Component() {
         const addMagicEventListener = useEvent('magic-event');
         React.useEffect(() => {
-          addMagicEventListener(targetRef.current, listener);
+          if (targetRef.current != null) {
+            addMagicEventListener(targetRef.current, listener);
+          }
         });
         return <div ref={targetRef} />;
       }
@@ -257,23 +277,23 @@ describe('use-event', () => {
 
       act(() => {
         const event = new CustomEvent('magic-event', { bubbles: true });
-        targetRef.current.dispatchEvent(event);
+        targetRef.current?.dispatchEvent(event);
       });
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
     test('listeners can be set on multiple targets simultaneously', () => {
-      const log = [];
-      const targetRef = React.createRef();
-      const parentRef = React.createRef();
-      const childRef = React.createRef();
+      const log: string[][] = [];
+      const targetRef = React.createRef<HTMLDivElement>();
+      const parentRef = React.createRef<HTMLDivElement>();
+      const childRef = React.createRef<HTMLDivElement>();
 
-      const listener = jest.fn((e) => {
-        log.push(['bubble', e.currentTarget.id]);
+      const listener = jest.fn((e: Event) => {
+        log.push(['bubble', (e.currentTarget as HTMLElement).id]);
       });
-      const listenerCapture = jest.fn((e) => {
-        log.push(['capture', e.currentTarget.id]);
+      const listenerCapture = jest.fn((e: Event) => {
+        log.push(['capture', (e.currentTarget as HTMLElement).id]);
       });
 
       function Component() {
@@ -281,10 +301,12 @@ describe('use-event', () => {
         const addClickCaptureListener = useEvent('click', { capture: true });
         React.useEffect(() => {
           // the same event handle is used to set listeners on different targets
-          addClickListener(targetRef.current, listener);
-          addClickListener(parentRef.current, listener);
-          addClickCaptureListener(targetRef.current, listenerCapture);
-          addClickCaptureListener(parentRef.current, listenerCapture);
+          if (targetRef.current != null && parentRef.current != null) {
+            addClickListener(targetRef.current, listener);
+            addClickListener(parentRef.current, listener);
+            addClickCaptureListener(targetRef.current, listenerCapture);
+            addClickCaptureListener(parentRef.current, listenerCapture);
+          }
         });
         return (
           <div id="parent" ref={parentRef}>
@@ -314,20 +336,20 @@ describe('use-event', () => {
     });
 
     test('listeners are specific to each event handle', () => {
-      const log = [];
-      const targetRef = React.createRef();
-      const childRef = React.createRef();
+      const log: string[][] = [];
+      const targetRef = React.createRef<HTMLDivElement>();
+      const childRef = React.createRef<HTMLDivElement>();
 
-      const listener = jest.fn((e) => {
+      const listener = jest.fn((e: Event) => {
         log.push(['bubble', 'target']);
       });
-      const listenerAlt = jest.fn((e) => {
+      const listenerAlt = jest.fn((e: Event) => {
         log.push(['bubble', 'target-alt']);
       });
-      const listenerCapture = jest.fn((e) => {
+      const listenerCapture = jest.fn((e: Event) => {
         log.push(['capture', 'target']);
       });
-      const listenerCaptureAlt = jest.fn((e) => {
+      const listenerCaptureAlt = jest.fn((e: Event) => {
         log.push(['capture', 'target-alt']);
       });
 
@@ -337,10 +359,12 @@ describe('use-event', () => {
         const addClickCaptureListener = useEvent('click', { capture: true });
         const addClickCaptureAltListener = useEvent('click', { capture: true });
         React.useEffect(() => {
-          addClickListener(targetRef.current, listener);
-          addClickAltListener(targetRef.current, listenerAlt);
-          addClickCaptureListener(targetRef.current, listenerCapture);
-          addClickCaptureAltListener(targetRef.current, listenerCaptureAlt);
+          if (targetRef.current != null) {
+            addClickListener(targetRef.current, listener);
+            addClickAltListener(targetRef.current, listenerAlt);
+            addClickCaptureListener(targetRef.current, listenerCapture);
+            addClickCaptureAltListener(targetRef.current, listenerCaptureAlt);
+          }
         });
         return (
           <div id="target" ref={targetRef}>
@@ -396,18 +420,20 @@ describe('use-event', () => {
 
   describe('stopPropagation and stopImmediatePropagation', () => {
     test('stopPropagation works as expected', () => {
-      const childListener = jest.fn((e) => {
+      const childListener = jest.fn((e: Event) => {
         e.stopPropagation();
       });
       const targetListener = jest.fn();
-      const targetRef = React.createRef();
-      const childRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
+      const childRef = React.createRef<HTMLDivElement>();
 
       function Component() {
         const addClickListener = useEvent('click');
         React.useEffect(() => {
-          addClickListener(childRef.current, childListener);
-          addClickListener(targetRef.current, targetListener);
+          if (childRef.current != null && targetRef.current != null) {
+            addClickListener(childRef.current, childListener);
+            addClickListener(targetRef.current, targetListener);
+          }
         });
         return (
           <div ref={targetRef}>
@@ -429,18 +455,20 @@ describe('use-event', () => {
     });
 
     test('stopImmediatePropagation works as expected', () => {
-      const firstListener = jest.fn((e) => {
+      const firstListener = jest.fn((e: Event) => {
         e.stopImmediatePropagation();
       });
       const secondListener = jest.fn();
-      const targetRef = React.createRef();
+      const targetRef = React.createRef<HTMLDivElement>();
 
       function Component() {
         const addFirstClickListener = useEvent('click');
         const addSecondClickListener = useEvent('click');
         React.useEffect(() => {
-          addFirstClickListener(targetRef.current, firstListener);
-          addSecondClickListener(targetRef.current, secondListener);
+          if (targetRef.current != null) {
+            addFirstClickListener(targetRef.current, firstListener);
+            addSecondClickListener(targetRef.current, secondListener);
+          }
         });
         return <div ref={targetRef} />;
       }
