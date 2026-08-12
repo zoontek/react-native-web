@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -12,50 +10,45 @@
 
 import canUseDOM from '../../modules/canUseDom';
 
-/*:: export type ColorSchemeName = 'light' | 'dark'; */
+export type ColorSchemeName = 'light' | 'dark';
 
-/*:: export type AppearancePreferences = {|
-  colorScheme: ColorSchemeName
-|}; */
+export type AppearancePreferences = {
+  colorScheme: ColorSchemeName;
+};
 
-/*:: type AppearanceListener = (preferences: AppearancePreferences) => void; */
-/*:: type DOMAppearanceListener = (ev: MediaQueryListEvent) => any; */
+type AppearanceListener = (preferences: AppearancePreferences) => void;
+type DOMAppearanceListener = (ev: MediaQueryListEvent) => void;
 
-function getQuery() /*: MediaQueryList | null */ {
+function getQuery(): MediaQueryList | null {
   return canUseDOM ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 }
 
 const query = getQuery();
-// prettier-ignore
-const listenerMapping = new WeakMap /*:: <
+const listenerMapping = new WeakMap<
   AppearanceListener,
   DOMAppearanceListener
-> */();
+>();
 
 const Appearance = {
-  getColorScheme() /*: ColorSchemeName */ {
+  getColorScheme(): ColorSchemeName {
     return query && query.matches ? 'dark' : 'light';
   },
 
-  addChangeListener(
-    listener /*: AppearanceListener */
-  ) /*: { remove: () => void } */ {
+  addChangeListener(listener: AppearanceListener): { remove: () => void } {
     let mappedListener = listenerMapping.get(listener);
     if (!mappedListener) {
-      mappedListener = ({ matches } /*: MediaQueryListEvent */) => {
+      mappedListener = ({ matches }: MediaQueryListEvent) => {
         listener({ colorScheme: matches ? 'dark' : 'light' });
       };
       listenerMapping.set(listener, mappedListener);
     }
     if (query) {
-      // $FlowFixMe
       query.addEventListener('change', mappedListener);
     }
 
-    function remove() /*: void */ {
+    function remove(): void {
       const mappedListener = listenerMapping.get(listener);
       if (query && mappedListener) {
-        // $FlowFixMe
         query.removeEventListener('change', mappedListener);
       }
       listenerMapping.delete(listener);

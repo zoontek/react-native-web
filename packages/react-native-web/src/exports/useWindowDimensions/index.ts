@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,15 +9,14 @@
 
 'use client';
 
-/*:: import type { DisplayMetrics } from '../Dimensions'; */
-
 import Dimensions from '../Dimensions';
 import { useEffect, useState } from 'react';
+import type { DimensionsValue, DisplayMetrics } from '../Dimensions';
 
-export default function useWindowDimensions() /*: DisplayMetrics */ {
+export default function useWindowDimensions(): DisplayMetrics {
   const [dims, setDims] = useState(() => Dimensions.get('window'));
   useEffect(() => {
-    function handleChange({ window }) {
+    function handleChange({ window }: DimensionsValue) {
       if (window != null) {
         setDims(window);
       }

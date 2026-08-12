@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -11,16 +9,16 @@
 'use client';
 
 import * as React from 'react';
-/*:: import type { ColorSchemeName } from '../Appearance'; */
+import type { AppearancePreferences, ColorSchemeName } from '../Appearance';
 import Appearance from '../Appearance';
 
-export default function useColorScheme() /*: ColorSchemeName */ {
+export default function useColorScheme(): ColorSchemeName {
   const [colorScheme, setColorScheme] = React.useState(
     Appearance.getColorScheme()
   );
 
   React.useEffect(() => {
-    function listener(appearance) {
+    function listener(appearance: AppearancePreferences) {
       setColorScheme(appearance.colorScheme);
     }
     const { remove } = Appearance.addChangeListener(listener);
