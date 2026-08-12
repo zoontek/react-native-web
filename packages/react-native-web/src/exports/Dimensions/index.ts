@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,25 +8,28 @@
 
 'use client';
 
-/*:: import type { EventSubscription } from '../../vendor/react-native/vendor/emitter/EventEmitter'; */
 import invariant from 'fbjs/lib/invariant';
 import canUseDOM from '../../modules/canUseDom';
+import type { Nullable } from '../../types';
+import type { EventSubscription } from '../../vendor/react-native/vendor/emitter/EventEmitter';
 
-/*:: export type DisplayMetrics = {|
-  fontScale: number,
-  height: number,
-  scale: number,
-  width: number
-|}; */
+export type DisplayMetrics = {
+  fontScale: number;
+  height: number;
+  scale: number;
+  width: number;
+};
 
-/*:: type DimensionsValue = {|
-  window: DisplayMetrics,
-  screen: DisplayMetrics
-|}; */
+export type DimensionsValue = {
+  window: DisplayMetrics;
+  screen: DisplayMetrics;
+};
 
-/*:: type DimensionKey = 'window' | 'screen'; */
+type DimensionKey = 'window' | 'screen';
 
-/*:: type DimensionEventListenerType = 'change'; */
+type DimensionEventListenerType = 'change';
+
+type DimensionEventListener = (dimensions: DimensionsValue) => void;
 
 const dimensions = {
   window: {
@@ -44,7 +45,9 @@ const dimensions = {
     width: 0
   }
 };
-const listeners = {};
+const listeners: {
+  [key in DimensionEventListenerType]?: Array<DimensionEventListener>;
+} = {};
 
 let shouldInit = canUseDOM;
 
@@ -101,7 +104,7 @@ function handleResize() {
 }
 
 export default class Dimensions {
-  static get(dimension /*: DimensionKey */) /*: DisplayMetrics */ {
+  static get(dimension: DimensionKey): DisplayMetrics {
     if (shouldInit) {
       shouldInit = false;
       update();
@@ -110,7 +113,7 @@ export default class Dimensions {
     return dimensions[dimension];
   }
 
-  static set(initialDimensions /*: ?DimensionsValue */) /*: void */ {
+  static set(initialDimensions: Nullable<DimensionsValue>): void {
     if (initialDimensions) {
       if (canUseDOM) {
         invariant(false, 'Dimensions cannot be set in the browser');
@@ -126,9 +129,9 @@ export default class Dimensions {
   }
 
   static addEventListener(
-    type /*: DimensionEventListenerType */,
-    handler /*: (DimensionsValue) => void */
-  ) /*: EventSubscription */ {
+    type: DimensionEventListenerType,
+    handler: DimensionEventListener
+  ): EventSubscription {
     listeners[type] = listeners[type] || [];
     listeners[type].push(handler);
 
@@ -140,9 +143,9 @@ export default class Dimensions {
   }
 
   static removeEventListener(
-    type /*: DimensionEventListenerType */,
-    handler /*: (DimensionsValue) => void */
-  ) /*: void */ {
+    type: DimensionEventListenerType,
+    handler: DimensionEventListener
+  ): void {
     if (Array.isArray(listeners[type])) {
       listeners[type] = listeners[type].filter(
         (_handler) => _handler !== handler

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const findNodeHandle = (component) => {
+const findNodeHandle = (component: unknown) => {
   throw new Error(
     'findNodeHandle is not supported on web. ' +
       'Use the ref property on the component instead.'
