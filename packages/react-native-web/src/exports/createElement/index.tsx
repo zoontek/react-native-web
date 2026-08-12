@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -13,10 +11,17 @@ import AccessibilityUtil from '../../modules/AccessibilityUtil';
 import createDOMProps from '../../modules/createDOMProps';
 import React from 'react';
 import { LocaleProvider } from '../../modules/useLocale';
+import type { ElementType, ReactNode } from 'react';
+import type { ElementProps } from '../../modules/createDOMProps';
+import type { Options } from '../StyleSheet';
 
-const createElement = (component, props, options) => {
+const createElement = (
+  component: ElementType,
+  props?: ElementProps,
+  options?: Options
+): ReactNode => {
   // Use equivalent platform elements where possible.
-  let accessibilityComponent;
+  let accessibilityComponent: string | undefined;
   if (component && component.constructor === String) {
     accessibilityComponent =
       AccessibilityUtil.propsToAccessibilityComponent(props);
