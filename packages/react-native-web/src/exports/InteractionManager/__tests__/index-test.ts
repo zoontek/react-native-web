@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,14 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-function expectToBeCalledOnce(fn) {
+import type InteractionManagerType from '..';
+
+function expectToBeCalledOnce(fn: jest.Mock) {
   expect(fn.mock.calls.length).toBe(1);
 }
 
 describe('InteractionManager', () => {
-  let InteractionManager;
-  let interactionStart;
-  let interactionComplete;
+  let InteractionManager: typeof InteractionManagerType;
+  let interactionStart: jest.Mock;
+  let interactionComplete: jest.Mock;
 
   beforeEach(() => {
     jest.resetModules();
@@ -35,7 +35,9 @@ describe('InteractionManager', () => {
   });
 
   it('throws when clearing an undefined handle', () => {
-    expect(() => InteractionManager.clearInteractionHandle()).toThrow();
+    expect(() =>
+      (InteractionManager.clearInteractionHandle as () => void)()
+    ).toThrow();
   });
 
   it('notifies asynchronously when interaction starts', () => {
@@ -159,10 +161,10 @@ describe('InteractionManager', () => {
 });
 
 describe('promise tasks', () => {
-  let InteractionManager;
-  let sequenceId;
+  let InteractionManager: typeof InteractionManagerType;
+  let sequenceId: number;
 
-  function createSequenceTask(expectedSequenceId) {
+  function createSequenceTask(expectedSequenceId: number) {
     return jest.fn(() => {
       expect(++sequenceId).toBe(expectedSequenceId);
     });
@@ -177,7 +179,7 @@ describe('promise tasks', () => {
   it('should run a basic promise task', () => {
     const task1 = jest.fn(() => {
       expect(++sequenceId).toBe(1);
-      return new Promise((resolve) => resolve());
+      return new Promise<void>((resolve) => resolve());
     });
     InteractionManager.runAfterInteractions({ gen: task1, name: 'gen1' });
     jest.runAllTimers();
@@ -187,7 +189,7 @@ describe('promise tasks', () => {
   it('should handle nested promises', () => {
     const task1 = jest.fn(() => {
       expect(++sequenceId).toBe(1);
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         InteractionManager.runAfterInteractions({
           gen: task2,
           name: 'gen2'
@@ -196,7 +198,7 @@ describe('promise tasks', () => {
     });
     const task2 = jest.fn(() => {
       expect(++sequenceId).toBe(2);
-      return new Promise((resolve) => resolve());
+      return new Promise<void>((resolve) => resolve());
     });
     InteractionManager.runAfterInteractions({ gen: task1, name: 'gen1' });
     jest.runAllTimers();
@@ -208,7 +210,7 @@ describe('promise tasks', () => {
     const task1 = createSequenceTask(1);
     const task2 = jest.fn(() => {
       expect(++sequenceId).toBe(2);
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           InteractionManager.runAfterInteractions(task3).then(resolve);
         }, 1);
@@ -261,11 +263,11 @@ describe('promise tasks', () => {
     expectToBeCalledOnce(task2);
   });
 
-  const bigAsyncTest = (resolveTest) => {
+  const bigAsyncTest = (resolveTest: () => void) => {
     const task1 = createSequenceTask(1);
     const task2 = jest.fn(() => {
       expect(++sequenceId).toBe(2);
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         InteractionManager.runAfterInteractions(task3);
         setTimeout(() => {
           InteractionManager.runAfterInteractions({
@@ -283,7 +285,7 @@ describe('promise tasks', () => {
     const task3 = createSequenceTask(3);
     const task4 = jest.fn(() => {
       expect(++sequenceId).toBe(4);
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         InteractionManager.runAfterInteractions(task5)
           .then(resolve)
           .then(() => {
@@ -311,7 +313,7 @@ describe('promise tasks', () => {
   };
 
   it('resolves async tasks recursively before other queued tasks', () => {
-    return new Promise(bigAsyncTest);
+    return new Promise<void>(bigAsyncTest);
   });
 
   it('should also work with a deadline', () => {
@@ -320,6 +322,6 @@ describe('promise tasks', () => {
       jest.setSystemTime(Date.now() + 200);
     });
     InteractionManager.runAfterInteractions(task);
-    return new Promise(bigAsyncTest);
+    return new Promise<void>(bigAsyncTest);
   });
 });
