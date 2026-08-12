@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -11,12 +9,12 @@ import createElement from '..';
 import React from 'react';
 import { render } from '@testing-library/react';
 
-function getAttribute(container, attribute) {
-  return container.firstChild.getAttribute(attribute);
+function getAttribute(container: HTMLElement, attribute: string) {
+  return (container.firstChild as Element).getAttribute(attribute);
 }
 
-function getProperty(container, prop) {
-  return container.firstChild[prop];
+function getProperty(container: HTMLElement, prop: keyof HTMLInputElement) {
+  return (container.firstChild as HTMLInputElement)[prop];
 }
 
 describe('exports/createElement', () => {
@@ -38,7 +36,7 @@ describe('exports/createElement', () => {
       const { container } = render(
         createElement('span', { accessibilityRole: 'link' })
       );
-      expect(container.firstChild.nodeName).toBe('SPAN');
+      expect((container.firstChild as Element).nodeName).toBe('SPAN');
     });
 
     test('function component type', () => {
@@ -46,7 +44,7 @@ describe('exports/createElement', () => {
       const { container } = render(
         createElement(Custom, { accessibilityRole: 'link' })
       );
-      expect(container.firstChild.nodeName).toBe('DIV');
+      expect((container.firstChild as Element).nodeName).toBe('DIV');
     });
   });
 
