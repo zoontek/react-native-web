@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -8,12 +6,10 @@
  */
 import canUseDOM from '../canUseDom';
 
-const _requestIdleCallback = function (
-  cb /*: Function */,
-  options /*:: ?: Object */
-) {
+const _requestIdleCallback = function (cb: IdleRequestCallback) {
   return setTimeout(() => {
     const start = Date.now();
+
     cb({
       didTimeout: false,
       timeRemaining() {
@@ -26,7 +22,11 @@ const _requestIdleCallback = function (
 const isSupported =
   canUseDOM && typeof window.requestIdleCallback !== 'undefined';
 
-const requestIdleCallback /*: (cb: any, options?: any) => TimeoutID */ =
-  isSupported ? window.requestIdleCallback : _requestIdleCallback;
+const requestIdleCallback: (
+  cb: IdleRequestCallback,
+  options?: IdleRequestOptions
+) => number | ReturnType<typeof setTimeout> = isSupported
+  ? window.requestIdleCallback
+  : _requestIdleCallback;
 
 export default requestIdleCallback;
