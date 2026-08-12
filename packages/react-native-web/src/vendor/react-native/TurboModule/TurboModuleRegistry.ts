@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,21 +9,20 @@
 
 'use strict';
 
-/*:: import type {TurboModule} from './RCTExport'; */
+import type { TurboModule } from './RCTExport';
+import type { Nullable } from '../../../types';
 import invariant from 'fbjs/lib/invariant';
 
-export function get /*:: <T: TurboModule> */(name /*: string */) /*: ?T */ {
+export function get<T extends TurboModule>(name: string): Nullable<T> {
   return null;
 }
 
-export function getEnforcing /*:: <T: TurboModule> */(
-  name /*: string */
-) /*: T */ {
-  const module = get(name);
+export function getEnforcing<T extends TurboModule>(name: string): T {
+  const module = get<T>(name);
   invariant(
     module != null,
     `TurboModuleRegistry.getEnforcing(...): '${name}' could not be found. ` +
       'Verify that a module by this name is registered in the native binary.'
   );
-  return module;
+  return module as T;
 }
