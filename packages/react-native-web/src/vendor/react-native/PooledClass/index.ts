@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /* eslint-disable */
 
 /**
@@ -11,12 +9,28 @@
  * From React 16.0.0
  */
 
-import invariant from 'fbjs/lib/invariant';
+type PoolableInstance = { destructor: () => void };
 
-var twoArgumentPooler = function (a1, a2) {
+type Pooler = (
+  this: PoolableClass,
+  ...args: Array<unknown>
+) => PoolableInstance;
+
+type Releaser = (this: PoolableClass, instance: PoolableInstance) => void;
+
+type PoolableClass = {
+  (this: PoolableInstance, ...args: Array<unknown>): void;
+  new (...args: Array<unknown>): PoolableInstance;
+  instancePool: Array<PoolableInstance>;
+  poolSize: number;
+  getPooled: Pooler;
+  release: Releaser;
+};
+
+var twoArgumentPooler: Pooler = function (a1, a2) {
   var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
+  var instance = Klass.instancePool.pop();
+  if (instance != null) {
     Klass.call(instance, a1, a2);
     return instance;
   } else {
@@ -24,7 +38,7 @@ var twoArgumentPooler = function (a1, a2) {
   }
 };
 
-var standardReleaser = function (instance) {
+var standardReleaser: Releaser = function (instance) {
   var Klass = this;
   instance.destructor();
   if (Klass.instancePool.length < Klass.poolSize) {
@@ -44,10 +58,13 @@ var DEFAULT_POOLER = twoArgumentPooler;
  * @param {Function} CopyConstructor Constructor that can be used to reset.
  * @param {Function} pooler Customizable pooler.
  */
-var addPoolingTo = function (CopyConstructor, pooler) {
+var addPoolingTo = function (
+  CopyConstructor: unknown,
+  pooler?: Pooler
+): PoolableClass {
   // Casting as any so that flow ignores the actual implementation and trusts
   // it to match the type we declared
-  var NewKlass = CopyConstructor;
+  var NewKlass = CopyConstructor as PoolableClass;
   NewKlass.instancePool = [];
   NewKlass.getPooled = pooler || DEFAULT_POOLER;
   if (!NewKlass.poolSize) {

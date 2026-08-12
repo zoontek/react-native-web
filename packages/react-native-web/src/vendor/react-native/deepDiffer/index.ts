@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -15,10 +13,10 @@
  * @returns {bool} true if different, false if equal
  */
 const deepDiffer = function (
-  one /*: any */,
-  two /*: any */,
-  maxDepth /*: number */ = -1
-) /*: boolean */ {
+  one: unknown,
+  two: unknown,
+  maxDepth: number = -1
+): boolean {
   if (maxDepth === 0) {
     return true;
   }
@@ -42,7 +40,7 @@ const deepDiffer = function (
   if (one.constructor !== two.constructor) {
     return true;
   }
-  if (Array.isArray(one)) {
+  if (Array.isArray(one) && Array.isArray(two)) {
     // We know two is also an array because the constructors are equal
     const len = one.length;
     if (two.length !== len) {
@@ -54,15 +52,17 @@ const deepDiffer = function (
       }
     }
   } else {
-    for (const key in one) {
-      if (deepDiffer(one[key], two[key], maxDepth - 1)) {
+    const oneObject = one as Record<string, unknown>;
+    const twoObject = two as Record<string, unknown>;
+    for (const key in oneObject) {
+      if (deepDiffer(oneObject[key], twoObject[key], maxDepth - 1)) {
         return true;
       }
     }
-    for (const twoKey in two) {
+    for (const twoKey in twoObject) {
       // The only case we haven't checked yet is keys that are in two but aren't
       // in one, which means they are different.
-      if (one[twoKey] === undefined && two[twoKey] !== undefined) {
+      if (oneObject[twoKey] === undefined && twoObject[twoKey] !== undefined) {
         return true;
       }
     }
