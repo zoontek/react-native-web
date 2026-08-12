@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,7 +9,7 @@
 
 import { useCallback, useRef } from 'react';
 
-/*:: type CallbackRef<T> = T => mixed; */
+type CallbackRef<T> = (value: T) => unknown;
 
 /**
  * Constructs a callback ref that provides similar semantics as `useEffect`. The
@@ -27,13 +25,12 @@ import { useCallback, useRef } from 'react';
  *
  * WARNING: The `effect` callback should be stable (e.g. using `useCallback`).
  */
-export default function useRefEffect /*:: <TInstance> */(
-  effect /*: TInstance => (() => void) | void */
-) /*: CallbackRef<TInstance | null> */ {
-  // prettier-ignore
-  const cleanupRef = useRef/*:: <(() => void) | void> */(undefined);
+export default function useRefEffect<TInstance>(
+  effect: (instance: TInstance) => (() => void) | void
+): CallbackRef<TInstance | null> {
+  const cleanupRef = useRef<(() => void) | void>(undefined);
   return useCallback(
-    (instance) => {
+    (instance: TInstance | null) => {
       if (cleanupRef.current) {
         cleanupRef.current();
         cleanupRef.current = undefined;
