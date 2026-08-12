@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /* oxlint-disable */
 
 /**
@@ -20,8 +18,11 @@ import dangerousStyleValue from './dangerousStyleValue';
  * @param {DOMElement} node
  * @param {object} styles
  */
-function setValueForStyles(node, styles) {
-  const style = node.style;
+function setValueForStyles(
+  node: HTMLElement,
+  styles: Record<string, unknown>
+): void {
+  const style = node.style as CSSStyleDeclaration & Record<string, string>;
   for (let styleName in styles) {
     if (!styles.hasOwnProperty(styleName)) {
       continue;
