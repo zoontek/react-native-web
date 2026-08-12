@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,6 +7,7 @@
 
 'use client';
 
+import type { ReactNode } from 'react';
 import {
   createRoot as domCreateRoot,
   hydrateRoot as domHydrateRoot
@@ -16,12 +15,12 @@ import {
 
 import { createSheet } from '../StyleSheet/dom';
 
-export function hydrate(element, root) {
+export function hydrate(element: ReactNode, root: HTMLElement) {
   createSheet(root);
   return domHydrateRoot(root, element);
 }
 
-export default function render(element, root) {
+export default function render(element: ReactNode, root: HTMLElement) {
   createSheet(root);
   const reactRoot = domCreateRoot(root);
   reactRoot.render(element);
