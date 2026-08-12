@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,11 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-function expectToBeCalledOnce(fn) {
+import type TaskQueueType from '../TaskQueue';
+
+function expectToBeCalledOnce(fn: jest.Mock) {
   expect(fn.mock.calls.length).toBe(1);
 }
 
-function clearTaskQueue(taskQueue) {
+function clearTaskQueue(taskQueue: TaskQueueType) {
   do {
     jest.runAllTimers();
     taskQueue.processNext();
@@ -20,11 +20,11 @@ function clearTaskQueue(taskQueue) {
 }
 
 describe('TaskQueue', () => {
-  let taskQueue;
-  let onMoreTasks;
-  let sequenceId;
+  let taskQueue: TaskQueueType;
+  let onMoreTasks: jest.Mock;
+  let sequenceId: number;
 
-  function createSequenceTask(expectedSequenceId) {
+  function createSequenceTask(expectedSequenceId: number) {
     return jest.fn(() => {
       expect(++sequenceId).toBe(expectedSequenceId);
     });
@@ -53,7 +53,7 @@ describe('TaskQueue', () => {
     });
 
     const task1 = jest.fn(() => {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           expect(++sequenceId).toBe(1);
           resolve();
@@ -73,7 +73,7 @@ describe('TaskQueue', () => {
 
     clearTaskQueue(taskQueue);
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
       });
@@ -107,7 +107,7 @@ describe('TaskQueue', () => {
     });
 
     const task1 = jest.fn(() => {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           expect(++sequenceId).toBe(1);
           taskQueue.enqueue({ gen: task2, name: 'gen2' });
@@ -116,7 +116,7 @@ describe('TaskQueue', () => {
       });
     });
     const task2 = jest.fn(() => {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           expect(++sequenceId).toBe(2);
           taskQueue.enqueue({ run: task3, name: 'run3' });
@@ -131,7 +131,7 @@ describe('TaskQueue', () => {
 
     clearTaskQueue(taskQueue);
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
       });
@@ -172,7 +172,7 @@ describe('TaskQueue', () => {
 
   it('should not crash when task is cancelled between being started and resolved', () => {
     const task1 = jest.fn(() => {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           resolve();
         }, 1);
