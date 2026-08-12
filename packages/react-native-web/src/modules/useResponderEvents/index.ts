@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher
  *
@@ -17,7 +15,9 @@
  *   }
  */
 
-/*:: import type { ResponderConfig } from './ResponderSystem'; */
+import type { Nullable } from '../../types';
+import type { ResponderConfig } from './ResponderSystem';
+import type { ResponderNode } from './utils';
 
 import * as React from 'react';
 import * as ResponderSystem from './ResponderSystem';
@@ -25,9 +25,8 @@ import * as ResponderSystem from './ResponderSystem';
 const emptyObject = {};
 let idCounter = 0;
 
-function useStable /*:: <T> */(getInitialValue /*: () => T */) /*: T */ {
-  // prettier-ignore
-  const ref = React.useRef/*:: <T | null> */(null);
+function useStable<T>(getInitialValue: () => T): T {
+  const ref = React.useRef<T | null>(null);
   if (ref.current == null) {
     ref.current = getInitialValue();
   }
@@ -35,8 +34,8 @@ function useStable /*:: <T> */(getInitialValue /*: () => T */) /*: T */ {
 }
 
 export default function useResponderEvents(
-  hostRef /*: any */,
-  config /*: ResponderConfig */ = emptyObject
+  hostRef: React.RefObject<Nullable<ResponderNode>>,
+  config: ResponderConfig = emptyObject
 ) {
   const id = useStable(() => idCounter++);
   const isAttachedRef = React.useRef(false);

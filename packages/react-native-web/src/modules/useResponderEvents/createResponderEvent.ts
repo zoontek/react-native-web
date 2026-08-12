@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher
  *
@@ -7,49 +5,57 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type {
+import type { Nullable } from '../../types';
+import type {
   ResponderTouchHistoryStore,
   TouchHistory
-} from './ResponderTouchHistoryStore'; */
-/*:: import type { TouchEvent } from './ResponderEventTypes'; */
+} from './ResponderTouchHistoryStore';
+import type {
+  ResponderDOMEvent,
+  Touch as ResponderTouch,
+  TouchEvent
+} from './ResponderEventTypes';
+import type { ResponderNode } from './utils';
 
 import getBoundingClientRect from '../../modules/getBoundingClientRect';
 
-/*:: export type ResponderEvent = {|
-  bubbles: boolean,
-  cancelable: boolean,
-  currentTarget: any,
-  defaultPrevented: ?boolean,
+export type ResponderEvent = {
+  bubbles: boolean;
+  cancelable: boolean;
+  currentTarget: Nullable<ResponderNode>;
+  defaultPrevented: Nullable<boolean>;
   dispatchConfig: {
-    registrationName?: string,
+    registrationName?: string;
     phasedRegistrationNames?: {
-      bubbled: string,
-      captured: string
-    }
-  },
-  eventPhase: ?number,
-  isDefaultPrevented: () => boolean,
-  isPropagationStopped: () => boolean,
-  isTrusted: ?boolean,
-  preventDefault: () => void,
-  stopPropagation: () => void,
-  nativeEvent: TouchEvent,
-  persist: () => void,
-  target: ?any,
-  timeStamp: number,
-  touchHistory: TouchHistory
-|}; */
+      bubbled: string;
+      captured: string;
+    };
+  };
+  eventPhase: Nullable<number>;
+  isDefaultPrevented: () => boolean;
+  isPropagationStopped: () => boolean;
+  isTrusted: Nullable<boolean>;
+  preventDefault: () => void;
+  stopPropagation: () => void;
+  nativeEvent: TouchEvent;
+  persist: () => void;
+  target: Nullable<EventTarget>;
+  timeStamp: number;
+  touchHistory: TouchHistory;
+};
 
 const emptyFunction = () => {};
 const emptyObject = {};
-const emptyArray = [];
+const emptyArray: Array<ResponderTouch> = [];
+const slice: (this: Nullable<TouchList>) => Array<Touch> =
+  Array.prototype.slice;
 
 /**
  * Safari produces very large identifiers that would cause the `touchBank` array
  * length to be so large as to crash the browser, if not normalized like this.
  * In the future the `touchBank` should use an object/map instead.
  */
-function normalizeIdentifier(identifier) {
+function normalizeIdentifier(identifier: number) {
   return identifier > 20 ? identifier % 20 : identifier;
 }
 
@@ -58,13 +64,13 @@ function normalizeIdentifier(identifier) {
  * Mouse events are transformed into fake touch events.
  */
 export default function createResponderEvent(
-  domEvent /*: any */,
-  responderTouchHistoryStore /*: ResponderTouchHistoryStore */
-) /*: ResponderEvent */ {
-  let rect;
+  domEvent: ResponderDOMEvent,
+  responderTouchHistoryStore: ResponderTouchHistoryStore
+): ResponderEvent {
+  let rect: DOMRect | undefined;
   let propagationWasStopped = false;
-  let changedTouches;
-  let touches;
+  let changedTouches: Array<ResponderTouch>;
+  let touches: Array<ResponderTouch>;
 
   const domEventChangedTouches = domEvent.changedTouches;
   const domEventType = domEvent.type;
@@ -72,21 +78,21 @@ export default function createResponderEvent(
   const metaKey = domEvent.metaKey === true;
   const shiftKey = domEvent.shiftKey === true;
   const force =
-    (domEventChangedTouches && domEventChangedTouches[0].force) || 0;
+    (domEventChangedTouches && domEventChangedTouches[0]?.force) || 0;
   const identifier = normalizeIdentifier(
-    (domEventChangedTouches && domEventChangedTouches[0].identifier) || 0
+    (domEventChangedTouches && domEventChangedTouches[0]?.identifier) || 0
   );
   const clientX =
-    (domEventChangedTouches && domEventChangedTouches[0].clientX) ||
+    (domEventChangedTouches && domEventChangedTouches[0]?.clientX) ||
     domEvent.clientX;
   const clientY =
-    (domEventChangedTouches && domEventChangedTouches[0].clientY) ||
+    (domEventChangedTouches && domEventChangedTouches[0]?.clientY) ||
     domEvent.clientY;
   const pageX =
-    (domEventChangedTouches && domEventChangedTouches[0].pageX) ||
+    (domEventChangedTouches && domEventChangedTouches[0]?.pageX) ||
     domEvent.pageX;
   const pageY =
-    (domEventChangedTouches && domEventChangedTouches[0].pageY) ||
+    (domEventChangedTouches && domEventChangedTouches[0]?.pageY) ||
     domEvent.pageY;
   const preventDefault =
     typeof domEvent.preventDefault === 'function'
@@ -94,8 +100,10 @@ export default function createResponderEvent(
       : emptyFunction;
   const timestamp = domEvent.timeStamp;
 
-  function normalizeTouches(touches) {
-    return Array.prototype.slice.call(touches).map((touch) => {
+  function normalizeTouches(
+    touches: Nullable<TouchList>
+  ): Array<ResponderTouch> {
+    return slice.call(touches).map((touch) => {
       return {
         force: touch.force,
         identifier: normalizeIdentifier(touch.identifier),
@@ -140,7 +148,7 @@ export default function createResponderEvent(
         : emulatedTouches;
   }
 
-  const responderEvent = {
+  const responderEvent: ResponderEvent = {
     bubbles: true,
     cancelable: true,
     // `currentTarget` is set before dispatch
@@ -189,15 +197,15 @@ export default function createResponderEvent(
   // Using getters and functions serves two purposes:
   // 1) The value of `currentTarget` is not initially available.
   // 2) Measuring the clientRect may cause layout jank and should only be done on-demand.
-  function locationX(x) {
+  function locationX(x: number | undefined) {
     rect = rect || getBoundingClientRect(responderEvent.currentTarget);
-    if (rect) {
+    if (rect && x != null) {
       return x - rect.left;
     }
   }
-  function locationY(y) {
+  function locationY(y: number | undefined) {
     rect = rect || getBoundingClientRect(responderEvent.currentTarget);
-    if (rect) {
+    if (rect && y != null) {
       return y - rect.top;
     }
   }

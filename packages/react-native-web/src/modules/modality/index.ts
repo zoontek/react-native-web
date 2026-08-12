@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,18 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../types';
 import { addEventListener } from '../addEventListener';
 import canUseDOM from '../canUseDom';
 
-/*:: export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen'; */
+export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen';
 
 const supportsPointerEvent = () =>
   !!(typeof window !== 'undefined' && window.PointerEvent != null);
 
-let activeModality = 'keyboard';
-let modality = 'keyboard';
-let previousModality;
-let previousActiveModality;
+let activeModality: Modality = 'keyboard';
+let modality: Modality = 'keyboard';
+let previousModality: Nullable<Modality>;
+let previousActiveModality: Nullable<Modality>;
 let isEmulatingMouseEvents = false;
 
 const KEYBOARD = 'keyboard';
@@ -70,7 +69,9 @@ function onFocusWindow() {
   restoreModality();
 }
 
-function onKeyDown(event) {
+function onKeyDown(
+  event: Event & { altKey?: boolean; ctrlKey?: boolean; metaKey?: boolean }
+) {
   if (event.metaKey || event.altKey || event.ctrlKey) {
     return;
   }
@@ -86,19 +87,21 @@ function onVisibilityChange() {
   }
 }
 
-function onPointerish(event /*: any */) {
+function onPointerish(
+  event: Event & { pointerType?: Modality; touches?: TouchList }
+) {
   const eventType = event.type;
 
   if (supportsPointerEvent()) {
     if (eventType === POINTERDOWN) {
-      if (activeModality !== event.pointerType) {
+      if (event.pointerType != null && activeModality !== event.pointerType) {
         modality = event.pointerType;
         activeModality = event.pointerType;
       }
       return;
     }
     if (eventType === POINTERMOVE) {
-      if (modality !== event.pointerType) {
+      if (event.pointerType != null && modality !== event.pointerType) {
         modality = event.pointerType;
       }
       return;
@@ -175,11 +178,11 @@ if (canUseDOM) {
   addEventListener(document, SCROLL, onPointerish, captureOptions);
 }
 
-export function getActiveModality() /*: Modality */ {
+export function getActiveModality(): Modality {
   return activeModality;
 }
 
-export function getModality() /*: Modality */ {
+export function getModality(): Modality {
   return modality;
 }
 
