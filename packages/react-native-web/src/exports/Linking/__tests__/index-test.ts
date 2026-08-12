@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /* eslint-env jasmine, jest */
 
 import Linking from '..';
@@ -14,6 +12,7 @@ describe('apis/Linking', () => {
           expect(target).toBe('target_name');
           expect(opener).toBe('noopener');
           done();
+          return null;
         });
       Linking.openURL('http://foo.com', 'target_name');
     });
@@ -26,6 +25,7 @@ describe('apis/Linking', () => {
           expect(target).toBe('_blank');
           expect(opener).toBe('noopener');
           done();
+          return null;
         });
       Linking.openURL('http://foo.com');
     });
@@ -38,6 +38,7 @@ describe('apis/Linking', () => {
           expect(target).toBe(undefined);
           expect(opener).toBe('noopener');
           done();
+          return null;
         });
       Linking.openURL('http://foo.com', undefined);
     });
