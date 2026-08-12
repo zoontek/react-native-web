@@ -20,11 +20,7 @@ import {
 } from 'dom-event-testing-library';
 
 const createEventTarget = (node: Nullable<Node>) =>
-  node != null
-    ? createEventTargetImpl(node)
-    : new Proxy({} as ReturnType<typeof createEventTargetImpl>, {
-        get: () => {}
-      });
+  createEventTargetImpl(node as Node);
 
 describe('useResponderEvents', () => {
   afterEach(() => {
