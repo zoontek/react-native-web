@@ -238,6 +238,7 @@ export type ViewStyle = AnimationStyles &
 export type ViewProps = AccessibilityProps &
   EventProps & {
     children?: Nullable<ReactNode>;
+    collapsable?: Nullable<boolean>;
     dataSet?: Record<string, unknown>;
     dir?: 'ltr' | 'rtl';
     id?: Nullable<string>;

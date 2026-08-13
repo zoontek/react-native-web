@@ -1,9 +1,12 @@
-// @ts-nocheck
-
 import React from 'react';
 import ScrollView from '../';
-import { createEventTarget } from 'dom-event-testing-library';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
+import type { Nullable } from '../../../types';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  createEventTargetImpl(node as Node);
 
 describe('components/ScrollView', () => {
   describe('prop "centerContent"', () => {
@@ -25,7 +28,7 @@ describe('components/ScrollView', () => {
   describe('prop "onScroll"', () => {
     test('is called when element scrolls', () => {
       const onScroll = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<React.ComponentRef<typeof ScrollView>>();
       act(() => {
         render(
           <ScrollView onScroll={onScroll} ref={ref} scrollEventThrottle={16} />
@@ -41,7 +44,7 @@ describe('components/ScrollView', () => {
 
     test('is not called when descendant scrolls', () => {
       const onScroll = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLDivElement>();
       act(() => {
         render(
           <ScrollView onScroll={onScroll} scrollEventThrottle={16}>
@@ -66,7 +69,7 @@ describe('components/ScrollView', () => {
 
     test('is not called for prop changes', () => {
       const ref = jest.fn();
-      let rerender;
+      let rerender!: RenderResult['rerender'];
       act(() => {
         ({ rerender } = render(
           <ScrollView id="123" ref={ref} style={{ borderWidth: 5 }} />
@@ -80,30 +83,30 @@ describe('components/ScrollView', () => {
     });
 
     test('node has imperative methods', () => {
-      const ref = React.createRef();
+      const ref = React.createRef<React.ComponentRef<typeof ScrollView>>();
       act(() => {
         render(<ScrollView ref={ref} />);
       });
       const node = ref.current;
 
       // Did we get an HTMLElement?
-      expect(node.tagName === 'DIV').toBe(true);
+      expect(node?.tagName === 'DIV').toBe(true);
       // Does it have the "platform" methods?
-      expect(typeof node.measure === 'function').toBe(true);
-      expect(typeof node.measureLayout === 'function').toBe(true);
-      expect(typeof node.measureInWindow === 'function').toBe(true);
+      expect(typeof node?.measure === 'function').toBe(true);
+      expect(typeof node?.measureLayout === 'function').toBe(true);
+      expect(typeof node?.measureInWindow === 'function').toBe(true);
       // Does it have the scrollview methods?
-      expect(typeof node.getScrollResponder === 'function').toBe(true);
-      expect(typeof node.getScrollableNode === 'function').toBe(true);
-      expect(typeof node.getInnerViewNode === 'function').toBe(true);
-      expect(typeof node.getInnerViewRef === 'function').toBe(true);
-      expect(typeof node.getNativeScrollRef === 'function').toBe(true);
-      expect(typeof node.scrollTo === 'function').toBe(true);
-      expect(typeof node.scrollToEnd === 'function').toBe(true);
-      expect(typeof node.flashScrollIndicators === 'function').toBe(true);
-      expect(typeof node.scrollResponderZoomTo === 'function').toBe(true);
+      expect(typeof node?.getScrollResponder === 'function').toBe(true);
+      expect(typeof node?.getScrollableNode === 'function').toBe(true);
+      expect(typeof node?.getInnerViewNode === 'function').toBe(true);
+      expect(typeof node?.getInnerViewRef === 'function').toBe(true);
+      expect(typeof node?.getNativeScrollRef === 'function').toBe(true);
+      expect(typeof node?.scrollTo === 'function').toBe(true);
+      expect(typeof node?.scrollToEnd === 'function').toBe(true);
+      expect(typeof node?.flashScrollIndicators === 'function').toBe(true);
+      expect(typeof node?.scrollResponderZoomTo === 'function').toBe(true);
       expect(
-        typeof node.scrollResponderScrollNativeHandleToKeyboard === 'function'
+        typeof node?.scrollResponderScrollNativeHandleToKeyboard === 'function'
       ).toBe(true);
     });
   });

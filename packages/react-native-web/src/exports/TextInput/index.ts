@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,8 +8,15 @@
 
 'use client';
 
-/*:: import type { PlatformMethods } from '../../types'; */
-/*:: import type { TextInputProps } from './types'; */
+import type {
+  ChangeEvent,
+  FocusEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  SyntheticEvent
+} from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { ElementProps } from '../../modules/createDOMProps';
+import type { TextInputProps as Props } from './types';
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -26,11 +31,25 @@ import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale';
 import StyleSheet from '../StyleSheet';
 import TextInputState from '../../modules/TextInputState';
 
+type TextInputNode = (HTMLInputElement | HTMLTextAreaElement) &
+  PlatformMethods & {
+    clear?: () => void;
+    isFocused?: () => boolean;
+  };
+
+type TextInputSelection = {
+  start: number | null;
+  end?: number | null;
+};
+
 /**
  * Determines whether a 'selection' prop differs from a node's existing
  * selection state.
  */
-const isSelectionStale = (node, selection) => {
+const isSelectionStale = (
+  node: HTMLInputElement | HTMLTextAreaElement,
+  selection: TextInputSelection
+) => {
   const { selectionEnd, selectionStart } = node;
   const { start, end } = selection;
   return start !== selectionStart || end !== selectionEnd;
@@ -40,7 +59,10 @@ const isSelectionStale = (node, selection) => {
  * Certain input types do no support 'selectSelectionRange' and will throw an
  * error.
  */
-const setSelection = (node, selection) => {
+const setSelection = (
+  node: HTMLInputElement | HTMLTextAreaElement,
+  selection: TextInputSelection
+) => {
   if (isSelectionStale(node, selection)) {
     const { start, end } = selection;
     try {
@@ -80,20 +102,26 @@ const forwardPropsList = Object.assign(
   }
 );
 
-const pickProps = (props) => pick(props, forwardPropsList);
+const pickProps = (props: Props): ElementProps => pick(props, forwardPropsList);
 
 // If an Input Method Editor is processing key input, the 'keyCode' is 229.
 // https://www.w3.org/TR/uievents/#determine-keydown-keyup-keyCode
-function isEventComposing(nativeEvent) {
+function isEventComposing(nativeEvent: KeyboardEvent) {
   return nativeEvent.isComposing || nativeEvent.keyCode === 229;
 }
 
-let focusTimeout /*: ?TimeoutID */ = null;
+let focusTimeout: Nullable<ReturnType<typeof setTimeout>> = null;
 
-const TextInput /*: React.AbstractComponent<
-  TextInputProps,
-  HTMLElement & PlatformMethods
-> */ = React.forwardRef((props, forwardedRef) => {
+type TextInputComponent = React.ForwardRefExoticComponent<
+  Props & React.RefAttributes<TextInputNode>
+> & {
+  State: typeof TextInputState;
+};
+
+// TODO: remove the alias after forwardRef removal
+type TNode = TextInputNode;
+
+const TextInput = React.forwardRef<TNode, Props>((props, forwardedRef) => {
   const {
     autoCapitalize = 'sentences',
     autoComplete,
@@ -193,10 +221,13 @@ const TextInput /*: React.AbstractComponent<
     type = 'password';
   }
 
-  const dimensions = React.useRef({ height: null, width: null });
-  const hostRef = React.useRef(null);
-  const prevSelection = React.useRef(null);
-  const prevSecureTextEntry = React.useRef(false);
+  const dimensions = React.useRef<{
+    height: Nullable<number>;
+    width: Nullable<number>;
+  }>({ height: null, width: null });
+  const hostRef = React.useRef<TextInputNode | null>(null);
+  const prevSelection = React.useRef<TextInputSelection | null>(null);
+  const prevSecureTextEntry = React.useRef<Nullable<boolean>>(false);
 
   React.useEffect(() => {
     if (hostRef.current && prevSelection.current) {
@@ -206,7 +237,7 @@ const TextInput /*: React.AbstractComponent<
   }, [secureTextEntry]);
 
   const handleContentSizeChange = React.useCallback(
-    (hostNode) => {
+    (hostNode: HTMLInputElement | HTMLTextAreaElement) => {
       if (multiline && onContentSizeChange && hostNode != null) {
         const newHeight = hostNode.scrollHeight;
         const newWidth = hostNode.scrollWidth;
@@ -231,7 +262,7 @@ const TextInput /*: React.AbstractComponent<
   );
 
   const imperativeRef = React.useMemo(
-    () => (hostNode) => {
+    () => (hostNode: TextInputNode | null) => {
       // TextInput needs to add more methods to the hostNode in addition to those
       // added by `usePlatformMethods`. This is temporarily until an API like
       // `TextInput.clear(hostRef)` is added to React Native.
@@ -253,7 +284,11 @@ const TextInput /*: React.AbstractComponent<
     [handleContentSizeChange]
   );
 
-  function handleBlur(e) {
+  function handleBlur(
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement> & {
+      nativeEvent: { text?: string };
+    }
+  ) {
     TextInputState._currentlyFocusedNode = null;
     if (onBlur) {
       e.nativeEvent.text = e.target.value;
@@ -261,7 +296,11 @@ const TextInput /*: React.AbstractComponent<
     }
   }
 
-  function handleChange(e) {
+  function handleChange(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> & {
+      nativeEvent: { text?: string };
+    }
+  ) {
     const hostNode = e.target;
     const text = hostNode.value;
     e.nativeEvent.text = text;
@@ -274,7 +313,11 @@ const TextInput /*: React.AbstractComponent<
     }
   }
 
-  function handleFocus(e) {
+  function handleFocus(
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement> & {
+      nativeEvent: { text?: string };
+    }
+  ) {
     const hostNode = e.target;
     if (onFocus) {
       e.nativeEvent.text = hostNode.value;
@@ -301,7 +344,12 @@ const TextInput /*: React.AbstractComponent<
     }
   }
 
-  function handleKeyDown(e) {
+  function handleKeyDown(
+    e: ReactKeyboardEvent<HTMLInputElement | HTMLTextAreaElement> & {
+      target: HTMLInputElement | HTMLTextAreaElement;
+      nativeEvent: { text?: string };
+    }
+  ) {
     const hostNode = e.target;
     // Prevent key events bubbling (see #612)
     e.stopPropagation();
@@ -336,7 +384,12 @@ const TextInput /*: React.AbstractComponent<
     }
   }
 
-  function handleSelectionChange(e) {
+  function handleSelectionChange(
+    e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement> & {
+      target: HTMLInputElement | HTMLTextAreaElement;
+      nativeEvent: { selection?: TextInputSelection; text?: string };
+    }
+  ) {
     try {
       const { selectionStart, selectionEnd } = e.target;
       const selection = {
@@ -435,10 +488,9 @@ const TextInput /*: React.AbstractComponent<
   });
 
   return element;
-});
+}) as TextInputComponent;
 
 TextInput.displayName = 'TextInput';
-// $FlowFixMe
 TextInput.State = TextInputState;
 
 const styles = StyleSheet.create({

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,53 +5,55 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ViewProps } from '../View'; */
+import type { UIEvent } from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 import useMergeRefs from '../../modules/useMergeRefs';
 
-/*:: type Props = {
-  ...ViewProps,
-  onMomentumScrollBegin?: (e: any) => void,
-  onMomentumScrollEnd?: (e: any) => void,
-  onScroll?: (e: any) => void,
-  onScrollBeginDrag?: (e: any) => void,
-  onScrollEndDrag?: (e: any) => void,
-  onTouchMove?: (e: any) => void,
-  onWheel?: (e: any) => void,
-  scrollEnabled?: boolean,
-  scrollEventThrottle?: number,
-  showsHorizontalScrollIndicator?: boolean,
-  showsVerticalScrollIndicator?: boolean
-}; */
+type Props = Omit<ViewProps, 'onScroll'> & {
+  onMomentumScrollBegin?: (e: unknown) => void;
+  onMomentumScrollEnd?: (e: unknown) => void;
+  onScroll?: (e: unknown) => void;
+  onScrollBeginDrag?: (e: unknown) => void;
+  onScrollEndDrag?: (e: unknown) => void;
+  onTouchMove?: ViewProps['onTouchMove'];
+  onWheel?: ViewProps['onWheel'];
+  scrollEnabled?: boolean;
+  scrollEventThrottle?: number;
+  showsHorizontalScrollIndicator?: boolean;
+  showsVerticalScrollIndicator?: boolean;
+};
 
-function normalizeScrollEvent(e) {
+function normalizeScrollEvent(e: UIEvent<HTMLElement>) {
+  const target = e.target as HTMLElement;
   return {
     nativeEvent: {
       contentOffset: {
         get x() {
-          return e.target.scrollLeft;
+          return target.scrollLeft;
         },
         get y() {
-          return e.target.scrollTop;
+          return target.scrollTop;
         }
       },
       contentSize: {
         get height() {
-          return e.target.scrollHeight;
+          return target.scrollHeight;
         },
         get width() {
-          return e.target.scrollWidth;
+          return target.scrollWidth;
         }
       },
       layoutMeasurement: {
         get height() {
-          return e.target.offsetHeight;
+          return target.offsetHeight;
         },
         get width() {
-          return e.target.offsetWidth;
+          return target.offsetWidth;
         }
       }
     },
@@ -61,21 +61,18 @@ function normalizeScrollEvent(e) {
   };
 }
 
-function shouldEmitScrollEvent(
-  lastTick /*: number */,
-  eventThrottle /*: number */
-) {
+function shouldEmitScrollEvent(lastTick: number, eventThrottle: number) {
   const timeSinceLastTick = Date.now() - lastTick;
   return eventThrottle > 0 && timeSinceLastTick >= eventThrottle;
 }
 
+// TODO: remove the alias after forwardRef removal
+type TNode = HTMLElement & PlatformMethods;
+
 /**
  * Encapsulates the Web-specific scroll throttling and disabling logic
  */
-const ScrollViewBase /*: React.AbstractComponent<
-  Props,
-  React.ElementRef<typeof View>
-> */ = React.forwardRef((props, forwardedRef) => {
+const ScrollViewBase = React.forwardRef<TNode, Props>((props, forwardedRef) => {
   const {
     onScroll,
     onTouchMove,
@@ -89,11 +86,12 @@ const ScrollViewBase /*: React.AbstractComponent<
   } = props;
 
   const scrollState = React.useRef({ isScrolling: false, scrollLastTick: 0 });
-  const scrollTimeout = React.useRef(null);
-  const scrollRef = React.useRef(null);
+  const scrollTimeout =
+    React.useRef<Nullable<ReturnType<typeof setTimeout>>>(null);
+  const scrollRef = React.useRef<TNode | null>(null);
 
-  function createPreventableScrollHandler(handler /*: Function */) {
-    return (e /*: Object */) => {
+  function createPreventableScrollHandler<T>(handler?: (e: T) => void) {
+    return (e: T) => {
       if (scrollEnabled) {
         if (handler) {
           handler(e);
@@ -102,7 +100,7 @@ const ScrollViewBase /*: React.AbstractComponent<
     };
   }
 
-  function handleScroll(e /*: Object */) {
+  function handleScroll(e: UIEvent<HTMLElement>) {
     e.stopPropagation();
     if (e.target === scrollRef.current) {
       e.persist();
@@ -130,19 +128,19 @@ const ScrollViewBase /*: React.AbstractComponent<
     }
   }
 
-  function handleScrollStart(e /*: Object */) {
+  function handleScrollStart(e: UIEvent<HTMLElement>) {
     scrollState.current.isScrolling = true;
     handleScrollTick(e);
   }
 
-  function handleScrollTick(e /*: Object */) {
+  function handleScrollTick(e: UIEvent<HTMLElement>) {
     scrollState.current.scrollLastTick = Date.now();
     if (onScroll) {
       onScroll(normalizeScrollEvent(e));
     }
   }
 
-  function handleScrollEnd(e /*: Object */) {
+  function handleScrollEnd(e: UIEvent<HTMLElement>) {
     scrollState.current.isScrolling = false;
     if (onScroll) {
       onScroll(normalizeScrollEvent(e));
