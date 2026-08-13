@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,9 +9,11 @@
 
 'use client';
 
-/*:: import type { ColorValue } from '../../types'; */
-/*:: import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback'; */
-/*:: import type { ViewProps } from '../View'; */
+import type { ForwardedRef, ReactElement, ReactNode } from 'react';
+import type { ColorValue, Nullable, PlatformMethods } from '../../types';
+import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
+import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import { useCallback, useMemo, useState, useRef } from 'react';
@@ -22,24 +22,32 @@ import usePressEvents from '../../modules/usePressEvents';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-/*:: type ViewStyle = $PropertyType<ViewProps, 'style'>; */
+type ViewStyle = ViewProps['style'];
 
-/*:: type Props = $ReadOnly<{|
-  ...TouchableWithoutFeedbackProps,
-  activeOpacity?: ?number,
-  onHideUnderlay?: ?() => void,
-  onShowUnderlay?: ?() => void,
-  style?: ViewStyle,
-  testOnly_pressed?: ?boolean,
-  underlayColor?: ?ColorValue
-|}>; */
+type PressEvent = Parameters<
+  NonNullable<PressResponderConfig['onPressStart']>
+>[0];
 
-/*:: type ExtraStyles = $ReadOnly<{|
-  child: ViewStyle,
-  underlay: ViewStyle
-|}>; */
+type Props = Readonly<
+  TouchableWithoutFeedbackProps & {
+    activeOpacity?: Nullable<number>;
+    onHideUnderlay?: Nullable<() => void>;
+    onShowUnderlay?: Nullable<() => void>;
+    style?: ViewStyle;
+    testOnly_pressed?: Nullable<boolean>;
+    underlayColor?: Nullable<ColorValue>;
+  }
+>;
 
-function createExtraStyles(activeOpacity, underlayColor) /*: ExtraStyles */ {
+type ExtraStyles = Readonly<{
+  child: ViewStyle;
+  underlay: ViewStyle;
+}>;
+
+function createExtraStyles(
+  activeOpacity: Props['activeOpacity'],
+  underlayColor: Props['underlayColor']
+): ExtraStyles {
   return {
     child: { opacity: activeOpacity ?? 0.85 },
     underlay: {
@@ -48,7 +56,7 @@ function createExtraStyles(activeOpacity, underlayColor) /*: ExtraStyles */ {
   };
 }
 
-function hasPressHandler(props) /*: boolean */ {
+function hasPressHandler(props: Props): boolean {
   return (
     props.onPress != null ||
     props.onPressIn != null ||
@@ -71,9 +79,9 @@ function hasPressHandler(props) /*: boolean */ {
  * If you wish to have several child components, wrap them in a View.
  */
 function TouchableHighlight(
-  props /*: Props */,
-  forwardedRef
-) /*: React.Node */ {
+  props: Props,
+  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
+): ReactNode {
   const {
     activeOpacity,
     children,
@@ -95,10 +103,10 @@ function TouchableHighlight(
     ...rest
   } = props;
 
-  const hostRef = useRef(null);
+  const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
   const setRef = useMergeRefs(forwardedRef, hostRef);
 
-  const [extraStyles, setExtraStyles] = useState(
+  const [extraStyles, setExtraStyles] = useState<Nullable<ExtraStyles>>(
     testOnly_pressed === true
       ? createExtraStyles(activeOpacity, underlayColor)
       : null
@@ -135,13 +143,13 @@ function TouchableHighlight(
       delayPressEnd: delayPressOut,
       onLongPress,
       onPress,
-      onPressStart(event) {
+      onPressStart(event: PressEvent) {
         showUnderlay();
         if (onPressIn != null) {
           onPressIn(event);
         }
       },
-      onPressEnd(event) {
+      onPressEnd(event: PressEvent) {
         hideUnderlay();
         if (onPressOut != null) {
           onPressOut(event);
@@ -165,12 +173,15 @@ function TouchableHighlight(
 
   const pressEventHandlers = usePressEvents(hostRef, pressConfig);
 
-  const child = React.Children.only(children);
+  const child = React.Children.only(children) as ReactElement<{
+    style?: ViewStyle;
+    [key: string]: unknown;
+  }>;
 
   return (
     <View
       {...rest}
-      {...pressEventHandlers}
+      {...(pressEventHandlers as unknown)}
       accessibilityDisabled={disabled}
       focusable={!disabled && focusable !== false}
       pointerEvents={disabled ? 'box-none' : undefined}
@@ -204,7 +215,4 @@ const MemoedTouchableHighlight = React.memo(
 );
 MemoedTouchableHighlight.displayName = 'TouchableHighlight';
 
-export default MemoedTouchableHighlight /*: React.AbstractComponent<
-  Props,
-  React.ElementRef<typeof View>
-> */;
+export default MemoedTouchableHighlight;
