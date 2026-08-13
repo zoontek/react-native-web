@@ -181,7 +181,7 @@ function TouchableHighlight(
   return (
     <View
       {...rest}
-      {...(pressEventHandlers as unknown)}
+      {...(pressEventHandlers as unknown as Partial<ViewProps>)}
       accessibilityDisabled={disabled}
       focusable={!disabled && focusable !== false}
       pointerEvents={disabled ? 'box-none' : undefined}
