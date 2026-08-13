@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,47 +6,49 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable, PlatformMethods } from '../../types';
+
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import TouchableOpacity from '../TouchableOpacity';
 import Text from '../Text';
 
-/*:: type ButtonProps = {|
-  accessibilityLabel?: ?string,
-  color?: ?string,
-  disabled?: boolean,
-  onPress?: ?(e: any) => void,
-  testID?: ?string,
-  title: string
-|}; */
+type ButtonProps = {
+  accessibilityLabel?: Nullable<string>;
+  color?: Nullable<string>;
+  disabled?: boolean;
+  onPress?: Nullable<(e: unknown) => void>;
+  testID?: Nullable<string>;
+  title: string;
+};
 
-const Button /*: React.AbstractComponent<
-  ButtonProps,
-  React.ElementRef<typeof TouchableOpacity>
-> */ = React.forwardRef((props, forwardedRef) => {
-  const { accessibilityLabel, color, disabled, onPress, testID, title } = props;
+const Button = React.forwardRef<HTMLElement & PlatformMethods, ButtonProps>(
+  (props, forwardedRef) => {
+    const { accessibilityLabel, color, disabled, onPress, testID, title } =
+      props;
 
-  return (
-    <TouchableOpacity
-      accessibilityLabel={accessibilityLabel}
-      accessibilityRole="button"
-      disabled={disabled}
-      focusable={!disabled}
-      onPress={onPress}
-      ref={forwardedRef}
-      style={[
-        styles.button,
-        color && { backgroundColor: color },
-        disabled && styles.buttonDisabled
-      ]}
-      testID={testID}
-    >
-      <Text style={[styles.text, disabled && styles.textDisabled]}>
-        {title}
-      </Text>
-    </TouchableOpacity>
-  );
-});
+    return (
+      <TouchableOpacity
+        accessibilityLabel={accessibilityLabel}
+        accessibilityRole="button"
+        disabled={disabled}
+        focusable={!disabled}
+        onPress={onPress}
+        ref={forwardedRef}
+        style={[
+          styles.button,
+          color && { backgroundColor: color },
+          disabled && styles.buttonDisabled
+        ]}
+        testID={testID}
+      >
+        <Text style={[styles.text, disabled && styles.textDisabled]}>
+          {title}
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+);
 
 Button.displayName = 'Button';
 
@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
   }
 });
 
-/*:: export type { ButtonProps }; */
+export type { ButtonProps };
 
 export default Button;
