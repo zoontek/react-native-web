@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,7 +8,15 @@
 
 'use client';
 
-/*:: import type { ImageProps } from './types'; */
+import type {
+  ColorValue,
+  GenericStyleProp,
+  LayoutEvent,
+  LayoutValue,
+  Nullable,
+  PlatformMethods
+} from '../../types';
+import type { ImageProps, ImageStyle, ResizeMode, Source } from './types';
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -23,17 +29,22 @@ import TextAncestorContext from '../Text/TextAncestorContext';
 import View from '../View';
 import { warnOnce } from '../../modules/warnOnce';
 
-/*:: export type { ImageProps }; */
+export type { ImageProps };
 
 const ERRORED = 'ERRORED';
 const LOADED = 'LOADED';
 const LOADING = 'LOADING';
 const IDLE = 'IDLE';
 
+type Status = typeof ERRORED | typeof IDLE | typeof LOADED | typeof LOADING;
+
 let _filterId = 0;
 const svgDataUriPattern = /^(data:image\/svg\+xml;utf8,)(.*)/;
 
-function createTintColorSVG(tintColor, id) {
+function createTintColorSVG(
+  tintColor: Nullable<ColorValue | number>,
+  id: number
+) {
   return tintColor && id != null ? (
     <svg
       style={{
@@ -54,12 +65,14 @@ function createTintColorSVG(tintColor, id) {
 }
 
 function extractNonStandardStyleProps(
-  style,
-  blurRadius,
-  filterId,
-  tintColorProp
-) {
-  const flatStyle = StyleSheet.flatten(style);
+  style: GenericStyleProp<ImageStyle>,
+  blurRadius: Nullable<number>,
+  filterId: number,
+  tintColorProp: Nullable<ColorValue>
+): [Nullable<ResizeMode>, Nullable<string>, Nullable<ColorValue>] {
+  const flatStyle = StyleSheet.flatten(style) as ImageStyle & {
+    shadowOpacity?: number;
+  };
   const { filter, resizeMode, shadowOffset, tintColor } = flatStyle;
 
   if (flatStyle.resizeMode) {
@@ -103,7 +116,7 @@ function extractNonStandardStyleProps(
   return [resizeMode, _filter, tintColor];
 }
 
-function resolveAssetDimensions(source) {
+function resolveAssetDimensions(source: Nullable<Source>) {
   if (typeof source === 'number') {
     const { height, width } = getAssetByID(source);
     return { height, width };
@@ -117,8 +130,8 @@ function resolveAssetDimensions(source) {
   }
 }
 
-function resolveAssetUri(source) /*: ?string */ {
-  let uri = null;
+function resolveAssetUri(source: Nullable<Source>): Nullable<string> {
+  let uri: Nullable<string> = null;
   if (typeof source === 'number') {
     // get the URI from the packager
     const asset = getAssetByID(source);
@@ -143,7 +156,11 @@ function resolveAssetUri(source) /*: ?string */ {
       : '';
   } else if (typeof source === 'string') {
     uri = source;
-  } else if (source && typeof source.uri === 'string') {
+  } else if (
+    source &&
+    !Array.isArray(source) &&
+    typeof source.uri === 'string'
+  ) {
     uri = source.uri;
   }
 
@@ -151,7 +168,7 @@ function resolveAssetUri(source) /*: ?string */ {
     const match = uri.match(svgDataUriPattern);
     // inline SVG markup may contain characters (e.g., #, ") that need to be escaped
     if (match) {
-      const [, prefix, svg] = match;
+      const [, prefix, svg = ''] = match;
       const encodedSvg = encodeURIComponent(svg);
       return `${prefix}${encodedSvg}`;
     }
@@ -160,209 +177,202 @@ function resolveAssetUri(source) /*: ?string */ {
   return uri;
 }
 
-/*:: interface ImageStatics {
+interface ImageStatics {
   getSize: (
     uri: string,
     success: (width: number, height: number) => void,
     failure: () => void
   ) => void;
   prefetch: (uri: string) => Promise<void>;
-  queryCache: (
-    uris: Array<string>
-  ) => Promise<{| [uri: string]: 'disk/memory' |}>;
-} */
+  queryCache: (uris: Array<string>) => Promise<Record<string, 'disk/memory'>>;
+}
 
-const Image /*: React.AbstractComponent<
-  ImageProps,
-  React.ElementRef<typeof View>
-> */ = React.forwardRef((props, ref) => {
-  const {
-    'aria-label': _ariaLabel,
-    accessibilityLabel,
-    blurRadius,
-    defaultSource,
-    draggable,
-    onError,
-    onLayout,
-    onLoad,
-    onLoadEnd,
-    onLoadStart,
-    pointerEvents,
-    source,
-    style,
-    ...rest
-  } = props;
-  const ariaLabel = _ariaLabel || accessibilityLabel;
+const Image = React.forwardRef<HTMLElement & PlatformMethods, ImageProps>(
+  (props, ref) => {
+    const {
+      'aria-label': _ariaLabel,
+      accessibilityLabel,
+      blurRadius,
+      defaultSource,
+      draggable,
+      onError,
+      onLayout,
+      onLoad,
+      onLoadEnd,
+      onLoadStart,
+      pointerEvents,
+      source,
+      style,
+      ...rest
+    } = props;
+    const ariaLabel = _ariaLabel || accessibilityLabel;
 
-  if (process.env.NODE_ENV !== 'production') {
-    if (props.children) {
-      throw new Error(
-        'The <Image> component cannot contain children. If you want to render content on top of the image, consider using the <ImageBackground> component or absolute positioning.'
-      );
-    }
-  }
-
-  const [state, updateState] = React.useState(() => {
-    const uri = resolveAssetUri(source);
-    if (uri != null) {
-      const isLoaded = ImageLoader.has(uri);
-      if (isLoaded) {
-        return LOADED;
-      }
-    }
-    return IDLE;
-  });
-
-  const [layout, updateLayout] = React.useState({});
-  const hasTextAncestor = React.useContext(TextAncestorContext);
-  const hiddenImageRef = React.useRef(null);
-  const filterRef = React.useRef(_filterId++);
-  const requestRef = React.useRef(null);
-  const shouldDisplaySource =
-    state === LOADED || (state === LOADING && defaultSource == null);
-  const [_resizeMode, filter, _tintColor] = extractNonStandardStyleProps(
-    style,
-    blurRadius,
-    filterRef.current,
-    props.tintColor
-  );
-  const resizeMode = props.resizeMode || _resizeMode || 'cover';
-  const tintColor = props.tintColor || _tintColor;
-  const selectedSource = shouldDisplaySource ? source : defaultSource;
-  const displayImageUri = resolveAssetUri(selectedSource);
-  const imageSizeStyle = resolveAssetDimensions(selectedSource);
-  const backgroundImage = displayImageUri ? `url("${displayImageUri}")` : null;
-  const backgroundSize = getBackgroundSize();
-
-  // Accessibility image allows users to trigger the browser's image context menu
-  const hiddenImage = displayImageUri
-    ? createElement('img', {
-        alt: ariaLabel || '',
-        style: styles.accessibilityImage$raw,
-        draggable: draggable || false,
-        ref: hiddenImageRef,
-        src: displayImageUri
-      })
-    : null;
-
-  function getBackgroundSize() /*: ?string */ {
-    if (
-      hiddenImageRef.current != null &&
-      (resizeMode === 'center' || resizeMode === 'repeat')
-    ) {
-      const { naturalHeight, naturalWidth } = hiddenImageRef.current;
-      const { height, width } = layout;
-      if (naturalHeight && naturalWidth && height && width) {
-        const scaleFactor = Math.min(
-          1,
-          width / naturalWidth,
-          height / naturalHeight
+    if (process.env.NODE_ENV !== 'production') {
+      if (props.children) {
+        throw new Error(
+          'The <Image> component cannot contain children. If you want to render content on top of the image, consider using absolute positioning.'
         );
-        const x = Math.ceil(scaleFactor * naturalWidth);
-        const y = Math.ceil(scaleFactor * naturalHeight);
-        return `${x}px ${y}px`;
       }
     }
-  }
 
-  function handleLayout(e) {
-    if (resizeMode === 'center' || resizeMode === 'repeat' || onLayout) {
-      const { layout } = e.nativeEvent;
-      onLayout && onLayout(e);
-      updateLayout(layout);
-    }
-  }
-
-  // Image loading
-  const uri = resolveAssetUri(source);
-  React.useEffect(() => {
-    abortPendingRequest();
-
-    if (uri != null) {
-      updateState(LOADING);
-      if (onLoadStart) {
-        onLoadStart();
-      }
-
-      requestRef.current = ImageLoader.load(
-        uri,
-        function load(e) {
-          updateState(LOADED);
-          if (onLoad) {
-            onLoad(e);
-          }
-          if (onLoadEnd) {
-            onLoadEnd();
-          }
-        },
-        function error() {
-          updateState(ERRORED);
-          if (onError) {
-            onError({
-              nativeEvent: {
-                error: `Failed to load resource ${uri}`
-              }
-            });
-          }
-          if (onLoadEnd) {
-            onLoadEnd();
-          }
+    const [state, updateState] = React.useState<Status>(() => {
+      const uri = resolveAssetUri(source);
+      if (uri != null) {
+        const isLoaded = ImageLoader.has(uri);
+        if (isLoaded) {
+          return LOADED;
         }
-      );
-    }
+      }
+      return IDLE;
+    });
 
-    function abortPendingRequest() {
-      if (requestRef.current != null) {
-        ImageLoader.abort(requestRef.current);
-        requestRef.current = null;
+    const [layout, updateLayout] = React.useState<Partial<LayoutValue>>({});
+    const hasTextAncestor = React.useContext(TextAncestorContext);
+    const hiddenImageRef = React.useRef<HTMLImageElement | null>(null);
+    const filterRef = React.useRef(_filterId++);
+    const requestRef = React.useRef<Nullable<number>>(null);
+    const shouldDisplaySource =
+      state === LOADED || (state === LOADING && defaultSource == null);
+    const [_resizeMode, filter, _tintColor] = extractNonStandardStyleProps(
+      style,
+      blurRadius,
+      filterRef.current,
+      props.tintColor
+    );
+    const resizeMode = props.resizeMode || _resizeMode || 'cover';
+    const tintColor = props.tintColor || _tintColor;
+    const selectedSource = shouldDisplaySource ? source : defaultSource;
+    const displayImageUri = resolveAssetUri(selectedSource);
+    const imageSizeStyle = resolveAssetDimensions(selectedSource);
+    const backgroundImage = displayImageUri
+      ? `url("${displayImageUri}")`
+      : null;
+    const backgroundSize = getBackgroundSize();
+
+    // Accessibility image allows users to trigger the browser's image context menu
+    const hiddenImage = displayImageUri
+      ? createElement('img', {
+          alt: ariaLabel || '',
+          style: styles.accessibilityImage$raw,
+          draggable: draggable || false,
+          ref: hiddenImageRef,
+          src: displayImageUri
+        })
+      : null;
+
+    function getBackgroundSize(): Nullable<string> {
+      if (
+        hiddenImageRef.current != null &&
+        (resizeMode === 'center' || resizeMode === 'repeat')
+      ) {
+        const { naturalHeight, naturalWidth } = hiddenImageRef.current;
+        const { height, width } = layout;
+        if (naturalHeight && naturalWidth && height && width) {
+          const scaleFactor = Math.min(
+            1,
+            width / naturalWidth,
+            height / naturalHeight
+          );
+          const x = Math.ceil(scaleFactor * naturalWidth);
+          const y = Math.ceil(scaleFactor * naturalHeight);
+          return `${x}px ${y}px`;
+        }
       }
     }
 
-    return abortPendingRequest;
-  }, [uri, requestRef, updateState, onError, onLoad, onLoadEnd, onLoadStart]);
+    function handleLayout(e: LayoutEvent) {
+      if (resizeMode === 'center' || resizeMode === 'repeat' || onLayout) {
+        const { layout } = e.nativeEvent;
+        onLayout && onLayout(e);
+        updateLayout(layout);
+      }
+    }
 
-  return (
-    <View
-      {...rest}
-      aria-label={ariaLabel}
-      onLayout={handleLayout}
-      pointerEvents={pointerEvents}
-      ref={ref}
-      style={[
-        styles.root,
-        hasTextAncestor && styles.inline,
-        imageSizeStyle,
-        style,
-        styles.undo,
-        // TEMP: avoid deprecated shadow props regression
-        // until Image refactored to use createElement.
-        { boxShadow: null }
-      ]}
-    >
+    // Image loading
+    const uri = resolveAssetUri(source);
+    React.useEffect(() => {
+      abortPendingRequest();
+
+      if (uri != null) {
+        updateState(LOADING);
+        if (onLoadStart) {
+          onLoadStart();
+        }
+
+        requestRef.current = ImageLoader.load(
+          uri,
+          function load(e) {
+            updateState(LOADED);
+            if (onLoad) {
+              onLoad(e);
+            }
+            if (onLoadEnd) {
+              onLoadEnd();
+            }
+          },
+          function error() {
+            updateState(ERRORED);
+            if (onError) {
+              onError({
+                nativeEvent: {
+                  error: `Failed to load resource ${uri}`
+                }
+              });
+            }
+            if (onLoadEnd) {
+              onLoadEnd();
+            }
+          }
+        );
+      }
+
+      function abortPendingRequest() {
+        if (requestRef.current != null) {
+          ImageLoader.abort(requestRef.current);
+          requestRef.current = null;
+        }
+      }
+
+      return abortPendingRequest;
+    }, [uri, requestRef, updateState, onError, onLoad, onLoadEnd, onLoadStart]);
+
+    return (
       <View
+        {...rest}
+        aria-label={ariaLabel}
+        onLayout={handleLayout}
+        pointerEvents={pointerEvents}
+        ref={ref}
         style={[
-          styles.image,
-          resizeModeStyles[resizeMode],
-          { backgroundImage, filter },
-          backgroundSize != null && { backgroundSize }
+          styles.root,
+          hasTextAncestor && styles.inline,
+          imageSizeStyle,
+          style,
+          styles.undo,
+          // TEMP: avoid deprecated shadow props regression
+          // until Image refactored to use createElement.
+          { boxShadow: null }
         ]}
-        suppressHydrationWarning={true}
-      />
-      {hiddenImage}
-      {createTintColorSVG(tintColor, filterRef.current)}
-    </View>
-  );
-});
+      >
+        <View
+          style={[
+            styles.image,
+            resizeModeStyles[resizeMode],
+            { backgroundImage, filter },
+            backgroundSize != null && { backgroundSize }
+          ]}
+          suppressHydrationWarning={true}
+        />
+        {hiddenImage}
+        {createTintColorSVG(tintColor, filterRef.current)}
+      </View>
+    );
+  }
+);
 
 Image.displayName = 'Image';
 
-// prettier-ignore
-// $FlowIgnore: This is the correct type, but casting makes it unhappy since the variables aren't defined yet
-const ImageWithStatics = (Image/*: React.AbstractComponent<
-  ImageProps,
-  React.ElementRef<typeof View>
-> &
-  ImageStatics */);
+const ImageWithStatics = Image as typeof Image & ImageStatics;
 
 ImageWithStatics.getSize = function (uri, success, failure) {
   ImageLoader.getSize(uri, success, failure);

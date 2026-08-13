@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,26 +5,28 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: export type PackagerAsset = {
-  __packager_asset: boolean,
-  fileSystemLocation: string,
-  httpServerLocation: string,
-  width: ?number,
-  height: ?number,
-  scales: Array<number>,
-  hash: string,
-  name: string,
-  type: string
-}; */
+import type { Nullable } from '../../types';
 
-const assets /*: Array<PackagerAsset> */ = [];
+export type PackagerAsset = {
+  __packager_asset: boolean;
+  fileSystemLocation: string;
+  httpServerLocation: string;
+  width: Nullable<number>;
+  height: Nullable<number>;
+  scales: Array<number>;
+  hash: string;
+  name: string;
+  type: string;
+};
 
-export function registerAsset(asset /*: PackagerAsset */) /*: number */ {
+const assets: Array<PackagerAsset> = [];
+
+export function registerAsset(asset: PackagerAsset): number {
   // `push` returns new array length, so the first asset will
   // get id 1 (not 0) to make the value truthy
   return assets.push(asset);
 }
 
-export function getAssetByID(assetId /*: number */) /*: PackagerAsset */ {
-  return assets[assetId - 1];
+export function getAssetByID(assetId: number): PackagerAsset {
+  return assets[assetId - 1] as PackagerAsset;
 }

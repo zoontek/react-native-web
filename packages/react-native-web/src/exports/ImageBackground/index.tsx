@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,8 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ImageProps } from '../Image'; */
-/*:: import type { ViewProps } from '../View'; */
+import type { Ref } from 'react';
+import type { PlatformMethods } from '../../types';
+import type { ImageProps } from '../Image/types';
+import type { ViewProps } from '../View/types';
 
 import * as React from 'react';
 import { forwardRef } from 'react';
@@ -16,22 +16,21 @@ import Image from '../Image';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-/*:: type ImageBackgroundProps = {
-  ...ImageProps,
-  imageRef?: any,
-  imageStyle?: $PropertyType<ImageProps, 'style'>,
-  style?: $PropertyType<ViewProps, 'style'>
-}; */
+type ImageBackgroundProps = Omit<ImageProps, 'style'> & {
+  imageRef?: Ref<HTMLElement & PlatformMethods>;
+  imageStyle?: ImageProps['style'];
+  style?: ViewProps['style'];
+};
 
 const emptyObject = {};
 
 /**
  * Very simple drop-in replacement for <Image> which supports nesting views.
  */
-const ImageBackground /*: React.AbstractComponent<
-  ImageBackgroundProps,
-  React.ElementRef<typeof View>
-> */ = forwardRef((props, forwardedRef) => {
+const ImageBackground = forwardRef<
+  HTMLElement & PlatformMethods,
+  ImageBackgroundProps
+>((props, forwardedRef) => {
   const {
     children,
     style = emptyObject,

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -13,13 +11,14 @@ import ImageLoader, { ImageUriCache } from '../../../modules/ImageLoader';
 import PixelRatio from '../../PixelRatio';
 import React from 'react';
 import { act, render } from '@testing-library/react';
+import type { ResizeMode } from '../types';
 
 const originalImage = window.Image;
 
 describe('components/Image', () => {
   beforeEach(() => {
     ImageUriCache._entries = {};
-    window.Image = jest.fn(() => ({}));
+    window.Image = jest.fn();
   });
 
   afterEach(() => {
@@ -224,14 +223,21 @@ describe('components/Image', () => {
   });
 
   describe('prop "resizeMode"', () => {
-    ['contain', 'cover', 'none', 'repeat', 'stretch', undefined].forEach(
-      (resizeMode) => {
-        test(`value "${resizeMode}"`, () => {
-          const { container } = render(<Image resizeMode={resizeMode} />);
-          expect(container.firstChild).toMatchSnapshot();
-        });
-      }
-    );
+    const resizeModes: Array<ResizeMode | undefined> = [
+      'contain',
+      'cover',
+      'none',
+      'repeat',
+      'stretch',
+      undefined
+    ];
+
+    resizeModes.forEach((resizeMode) => {
+      test(`value "${resizeMode}"`, () => {
+        const { container } = render(<Image resizeMode={resizeMode} />);
+        expect(container.firstChild).toMatchSnapshot();
+      });
+    });
   });
 
   describe('prop "source"', () => {
@@ -264,9 +270,7 @@ describe('components/Image', () => {
         });
       return Image.prefetch(uri).then(() => {
         const source = { uri };
-        const { container } = render(<Image source={source} />, {
-          disableLifecycleMethods: true
-        });
+        const { container } = render(<Image source={source} />);
         expect(container.firstChild).toMatchSnapshot();
         ImageUriCache.remove(uri);
       });
@@ -304,7 +308,7 @@ describe('components/Image', () => {
     test('is correctly updated only when loaded if defaultSource provided', () => {
       const defaultUri = 'https://testing.com/preview.jpg';
       const uri = 'https://testing.com/fullSize.jpg';
-      let loadCallback;
+      let loadCallback!: () => void;
       ImageLoader.load = jest
         .fn()
         .mockImplementationOnce((_, onLoad, onError) => {
@@ -321,17 +325,21 @@ describe('components/Image', () => {
     });
 
     test('it correctly selects the source scale', () => {
-      // oxlint-disable-next-line no-import-assign
-      AssetRegistry.getAssetByID = jest.fn(() => ({
+      jest.spyOn(AssetRegistry, 'getAssetByID').mockImplementation(() => ({
+        __packager_asset: true,
+        fileSystemLocation: '',
+        hash: '',
+        height: null,
         httpServerLocation: 'static',
         name: 'img',
         scales: [1, 2, 3],
-        type: 'png'
+        type: 'png',
+        width: null
       }));
 
       PixelRatio.get = jest.fn(() => 1.0);
       let { container } = render(<Image source={1} />);
-      expect(container.querySelector('img').src).toBe(
+      expect(container.querySelector('img')?.src).toBe(
         'http://localhost/static/img.png'
       );
 
@@ -339,7 +347,7 @@ describe('components/Image', () => {
         PixelRatio.get = jest.fn(() => 2.2);
         ({ container } = render(<Image source={1} />));
       });
-      expect(container.querySelector('img').src).toBe(
+      expect(container.querySelector('img')?.src).toBe(
         'http://localhost/static/img@2x.png'
       );
     });
@@ -356,9 +364,8 @@ describe('components/Image', () => {
     });
 
     test('removes other unsupported View styles', () => {
-      const { container } = render(
-        <Image style={{ overlayColor: 'red', tintColor: 'blue' }} />
-      );
+      const style = { overlayColor: 'red', tintColor: 'blue' };
+      const { container } = render(<Image style={style} />);
       expect(container.firstChild).toMatchSnapshot();
     });
 
