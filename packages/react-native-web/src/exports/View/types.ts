@@ -243,6 +243,7 @@ export type ViewProps = AccessibilityProps &
     id?: Nullable<string>;
     lang?: string;
     style?: GenericStyleProp<ViewStyle>;
+    suppressHydrationWarning?: Nullable<boolean>;
     tabIndex?: Nullable<0 | -1>;
     testID?: Nullable<string>;
     // unstable
