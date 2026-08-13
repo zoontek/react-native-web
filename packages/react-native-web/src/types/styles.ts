@@ -6,6 +6,7 @@
  */
 
 import type { ColorValue, DimensionValue, Nullable } from './index';
+import type { StyleValue } from '../exports/StyleSheet/compiler/normalizeValueWithProperty';
 
 type NumberOrString = number | string;
 
@@ -22,7 +23,7 @@ type AnimationFillMode = 'none' | 'forwards' | 'backwards' | 'both';
 type AnimationIterationCount = number | 'infinite';
 // Either an animation name, or an object mapping step names ('from', '50%') to
 // a block of style declarations.
-type AnimationKeyframes = string | Record<string, Record<string, unknown>>;
+type AnimationKeyframes = string | Record<string, Record<string, StyleValue>>;
 type AnimationPlayState = 'paused' | 'running';
 
 export type AnimationStyles = {

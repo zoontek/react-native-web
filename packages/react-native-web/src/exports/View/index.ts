@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,8 +8,10 @@
 
 'use client';
 
-/*:: import type { PlatformMethods } from '../../types'; */
-/*:: import type { ViewProps } from './types'; */
+import type { ElementType } from 'react';
+import type { PlatformMethods } from '../../types';
+import type { ElementProps } from '../../modules/createDOMProps';
+import type { ViewProps } from './types';
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -44,10 +44,11 @@ const forwardPropsList = Object.assign(
   }
 );
 
-const pickProps = (props) => pick(props, forwardPropsList);
+const pickProps = (props: ViewProps): ElementProps =>
+  pick(props, forwardPropsList);
 
-const View /*: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods> */ =
-  React.forwardRef((props, forwardedRef) => {
+const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
+  (props, forwardedRef) => {
     const {
       hrefAttrs,
       onLayout,
@@ -81,7 +82,7 @@ const View /*: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods>
     }
 
     const hasTextAncestor = React.useContext(TextAncestorContext);
-    const hostRef = React.useRef(null);
+    const hostRef = React.useRef<(HTMLElement & PlatformMethods) | null>(null);
     const { direction: contextDirection } = useLocaleContext();
 
     useElementLayout(hostRef, onLayout);
@@ -104,7 +105,7 @@ const View /*: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods>
       onStartShouldSetResponderCapture
     });
 
-    let component = 'div';
+    let component: ElementType = 'div';
 
     const langDirection =
       props.lang != null ? getLocaleDirection(props.lang) : null;
@@ -135,13 +136,14 @@ const View /*: React.AbstractComponent<ViewProps, HTMLElement & PlatformMethods>
       }
     }
 
-    const platformMethodsRef = usePlatformMethods(supportedProps);
+    const platformMethodsRef = usePlatformMethods();
     const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef);
 
     supportedProps.ref = setRef;
 
     return createElement(component, supportedProps, { writingDirection });
-  });
+  }
+);
 
 View.displayName = 'View';
 
@@ -170,6 +172,6 @@ const styles = StyleSheet.create({
   }
 });
 
-/*:: export type { ViewProps }; */
+export type { ViewProps };
 
 export default View;

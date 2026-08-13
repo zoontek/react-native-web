@@ -414,7 +414,7 @@ const TextInput /*: React.AbstractComponent<
   supportedProps.virtualkeyboardpolicy =
     showSoftInputOnFocus === false ? 'manual' : 'auto';
 
-  const platformMethodsRef = usePlatformMethods(supportedProps);
+  const platformMethodsRef = usePlatformMethods();
 
   const setRef = useMergeRefs(
     hostRef,
