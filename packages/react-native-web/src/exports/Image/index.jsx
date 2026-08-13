@@ -197,7 +197,7 @@ const Image /*: React.AbstractComponent<
   if (process.env.NODE_ENV !== 'production') {
     if (props.children) {
       throw new Error(
-        'The <Image> component cannot contain children. If you want to render content on top of the image, consider using the <ImageBackground> component or absolute positioning.'
+        'The <Image> component cannot contain children. If you want to render content on top of the image, consider using absolute positioning.'
       );
     }
   }
