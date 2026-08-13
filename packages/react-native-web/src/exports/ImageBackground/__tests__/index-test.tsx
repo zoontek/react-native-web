@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -12,8 +10,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Text from '../../Text';
 
-function findImage(container) {
-  return container.firstChild.firstChild;
+function findImage(container: HTMLElement) {
+  return container.firstElementChild?.firstElementChild;
 }
 
 describe('components/ImageBackground', () => {
@@ -34,8 +32,8 @@ describe('components/ImageBackground', () => {
       const { container } = render(<ImageBackground imageStyle={imageStyle} />);
       expect(
         findImage(container)
-          .getAttribute('style')
-          .includes('width: 40px; height: 60px;')
+          ?.getAttribute('style')
+          ?.includes('width: 40px; height: 60px;')
       ).toBe(true);
     });
   });
@@ -44,7 +42,7 @@ describe('components/ImageBackground', () => {
     test('sets the style of the container View', () => {
       const style = { margin: 40 };
       const { container } = render(<ImageBackground style={style} />);
-      expect(container.firstChild.getAttribute('style')).toEqual(
+      expect(container.firstElementChild?.getAttribute('style')).toEqual(
         'margin: 40px 40px 40px 40px;'
       );
     });

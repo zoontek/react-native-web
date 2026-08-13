@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { CompiledStyle } from '../exports/StyleSheet/compiler';
+
 // A value that also accepts 'null' and 'undefined'
 export type Nullable<T> = T | null | undefined;
 
@@ -24,6 +26,7 @@ export type GenericStyleProp<T> =
   | undefined
   | Readonly<T>
   | false
+  | CompiledStyle
   | ''
   | ReadonlyArray<GenericStyleProp<T>>;
 

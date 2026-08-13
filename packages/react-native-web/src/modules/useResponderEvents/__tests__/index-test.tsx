@@ -1366,7 +1366,7 @@ describe('useResponderEvents', () => {
             toString() {
               return 'text';
             }
-          } as unknown as Selection;
+          } as Selection;
         });
         act(() => {
           target.pointerdown({ pointerType });
