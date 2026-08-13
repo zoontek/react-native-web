@@ -71,7 +71,7 @@ export interface PlatformMethods {
   measure: (callback: LayoutCallback) => void;
   measureInWindow: (callback: MeasureInWindowCallback) => void;
   measureLayout: (
-    relativeToNativeNode: object,
+    relativeToNativeNode: HTMLElement,
     onSuccess: LayoutCallback,
     onFail: () => void
   ) => void;
