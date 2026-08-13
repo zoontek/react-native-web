@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,8 +9,11 @@
 
 'use client';
 
-/*:: import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder'; */
-/*:: import type { ViewProps } from '../View'; */
+import type { ForwardedRef, ReactElement, ReactNode, Ref } from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { ElementProps } from '../../modules/createDOMProps';
+import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
@@ -21,27 +22,27 @@ import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
 import { warnOnce } from '../../modules/warnOnce';
 
-/*:: export type Props = $ReadOnly<{|
-  accessibilityLabel?: $PropertyType<ViewProps, 'accessibilityLabel'>,
-  accessibilityLiveRegion?: $PropertyType<ViewProps, 'accessibilityLiveRegion'>,
-  accessibilityRole?: $PropertyType<ViewProps, 'accessibilityRole'>,
-  children?: ?React.Node,
-  delayLongPress?: ?number,
-  delayPressIn?: ?number,
-  delayPressOut?: ?number,
-  disabled?: ?boolean,
-  focusable?: ?boolean,
-  nativeID?: $PropertyType<ViewProps, 'nativeID'>,
-  onBlur?: $PropertyType<ViewProps, 'onBlur'>,
-  onFocus?: $PropertyType<ViewProps, 'onFocus'>,
-  onLayout?: $PropertyType<ViewProps, 'onLayout'>,
-  onLongPress?: $PropertyType<PressResponderConfig, 'onLongPress'>,
-  onPress?: $PropertyType<PressResponderConfig, 'onPress'>,
-  onPressIn?: $PropertyType<PressResponderConfig, 'onPressStart'>,
-  onPressOut?: $PropertyType<PressResponderConfig, 'onPressEnd'>,
-  rejectResponderTermination?: ?boolean,
-  testID?: $PropertyType<ViewProps, 'testID'>
-|}>; */
+export type Props = Readonly<{
+  accessibilityLabel?: ViewProps['accessibilityLabel'];
+  accessibilityLiveRegion?: ViewProps['accessibilityLiveRegion'];
+  accessibilityRole?: ViewProps['accessibilityRole'];
+  children?: Nullable<ReactNode>;
+  delayLongPress?: Nullable<number>;
+  delayPressIn?: Nullable<number>;
+  delayPressOut?: Nullable<number>;
+  disabled?: Nullable<boolean>;
+  focusable?: Nullable<boolean>;
+  nativeID?: ViewProps['nativeID'];
+  onBlur?: ViewProps['onBlur'];
+  onFocus?: ViewProps['onFocus'];
+  onLayout?: ViewProps['onLayout'];
+  onLongPress?: PressResponderConfig['onLongPress'];
+  onPress?: PressResponderConfig['onPress'];
+  onPressIn?: PressResponderConfig['onPressStart'];
+  onPressOut?: PressResponderConfig['onPressEnd'];
+  rejectResponderTermination?: Nullable<boolean>;
+  testID?: ViewProps['testID'];
+}>;
 
 const forwardPropsList = {
   accessibilityDisabled: true,
@@ -60,12 +61,12 @@ const forwardPropsList = {
   testID: true
 };
 
-const pickProps = (props) => pick(props, forwardPropsList);
+const pickProps = (props: Props): ElementProps => pick(props, forwardPropsList);
 
 function TouchableWithoutFeedback(
-  props /*: Props */,
-  forwardedRef
-) /*: React.Node */ {
+  props: Props,
+  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
+): ReactNode {
   warnOnce(
     'TouchableWithoutFeedback',
     'TouchableWithoutFeedback is deprecated. Please use Pressable.'
@@ -84,7 +85,7 @@ function TouchableWithoutFeedback(
     rejectResponderTermination
   } = props;
 
-  const hostRef = useRef(null);
+  const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
 
   const pressConfig = useMemo(
     () => ({
@@ -113,7 +114,11 @@ function TouchableWithoutFeedback(
 
   const pressEventHandlers = usePressEvents(hostRef, pressConfig);
 
-  const element = React.Children.only(props.children);
+  const element = React.Children.only(props.children) as ReactElement<{
+    children?: Nullable<ReactNode>;
+    ref?: Nullable<Ref<HTMLElement & PlatformMethods>>;
+    [key: string]: unknown;
+  }>;
   const children = [element.props.children];
   const supportedProps = pickProps(props);
   supportedProps.accessibilityDisabled = disabled;
@@ -130,7 +135,4 @@ const MemoedTouchableWithoutFeedback = React.memo(
 );
 MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback';
 
-export default MemoedTouchableWithoutFeedback /*: React.AbstractComponent<
-  Props,
-  React.ElementRef<any>
-> */;
+export default MemoedTouchableWithoutFeedback;
