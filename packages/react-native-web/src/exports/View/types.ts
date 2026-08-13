@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,240 +6,254 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ColorValue, GenericStyleProp, LayoutEvent } from '../../types'; */
+import type {
+  FocusEvent,
+  KeyboardEvent,
+  MouseEvent,
+  PointerEvent,
+  ReactNode,
+  TouchEvent,
+  UIEvent,
+  WheelEvent
+} from 'react';
 
-/*:: import type {
+import type {
+  ColorValue,
+  GenericStyleProp,
+  LayoutEvent,
+  Nullable
+} from '../../types';
+
+import type {
   AnimationStyles,
   BorderStyles,
   InteractionStyles,
   LayoutStyles,
   ShadowStyles,
   TransformStyles
-} from '../../types/styles'; */
+} from '../../types/styles';
 
-/*:: type NumberOrString = number | string; */
-/*:: type OverscrollBehaviorValue = 'auto' | 'contain' | 'none'; */
-/*:: type idRef = string; */
-/*:: type idRefList = idRef | Array<idRef>; */
+import type { ResponderEvent } from '../../modules/useResponderEvents/createResponderEvent';
 
-/*:: export type AccessibilityProps = {|
-  'aria-activedescendant'?: ?idRef,
-  'aria-atomic'?: ?boolean,
-  'aria-autocomplete'?: ?('none' | 'list' | 'inline' | 'both'),
-  'aria-busy'?: ?boolean,
-  'aria-checked'?: ?(boolean | 'mixed'),
-  'aria-colcount'?: ?number,
-  'aria-colindex'?: ?number,
-  'aria-colspan'?: ?number,
-  'aria-controls'?: ?idRef,
-  'aria-current'?: ?(boolean | 'page' | 'step' | 'location' | 'date' | 'time'),
-  'aria-describedby'?: ?idRef,
-  'aria-details'?: ?idRef,
-  'aria-disabled'?: ?boolean,
-  'aria-errormessage'?: ?idRef,
-  'aria-expanded'?: ?boolean,
-  'aria-flowto'?: ?idRef,
-  'aria-haspopup'?: ?('dialog' | 'grid' | 'listbox' | 'menu' | 'tree' | false),
-  'aria-hidden'?: ?boolean,
-  'aria-invalid'?: ?boolean,
-  'aria-keyshortcuts'?: ?Array<string>,
-  'aria-label'?: ?string,
-  'aria-labelledby'?: ?idRef,
-  'aria-level'?: ?number,
-  'aria-live'?: ?('assertive' | 'none' | 'polite'),
-  'aria-modal'?: ?boolean,
-  'aria-multiline'?: ?boolean,
-  'aria-multiselectable'?: ?boolean,
-  'aria-orientation'?: ?('horizontal' | 'vertical'),
-  'aria-owns'?: ?idRef,
-  'aria-placeholder'?: ?string,
-  'aria-posinset'?: ?number,
-  'aria-pressed'?: ?(boolean | 'mixed'),
-  'aria-readonly'?: ?boolean,
-  'aria-required'?: ?boolean,
-  'aria-roledescription'?: ?string,
-  'aria-rowcount'?: ?number,
-  'aria-rowindex'?: ?number,
-  'aria-rowspan'?: ?number,
-  'aria-selected'?: ?boolean,
-  'aria-setsize'?: ?number,
-  'aria-sort'?: ?('ascending' | 'descending' | 'none' | 'other'),
-  'aria-valuemax'?: ?number,
-  'aria-valuemin'?: ?number,
-  'aria-valuenow'?: ?number,
-  'aria-valuetext'?: ?string,
-  role?: ?string,
+type NumberOrString = number | string;
+type OverscrollBehaviorValue = 'auto' | 'contain' | 'none';
+type idRef = string;
+type idRefList = idRef | Array<idRef>;
+
+export type AccessibilityProps = {
+  'aria-activedescendant'?: Nullable<idRef>;
+  'aria-atomic'?: Nullable<boolean>;
+  'aria-autocomplete'?: Nullable<'none' | 'list' | 'inline' | 'both'>;
+  'aria-busy'?: Nullable<boolean>;
+  'aria-checked'?: Nullable<boolean | 'mixed'>;
+  'aria-colcount'?: Nullable<number>;
+  'aria-colindex'?: Nullable<number>;
+  'aria-colspan'?: Nullable<number>;
+  'aria-controls'?: Nullable<idRef>;
+  'aria-current'?: Nullable<
+    boolean | 'page' | 'step' | 'location' | 'date' | 'time'
+  >;
+  'aria-describedby'?: Nullable<idRef>;
+  'aria-details'?: Nullable<idRef>;
+  'aria-disabled'?: Nullable<boolean>;
+  'aria-errormessage'?: Nullable<idRef>;
+  'aria-expanded'?: Nullable<boolean>;
+  'aria-flowto'?: Nullable<idRef>;
+  'aria-haspopup'?: Nullable<
+    'dialog' | 'grid' | 'listbox' | 'menu' | 'tree' | false
+  >;
+  'aria-hidden'?: Nullable<boolean>;
+  'aria-invalid'?: Nullable<boolean>;
+  'aria-keyshortcuts'?: Nullable<Array<string>>;
+  'aria-label'?: Nullable<string>;
+  'aria-labelledby'?: Nullable<idRef>;
+  'aria-level'?: Nullable<number>;
+  'aria-live'?: Nullable<'assertive' | 'none' | 'polite'>;
+  'aria-modal'?: Nullable<boolean>;
+  'aria-multiline'?: Nullable<boolean>;
+  'aria-multiselectable'?: Nullable<boolean>;
+  'aria-orientation'?: Nullable<'horizontal' | 'vertical'>;
+  'aria-owns'?: Nullable<idRef>;
+  'aria-placeholder'?: Nullable<string>;
+  'aria-posinset'?: Nullable<number>;
+  'aria-pressed'?: Nullable<boolean | 'mixed'>;
+  'aria-readonly'?: Nullable<boolean>;
+  'aria-required'?: Nullable<boolean>;
+  'aria-roledescription'?: Nullable<string>;
+  'aria-rowcount'?: Nullable<number>;
+  'aria-rowindex'?: Nullable<number>;
+  'aria-rowspan'?: Nullable<number>;
+  'aria-selected'?: Nullable<boolean>;
+  'aria-setsize'?: Nullable<number>;
+  'aria-sort'?: Nullable<'ascending' | 'descending' | 'none' | 'other'>;
+  'aria-valuemax'?: Nullable<number>;
+  'aria-valuemin'?: Nullable<number>;
+  'aria-valuenow'?: Nullable<number>;
+  'aria-valuetext'?: Nullable<string>;
+  role?: Nullable<string>;
 
   // @deprecated
-  accessibilityActiveDescendant?: ?idRef,
-  accessibilityAtomic?: ?boolean,
-  accessibilityAutoComplete?: ?('none' | 'list' | 'inline' | 'both'),
-  accessibilityBusy?: ?boolean,
-  accessibilityChecked?: ?(boolean | 'mixed'),
-  accessibilityColumnCount?: ?number,
-  accessibilityColumnIndex?: ?number,
-  accessibilityColumnSpan?: ?number,
-  accessibilityControls?: ?idRefList,
-  accessibilityCurrent?: ?(
-    | boolean
-    | 'page'
-    | 'step'
-    | 'location'
-    | 'date'
-    | 'time'
-  ),
-  accessibilityDescribedBy?: ?idRefList,
-  accessibilityDetails?: ?idRef,
-  accessibilityDisabled?: ?boolean,
-  accessibilityErrorMessage?: ?idRef,
-  accessibilityExpanded?: ?boolean,
-  accessibilityFlowTo?: ?idRefList,
-  accessibilityHasPopup?: ?(
-    | 'dialog'
-    | 'grid'
-    | 'listbox'
-    | 'menu'
-    | 'tree'
-    | false
-  ),
-  accessibilityHidden?: ?boolean,
-  accessibilityInvalid?: ?boolean,
-  accessibilityKeyShortcuts?: ?Array<string>,
-  accessibilityLabel?: ?string,
-  accessibilityLabelledBy?: ?idRefList,
-  accessibilityLevel?: ?number,
-  accessibilityLiveRegion?: ?('assertive' | 'none' | 'polite'),
-  accessibilityModal?: ?boolean,
-  accessibilityMultiline?: ?boolean,
-  accessibilityMultiSelectable?: ?boolean,
-  accessibilityOrientation?: ?('horizontal' | 'vertical'),
-  accessibilityOwns?: ?idRefList,
-  accessibilityPlaceholder?: ?string,
-  accessibilityPosInSet?: ?number,
-  accessibilityPressed?: ?(boolean | 'mixed'),
-  accessibilityReadOnly?: ?boolean,
-  accessibilityRequired?: ?boolean,
-  accessibilityRole?: ?string,
-  accessibilityRoleDescription?: ?string,
-  accessibilityRowCount?: ?number,
-  accessibilityRowIndex?: ?number,
-  accessibilityRowSpan?: ?number,
-  accessibilitySelected?: ?boolean,
-  accessibilitySetSize?: ?number,
-  accessibilitySort?: ?('ascending' | 'descending' | 'none' | 'other'),
-  accessibilityValueMax?: ?number,
-  accessibilityValueMin?: ?number,
-  accessibilityValueNow?: ?number,
-  accessibilityValueText?: ?string
-|}; */
+  accessibilityActiveDescendant?: Nullable<idRef>;
+  accessibilityAtomic?: Nullable<boolean>;
+  accessibilityAutoComplete?: Nullable<'none' | 'list' | 'inline' | 'both'>;
+  accessibilityBusy?: Nullable<boolean>;
+  accessibilityChecked?: Nullable<boolean | 'mixed'>;
+  accessibilityColumnCount?: Nullable<number>;
+  accessibilityColumnIndex?: Nullable<number>;
+  accessibilityColumnSpan?: Nullable<number>;
+  accessibilityControls?: Nullable<idRefList>;
+  accessibilityCurrent?: Nullable<
+    boolean | 'page' | 'step' | 'location' | 'date' | 'time'
+  >;
+  accessibilityDescribedBy?: Nullable<idRefList>;
+  accessibilityDetails?: Nullable<idRef>;
+  accessibilityDisabled?: Nullable<boolean>;
+  accessibilityErrorMessage?: Nullable<idRef>;
+  accessibilityExpanded?: Nullable<boolean>;
+  accessibilityFlowTo?: Nullable<idRefList>;
+  accessibilityHasPopup?: Nullable<
+    'dialog' | 'grid' | 'listbox' | 'menu' | 'tree' | false
+  >;
+  accessibilityHidden?: Nullable<boolean>;
+  accessibilityInvalid?: Nullable<boolean>;
+  accessibilityKeyShortcuts?: Nullable<Array<string>>;
+  accessibilityLabel?: Nullable<string>;
+  accessibilityLabelledBy?: Nullable<idRefList>;
+  accessibilityLevel?: Nullable<number>;
+  accessibilityLiveRegion?: Nullable<'assertive' | 'none' | 'polite'>;
+  accessibilityModal?: Nullable<boolean>;
+  accessibilityMultiline?: Nullable<boolean>;
+  accessibilityMultiSelectable?: Nullable<boolean>;
+  accessibilityOrientation?: Nullable<'horizontal' | 'vertical'>;
+  accessibilityOwns?: Nullable<idRefList>;
+  accessibilityPlaceholder?: Nullable<string>;
+  accessibilityPosInSet?: Nullable<number>;
+  accessibilityPressed?: Nullable<boolean | 'mixed'>;
+  accessibilityReadOnly?: Nullable<boolean>;
+  accessibilityRequired?: Nullable<boolean>;
+  accessibilityRole?: Nullable<string>;
+  accessibilityRoleDescription?: Nullable<string>;
+  accessibilityRowCount?: Nullable<number>;
+  accessibilityRowIndex?: Nullable<number>;
+  accessibilityRowSpan?: Nullable<number>;
+  accessibilitySelected?: Nullable<boolean>;
+  accessibilitySetSize?: Nullable<number>;
+  accessibilitySort?: Nullable<'ascending' | 'descending' | 'none' | 'other'>;
+  accessibilityValueMax?: Nullable<number>;
+  accessibilityValueMin?: Nullable<number>;
+  accessibilityValueNow?: Nullable<number>;
+  accessibilityValueText?: Nullable<string>;
+};
 
-/*:: export type EventProps = {|
-  onAuxClick?: (e: any) => void,
-  onBlur?: (e: any) => void,
-  onClick?: (e: any) => void,
-  onContextMenu?: (e: any) => void,
-  onFocus?: (e: any) => void,
-  onGotPointerCapture?: (e: any) => void,
-  onKeyDown?: (e: any) => void,
-  onKeyUp?: (e: any) => void,
-  onLayout?: (e: LayoutEvent) => void,
-  onLostPointerCapture?: (e: any) => void,
-  onMoveShouldSetResponder?: (e: any) => boolean,
-  onMoveShouldSetResponderCapture?: (e: any) => boolean,
-  onPointerCancel?: (e: any) => void,
-  onPointerDown?: (e: any) => void,
-  onPointerEnter?: (e: any) => void,
-  onPointerMove?: (e: any) => void,
-  onPointerLeave?: (e: any) => void,
-  onPointerOut?: (e: any) => void,
-  onPointerOver?: (e: any) => void,
-  onPointerUp?: (e: any) => void,
-  onResponderEnd?: (e: any) => void,
-  onResponderGrant?: (e: any) => void | boolean,
-  onResponderMove?: (e: any) => void,
-  onResponderReject?: (e: any) => void,
-  onResponderRelease?: (e: any) => void,
-  onResponderStart?: (e: any) => void,
-  onResponderTerminate?: (e: any) => void,
-  onResponderTerminationRequest?: (e: any) => boolean,
-  onScrollShouldSetResponder?: (e: any) => boolean,
-  onScrollShouldSetResponderCapture?: (e: any) => boolean,
-  onSelectionChangeShouldSetResponder?: (e: any) => boolean,
-  onSelectionChangeShouldSetResponderCapture?: (e: any) => boolean,
-  onStartShouldSetResponder?: (e: any) => boolean,
-  onStartShouldSetResponderCapture?: (e: any) => boolean,
+export type EventProps = {
+  onAuxClick?: (e: MouseEvent<HTMLElement>) => void;
+  onBlur?: (e: FocusEvent<HTMLElement>) => void;
+  onClick?: (e: MouseEvent<HTMLElement>) => void;
+  onContextMenu?: (e: MouseEvent<HTMLElement>) => void;
+  onFocus?: (e: FocusEvent<HTMLElement>) => void;
+  onGotPointerCapture?: (e: PointerEvent<HTMLElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
+  onKeyUp?: (e: KeyboardEvent<HTMLElement>) => void;
+  onLayout?: (e: LayoutEvent) => void;
+  onLostPointerCapture?: (e: PointerEvent<HTMLElement>) => void;
+  onMoveShouldSetResponder?: (e: ResponderEvent) => boolean;
+  onMoveShouldSetResponderCapture?: (e: ResponderEvent) => boolean;
+  onPointerCancel?: (e: PointerEvent<HTMLElement>) => void;
+  onPointerDown?: (e: PointerEvent<HTMLElement>) => void;
+  onPointerEnter?: (e: PointerEvent<HTMLElement>) => void;
+  onPointerMove?: (e: PointerEvent<HTMLElement>) => void;
+  onPointerLeave?: (e: PointerEvent<HTMLElement>) => void;
+  onPointerOut?: (e: PointerEvent<HTMLElement>) => void;
+  onPointerOver?: (e: PointerEvent<HTMLElement>) => void;
+  onPointerUp?: (e: PointerEvent<HTMLElement>) => void;
+  onResponderEnd?: (e: ResponderEvent) => void;
+  onResponderGrant?: (e: ResponderEvent) => void;
+  onResponderMove?: (e: ResponderEvent) => void;
+  onResponderReject?: (e: ResponderEvent) => void;
+  onResponderRelease?: (e: ResponderEvent) => void;
+  onResponderStart?: (e: ResponderEvent) => void;
+  onResponderTerminate?: (e: ResponderEvent) => void;
+  onResponderTerminationRequest?: (e: ResponderEvent) => boolean;
+  onScrollShouldSetResponder?: (e: ResponderEvent) => boolean;
+  onScrollShouldSetResponderCapture?: (e: ResponderEvent) => boolean;
+  onSelectionChangeShouldSetResponder?: (e: ResponderEvent) => boolean;
+  onSelectionChangeShouldSetResponderCapture?: (e: ResponderEvent) => boolean;
+  onStartShouldSetResponder?: (e: ResponderEvent) => boolean;
+  onStartShouldSetResponderCapture?: (e: ResponderEvent) => boolean;
   // unstable
-  onMouseDown?: (e: any) => void,
-  onMouseEnter?: (e: any) => void,
-  onMouseLeave?: (e: any) => void,
-  onMouseMove?: (e: any) => void,
-  onMouseOver?: (e: any) => void,
-  onMouseOut?: (e: any) => void,
-  onMouseUp?: (e: any) => void,
-  onScroll?: (e: any) => void,
-  onTouchCancel?: (e: any) => void,
-  onTouchCancelCapture?: (e: any) => void,
-  onTouchEnd?: (e: any) => void,
-  onTouchEndCapture?: (e: any) => void,
-  onTouchMove?: (e: any) => void,
-  onTouchMoveCapture?: (e: any) => void,
-  onTouchStart?: (e: any) => void,
-  onTouchStartCapture?: (e: any) => void,
-  onWheel?: (e: any) => void
-|}; */
+  onMouseDown?: (e: MouseEvent<HTMLElement>) => void;
+  onMouseEnter?: (e: MouseEvent<HTMLElement>) => void;
+  onMouseLeave?: (e: MouseEvent<HTMLElement>) => void;
+  onMouseMove?: (e: MouseEvent<HTMLElement>) => void;
+  onMouseOver?: (e: MouseEvent<HTMLElement>) => void;
+  onMouseOut?: (e: MouseEvent<HTMLElement>) => void;
+  onMouseUp?: (e: MouseEvent<HTMLElement>) => void;
+  onScroll?: (e: UIEvent<HTMLElement>) => void;
+  onTouchCancel?: (e: TouchEvent<HTMLElement>) => void;
+  onTouchCancelCapture?: (e: TouchEvent<HTMLElement>) => void;
+  onTouchEnd?: (e: TouchEvent<HTMLElement>) => void;
+  onTouchEndCapture?: (e: TouchEvent<HTMLElement>) => void;
+  onTouchMove?: (e: TouchEvent<HTMLElement>) => void;
+  onTouchMoveCapture?: (e: TouchEvent<HTMLElement>) => void;
+  onTouchStart?: (e: TouchEvent<HTMLElement>) => void;
+  onTouchStartCapture?: (e: TouchEvent<HTMLElement>) => void;
+  onWheel?: (e: WheelEvent<HTMLElement>) => void;
+};
 
-/*:: export type ViewStyle = {
-  ...AnimationStyles,
-  ...BorderStyles,
-  ...InteractionStyles,
-  ...LayoutStyles,
-  ...ShadowStyles,
-  ...TransformStyles,
-  backdropFilter?: ?string,
-  backgroundAttachment?: ?string,
-  backgroundBlendMode?: ?string,
-  backgroundClip?: ?string,
-  backgroundColor?: ?ColorValue,
-  backgroundImage?: ?string,
-  backgroundOrigin?: 'border-box' | 'content-box' | 'padding-box',
-  backgroundPosition?: ?string,
-  backgroundRepeat?: ?string,
-  backgroundSize?: ?string,
-  boxShadow?: ?string,
-  clip?: ?string,
-  filter?: ?string,
-  opacity?: ?number,
-  outlineColor?: ?ColorValue,
-  outlineOffset?: ?NumberOrString,
-  outlineStyle?: ?string,
-  outlineWidth?: ?NumberOrString,
-  overscrollBehavior?: ?OverscrollBehaviorValue,
-  overscrollBehaviorX?: ?OverscrollBehaviorValue,
-  overscrollBehaviorY?: ?OverscrollBehaviorValue,
-  pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto',
-  scrollbarWidth?: 'auto' | 'none' | 'thin',
-  scrollSnapAlign?: ?string,
-  scrollSnapType?: ?string,
-  WebkitMaskImage?: ?string,
-  WebkitOverflowScrolling?: 'auto' | 'touch'
-}; */
+export type ViewStyle = AnimationStyles &
+  BorderStyles &
+  InteractionStyles &
+  LayoutStyles &
+  ShadowStyles &
+  TransformStyles & {
+    backdropFilter?: Nullable<string>;
+    backgroundAttachment?: Nullable<string>;
+    backgroundBlendMode?: Nullable<string>;
+    backgroundClip?: Nullable<string>;
+    backgroundColor?: Nullable<ColorValue>;
+    backgroundImage?: Nullable<string>;
+    backgroundOrigin?: 'border-box' | 'content-box' | 'padding-box';
+    backgroundPosition?: Nullable<string>;
+    backgroundRepeat?: Nullable<string>;
+    backgroundSize?: Nullable<string>;
+    boxShadow?: Nullable<string>;
+    clip?: Nullable<string>;
+    filter?: Nullable<string>;
+    opacity?: Nullable<number>;
+    outlineColor?: Nullable<ColorValue>;
+    outlineOffset?: Nullable<NumberOrString>;
+    outlineStyle?: Nullable<string>;
+    outlineWidth?: Nullable<NumberOrString>;
+    overscrollBehavior?: Nullable<OverscrollBehaviorValue>;
+    overscrollBehaviorX?: Nullable<OverscrollBehaviorValue>;
+    overscrollBehaviorY?: Nullable<OverscrollBehaviorValue>;
+    pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto';
+    scrollbarWidth?: 'auto' | 'none' | 'thin';
+    scrollSnapAlign?: Nullable<string>;
+    scrollSnapType?: Nullable<string>;
+    WebkitMaskImage?: Nullable<string>;
+    WebkitOverflowScrolling?: 'auto' | 'touch';
+  };
 
-/*:: export type ViewProps = {
-  ...AccessibilityProps,
-  ...EventProps,
-  children?: ?any,
-  dataSet?: { ... },
-  dir?: 'ltr' | 'rtl',
-  id?: ?string,
-  lang?: string,
-  style?: GenericStyleProp<ViewStyle>,
-  tabIndex?: ?(0 | -1),
-  testID?: ?string,
-  // unstable
-  href?: ?string,
-  hrefAttrs?: ?{ download?: ?boolean, rel?: ?string, target?: ?string },
-  // @deprecated
-  focusable?: ?boolean,
-  pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto',
-  nativeID?: ?string
-}; */
+export type ViewProps = AccessibilityProps &
+  EventProps & {
+    children?: Nullable<ReactNode>;
+    dataSet?: Record<string, unknown>;
+    dir?: 'ltr' | 'rtl';
+    id?: Nullable<string>;
+    lang?: string;
+    style?: GenericStyleProp<ViewStyle>;
+    tabIndex?: Nullable<0 | -1>;
+    testID?: Nullable<string>;
+    // unstable
+    href?: Nullable<string>;
+    hrefAttrs?: Nullable<{
+      download?: Nullable<boolean | string>;
+      rel?: Nullable<string>;
+      target?: Nullable<string>;
+    }>;
+    // @deprecated
+    focusable?: Nullable<boolean>;
+    pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto';
+    nativeID?: Nullable<string>;
+  };

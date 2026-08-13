@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,8 +7,16 @@
 
 import React from 'react';
 import View from '../';
-import { createEventTarget, setPointerEvent } from 'dom-event-testing-library';
+import {
+  createEventTarget as createEventTargetImpl,
+  setPointerEvent
+} from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
+import type { Nullable, PlatformMethods } from '../../../types';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  createEventTargetImpl(node as Node);
 
 describe('components/View', () => {
   test('default', () => {
@@ -25,13 +31,15 @@ describe('components/View', () => {
   });
 
   describe('raw text nodes as children', () => {
+    let consoleError: jest.SpyInstance;
+
     beforeEach(() => {
-      jest.spyOn(console, 'error');
-      console.error.mockImplementation(() => {});
+      consoleError = jest.spyOn(console, 'error');
+      consoleError.mockImplementation(() => {});
     });
 
     afterEach(() => {
-      console.error.mockRestore();
+      consoleError.mockRestore();
     });
 
     test('error logged (single)', () => {
@@ -190,7 +198,7 @@ describe('components/View', () => {
   describe('prop "onBlur"', () => {
     test('is called', () => {
       const onBlur = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onBlur={onBlur} ref={ref} />);
       });
@@ -207,7 +215,7 @@ describe('components/View', () => {
   describe('prop "onClick"', () => {
     test('is called', () => {
       const onClick = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onClick={onClick} ref={ref} />);
       });
@@ -222,7 +230,7 @@ describe('components/View', () => {
   describe('prop "onFocus"', () => {
     test('is called', () => {
       const onFocus = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onFocus={onFocus} ref={ref} />);
       });
@@ -245,7 +253,7 @@ describe('components/View', () => {
 
     test('is called', () => {
       const onPointerDown = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onPointerDown={onPointerDown} ref={ref} />);
       });
@@ -266,7 +274,7 @@ describe('components/View', () => {
 
     test('is not called for prop changes', () => {
       const ref = jest.fn();
-      let rerender;
+      let rerender!: RenderResult['rerender'];
       act(() => {
         ({ rerender } = render(
           <View nativeID="123" ref={ref} style={{ borderWidth: 5 }} />
@@ -280,14 +288,14 @@ describe('components/View', () => {
     });
 
     test('node has imperative methods', () => {
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View ref={ref} />);
       });
       const node = ref.current;
-      expect(typeof node.measure === 'function');
-      expect(typeof node.measureLayout === 'function');
-      expect(typeof node.measureInWindow === 'function');
+      expect(typeof node?.measure === 'function');
+      expect(typeof node?.measureLayout === 'function');
+      expect(typeof node?.measureInWindow === 'function');
     });
   });
 

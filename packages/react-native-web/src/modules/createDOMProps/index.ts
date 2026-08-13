@@ -31,7 +31,7 @@ export type ElementProps = {
   role?: Nullable<string>;
   accessibilityRole?: Nullable<string>;
   dataSet?: Nullable<Record<string, unknown>>;
-  dir?: WritingDirection;
+  dir?: Nullable<WritingDirection>;
   focusable?: Nullable<boolean>;
   id?: Nullable<string>;
   lang?: string;
@@ -44,7 +44,7 @@ export type ElementProps = {
 };
 
 export type DOMProps = {
-  dir?: WritingDirection;
+  dir?: Nullable<WritingDirection>;
   lang?: string;
   [key: string]: unknown;
 };
