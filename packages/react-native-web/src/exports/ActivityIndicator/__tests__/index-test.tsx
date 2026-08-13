@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,8 +7,12 @@
 
 import ActivityIndicator from '..';
 import React from 'react';
-import { createEventTarget } from 'dom-event-testing-library';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
+import type { Nullable, PlatformMethods } from '../../../types';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  createEventTargetImpl(node as Node);
 
 describe('components/ActivityIndicator', () => {
   describe('prop "accessibilityLabel"', () => {
@@ -45,7 +47,7 @@ describe('components/ActivityIndicator', () => {
 
   test('prop "color"', () => {
     const { container } = render(<ActivityIndicator color="red" />);
-    const svg = container.firstChild.querySelector('svg');
+    const svg = container.firstElementChild?.querySelector('svg');
     expect(svg).toMatchSnapshot();
   });
 
@@ -84,7 +86,7 @@ describe('components/ActivityIndicator', () => {
   describe('prop "onBlur"', () => {
     test('is called', () => {
       const onBlur = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<ActivityIndicator onBlur={onBlur} ref={ref} />);
       });
@@ -101,7 +103,7 @@ describe('components/ActivityIndicator', () => {
   describe('prop "onFocus"', () => {
     test('is called', () => {
       const onFocus = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<ActivityIndicator onFocus={onFocus} ref={ref} />);
       });
