@@ -53,8 +53,8 @@ class AnimatedValueXY extends AnimatedWithChildren {
         'AnimatedValueXY must be initialized with an object of numbers or ' +
           'AnimatedValues.'
       );
-      this.x = value.x as AnimatedValue;
-      this.y = value.y as AnimatedValue;
+      this.x = value.x;
+      this.y = value.y;
     }
     this._listeners = {};
   }

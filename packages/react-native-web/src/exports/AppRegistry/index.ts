@@ -112,7 +112,7 @@ export default class AppRegistry {
         AppRegistry.registerRunnable(appKey, run);
       } else {
         invariant(component, 'No component provider passed in');
-        AppRegistry.registerComponent(appKey, component as ComponentProvider);
+        AppRegistry.registerComponent(appKey, component);
       }
     });
   }
@@ -147,7 +147,7 @@ export default class AppRegistry {
         'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.'
     );
 
-    return (runnables[appKey] as Runnable).run(appParameters);
+    return runnables[appKey].run(appParameters);
   }
 
   static setComponentProviderInstrumentationHook(
