@@ -99,9 +99,8 @@ describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
 
       const cssText = Array.prototype.slice
         .call(
-          iframedoc.querySelector<HTMLStyleElement>(
-            'id="react-native-stylesheet"'
-          )?.sheet?.cssRules
+          iframedoc.querySelector<HTMLStyleElement>('#react-native-stylesheet')
+            ?.sheet?.cssRules
         )
         .map((cssRule) => cssRule.cssText);
 
