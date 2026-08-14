@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,7 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ComponentType, Node } from 'react'; */
+import type {
+  ComponentProps,
+  ComponentType,
+  ReactElement,
+  ReactNode
+} from 'react';
+import type { Nullable } from '../../types';
 
 import AppContainer from './AppContainer';
 import invariant from 'fbjs/lib/invariant';
@@ -16,20 +20,32 @@ import render, { hydrate } from '../render';
 import StyleSheet from '../StyleSheet';
 import React from 'react';
 
-/*:: export type Application = {
-  unmount: () => void
-}; */
+export type Application = {
+  unmount: () => void;
+};
 
-export default function renderApplication /*:: <Props: Object> */(
-  RootComponent /*: ComponentType<Props> */,
-  WrapperComponent /*:: ?: ?ComponentType<*> */,
-  callback /*:: ?: () => void */,
-  options /*: {
-    hydrate: boolean,
-    initialProps: Props,
-    rootTag: any
-  } */
-) /*: Application */ {
+export type ApplicationElement = {
+  element: ReactNode;
+  getStyleElement: (
+    props?: ComponentProps<'style'>
+  ) => ReactElement<ComponentProps<'style'>>;
+};
+
+export type AppProps = Record<string, unknown>;
+
+export type WrapperComponentType = ComponentType<{ children?: ReactNode }>;
+
+export default function renderApplication<Props extends AppProps>(
+  RootComponent: ComponentType<Props>,
+  WrapperComponent: Nullable<WrapperComponentType>,
+  callback: Nullable<() => void>,
+  options: {
+    hydrate: boolean;
+    initialProps: Props;
+    mode?: string;
+    rootTag: HTMLElement;
+  }
+): Application {
   const { hydrate: shouldHydrate, initialProps, rootTag } = options;
   const renderFn = shouldHydrate ? hydrate : render;
 
@@ -48,17 +64,17 @@ export default function renderApplication /*:: <Props: Object> */(
 }
 
 export function getApplication(
-  RootComponent /*: ComponentType<Object> */,
-  initialProps /*: Object */,
-  WrapperComponent /*:: ?: ?ComponentType<*> */
-) /*: {| element: Node, getStyleElement: (Object) => Node |} */ {
+  RootComponent: ComponentType<AppProps>,
+  initialProps: Nullable<AppProps>,
+  WrapperComponent: Nullable<WrapperComponentType>
+): ApplicationElement {
   const element = (
     <AppContainer WrapperComponent={WrapperComponent} rootTag={{}}>
       <RootComponent {...initialProps} />
     </AppContainer>
   );
   // Don't escape CSS text
-  const getStyleElement = (props) => {
+  const getStyleElement = (props?: ComponentProps<'style'>) => {
     const sheet = StyleSheet.getSheet();
     return (
       <style
