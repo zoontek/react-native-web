@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -18,12 +16,14 @@ import NativeAnimatedHelper from '../NativeAnimatedHelper';
 
 import invariant from 'fbjs/lib/invariant';
 
-class AnimatedProps extends AnimatedNode {
-  _props /*: Object */;
-  _animatedView /*: any */;
-  _callback /*: () => void */;
+import type { Nullable } from '../../../../types';
 
-  constructor(props /*: Object */, callback /*: () => void */) {
+class AnimatedProps extends AnimatedNode {
+  _props: Record<string, unknown>;
+  _animatedView: unknown;
+  _callback: () => void;
+
+  constructor(props: Record<string, unknown>, callback: () => void) {
     super();
     if (props.style) {
       props = {
@@ -35,8 +35,8 @@ class AnimatedProps extends AnimatedNode {
     this._callback = callback;
   }
 
-  __getValue() /*: Object */ {
-    const props = {};
+  __getValue(): Record<string, unknown> {
+    const props: Record<string, unknown> = {};
     for (const key in this._props) {
       const value = this._props[key];
       if (value instanceof AnimatedNode) {
@@ -54,8 +54,8 @@ class AnimatedProps extends AnimatedNode {
     return props;
   }
 
-  __getAnimatedValue() /*: Object */ {
-    const props = {};
+  __getAnimatedValue(): Record<string, unknown> {
+    const props: Record<string, unknown> = {};
     for (const key in this._props) {
       const value = this._props[key];
       if (value instanceof AnimatedNode) {
@@ -65,7 +65,7 @@ class AnimatedProps extends AnimatedNode {
     return props;
   }
 
-  __attach() /*: void */ {
+  __attach(): void {
     for (const key in this._props) {
       const value = this._props[key];
       if (value instanceof AnimatedNode) {
@@ -74,7 +74,7 @@ class AnimatedProps extends AnimatedNode {
     }
   }
 
-  __detach() /*: void */ {
+  __detach(): void {
     if (this.__isNative && this._animatedView) {
       this.__disconnectAnimatedView();
     }
@@ -88,11 +88,11 @@ class AnimatedProps extends AnimatedNode {
     super.__detach();
   }
 
-  update() /*: void */ {
+  update(): void {
     this._callback();
   }
 
-  __makeNative() /*: void */ {
+  __makeNative(): void {
     if (!this.__isNative) {
       this.__isNative = true;
       for (const key in this._props) {
@@ -107,7 +107,7 @@ class AnimatedProps extends AnimatedNode {
     }
   }
 
-  setNativeView(animatedView /*: any */) /*: void */ {
+  setNativeView(animatedView: unknown): void {
     if (this._animatedView === animatedView) {
       return;
     }
@@ -117,33 +117,33 @@ class AnimatedProps extends AnimatedNode {
     }
   }
 
-  __connectAnimatedView() /*: void */ {
+  __connectAnimatedView(): void {
     invariant(this.__isNative, 'Expected node to be marked as "native"');
-    const nativeViewTag /*: ?number */ = this._animatedView;
+    const nativeViewTag = this._animatedView as Nullable<number>;
     invariant(
       nativeViewTag != null,
       'Unable to locate attached view in the native tree'
     );
     NativeAnimatedHelper.API.connectAnimatedNodeToView(
       this.__getNativeTag(),
-      nativeViewTag
+      nativeViewTag as number
     );
   }
 
-  __disconnectAnimatedView() /*: void */ {
+  __disconnectAnimatedView(): void {
     invariant(this.__isNative, 'Expected node to be marked as "native"');
-    const nativeViewTag /*: ?number */ = this._animatedView;
+    const nativeViewTag = this._animatedView as Nullable<number>;
     invariant(
       nativeViewTag != null,
       'Unable to locate attached view in the native tree'
     );
     NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(
       this.__getNativeTag(),
-      nativeViewTag
+      nativeViewTag as number
     );
   }
 
-  __restoreDefaultValues() /*: void */ {
+  __restoreDefaultValues(): void {
     // When using the native driver, view properties need to be restored to
     // their default values manually since react no longer tracks them. This
     // is needed to handle cases where a prop driven by native animated is removed
@@ -153,8 +153,8 @@ class AnimatedProps extends AnimatedNode {
     }
   }
 
-  __getNativeConfig() /*: Object */ {
-    const propsConfig = {};
+  __getNativeConfig(): Record<string, unknown> {
+    const propsConfig: Record<string, number> = {};
     for (const propKey in this._props) {
       const value = this._props[propKey];
       if (value instanceof AnimatedNode) {

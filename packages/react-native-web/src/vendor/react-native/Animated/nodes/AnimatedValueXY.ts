@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -16,11 +14,9 @@ import AnimatedWithChildren from './AnimatedWithChildren';
 
 import invariant from 'fbjs/lib/invariant';
 
-/*:: type ValueXYListenerCallback = (value: {
-  x: number,
-  y: number,
-  ...
-}) => mixed; */
+import type { Nullable } from '../../../../types';
+
+type ValueXYListenerCallback = (value: { x: number; y: number }) => unknown;
 
 let _uniqueId = 1;
 
@@ -31,26 +27,23 @@ let _uniqueId = 1;
  * See https://reactnative.dev/docs/animatedvaluexy.html
  */
 class AnimatedValueXY extends AnimatedWithChildren {
-  x /*: AnimatedValue */;
-  y /*: AnimatedValue */;
-  _listeners /*: {
+  x: AnimatedValue;
+  y: AnimatedValue;
+  _listeners: {
     [key: string]: {
-      x: string,
-      y: string,
-      ...
-    },
-    ...,
-  } */;
+      x: string;
+      y: string;
+    };
+  };
 
   constructor(
-    valueIn /*:: ?: ?{
-      +x: number | AnimatedValue,
-      +y: number | AnimatedValue,
-      ...
-    } */
+    valueIn?: Nullable<{
+      readonly x: number | AnimatedValue;
+      readonly y: number | AnimatedValue;
+    }>
   ) {
     super();
-    const value /*: any */ = valueIn || { x: 0, y: 0 }; // @flowfixme: shouldn't need `: any`
+    const value = valueIn || { x: 0, y: 0 };
     if (typeof value.x === 'number' && typeof value.y === 'number') {
       this.x = new AnimatedValue(value.x);
       this.y = new AnimatedValue(value.y);
@@ -60,8 +53,8 @@ class AnimatedValueXY extends AnimatedWithChildren {
         'AnimatedValueXY must be initialized with an object of numbers or ' +
           'AnimatedValues.'
       );
-      this.x = value.x;
-      this.y = value.y;
+      this.x = value.x as AnimatedValue;
+      this.y = value.y as AnimatedValue;
     }
     this._listeners = {};
   }
@@ -72,7 +65,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#setvalue
    */
-  setValue(value /*: {x: number, y: number, ...} */) {
+  setValue(value: { x: number; y: number }) {
     this.x.setValue(value.x);
     this.y.setValue(value.y);
   }
@@ -84,7 +77,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#setoffset
    */
-  setOffset(offset /*: {x: number, y: number, ...} */) {
+  setOffset(offset: { x: number; y: number }) {
     this.x.setOffset(offset.x);
     this.y.setOffset(offset.y);
   }
@@ -95,7 +88,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#flattenoffset
    */
-  flattenOffset() /*: void */ {
+  flattenOffset(): void {
     this.x.flattenOffset();
     this.y.flattenOffset();
   }
@@ -106,16 +99,15 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#extractoffset
    */
-  extractOffset() /*: void */ {
+  extractOffset(): void {
     this.x.extractOffset();
     this.y.extractOffset();
   }
 
-  __getValue() /*: {
-    x: number,
-    y: number,
-    ...
-  } */ {
+  __getValue(): {
+    x: number;
+    y: number;
+  } {
     return {
       x: this.x.__getValue(),
       y: this.y.__getValue()
@@ -127,13 +119,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#resetanimation
    */
-  resetAnimation(
-    callback /*:: ?: (value: {
-      x: number,
-      y: number,
-      ...
-    }) => void */
-  ) /*: void */ {
+  resetAnimation(callback?: (value: { x: number; y: number }) => void): void {
     this.x.resetAnimation();
     this.y.resetAnimation();
     callback && callback(this.__getValue());
@@ -146,13 +132,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#stopanimation
    */
-  stopAnimation(
-    callback /*:: ?: (value: {
-      x: number,
-      y: number,
-      ...
-    }) => void */
-  ) /*: void */ {
+  stopAnimation(callback?: (value: { x: number; y: number }) => void): void {
     this.x.stopAnimation();
     this.y.stopAnimation();
     callback && callback(this.__getValue());
@@ -167,9 +147,11 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#addlistener
    */
-  addListener(callback /*: ValueXYListenerCallback */) /*: string */ {
+  addListener(callback: (state: { value: number }) => unknown): string;
+  addListener(callback: ValueXYListenerCallback): string;
+  addListener(callback: Function): string {
     const id = String(_uniqueId++);
-    const jointCallback = ({ value: number }) => {
+    const jointCallback = ({ value: number }: { value: number }) => {
       callback(this.__getValue());
     };
     this._listeners[id] = {
@@ -185,9 +167,9 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#removelistener
    */
-  removeListener(id /*: string */) /*: void */ {
-    this.x.removeListener(this._listeners[id].x);
-    this.y.removeListener(this._listeners[id].y);
+  removeListener(id: string): void {
+    this.x.removeListener(this._listeners[id]!.x);
+    this.y.removeListener(this._listeners[id]!.y);
     delete this._listeners[id];
   }
 
@@ -196,7 +178,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#removealllisteners
    */
-  removeAllListeners() /*: void */ {
+  removeAllListeners(): void {
     this.x.removeAllListeners();
     this.y.removeAllListeners();
     this._listeners = {};
@@ -207,7 +189,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#getlayout
    */
-  getLayout() /*: {[key: string]: AnimatedValue, ...} */ {
+  getLayout(): { [key: string]: AnimatedValue } {
     return {
       left: this.x,
       top: this.y
@@ -219,7 +201,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#gettranslatetransform
    */
-  getTranslateTransform() /*: Array<{[key: string]: AnimatedValue, ...}> */ {
+  getTranslateTransform(): Array<{ [key: string]: AnimatedValue }> {
     return [{ translateX: this.x }, { translateY: this.y }];
   }
 }
