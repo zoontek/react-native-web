@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,7 +8,9 @@
 
 'use client';
 
-/*:: import type { ViewProps } from '../View'; */
+import type { ReactNode } from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import ModalPortal from './ModalPortal';
@@ -18,39 +18,37 @@ import ModalAnimation from './ModalAnimation';
 import ModalContent from './ModalContent';
 import ModalFocusTrap from './ModalFocusTrap';
 
-/*:: export type ModalProps = {
-  ...ViewProps,
-  animationType?: 'none' | 'slide' | 'fade',
-  children: any,
-  hardwareAccelerated?: ?boolean,
-  onDismiss?: ?() => mixed,
-  onOrientationChange?: ?(e: {|
-    orientation: 'portrait' | 'landscape'
-  |}) => void,
-  onRequestClose?: ?() => void,
-  onShow?: ?() => void,
-  presentationStyle?: ?(
-    | 'fullScreen'
-    | 'pageSheet'
-    | 'formSheet'
-    | 'overFullScreen'
-  ),
-  statusBarTranslucent?: ?boolean,
-  supportedOrientations?: ?Array<
-    | 'portrait'
-    | 'portrait-upside-down'
-    | 'landscape'
-    | 'landscape-left'
-    | 'landscape-right'
-  >,
-  transparent?: ?boolean,
-  visible?: ?boolean
-}; */
+export type ModalProps = ViewProps & {
+  animationType?: 'none' | 'slide' | 'fade';
+  children?: ReactNode;
+  hardwareAccelerated?: Nullable<boolean>;
+  onDismiss?: Nullable<() => unknown>;
+  onOrientationChange?: Nullable<
+    (e: { orientation: 'portrait' | 'landscape' }) => void
+  >;
+  onRequestClose?: Nullable<() => void>;
+  onShow?: Nullable<() => void>;
+  presentationStyle?: Nullable<
+    'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen'
+  >;
+  statusBarTranslucent?: Nullable<boolean>;
+  supportedOrientations?: Nullable<
+    Array<
+      | 'portrait'
+      | 'portrait-upside-down'
+      | 'landscape'
+      | 'landscape-left'
+      | 'landscape-right'
+    >
+  >;
+  transparent?: Nullable<boolean>;
+  visible?: Nullable<boolean>;
+};
 
 let uniqueModalIdentifier = 0;
 
-const activeModalStack = [];
-const activeModalListeners = {};
+const activeModalStack: Array<number> = [];
+const activeModalListeners: Record<number, (isActive: boolean) => void> = {};
 
 function notifyActiveModalListeners() {
   if (activeModalStack.length === 0) {
@@ -59,16 +57,16 @@ function notifyActiveModalListeners() {
   const activeModalId = activeModalStack[activeModalStack.length - 1];
   activeModalStack.forEach((modalId) => {
     if (modalId in activeModalListeners) {
-      activeModalListeners[modalId](modalId === activeModalId);
+      activeModalListeners[modalId]?.(modalId === activeModalId);
     }
   });
 }
 
-function removeActiveModal(modalId) {
+function removeActiveModal(modalId: number) {
   if (modalId in activeModalListeners) {
     // Before removing this listener we should probably tell it
     // that it's no longer the active modal for sure.
-    activeModalListeners[modalId](false);
+    activeModalListeners[modalId]?.(false);
     delete activeModalListeners[modalId];
   }
   const index = activeModalStack.indexOf(modalId);
@@ -78,17 +76,20 @@ function removeActiveModal(modalId) {
   }
 }
 
-function addActiveModal(modalId, listener) {
+function addActiveModal(
+  modalId: number,
+  listener: (isActive: boolean) => void
+) {
   removeActiveModal(modalId);
   activeModalStack.push(modalId);
   activeModalListeners[modalId] = listener;
   notifyActiveModalListeners();
 }
 
-const Modal /*: React.AbstractComponent<
-  ModalProps,
-  React.ElementRef<typeof ModalContent>
-> */ = React.forwardRef((props, forwardedRef) => {
+// TODO: remove the alias after forwardRef removal
+type TNode = HTMLElement & PlatformMethods;
+
+const Modal = React.forwardRef<TNode, ModalProps>((props, forwardedRef) => {
   const {
     animationType,
     children,

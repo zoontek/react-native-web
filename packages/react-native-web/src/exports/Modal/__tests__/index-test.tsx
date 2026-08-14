@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -78,7 +76,7 @@ describe('components/Modal', () => {
     const insideElement = getByTestId('inside-a');
     const dialogElements = document.body.querySelectorAll('[role=dialog]');
     expect(dialogElements.length).toBe(1);
-    expect(dialogElements[0].contains(insideElement)).toBeTruthy();
+    expect(dialogElements[0]?.contains(insideElement)).toBeTruthy();
   });
 
   test('multiple modals will only mark one as active', () => {
@@ -99,7 +97,7 @@ describe('components/Modal', () => {
     const insideElement = getByTestId('inside-b');
     const dialogElements = document.body.querySelectorAll('[role=dialog]');
     expect(dialogElements.length).toBe(1);
-    expect(dialogElements[0].contains(insideElement)).toBeTruthy();
+    expect(dialogElements[0]?.contains(insideElement)).toBeTruthy();
   });
 
   test('modal active state changes propogate', () => {
@@ -136,7 +134,7 @@ describe('components/Modal', () => {
     const insideElement = getByTestId('inside-b');
     const dialogElements = document.body.querySelectorAll('[role=dialog]');
     expect(dialogElements.length).toBe(1);
-    expect(dialogElements[0].contains(insideElement)).toBeTruthy();
+    expect(dialogElements[0]?.contains(insideElement)).toBeTruthy();
   });
 
   test('removed modal sets others active state', () => {
@@ -166,7 +164,7 @@ describe('components/Modal', () => {
     const insideElement = getByTestId('inside-a');
     const dialogElements = document.body.querySelectorAll('[role=dialog]');
     expect(dialogElements.length).toBe(1);
-    expect(dialogElements[0].contains(insideElement)).toBeTruthy();
+    expect(dialogElements[0]?.contains(insideElement)).toBeTruthy();
   });
 
   test('executes onShow callback when initially showing', () => {
@@ -217,29 +215,37 @@ describe('components/Modal', () => {
     const { rerender, baseElement } = render(
       <Modal animationType={'none'} visible={true} />
     );
-    const animationNoneElement = baseElement.lastChild.lastChild;
+    const animationNoneElement = baseElement.lastChild?.lastChild as Element;
     const animationNoneStyle = window.getComputedStyle(
       animationNoneElement,
       null
     );
     rerender(<Modal visible={true} />);
-    const animationMissingElement = baseElement.lastChild.lastChild;
+    const animationMissingElement = baseElement.lastChild?.lastChild as Element;
     const animationMissingStyle = window.getComputedStyle(
       animationMissingElement,
       null
     );
-    const styleProps = new Set();
+    const styleProps = new Set<string>();
 
     for (let i = 0; i < animationNoneStyle.length; i++) {
-      styleProps.add(animationNoneStyle[i]);
+      const value = animationNoneStyle[i];
+      if (value != null) {
+        styleProps.add(value);
+      }
     }
 
     for (let i = 0; i < animationMissingStyle.length; i++) {
-      styleProps.add(animationMissingStyle[i]);
+      const value = animationMissingStyle[i];
+      if (value != null) {
+        styleProps.add(value);
+      }
     }
 
     for (const prop of styleProps) {
-      expect(animationNoneStyle[prop]).toEqual(animationMissingStyle[prop]);
+      expect(animationNoneStyle[prop as keyof CSSStyleDeclaration]).toEqual(
+        animationMissingStyle[prop as keyof CSSStyleDeclaration]
+      );
     }
   });
 
@@ -249,11 +255,12 @@ describe('components/Modal', () => {
         <a href={'#hello'}>Hello</a>
       </Modal>
     );
-    const dialogElement =
-      baseElement.lastChild.querySelector('[role="dialog"]');
+    const dialogElement = (
+      baseElement.lastChild as Element
+    ).querySelector<HTMLElement>('[role="dialog"]');
     expect(dialogElement).not.toBeNull();
-    expect(dialogElement.getAttribute('role')).toBe('dialog');
-    expect(dialogElement.getAttribute('aria-modal')).toBe('true');
+    expect(dialogElement?.getAttribute('role')).toBe('dialog');
+    expect(dialogElement?.getAttribute('aria-modal')).toBe('true');
   });
 
   test('focus is trapped by default', () => {
@@ -270,9 +277,13 @@ describe('components/Modal', () => {
       </>
     );
 
-    const outsideElement = document.querySelector('[data-testid="outside"]');
-    const insideElement = document.querySelector('[data-testid="inside"]');
-    outsideElement.focus();
+    const outsideElement = document.querySelector<HTMLElement>(
+      '[data-testid="outside"]'
+    );
+    const insideElement = document.querySelector<HTMLElement>(
+      '[data-testid="inside"]'
+    );
+    outsideElement?.focus();
     expect(document.activeElement).toBe(insideElement);
   });
 
@@ -290,8 +301,10 @@ describe('components/Modal', () => {
       </>
     );
 
-    const outsideElement = document.querySelector('[data-testid="outside"]');
-    outsideElement.focus();
+    const outsideElement = document.querySelector<HTMLElement>(
+      '[data-testid="outside"]'
+    );
+    outsideElement?.focus();
     expect(document.activeElement).toBe(outsideElement);
 
     rerender(
@@ -307,7 +320,10 @@ describe('components/Modal', () => {
       </>
     );
 
-    const insideElement = document.querySelector('[data-testid="inside"]');
+    const insideElement = document.querySelector<HTMLElement>(
+      '[data-testid="inside"]'
+    );
+
     expect(document.activeElement).toBe(insideElement);
   });
 
@@ -321,8 +337,10 @@ describe('components/Modal', () => {
       </>
     );
 
-    const outsideElement = document.querySelector('[data-testid="outside"]');
-    const onDismissCallback = jest.fn(() => outsideElement.focus());
+    const outsideElement = document.querySelector<HTMLElement>(
+      '[data-testid="outside"]'
+    );
+    const onDismissCallback = jest.fn(() => outsideElement?.focus());
 
     rerender(
       <>
@@ -354,10 +372,10 @@ describe('components/Modal', () => {
       </>
     );
 
-    const modalTrigger = document.querySelector(
+    const modalTrigger = document.querySelector<HTMLElement>(
       '[data-testid="modal-trigger"]'
     );
-    modalTrigger.focus();
+    modalTrigger?.focus();
     expect(document.activeElement).toBe(modalTrigger);
 
     rerender(
@@ -376,7 +394,10 @@ describe('components/Modal', () => {
       </>
     );
 
-    const insideElement = document.querySelector('[data-testid="inside"]');
+    const insideElement = document.querySelector<HTMLElement>(
+      '[data-testid="inside"]'
+    );
+
     expect(document.activeElement).toBe(insideElement);
 
     rerender(
@@ -415,10 +436,10 @@ describe('components/Modal', () => {
       </>
     );
 
-    const modalTrigger = document.querySelector(
+    const modalTrigger = document.querySelector<HTMLElement>(
       '[data-testid="modal-trigger"]'
     );
-    modalTrigger.focus();
+    modalTrigger?.focus();
     expect(document.activeElement).toBe(modalTrigger);
 
     rerender(
@@ -437,7 +458,10 @@ describe('components/Modal', () => {
       </>
     );
 
-    const insideElement = document.querySelector('[data-testid="inside"]');
+    const insideElement = document.querySelector<HTMLElement>(
+      '[data-testid="inside"]'
+    );
+
     expect(document.activeElement).toBe(insideElement);
 
     rerender(
@@ -470,9 +494,14 @@ describe('components/Modal', () => {
       </>
     );
 
-    const outsideElement = document.querySelector('[data-testid="outside"]');
-    const insideElement = document.querySelector('[data-testid="inside"]');
-    outsideElement.focus();
+    const outsideElement = document.querySelector<HTMLElement>(
+      '[data-testid="outside"]'
+    );
+    const insideElement = document.querySelector<HTMLElement>(
+      '[data-testid="inside"]'
+    );
+
+    outsideElement?.focus();
     expect(document.activeElement).toBe(insideElement);
   });
 
@@ -493,14 +522,16 @@ describe('components/Modal', () => {
       </>
     );
 
-    const insideStartElement = document.querySelector(
+    const insideStartElement = document.querySelector<HTMLElement>(
       '[data-testid="inside-a"]'
     );
-    const insideEndElement = document.querySelector('[data-testid="inside-c"]');
+    const insideEndElement = document.querySelector<HTMLElement>(
+      '[data-testid="inside-c"]'
+    );
     // This is ugly - perhaps there's a better way?
-    const focusBracket =
-      insideEndElement.parentNode.parentNode.parentNode.nextSibling;
-    insideEndElement.focus();
+    const focusBracket = insideEndElement?.parentNode?.parentNode?.parentNode
+      ?.nextSibling as HTMLElement;
+    insideEndElement?.focus();
     focusBracket.focus();
     expect(document.activeElement).toBe(insideStartElement);
   });
@@ -522,14 +553,16 @@ describe('components/Modal', () => {
       </>
     );
 
-    const insideStartElement = document.querySelector(
+    const insideStartElement = document.querySelector<HTMLElement>(
       '[data-testid="inside-a"]'
     );
-    const insideEndElement = document.querySelector('[data-testid="inside-c"]');
+    const insideEndElement = document.querySelector<HTMLElement>(
+      '[data-testid="inside-c"]'
+    );
     // This is ugly - perhaps there's a better way?
-    const focusBracket =
-      insideEndElement.parentNode.parentNode.parentNode.previousSibling;
-    insideStartElement.focus();
+    const focusBracket = insideEndElement?.parentNode?.parentNode?.parentNode
+      ?.previousSibling as HTMLElement;
+    insideStartElement?.focus();
     focusBracket.focus();
     expect(document.activeElement).toBe(insideEndElement);
   });
@@ -545,8 +578,10 @@ describe('components/Modal', () => {
         </Modal>
       </>
     );
-    const outsideElement = document.querySelector('[data-testid="outside"]');
-    outsideElement.focus();
+    const outsideElement = document.querySelector<HTMLElement>(
+      '[data-testid="outside"]'
+    );
+    outsideElement?.focus();
     expect(document.activeElement).not.toBe(outsideElement);
     expect(document.activeElement).not.toBe(document.body);
   });
@@ -564,8 +599,10 @@ describe('components/Modal', () => {
         </Modal>
       </>
     );
-    const outsideElement = document.querySelector('[data-testid="outside"]');
-    outsideElement.focus();
+    const outsideElement = document.querySelector<HTMLElement>(
+      '[data-testid="outside"]'
+    );
+    outsideElement?.focus();
     expect(document.activeElement).toBe(outsideElement);
   });
 
@@ -577,11 +614,17 @@ describe('components/Modal', () => {
         </a>
       </Modal>
     );
-    const helloAnchor = document.querySelector('[data-testid="hello"]');
+
+    const helloAnchor = document.querySelector<HTMLElement>(
+      '[data-testid="hello"]'
+    );
+
     expect(container.children.length).toBe(0);
     expect(helloAnchor).not.toBeNull();
     expect(baseElement.firstChild).toBe(container);
-    expect(baseElement.lastChild.firstChild.contains(helloAnchor)).toBeTruthy();
+    expect(
+      baseElement.lastChild?.firstChild?.contains(helloAnchor)
+    ).toBeTruthy();
   });
 
   test('portal created is a div', () => {
@@ -592,7 +635,7 @@ describe('components/Modal', () => {
         </a>
       </Modal>
     );
-    expect(baseElement.lastChild.tagName).toBe('DIV');
+    expect((baseElement.lastChild as Element).tagName).toBe('DIV');
   });
 
   test('ref must be set before `mount` hook', () => {
@@ -669,10 +712,10 @@ describe('components/Modal', () => {
     );
 
     // This is kind of ugly but I can't find a better way to target just the animation div
-    const animationAElement =
-      getByTestId('a').parentElement.parentElement.parentElement.parentElement;
-    const animationBElement =
-      getByTestId('b').parentElement.parentElement.parentElement.parentElement;
+    const animationAElement = getByTestId('a').parentElement?.parentElement
+      ?.parentElement?.parentElement as HTMLElement;
+    const animationBElement = getByTestId('b').parentElement?.parentElement
+      ?.parentElement?.parentElement as HTMLElement;
 
     fireEvent.animationEnd(animationAElement);
     fireEvent.animationEnd(animationBElement);
