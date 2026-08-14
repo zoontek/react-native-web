@@ -104,11 +104,11 @@ const API = {
         eventListenerGetValueCallbacks[tag] = saveValueCallback;
       }
       API.queueOperation(
-        nativeOps!.getValue as unknown as (tag: number) => void,
+        nativeOps.getValue as unknown as (tag: number) => void,
         tag
       );
     } else {
-      API.queueOperation(nativeOps!.getValue, tag, saveValueCallback);
+      API.queueOperation(nativeOps.getValue, tag, saveValueCallback);
     }
   },
   setWaitingForIdentifier: function (id: string): void {
@@ -204,7 +204,7 @@ const API = {
   },
   createAnimatedNode: function (tag: number, config: AnimatedNodeConfig): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.createAnimatedNode, tag, config);
+    API.queueOperation(nativeOps.createAnimatedNode, tag, config);
   },
   updateAnimatedNodeConfig: function (
     tag: number,
@@ -217,22 +217,22 @@ const API = {
   },
   startListeningToAnimatedNodeValue: function (tag: number) {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.startListeningToAnimatedNodeValue, tag);
+    API.queueOperation(nativeOps.startListeningToAnimatedNodeValue, tag);
   },
   stopListeningToAnimatedNodeValue: function (tag: number) {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.stopListeningToAnimatedNodeValue, tag);
+    API.queueOperation(nativeOps.stopListeningToAnimatedNodeValue, tag);
   },
   connectAnimatedNodes: function (parentTag: number, childTag: number): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.connectAnimatedNodes, parentTag, childTag);
+    API.queueOperation(nativeOps.connectAnimatedNodes, parentTag, childTag);
   },
   disconnectAnimatedNodes: function (
     parentTag: number,
     childTag: number
   ): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.disconnectAnimatedNodes, parentTag, childTag);
+    API.queueOperation(nativeOps.disconnectAnimatedNodes, parentTag, childTag);
   },
   startAnimatingNode: function (
     animationId: number,
@@ -246,7 +246,7 @@ const API = {
         eventListenerAnimationFinishedCallbacks[animationId] = endCallback;
       }
       API.queueOperation(
-        nativeOps!.startAnimatingNode as unknown as (
+        nativeOps.startAnimatingNode as unknown as (
           animationId: number,
           nodeTag: number,
           config: AnimatingNodeConfig
@@ -257,7 +257,7 @@ const API = {
       );
     } else {
       API.queueOperation(
-        nativeOps!.startAnimatingNode,
+        nativeOps.startAnimatingNode,
         animationId,
         nodeTag,
         config,
@@ -267,27 +267,27 @@ const API = {
   },
   stopAnimation: function (animationId: number) {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.stopAnimation, animationId);
+    API.queueOperation(nativeOps.stopAnimation, animationId);
   },
   setAnimatedNodeValue: function (nodeTag: number, value: number): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.setAnimatedNodeValue, nodeTag, value);
+    API.queueOperation(nativeOps.setAnimatedNodeValue, nodeTag, value);
   },
   setAnimatedNodeOffset: function (nodeTag: number, offset: number): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.setAnimatedNodeOffset, nodeTag, offset);
+    API.queueOperation(nativeOps.setAnimatedNodeOffset, nodeTag, offset);
   },
   flattenAnimatedNodeOffset: function (nodeTag: number): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.flattenAnimatedNodeOffset, nodeTag);
+    API.queueOperation(nativeOps.flattenAnimatedNodeOffset, nodeTag);
   },
   extractAnimatedNodeOffset: function (nodeTag: number): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.extractAnimatedNodeOffset, nodeTag);
+    API.queueOperation(nativeOps.extractAnimatedNodeOffset, nodeTag);
   },
   connectAnimatedNodeToView: function (nodeTag: number, viewTag: number): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.connectAnimatedNodeToView, nodeTag, viewTag);
+    API.queueOperation(nativeOps.connectAnimatedNodeToView, nodeTag, viewTag);
   },
   disconnectAnimatedNodeFromView: function (
     nodeTag: number,
@@ -295,7 +295,7 @@ const API = {
   ): void {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(
-      nativeOps!.disconnectAnimatedNodeFromView,
+      nativeOps.disconnectAnimatedNodeFromView,
       nodeTag,
       viewTag
     );
@@ -303,13 +303,13 @@ const API = {
   restoreDefaultValues: function (nodeTag: number): void {
     invariant(nativeOps, 'Native animated module is not available');
     // Backwards compat with older native runtimes, can be removed later.
-    if (nativeOps!.restoreDefaultValues != null) {
-      API.queueOperation(nativeOps!.restoreDefaultValues, nodeTag);
+    if (nativeOps.restoreDefaultValues != null) {
+      API.queueOperation(nativeOps.restoreDefaultValues, nodeTag);
     }
   },
   dropAnimatedNode: function (tag: number): void {
     invariant(nativeOps, 'Native animated module is not available');
-    API.queueOperation(nativeOps!.dropAnimatedNode, tag);
+    API.queueOperation(nativeOps.dropAnimatedNode, tag);
   },
   addAnimatedEventToView: function (
     viewTag: number,
@@ -318,7 +318,7 @@ const API = {
   ) {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(
-      nativeOps!.addAnimatedEventToView,
+      nativeOps.addAnimatedEventToView,
       viewTag,
       eventName,
       eventMapping
@@ -331,7 +331,7 @@ const API = {
   ) {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(
-      nativeOps!.removeAnimatedEventFromView,
+      nativeOps.removeAnimatedEventFromView,
       viewTag,
       eventName,
       animatedNodeTag
