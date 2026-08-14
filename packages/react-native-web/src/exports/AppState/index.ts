@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -13,6 +11,11 @@
 import invariant from 'fbjs/lib/invariant';
 import EventEmitter from '../../vendor/react-native/vendor/emitter/EventEmitter';
 import canUseDOM from '../../modules/canUseDom';
+import type { Nullable } from '../../types';
+
+type AppStateEventToArgsMap = {
+  change: [string];
+};
 
 const EVENT_TYPES = ['change', 'memoryWarning'];
 
@@ -21,27 +24,18 @@ const AppStates = {
   ACTIVE: 'active'
 };
 
-let changeEmitter = null;
+let changeEmitter: Nullable<EventEmitter<AppStateEventToArgsMap>> = null;
 
 export default class AppState {
   static isAvailable = canUseDOM && !!document.visibilityState;
 
   static get currentState() {
-    if (!AppState.isAvailable) {
-      return AppStates.ACTIVE;
-    }
-
-    switch (document.visibilityState) {
-      case 'hidden':
-      case 'prerender':
-      case 'unloaded':
-        return AppStates.BACKGROUND;
-      default:
-        return AppStates.ACTIVE;
-    }
+    return !AppState.isAvailable || document.visibilityState === 'visible'
+      ? AppStates.ACTIVE
+      : AppStates.BACKGROUND;
   }
 
-  static addEventListener(type /*: string */, handler /*: Function */) {
+  static addEventListener(type: string, handler: (state: string) => void) {
     if (AppState.isAvailable) {
       invariant(
         EVENT_TYPES.indexOf(type) !== -1,
