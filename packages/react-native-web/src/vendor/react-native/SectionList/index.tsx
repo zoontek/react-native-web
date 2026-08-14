@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -15,18 +13,20 @@ import Platform from '../../../exports/Platform';
 import * as React from 'react';
 import VirtualizedSectionList from '../VirtualizedSectionList';
 
-/*:: type ScrollResponderType = any; */
-/*:: import type {
+import type { Nullable } from '../../../types';
+
+type ScrollResponderType = unknown;
+import type {
   SectionBase as _SectionBase,
   Props as VirtualizedSectionListProps,
-  ScrollToLocationParamsType,
-} from '../VirtualizedSectionList'; */
+  ScrollToLocationParamsType
+} from '../VirtualizedSectionList';
 
-/*:: type Item = any; */
+type Item = unknown;
 
-/*:: export type SectionBase<SectionItemT> = _SectionBase<SectionItemT>; */
+export type SectionBase<SectionItemT> = _SectionBase<SectionItemT>;
 
-/*:: type RequiredProps<SectionT: SectionBase<any>> = {|
+type RequiredProps<SectionT extends SectionBase<unknown>> = {
   /**
    * The actual data to render, akin to the `data` prop in [`<FlatList>`](https://reactnative.dev/docs/flatlist).
    *
@@ -37,85 +37,66 @@ import VirtualizedSectionList from '../VirtualizedSectionList';
    *       renderItem?: ({item: SectionItem, ...}) => ?React.Element<*>,
    *       ItemSeparatorComponent?: ?ReactClass<{highlighted: boolean, ...}>,
    *     }>
-   *-/
-  sections: $ReadOnlyArray<SectionT>,
-|}; */
+   */
+  sections: ReadonlyArray<SectionT>;
+};
 
-/*:: type OptionalProps<SectionT: SectionBase<any>> = {|
+type OptionalProps<SectionT extends SectionBase<unknown>> = {
   /**
    * Default renderer for every item in every section. Can be over-ridden on a per-section basis.
-   *-/
+   */
   renderItem?: (info: {
-    item: Item,
-    index: number,
-    section: SectionT,
+    item: Item;
+    index: number;
+    section: SectionT;
     separators: {
-      highlight: () => void,
-      unhighlight: () => void,
-      updateProps: (select: 'leading' | 'trailing', newProps: Object) => void,
-      ...
-    },
-    ...
-  }) => null | React.Element<any>,
+      highlight: () => void;
+      unhighlight: () => void;
+      updateProps: (select: 'leading' | 'trailing', newProps: unknown) => void;
+    };
+  }) => null | React.ReactElement<unknown>;
   /**
    * A marker property for telling the list to re-render (since it implements `PureComponent`). If
    * any of your `renderItem`, Header, Footer, etc. functions depend on anything outside of the
    * `data` prop, stick it here and treat it immutably.
-   *-/
-  extraData?: any,
+   */
+  extraData?: unknown;
   /**
    * How many items to render in the initial batch. This should be enough to fill the screen but not
    * much more. Note these items will never be unmounted as part of the windowed rendering in order
    * to improve perceived performance of scroll-to-top actions.
-   *-/
-  initialNumToRender?: ?number,
+   */
+  initialNumToRender?: Nullable<number>;
   /**
    * Reverses the direction of scroll. Uses scale transforms of -1.
-   *-/
-  inverted?: ?boolean,
+   */
+  inverted?: Nullable<boolean>;
   /**
    * Used to extract a unique key for a given item at the specified index. Key is used for caching
    * and as the react key to track item re-ordering. The default extractor checks item.key, then
    * falls back to using the index, like react does. Note that this sets keys for each item, but
    * each overall section still needs its own key.
-   *-/
-  keyExtractor?: ?(item: Item, index: number) => string,
+   */
+  keyExtractor?: Nullable<(item: Item, index: number) => string>;
   /**
    * Called once when the scroll position gets within `onEndReachedThreshold` of the rendered
    * content.
-   *-/
-  onEndReached?: ?(info: {distanceFromEnd: number, ...}) => void,
+   */
+  onEndReached?: Nullable<(info: { distanceFromEnd: number }) => void>;
   /**
    * Note: may have bugs (missing content) in some circumstances - use at your own risk.
    *
    * This may improve scroll performance for large lists.
-   *-/
-  removeClippedSubviews?: boolean,
-|}; */
+   */
+  removeClippedSubviews?: boolean;
+};
 
-/*:: export type Props<SectionT> = {|
-  ...$Diff<
-    VirtualizedSectionListProps<SectionT>,
-    {
-      getItem: $PropertyType<VirtualizedSectionListProps<SectionT>, 'getItem'>,
-      getItemCount: $PropertyType<
-        VirtualizedSectionListProps<SectionT>,
-        'getItemCount',
-      >,
-      renderItem: $PropertyType<
-        VirtualizedSectionListProps<SectionT>,
-        'renderItem',
-      >,
-      keyExtractor: $PropertyType<
-        VirtualizedSectionListProps<SectionT>,
-        'keyExtractor',
-      >,
-      ...
-    },
-  >,
-  ...RequiredProps<SectionT>,
-  ...OptionalProps<SectionT>,
-|}; */
+export type Props<SectionT extends SectionBase<unknown>> = Omit<
+  VirtualizedSectionListProps<SectionT>,
+  'getItem' | 'getItemCount' | 'renderItem' | 'keyExtractor'
+> &
+  RequiredProps<SectionT> &
+  OptionalProps<SectionT>;
 
 /**
  * A performant interface for rendering sectioned lists, supporting the most handy features:
@@ -172,14 +153,9 @@ import VirtualizedSectionList from '../VirtualizedSectionList';
  *   Alternatively, you can provide a custom `keyExtractor` prop.
  *
  */
-export default class SectionList /*:: <
-  SectionT: SectionBase<any>,
-> */
-  extends React.PureComponent
-{
-  /*:: <Props<SectionT>, void> */
-  props /*: Props<SectionT> */;
-
+export default class SectionList<
+  SectionT extends SectionBase<unknown>
+> extends React.PureComponent<Props<SectionT>> {
   /**
    * Scrolls to the item at the specified `sectionIndex` and `itemIndex` (within the section)
    * positioned in the viewable area such that `viewPosition` 0 places it at the top (and may be
@@ -190,7 +166,7 @@ export default class SectionList /*:: <
    * Note: cannot scroll to locations outside the render window without specifying the
    * `getItemLayout` prop.
    */
-  scrollToLocation(params /*: ScrollToLocationParamsType */) {
+  scrollToLocation(params: ScrollToLocationParamsType) {
     if (this._wrapperListRef != null) {
       this._wrapperListRef.scrollToLocation(params);
     }
@@ -219,21 +195,21 @@ export default class SectionList /*:: <
   /**
    * Provides a handle to the underlying scroll responder.
    */
-  getScrollResponder() /*: ?ScrollResponderType */ {
+  getScrollResponder(): Nullable<ScrollResponderType> {
     const listRef = this._wrapperListRef && this._wrapperListRef.getListRef();
     if (listRef) {
       return listRef.getScrollResponder();
     }
   }
 
-  getScrollableNode() /*: any */ {
+  getScrollableNode(): unknown {
     const listRef = this._wrapperListRef && this._wrapperListRef.getListRef();
     if (listRef) {
       return listRef.getScrollableNode();
     }
   }
 
-  render() /*: React.Node */ {
+  render(): React.ReactNode {
     const {
       stickySectionHeadersEnabled: _stickySectionHeadersEnabled,
       ...restProps
@@ -245,14 +221,14 @@ export default class SectionList /*:: <
         {...restProps}
         stickySectionHeadersEnabled={stickySectionHeadersEnabled}
         ref={this._captureRef}
-        getItemCount={(items) => items.length}
-        getItem={(items, index) => items[index]}
+        getItemCount={(items) => (items as ReadonlyArray<SectionT>).length}
+        getItem={(items, index) => (items as ReadonlyArray<SectionT>)[index]}
       />
     );
   }
 
-  _wrapperListRef /*: ?React.ElementRef<typeof VirtualizedSectionList> */;
-  _captureRef = (ref) => {
+  _wrapperListRef: Nullable<VirtualizedSectionList<SectionT>>;
+  _captureRef = (ref: Nullable<VirtualizedSectionList<SectionT>>) => {
     this._wrapperListRef = ref;
   };
 }
