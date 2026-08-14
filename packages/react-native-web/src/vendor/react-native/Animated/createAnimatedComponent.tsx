@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -14,53 +12,58 @@ import useMergeRefs from '../Utilities/useMergeRefs';
 import View from '../../../exports/View';
 import * as React from 'react';
 
-/*:: export type AnimatedComponentType<
-  -Props: {+[string]: mixed, ...},
-  +Instance = mixed,
-> = React.AbstractComponent<
-  $ObjMap<
+export type AnimatedComponentType<
+  Props extends object,
+  Instance = unknown
+> = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<
     Props &
-      $ReadOnly<{
-        passthroughAnimatedPropExplicitValues?: React.ElementConfig<
-          typeof View,
-        >,
-      }>,
-    () => any,
-  >,
-  Instance,
->; */
+      Readonly<{
+        passthroughAnimatedPropExplicitValues?: React.ComponentProps<
+          typeof View
+        >;
+      }>
+  > &
+    React.RefAttributes<Instance>
+>;
 
 /**
  * Experimental implementation of `createAnimatedComponent` that is intended to
  * be compatible with concurrent rendering.
  */
-export default function createAnimatedComponent /*:: <TProps: {...}, TInstance> */(
-  Component /*: React.AbstractComponent<TProps, TInstance> */
-) /*: React.AbstractComponent<TProps, TInstance> */ {
-  return React.forwardRef((props, forwardedRef) => {
-    // prettier-ignore
-    const [reducedProps, callbackRef] = useAnimatedProps/*:: <TProps, TInstance> */(
-      props,
+export default function createAnimatedComponent<
+  TProps extends object,
+  TInstance
+>(
+  Component: React.ComponentType<TProps>
+): React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<TProps> & React.RefAttributes<TInstance>
+> {
+  return React.forwardRef<TInstance, TProps>((props, forwardedRef) => {
+    const [reducedProps, callbackRef] = useAnimatedProps<TProps, TInstance>(
+      props as TProps
     );
-    // prettier-ignore
-    const ref = useMergeRefs/*:: <TInstance | null> */(callbackRef, forwardedRef);
+    const ref = useMergeRefs<TInstance | null>(callbackRef, forwardedRef);
 
     // Some components require explicit passthrough values for animation
     // to work properly. For example, if an animated component is
     // transformed and Pressable, onPress will not work after transform
     // without these passthrough values.
-    // $FlowFixMe[prop-missing]
-    const { passthroughAnimatedPropExplicitValues, style } = reducedProps;
+    const { passthroughAnimatedPropExplicitValues, style } =
+      reducedProps as TProps & {
+        collapsable: boolean;
+        passthroughAnimatedPropExplicitValues?: Record<string, unknown>;
+        style?: unknown;
+      };
     const { style: passthroughStyle, ...passthroughProps } =
       passthroughAnimatedPropExplicitValues ?? {};
     const mergedStyle = [style, passthroughStyle];
 
     return (
       <Component
-        {...reducedProps}
-        {...passthroughProps}
-        style={mergedStyle}
-        ref={ref}
+        {...(reducedProps as TProps)}
+        {...(passthroughProps as Partial<TProps>)}
+        {...({ style: mergedStyle, ref } as unknown as Partial<TProps>)}
       />
     );
   });

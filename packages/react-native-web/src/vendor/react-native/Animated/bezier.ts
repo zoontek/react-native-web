@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Portions Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -28,27 +26,33 @@ const kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);
 
 const float32ArraySupported = typeof Float32Array === 'function';
 
-function A(aA1, aA2) {
+function A(aA1: number, aA2: number) {
   return 1.0 - 3.0 * aA2 + 3.0 * aA1;
 }
-function B(aA1, aA2) {
+function B(aA1: number, aA2: number) {
   return 3.0 * aA2 - 6.0 * aA1;
 }
-function C(aA1) {
+function C(aA1: number) {
   return 3.0 * aA1;
 }
 
 // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
-function calcBezier(aT, aA1, aA2) {
+function calcBezier(aT: number, aA1: number, aA2: number) {
   return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
 }
 
 // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
-function getSlope(aT, aA1, aA2) {
+function getSlope(aT: number, aA1: number, aA2: number) {
   return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
 }
 
-function binarySubdivide(aX, _aA, _aB, mX1, mX2) {
+function binarySubdivide(
+  aX: number,
+  _aA: number,
+  _aB: number,
+  mX1: number,
+  mX2: number
+) {
   let currentX,
     currentT,
     i = 0,
@@ -69,7 +73,12 @@ function binarySubdivide(aX, _aA, _aB, mX1, mX2) {
   return currentT;
 }
 
-function newtonRaphsonIterate(aX, _aGuessT, mX1, mX2) {
+function newtonRaphsonIterate(
+  aX: number,
+  _aGuessT: number,
+  mX1: number,
+  mX2: number
+) {
   let aGuessT = _aGuessT;
   for (let i = 0; i < NEWTON_ITERATIONS; ++i) {
     const currentSlope = getSlope(aGuessT, mX1, mX2);
@@ -83,11 +92,11 @@ function newtonRaphsonIterate(aX, _aGuessT, mX1, mX2) {
 }
 
 export default function bezier(
-  mX1 /*: number */,
-  mY1 /*: number */,
-  mX2 /*: number */,
-  mY2 /*: number */
-) /*: (x: number) => number */ {
+  mX1: number,
+  mY1: number,
+  mX2: number,
+  mY2: number
+): (x: number) => number {
   if (!(mX1 >= 0 && mX1 <= 1 && mX2 >= 0 && mX2 <= 1)) {
     throw new Error('bezier x values must be in [0, 1] range');
   }
@@ -102,7 +111,7 @@ export default function bezier(
     }
   }
 
-  function getTForX(aX) {
+  function getTForX(aX: number) {
     let intervalStart = 0.0;
     let currentSample = 1;
     const lastSample = kSplineTableSize - 1;
@@ -138,7 +147,7 @@ export default function bezier(
     }
   }
 
-  return function BezierEasing(x /*: number */) /*: number */ {
+  return function BezierEasing(x: number): number {
     if (mX1 === mY1 && mX2 === mY2) {
       return x; // linear
     }
