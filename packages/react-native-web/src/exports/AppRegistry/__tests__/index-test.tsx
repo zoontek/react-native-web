@@ -1,11 +1,11 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
+import type { Application } from '../renderApplication';
 
 import AppRegistry from '..';
 import React from 'react';
@@ -14,7 +14,7 @@ const NoopComponent = () => React.createElement('div');
 
 describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
   describe('runApplication', () => {
-    let rootTag;
+    let rootTag: HTMLDivElement;
 
     beforeEach(() => {
       rootTag = document.createElement('div');
@@ -53,7 +53,7 @@ describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
       };
 
       AppRegistry.registerComponent('App', () => MountedStateComponent);
-      let application;
+      let application: Application;
       act(() => {
         application = AppRegistry.runApplication('App', {
           initialProps: {},
@@ -81,7 +81,7 @@ describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
 
       const iframeRootTag = document.createElement('div');
       iframeRootTag.id = 'react-iframe-root';
-      iframe.contentWindow.document.body.appendChild(iframeRootTag);
+      iframe.contentWindow?.document.body.appendChild(iframeRootTag);
 
       // Run in iframe
       AppRegistry.registerComponent('App', () => NoopComponent);
@@ -94,12 +94,14 @@ describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
       });
 
       const iframedoc = iframeRootTag.ownerDocument;
-      expect(iframedoc).toBe(iframe.contentWindow.document);
+      expect(iframedoc).toBe(iframe.contentWindow?.document);
       expect(iframedoc).not.toBe(document);
 
       const cssText = Array.prototype.slice
         .call(
-          iframedoc.getElementById('react-native-stylesheet').sheet.cssRules
+          iframedoc.querySelector<HTMLStyleElement>(
+            'id="react-native-stylesheet"'
+          )?.sheet?.cssRules
         )
         .map((cssRule) => cssRule.cssText);
 
