@@ -371,9 +371,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
     animated?: boolean // deprecated, put this inside the rect argument instead
   ) => {
     if (Platform.OS !== 'ios') {
-      (invariant as unknown as (condition: unknown) => void)(
-        'zoomToRect is not implemented'
-      );
+      invariant('zoomToRect is not implemented');
     }
   };
 

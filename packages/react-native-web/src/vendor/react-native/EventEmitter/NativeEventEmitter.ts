@@ -110,9 +110,7 @@ export default class NativeEventEmitter<
       eventType != null,
       '`NativeEventEmitter.removeAllListener()` requires a non-null argument.'
     );
-    this._nativeModule?.removeListeners(
-      this.listenerCount(eventType as TEvent)
-    );
+    this._nativeModule?.removeListeners(this.listenerCount(eventType));
     RCTDeviceEventEmitter.removeAllListeners(eventType);
   }
 
