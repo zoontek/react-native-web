@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 export { default as unstable_createElement } from './exports/createElement';
 export { default as findNodeHandle } from './exports/findNodeHandle';
 export { default as processColor } from './exports/processColor';
