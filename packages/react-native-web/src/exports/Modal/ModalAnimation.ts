@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,13 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { AnimationEvent, ReactNode } from 'react';
+import type { Nullable } from '../../types';
+
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import createElement from '../createElement';
 
 const ANIMATION_DURATION = 250;
 
-function getAnimationStyle(animationType, visible) {
+function getAnimationStyle(
+  animationType: Nullable<'none' | 'slide' | 'fade'>,
+  visible: Nullable<boolean>
+) {
   if (animationType === 'slide') {
     return visible ? animatedSlideInStyles : animatedSlideOutStyles;
   }
@@ -24,25 +28,25 @@ function getAnimationStyle(animationType, visible) {
   return visible ? styles.container : styles.hidden;
 }
 
-/*:: export type ModalAnimationProps = {|
-  animationType?: ?('none' | 'slide' | 'fade'),
-  children?: any,
-  onDismiss?: ?() => void,
-  onShow?: ?() => void,
-  visible?: ?boolean
-|}; */
+export type ModalAnimationProps = {
+  animationType?: Nullable<'none' | 'slide' | 'fade'>;
+  children?: ReactNode;
+  onDismiss?: Nullable<() => void>;
+  onShow?: Nullable<() => void>;
+  visible?: Nullable<boolean>;
+};
 
-function ModalAnimation(props /*: ModalAnimationProps */) /*: React.Node */ {
+function ModalAnimation(props: ModalAnimationProps): ReactNode {
   const { animationType, children, onDismiss, onShow, visible } = props;
 
   const [isRendering, setIsRendering] = React.useState(false);
-  const wasVisible = React.useRef(false);
+  const wasVisible = React.useRef<Nullable<boolean>>(false);
   const wasRendering = React.useRef(false);
 
   const isAnimated = animationType && animationType !== 'none';
 
   const animationEndCallback = React.useCallback(
-    (e /*: any */) => {
+    (e?: AnimationEvent<HTMLElement>) => {
       if (e && e.currentTarget !== e.target) {
         // If the event was generated for something NOT this element we
         // should ignore it as it's not relevant to us
