@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -19,26 +17,28 @@ import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 
 import useLayoutEffect from '../../../modules/useLayoutEffect';
 
-/*:: type ReducedProps<TProps> = {
-  ...TProps,
-  collapsable: boolean,
-  ...
-}; */
-/*:: type CallbackRef<T> = T => mixed; */
+import type { Nullable } from '../../../types';
 
-export default function useAnimatedProps /*:: <TProps: {...}, TInstance> */(
-  props /*: TProps */
-) /*: [ReducedProps<TProps>, CallbackRef<TInstance | null>] */ {
+type ReducedProps<TProps> = TProps & {
+  collapsable: boolean;
+};
+type CallbackRef<T> = (instance: T) => unknown;
+
+export default function useAnimatedProps<TProps extends object, TInstance>(
+  props: TProps
+): [ReducedProps<TProps>, CallbackRef<TInstance | null>] {
   const [, scheduleUpdate] = useReducer((count) => count + 1, 0);
-  // prettier-ignore
-  const onUpdateRef = useRef/*:: <?() => void> */(null);
+  const onUpdateRef = useRef<Nullable<() => void>>(null);
 
   // TODO: Only invalidate `node` if animated props or `style` change. In the
   // previous implementation, we permitted `style` to override props with the
   // same name property name as styles, so we can probably continue doing that.
   // The ordering of other props *should* not matter.
   const node = useMemo(
-    () => new AnimatedProps(props, () => onUpdateRef.current?.()),
+    () =>
+      new AnimatedProps(props as Record<string, unknown>, () =>
+        onUpdateRef.current?.()
+      ),
     [props]
   );
   useAnimatedPropsLifecycle(node);
@@ -57,7 +57,7 @@ export default function useAnimatedProps /*:: <TProps: {...}, TInstance> */(
   // But there is no way to transparently compose three separate callback refs,
   // so we just combine them all into one for now.
   const refEffect = useCallback(
-    (instance) => {
+    (instance: TInstance) => {
       // NOTE: This may be called more often than necessary (e.g. when `props`
       // changes), but `setNativeView` already optimizes for that.
       node.setNativeView(instance);
@@ -70,11 +70,11 @@ export default function useAnimatedProps /*:: <TProps: {...}, TInstance> */(
         scheduleUpdate();
       };
 
-      const target = getEventTarget(instance);
-      const events = [];
+      const target = getEventTarget(instance) as Nullable<number>;
+      const events: Array<[string, AnimatedEvent]> = [];
 
       for (const propName in props) {
-        const propValue = props[propName];
+        const propValue = props[propName as keyof TProps];
         if (propValue instanceof AnimatedEvent && propValue.__isNative) {
           propValue.__attach(target, propName);
           events.push([propName, propValue]);
@@ -91,22 +91,20 @@ export default function useAnimatedProps /*:: <TProps: {...}, TInstance> */(
     },
     [props, node]
   );
-  // prettier-ignore
-  const callbackRef = useRefEffect/*:: <TInstance> */(refEffect);
+  const callbackRef = useRefEffect<TInstance>(refEffect);
 
-  // prettier-ignore
-  return [reduceAnimatedProps/*:: <TProps> */(node), callbackRef];
+  return [reduceAnimatedProps<TProps>(node), callbackRef];
 }
 
-function reduceAnimatedProps /*:: <TProps> */(
-  node /*: AnimatedProps */
-) /*: ReducedProps<TProps> */ {
+function reduceAnimatedProps<TProps>(
+  node: AnimatedProps
+): ReducedProps<TProps> {
   // Force `collapsable` to be false so that the native view is not flattened.
   // Flattened views cannot be accurately referenced by the native driver.
   return {
     ...node.__getValue(),
     collapsable: false
-  };
+  } as ReducedProps<TProps>;
 }
 
 /**
@@ -116,11 +114,9 @@ function reduceAnimatedProps /*:: <TProps> */(
  * nodes. So in order to optimize this, we avoid detaching until the next attach
  * unless we are unmounting.
  */
-function useAnimatedPropsLifecycle(node /*: AnimatedProps */) /*: void */ {
-  // prettier-ignore
-  const prevNodeRef = useRef/*:: <?AnimatedProps> */(null);
-  // prettier-ignore
-  const isUnmountingRef = useRef/*:: <boolean> */(false);
+function useAnimatedPropsLifecycle(node: AnimatedProps): void {
+  const prevNodeRef = useRef<Nullable<AnimatedProps>>(null);
+  const isUnmountingRef = useRef<boolean>(false);
 
   useEffect(() => {
     // It is ok for multiple components to call `flushQueue` because it noops
@@ -156,18 +152,15 @@ function useAnimatedPropsLifecycle(node /*: AnimatedProps */) /*: void */ {
   }, [node]);
 }
 
-function getEventTarget /*:: <TInstance> */(
-  instance /*: TInstance */
-) /*: TInstance */ {
+function getEventTarget<TInstance>(instance: TInstance): TInstance {
   return typeof instance === 'object' &&
-    typeof instance?.getScrollableNode === 'function'
-    ? // $FlowFixMe[incompatible-use] - Legacy instance assumptions.
-      instance.getScrollableNode()
+    typeof (instance as { getScrollableNode?: unknown })?.getScrollableNode ===
+      'function'
+    ? (instance as { getScrollableNode: () => TInstance }).getScrollableNode()
     : instance;
 }
 
-// $FlowFixMe[unclear-type] - Legacy instance assumptions.
-function isFabricInstance(instance /*: any */) /*: boolean */ {
+function isFabricInstance(instance: unknown): boolean {
   return (
     hasFabricHandle(instance) ||
     // Some components have a setNativeProps function but aren't a host component
@@ -178,13 +171,32 @@ function isFabricInstance(instance /*: any */) /*: boolean */ {
     // If these components end up using forwardRef then these hacks can go away
     // as instance would actually be the underlying host component and the above check
     // would be sufficient.
-    hasFabricHandle(instance?.getNativeScrollRef?.()) ||
-    hasFabricHandle(instance?.getScrollResponder?.()?.getNativeScrollRef?.())
+    hasFabricHandle(
+      (
+        instance as { getNativeScrollRef?: () => unknown }
+      )?.getNativeScrollRef?.()
+    ) ||
+    hasFabricHandle(
+      (
+        instance as {
+          getScrollResponder?: () => {
+            getNativeScrollRef?: () => unknown;
+          };
+        }
+      )
+        ?.getScrollResponder?.()
+        ?.getNativeScrollRef?.()
+    )
   );
 }
 
-// $FlowFixMe[unclear-type] - Legacy instance assumptions.
-function hasFabricHandle(instance /*: any */) /*: boolean */ {
+function hasFabricHandle(instance: unknown): boolean {
   // eslint-disable-next-line dot-notation
-  return instance?.['_internalInstanceHandle']?.stateNode?.canonical != null;
+  return (
+    (
+      instance as {
+        _internalInstanceHandle?: { stateNode?: { canonical?: unknown } };
+      }
+    )?.['_internalInstanceHandle']?.stateNode?.canonical != null
+  );
 }

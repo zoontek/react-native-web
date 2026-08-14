@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -18,29 +16,33 @@ import {
   shouldUseNativeDriver
 } from '../NativeAnimatedHelper';
 
-/*:: import type {EndCallback} from '../animations/Animation'; */
+import type Animation from '../animations/Animation';
+import type { AnimationConfig, EndCallback } from '../animations/Animation';
+import type { Nullable } from '../../../../types';
 
 class AnimatedTracking extends AnimatedNode {
-  _value /*: AnimatedValue */;
-  _parent /*: AnimatedNode */;
-  _callback /*: ?EndCallback */;
-  _animationConfig /*: Object */;
-  _animationClass /*: any */;
-  _useNativeDriver /*: boolean */;
+  _value: AnimatedValue;
+  _parent: AnimatedNode;
+  _callback: Nullable<EndCallback>;
+  _animationConfig: Record<string, unknown>;
+  _animationClass: new (config: Record<string, unknown>) => Animation;
+  _useNativeDriver: boolean;
 
   constructor(
-    value /*: AnimatedValue */,
-    parent /*: AnimatedNode */,
-    animationClass /*: any */,
-    animationConfig /*: Object */,
-    callback /*:: ?: ?EndCallback */
+    value: AnimatedValue,
+    parent: AnimatedNode,
+    animationClass: new (config: Record<string, unknown>) => Animation,
+    animationConfig: Record<string, unknown>,
+    callback?: Nullable<EndCallback>
   ) {
     super();
     this._value = value;
     this._parent = parent;
     this._animationClass = animationClass;
     this._animationConfig = animationConfig;
-    this._useNativeDriver = shouldUseNativeDriver(animationConfig);
+    this._useNativeDriver = shouldUseNativeDriver(
+      animationConfig as AnimationConfig
+    );
     this._callback = callback;
     this.__attach();
   }
@@ -52,11 +54,11 @@ class AnimatedTracking extends AnimatedNode {
     this._value.__makeNative();
   }
 
-  __getValue() /*: Object */ {
+  __getValue(): unknown {
     return this._parent.__getValue();
   }
 
-  __attach() /*: void */ {
+  __attach(): void {
     this._parent.__addChild(this);
     if (this._useNativeDriver) {
       // when the tracking starts we need to convert this node to a "native node"
@@ -68,23 +70,22 @@ class AnimatedTracking extends AnimatedNode {
     }
   }
 
-  __detach() /*: void */ {
+  __detach(): void {
     this._parent.__removeChild(this);
     super.__detach();
   }
 
-  update() /*: void */ {
+  update(): void {
     this._value.animate(
       new this._animationClass({
         ...this._animationConfig,
-        toValue: this._animationConfig.toValue /*: any */
-          .__getValue()
+        toValue: (this._animationConfig.toValue as AnimatedNode).__getValue()
       }),
       this._callback
     );
   }
 
-  __getNativeConfig() /*: any */ {
+  __getNativeConfig(): Record<string, unknown> {
     const animation = new this._animationClass({
       ...this._animationConfig,
       // remove toValue from the config as it's a ref to Animated.Value

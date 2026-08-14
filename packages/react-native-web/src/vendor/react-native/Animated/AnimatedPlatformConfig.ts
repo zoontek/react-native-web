@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,4 +9,4 @@
 
 'use strict';
 
-/*:: export type PlatformConfig = {}; */
+export type PlatformConfig = {};

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -14,11 +12,9 @@ import * as React from 'react';
 import Text from '../../../../exports/Text';
 import createAnimatedComponent from '../createAnimatedComponent';
 
-/*:: import type {AnimatedComponentType} from '../createAnimatedComponent'; */
+import type { AnimatedComponentType } from '../createAnimatedComponent';
 
-export default createAnimatedComponent(
-  Text /*: $FlowFixMe */
-) /*: AnimatedComponentType<
-  React.ElementConfig<typeof Text>,
-  React.ElementRef<typeof Text>,
-> */;
+export default createAnimatedComponent(Text) as AnimatedComponentType<
+  React.ComponentProps<typeof Text>,
+  React.ElementRef<typeof Text>
+>;

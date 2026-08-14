@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -12,19 +10,20 @@
 'use strict';
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
-/*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
-/*:: import type AnimatedValue from '../nodes/AnimatedValue'; */
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import type AnimatedValue from '../nodes/AnimatedValue';
+import type { Nullable } from '../../../../types';
 
-/*:: export type EndResult = {finished: boolean, ...}; */
-/*:: export type EndCallback = (result: EndResult) => void; */
+export type EndResult = { finished: boolean };
+export type EndCallback = (result: EndResult) => void;
 
-/*:: export type AnimationConfig = {
-  isInteraction?: boolean,
-  useNativeDriver: boolean,
-  platformConfig?: PlatformConfig,
-  onComplete?: ?EndCallback,
-  iterations?: number,
-}; */
+export type AnimationConfig = {
+  isInteraction?: boolean;
+  useNativeDriver: boolean;
+  platformConfig?: PlatformConfig;
+  onComplete?: Nullable<EndCallback>;
+  iterations?: number;
+};
 
 let startNativeAnimationNextId = 1;
 
@@ -32,35 +31,35 @@ let startNativeAnimationNextId = 1;
 // Once an animation has been stopped or finished its course, it will
 // not be reused.
 class Animation {
-  __active /*: boolean */;
-  __isInteraction /*: boolean */;
-  __nativeId /*: number */;
-  __onEnd /*: ?EndCallback */;
-  __iterations /*: number */;
+  __active!: boolean;
+  __isInteraction!: boolean;
+  __nativeId!: number;
+  __onEnd: Nullable<EndCallback>;
+  __iterations!: number;
   start(
-    fromValue /*: number */,
-    onUpdate /*: (value: number) => void */,
-    onEnd /*: ?EndCallback */,
-    previousAnimation /*: ?Animation */,
-    animatedValue /*: AnimatedValue */
-  ) /*: void */ {}
-  stop() /*: void */ {
+    fromValue: number,
+    onUpdate: (value: number) => void,
+    onEnd: Nullable<EndCallback>,
+    previousAnimation: Nullable<Animation>,
+    animatedValue: AnimatedValue
+  ): void {}
+  stop(): void {
     if (this.__nativeId) {
       NativeAnimatedHelper.API.stopAnimation(this.__nativeId);
     }
   }
-  __getNativeAnimationConfig() /*: any */ {
+  __getNativeAnimationConfig(): Record<string, unknown> {
     // Subclasses that have corresponding animation implementation done in native
     // should override this method
     throw new Error('This animation type cannot be offloaded to native');
   }
   // Helper function for subclasses to make sure onEnd is only called once.
-  __debouncedOnEnd(result /*: EndResult */) /*: void */ {
+  __debouncedOnEnd(result: EndResult): void {
     const onEnd = this.__onEnd;
     this.__onEnd = null;
     onEnd && onEnd(result);
   }
-  __startNativeAnimation(animatedValue /*: AnimatedValue */) /*: void */ {
+  __startNativeAnimation(animatedValue: AnimatedValue): void {
     const startNativeAnimationWaitId = `${startNativeAnimationNextId}:startAnimation`;
     startNativeAnimationNextId += 1;
     NativeAnimatedHelper.API.setWaitingForIdentifier(
@@ -68,13 +67,12 @@ class Animation {
     );
     try {
       const config = this.__getNativeAnimationConfig();
-      animatedValue.__makeNative(config.platformConfig);
+      animatedValue.__makeNative(config.platformConfig as PlatformConfig);
       this.__nativeId = NativeAnimatedHelper.generateNewAnimationId();
       NativeAnimatedHelper.API.startAnimatingNode(
         this.__nativeId,
         animatedValue.__getNativeTag(),
         config,
-        // $FlowFixMe[method-unbinding] added when improving typing for this parameters
         this.__debouncedOnEnd.bind(this)
       );
     } catch (e) {
