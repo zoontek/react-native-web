@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,17 +9,17 @@
 
 import invariant from 'fbjs/lib/invariant';
 
-/*:: export type CellRegion = {
-  first: number,
-  last: number,
-  isSpacer: boolean,
-}; */
+export type CellRegion = {
+  first: number;
+  last: number;
+  isSpacer: boolean;
+};
 
 export class CellRenderMask {
-  _numCells /*: number */;
-  _regions /*: Array<CellRegion> */;
+  _numCells: number;
+  _regions: Array<CellRegion>;
 
-  constructor(numCells /*: number */) {
+  constructor(numCells: number) {
     invariant(
       numCells >= 0,
       'CellRenderMask must contain a non-negative number os cells'
@@ -42,11 +40,11 @@ export class CellRenderMask {
     }
   }
 
-  enumerateRegions() /*: $ReadOnlyArray<CellRegion> */ {
+  enumerateRegions(): ReadonlyArray<CellRegion> {
     return this._regions;
   }
 
-  addCells(cells /*: {first: number, last: number} */) /*: void */ {
+  addCells(cells: { first: number; last: number }): void {
     invariant(
       cells.first >= 0 &&
         cells.first < this._numCells &&
@@ -73,9 +71,9 @@ export class CellRenderMask {
 
     // We need to replace the existing covered regions with 1-3 new regions
     // depending whether we need to split spacers out of overlapping regions.
-    const newLeadRegion /*: Array<CellRegion> */ = [];
-    const newTailRegion /*: Array<CellRegion> */ = [];
-    const newMainRegion /*: CellRegion */ = {
+    const newLeadRegion: Array<CellRegion> = [];
+    const newTailRegion: Array<CellRegion> = [];
+    const newMainRegion: CellRegion = {
       ...cells,
       isSpacer: false
     };
@@ -104,7 +102,7 @@ export class CellRenderMask {
       }
     }
 
-    const replacementRegions /*: Array<CellRegion> */ = [
+    const replacementRegions: Array<CellRegion> = [
       ...newLeadRegion,
       newMainRegion,
       ...newTailRegion
@@ -117,30 +115,30 @@ export class CellRenderMask {
     );
   }
 
-  numCells() /*: number */ {
+  numCells(): number {
     return this._numCells;
   }
 
-  equals(other /*: CellRenderMask */) /*: boolean */ {
+  equals(other: CellRenderMask): boolean {
     return (
       this._numCells === other._numCells &&
       this._regions.length === other._regions.length &&
       this._regions.every(
         (region, i) =>
-          region.first === other._regions[i].first &&
-          region.last === other._regions[i].last &&
-          region.isSpacer === other._regions[i].isSpacer
+          region.first === other._regions[i]!.first &&
+          region.last === other._regions[i]!.last &&
+          region.isSpacer === other._regions[i]!.isSpacer
       )
     );
   }
 
-  _findRegion(cellIdx /*: number */) /*: [CellRegion, number] */ {
+  _findRegion(cellIdx: number): [CellRegion, number] {
     let firstIdx = 0;
     let lastIdx = this._regions.length - 1;
 
     while (firstIdx <= lastIdx) {
       const middleIdx = Math.floor((firstIdx + lastIdx) / 2);
-      const middleRegion = this._regions[middleIdx];
+      const middleRegion = this._regions[middleIdx]!;
 
       if (cellIdx >= middleRegion.first && cellIdx <= middleRegion.last) {
         return [middleRegion, middleIdx];

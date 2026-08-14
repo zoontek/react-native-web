@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -14,18 +12,21 @@ import * as React from 'react';
 import FlatList from '../../../../exports/FlatList';
 import createAnimatedComponent from '../createAnimatedComponent';
 
-/*:: import type {AnimatedComponentType} from '../createAnimatedComponent'; */
+import type { AnimatedComponentType } from '../createAnimatedComponent';
 
 /**
  * @see https://github.com/facebook/react-native/commit/b8c8562
  */
-const FlatListWithEventThrottle = React.forwardRef((props, ref) => (
+const FlatListWithEventThrottle = React.forwardRef<
+  React.ElementRef<typeof FlatList>,
+  React.ComponentProps<typeof FlatList>
+>((props, ref) => (
   <FlatList scrollEventThrottle={0.0001} {...props} ref={ref} />
 ));
 
 export default createAnimatedComponent(
   FlatListWithEventThrottle
-) /*: AnimatedComponentType<
-  React.ElementConfig<typeof FlatList>,
-  React.ElementRef<typeof FlatList>,
-> */;
+) as AnimatedComponentType<
+  React.ComponentProps<typeof FlatList>,
+  React.ElementRef<typeof FlatList>
+>;
