@@ -441,7 +441,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     this._nestedChildLists.remove(childList.ref);
   };
 
-  state: State;
+  declare state: State;
 
   // REACT-NATIVE-WEB patch to preserve during future RN merges: Support inverted wheel scroller.
   invertedWheelEventHandler: Nullable<(ev: InvertedWheelEvent) => void>;
