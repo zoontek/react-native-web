@@ -20,7 +20,9 @@ type AppearanceListener = (preferences: AppearancePreferences) => void;
 type DOMAppearanceListener = (ev: MediaQueryListEvent) => void;
 
 function getQuery(): MediaQueryList | null {
-  return canUseDOM ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  return canUseDOM && typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null;
 }
 
 const query = getQuery();
