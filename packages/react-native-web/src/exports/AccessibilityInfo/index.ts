@@ -16,9 +16,10 @@ function isScreenReaderEnabled(): Promise<boolean> {
   return Promise.resolve(true);
 }
 
-const prefersReducedMotionMedia = canUseDOM
-  ? window.matchMedia('(prefers-reduced-motion: reduce)')
-  : null;
+const prefersReducedMotionMedia =
+  canUseDOM && typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
 
 const handlers = new Map<ChangeHandler, DOMChangeListener>();
 
