@@ -20,7 +20,11 @@ type LayoutHandlerNode = HTMLElement & {
 let resizeObserver: Nullable<ResizeObserver> = null;
 
 function getResizeObserver(): Nullable<ResizeObserver> {
-  if (canUseDOM && resizeObserver == null) {
+  if (
+    canUseDOM &&
+    typeof window.ResizeObserver === 'function' &&
+    resizeObserver == null
+  ) {
     resizeObserver = new window.ResizeObserver(function (entries) {
       entries.forEach((entry) => {
         const node = entry.target as LayoutHandlerNode;
