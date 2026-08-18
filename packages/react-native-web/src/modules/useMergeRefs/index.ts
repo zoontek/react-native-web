@@ -14,7 +14,6 @@ export default function useMergeRefs<T = HTMLElement>(
 ): (node: T | null) => void {
   return React.useMemo(
     () => mergeRefs(...args),
-    // oxlint-disable-next-line react/exhaustive-deps
-    [...args]
+    [...args] // oxlint-disable-line react/exhaustive-deps
   );
 }

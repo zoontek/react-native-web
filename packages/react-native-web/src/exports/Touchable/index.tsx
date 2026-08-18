@@ -1063,10 +1063,10 @@ const TouchableMixin = {
  * `Touchable`.
  */
 const {
-  // oxlint-disable-next-line no-unused-vars
+  /* oxlint-disable no-unused-vars */
   touchableHandleFocus,
-  // oxlint-disable-next-line no-unused-vars
   touchableHandleBlur,
+  /* oxlint-enable no-unused-vars */
   ...TouchableMixinWithoutDefaultFocusAndBlur
 } = TouchableMixin;
 TouchableMixin.withoutDefaultFocusAndBlur =
