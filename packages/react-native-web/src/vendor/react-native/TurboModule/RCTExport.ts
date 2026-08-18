@@ -25,10 +25,8 @@
  * there's nothing to give hint about.
  */
 
-// eslint-disable-next-line no-unused-vars
 export interface RCTExport<T extends void = void> {
   readonly getConstants?: () => object;
 }
 
-// eslint-disable-next-line lint/react-native-modules
 export interface TurboModule extends RCTExport<void> {}
