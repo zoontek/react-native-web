@@ -132,7 +132,6 @@ class FillRateHelper {
         mostly_blank_time_frac: this._info.mostly_blank_ms / total_time_spent
       };
       for (const key in derived) {
-        // $FlowFixMe[prop-missing]
         derived[key as keyof typeof derived] =
           Math.round(1000 * derived[key as keyof typeof derived]) / 1000;
       }

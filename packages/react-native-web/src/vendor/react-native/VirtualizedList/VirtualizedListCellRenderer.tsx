@@ -84,7 +84,6 @@ export default class CellRenderer<ItemT> extends React.Component<
 
   // TODO: consider factoring separator stuff out of VirtualizedList into FlatList since it's not
   // reused by SectionList and we can keep VirtualizedList simpler.
-  // $FlowFixMe[missing-local-annot]
   _separators = {
     highlight: () => {
       const { cellKey, prevCellKey } = this.props;
@@ -140,12 +139,6 @@ export default class CellRenderer<ItemT> extends React.Component<
     }
 
     if (ListItemComponent) {
-      /* $FlowFixMe[not-a-component] (>=0.108.0 site=react_native_fb) This
-       * comment suppresses an error found when Flow v0.108 was deployed. To
-       * see the error, delete this comment and run Flow. */
-      /* $FlowFixMe[incompatible-type-arg] (>=0.108.0 site=react_native_fb)
-       * This comment suppresses an error found when Flow v0.108 was deployed.
-       * To see the error, delete this comment and run Flow. */
       return React.createElement(
         ListItemComponent as React.ComponentType<RenderItemProps<ItemT>>,
         {
@@ -196,10 +189,8 @@ export default class CellRenderer<ItemT> extends React.Component<
     const itemSeparator: React.ReactNode = React.isValidElement(
       ItemSeparatorComponent
     )
-      ? // $FlowFixMe[incompatible-type]
-        ItemSeparatorComponent
-      : // $FlowFixMe[incompatible-type]
-        ItemSeparatorComponent && (
+      ? ItemSeparatorComponent
+      : ItemSeparatorComponent && (
           <ItemSeparatorComponent {...this.state.separatorProps} />
         );
     const cellStyle = inversionStyle
