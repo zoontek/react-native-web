@@ -409,7 +409,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     return this.context?.cellKey || 'rootList';
   }
 
-  // $FlowFixMe[missing-local-annot]
   _getScrollMetrics = () => {
     return this._scrollMetrics;
   };
@@ -418,7 +417,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     return this._hasMore;
   }
 
-  // $FlowFixMe[missing-local-annot]
   _getOutermostParentListRef = (): VirtualizedList => {
     if (this._isNestedWithSameOrientation()) {
       return this.context!.getOutermostParentListRef();
@@ -534,7 +532,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
       props;
 
     invariant(
-      // $FlowFixMe[prop-missing]
       !onScroll || !(onScroll as { __isNative?: boolean }).__isNative,
       'Components based on VirtualizedList must be wrapped with Animated.createAnimatedComponent ' +
         'to support native onScroll events with useNativeDriver'
@@ -565,7 +562,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     }
 
     if (__DEV__ && !this._hasWarned.flexWrap) {
-      // $FlowFixMe[underconstrained-implicit-instantiation]
       const flatStyles = StyleSheet.flatten(this.props.contentContainerStyle);
       if (flatStyles != null && flatStyles.flexWrap === 'wrap') {
         console.warn(
@@ -941,7 +937,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     props: {
       keyExtractor?: Nullable<(item: Item, index: number) => string>;
     }
-    // $FlowFixMe[missing-local-annot]
   ) {
     if (props.keyExtractor != null) {
       return props.keyExtractor(item, index);
@@ -980,8 +975,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
       const element = React.isValidElement(ListHeaderComponent) ? (
         ListHeaderComponent
       ) : (
-        // $FlowFixMe[not-a-component]
-        // $FlowFixMe[incompatible-type-arg]
         <ListHeaderComponent />
       );
       cells.push(
@@ -993,10 +986,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
             onLayout={this._onLayoutHeader}
             style={[inversionStyle, this.props.ListHeaderComponentStyle]}
           >
-            {
-              // $FlowFixMe[incompatible-type] - Typing ReactNativeComponent revealed errors
-              element
-            }
+            {element}
           </View>
         </VirtualizedListCellContextProvider>
       );
@@ -1009,8 +999,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
         React.isValidElement(ListEmptyComponent) ? (
           ListEmptyComponent
         ) : (
-          // $FlowFixMe[not-a-component]
-          // $FlowFixMe[incompatible-type-arg]
           <ListEmptyComponent />
         )
       ) as React.ReactElement<{
@@ -1105,8 +1093,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
       const element = React.isValidElement(ListFooterComponent) ? (
         ListFooterComponent
       ) : (
-        // $FlowFixMe[not-a-component]
-        // $FlowFixMe[incompatible-type-arg]
         <ListFooterComponent />
       );
       cells.push(
@@ -1118,10 +1104,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
             onLayout={this._onLayoutFooter}
             style={[inversionStyle, this.props.ListFooterComponentStyle]}
           >
-            {
-              // $FlowFixMe[incompatible-type] - Typing ReactNativeComponent revealed errors
-              element
-            }
+            {element}
           </View>
         </VirtualizedListCellContextProvider>
       );
@@ -1268,7 +1251,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     new ChildListCollection();
   _offsetFromParentVirtualizedList: number = 0;
   _prevParentOffset: number = 0;
-  // $FlowFixMe[missing-local-annot]
   _scrollMetrics = {
     contentLength: 0,
     dOffset: 0,
@@ -1287,8 +1269,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
   _updateCellsToRenderBatcher: Batchinator;
   _viewabilityTuples: Array<ViewabilityHelperCallbackTuple> = [];
 
-  /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
-   * LTI update could not be added via codemod */
   _captureScrollRef = (ref: Nullable<ScrollRef>) => {
     this._scrollRef = ref;
   };
@@ -1301,12 +1281,9 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     );
   }
 
-  /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
-   * LTI update could not be added via codemod */
   _defaultRenderScrollComponent = (props: Props) => {
     const onRefresh = props.onRefresh;
     if (this._isNestedWithSameOrientation()) {
-      // $FlowFixMe[prop-missing] - Typing ReactNativeComponent revealed errors
       return <View {...(props as unknown as ViewProps)} />;
     } else if (onRefresh) {
       invariant(
@@ -1316,14 +1293,11 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
           '`'
       );
       return (
-        // $FlowFixMe[prop-missing] Invalid prop usage
-        // $FlowFixMe[incompatible-use]
         <ScrollView
           {...(props as unknown as React.ComponentProps<typeof ScrollView>)}
           refreshControl={
             props.refreshControl == null ? (
               <RefreshControl
-                // $FlowFixMe[incompatible-type]
                 refreshing={props.refreshing}
                 onRefresh={onRefresh}
                 progressViewOffset={props.progressViewOffset}
@@ -1337,8 +1311,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
         />
       );
     } else {
-      // $FlowFixMe[prop-missing] Invalid prop usage
-      // $FlowFixMe[incompatible-use]
       return (
         <ScrollView
           {...(props as unknown as React.ComponentProps<typeof ScrollView>)}
@@ -1484,7 +1456,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     this._headerLength = this._selectLength(e.nativeEvent.layout);
   };
 
-  // $FlowFixMe[missing-local-annot]
   _renderDebugOverlay() {
     const normalize =
       this._scrollMetrics.visibleLength /
@@ -1493,9 +1464,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     const itemCount = this.props.getItemCount(this.props.data);
     for (let ii = 0; ii < itemCount; ii++) {
       const frame = this.__getFrameMetricsApprox(ii, this.props);
-      /* $FlowFixMe[prop-missing] (>=0.68.0 site=react_native_fb) This comment
-       * suppresses an error found when Flow v0.68 was deployed. To see the
-       * error delete this comment and run Flow. */
       if ((frame as { inLayout?: boolean }).inLayout) {
         framesInLayout.push(frame);
       }
@@ -1904,7 +1872,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     index: number,
     isViewable: boolean,
     props: FrameMetricProps
-    // $FlowFixMe[missing-local-annot]
   ) => {
     const { data, getItem } = props;
     const item = getItem(data, index);
@@ -1979,9 +1946,6 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     const frame = this._frames[this._keyExtractor(item, index, props)];
     if (!frame || frame.index !== index) {
       if (getItemLayout) {
-        /* $FlowFixMe[prop-missing] (>=0.63.0 site=react_native_fb) This comment
-         * suppresses an error found when Flow v0.63 was deployed. To see the error
-         * delete this comment and run Flow. */
         return getItemLayout(data, index);
       }
     }
