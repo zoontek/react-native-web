@@ -140,7 +140,6 @@ class VirtualizedSectionList<
       viewOffset,
       index
     };
-    // $FlowFixMe[incompatible-use]
     this._listRef.scrollToIndex(toIndexParams);
   }
 
@@ -233,7 +232,6 @@ class VirtualizedSectionList<
     return null;
   }
 
-  // $FlowFixMe[missing-local-annot]
   _keyExtractor = (item: Item, index: number) => {
     const info = this._subExtractor(index);
     return (info && info.key) || String(index);
@@ -415,7 +413,6 @@ class VirtualizedSectionList<
     if (updateHighlightFn != null) {
       this._updateHighlightMap[cellKey] = updateHighlightFn;
     } else {
-      // $FlowFixMe[prop-missing]
       delete (
         this._updateHighlightFor as unknown as { [key: string]: unknown }
       )[cellKey];
@@ -559,7 +556,6 @@ function ItemWithSeparator(props: ItemWithSeparatorProps): React.ReactNode {
 
   React.useEffect(() => {
     setSelfHighlightCallback(cellKey, setSeparatorHighlighted);
-    // $FlowFixMe[incompatible-call]
     setSelfUpdatePropsCallback(
       cellKey,
       setSeparatorProps as unknown as (highlighted: boolean) => void
@@ -639,7 +635,4 @@ function ItemWithSeparator(props: ItemWithSeparatorProps): React.ReactNode {
   );
 }
 
-/* $FlowFixMe[class-object-subtyping] added when improving typing for this
- * parameters */
-// $FlowFixMe[method-unbinding]
 export default VirtualizedSectionList;
