@@ -7,7 +7,7 @@
  * @format
  */
 
-import type { ComponentProps, ElementRef } from 'react';
+import type { ComponentProps, ComponentRef } from 'react';
 import Image from '../../../../exports/Image';
 import createAnimatedComponent from '../createAnimatedComponent';
 
@@ -15,5 +15,5 @@ import type { AnimatedComponentType } from '../createAnimatedComponent';
 
 export default createAnimatedComponent(Image) as AnimatedComponentType<
   ComponentProps<typeof Image>,
-  ElementRef<typeof Image>
+  ComponentRef<typeof Image>
 >;
