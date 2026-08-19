@@ -199,8 +199,8 @@ export default class CellRenderer<ItemT> extends Component<
         ? [styles.rowReverse, inversionStyle]
         : [styles.columnReverse, inversionStyle]
       : horizontal
-      ? [styles.row, inversionStyle]
-      : inversionStyle;
+        ? [styles.row, inversionStyle]
+        : inversionStyle;
     const result = !CellRendererComponent ? (
       <View
         style={cellStyle}
