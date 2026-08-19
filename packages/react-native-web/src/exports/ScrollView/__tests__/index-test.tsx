@@ -1,9 +1,10 @@
-import ScrollView from '../';
-import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
 import type { RenderResult } from '@testing-library/react';
-import type { Nullable } from '../../../types';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { createRef, type ComponentRef } from 'react';
+
+import ScrollView from '../';
+import type { Nullable } from '../../../types';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);

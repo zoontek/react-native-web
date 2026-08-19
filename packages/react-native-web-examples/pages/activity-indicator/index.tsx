@@ -1,6 +1,7 @@
-import { ActivityIndicator, StyleSheet, View } from 'react-native-web';
-import Example from '../../shared/example';
 import { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 export default function ActivityIndicatorPage() {
   const [animating, setAnimating] = useState(true);

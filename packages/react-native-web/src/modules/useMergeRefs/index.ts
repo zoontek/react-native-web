@@ -5,9 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import mergeRefs from '../mergeRefs';
-import type { Nullable } from '../../types';
 import { useMemo, type Ref } from 'react';
+
+import type { Nullable } from '../../types';
+import mergeRefs from '../mergeRefs';
 
 export default function useMergeRefs<T = HTMLElement>(
   ...args: ReadonlyArray<Nullable<Ref<T>>>

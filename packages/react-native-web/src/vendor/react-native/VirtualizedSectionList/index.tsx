@@ -7,11 +7,6 @@
  * @format
  */
 
-import type { ViewToken } from '../ViewabilityHelper';
-import type { Nullable } from '../../../types';
-import View from '../../../exports/View';
-import VirtualizedList from '../VirtualizedList';
-import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
 import invariant from 'fbjs/lib/invariant';
 import {
   PureComponent,
@@ -22,6 +17,12 @@ import {
   type ReactElement,
   type ReactNode
 } from 'react';
+
+import View from '../../../exports/View';
+import type { Nullable } from '../../../types';
+import type { ViewToken } from '../ViewabilityHelper';
+import VirtualizedList from '../VirtualizedList';
+import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
 
 type Item = unknown;
 

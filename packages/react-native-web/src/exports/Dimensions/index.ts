@@ -9,6 +9,7 @@
 'use client';
 
 import invariant from 'fbjs/lib/invariant';
+
 import canUseDOM from '../../modules/canUseDom';
 import type { Nullable } from '../../types';
 import type { EventSubscription } from '../../vendor/react-native/vendor/emitter/EventEmitter';

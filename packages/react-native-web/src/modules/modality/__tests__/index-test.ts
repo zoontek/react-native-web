@@ -12,6 +12,7 @@ import {
   setPointerEvent,
   testWithPointerType
 } from 'dom-event-testing-library';
+
 import {
   getActiveModality,
   getModality,

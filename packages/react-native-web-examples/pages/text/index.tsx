@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Image, Text, View } from 'react-native-web';
+
 import Example from '../../shared/example';
 
 const Spacer = () => <View style={{ height: '1rem' }} />;

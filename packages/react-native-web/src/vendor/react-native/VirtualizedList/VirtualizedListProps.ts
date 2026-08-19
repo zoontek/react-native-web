@@ -8,21 +8,22 @@
  */
 
 import type ScrollView from '../../../exports/ScrollView';
+import type { ViewProps } from '../../../exports/View';
 import type { LayoutEvent, Nullable } from '../../../types';
 import type { FocusEvent } from '../Types/CoreEventTypes';
-import type { ViewProps } from '../../../exports/View';
 type ViewStyleProp = ViewProps['style'];
-import type {
-  ViewabilityConfig,
-  ViewabilityConfigCallbackPair,
-  ViewToken
-} from '../ViewabilityHelper';
 import type {
   ComponentPropsWithoutRef,
   ComponentType,
   ReactElement,
   ReactNode
 } from 'react';
+
+import type {
+  ViewabilityConfig,
+  ViewabilityConfigCallbackPair,
+  ViewToken
+} from '../ViewabilityHelper';
 
 export type Item = unknown;
 

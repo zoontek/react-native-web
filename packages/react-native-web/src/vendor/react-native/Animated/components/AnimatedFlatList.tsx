@@ -8,9 +8,9 @@
  */
 
 import { forwardRef, type ComponentProps, type ComponentRef } from 'react';
+
 import FlatList from '../../../../exports/FlatList';
 import createAnimatedComponent from '../createAnimatedComponent';
-
 import type { AnimatedComponentType } from '../createAnimatedComponent';
 
 /**

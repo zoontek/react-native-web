@@ -9,14 +9,13 @@
 
 'use strict';
 
+import type { Nullable } from '../../../../types';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
 import AnimatedInterpolation from './AnimatedInterpolation';
+import type { InterpolationConfigType } from './AnimatedInterpolation';
 import AnimatedNode from './AnimatedNode';
 import AnimatedValue from './AnimatedValue';
 import AnimatedWithChildren from './AnimatedWithChildren';
-
-import type { InterpolationConfigType } from './AnimatedInterpolation';
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
-import type { Nullable } from '../../../../types';
 
 class AnimatedDivision extends AnimatedWithChildren {
   _a: AnimatedNode;

@@ -1,12 +1,12 @@
-import type { ComponentsType } from '../impl';
-
-import { BenchmarkType } from '../app/Benchmark';
 import {
   interpolatePurples,
   interpolateBuPu,
   interpolateRdPu
 } from 'd3-scale-chromatic';
 import { Component, Fragment } from 'react';
+
+import { BenchmarkType } from '../app/Benchmark';
+import type { ComponentsType } from '../impl';
 
 const targetSize = 10;
 

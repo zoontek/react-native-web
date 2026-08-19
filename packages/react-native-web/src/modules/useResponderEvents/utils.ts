@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import isSelectionValid from '../../modules/isSelectionValid';
 import type { Nullable } from '../../types';
 import type { ResponderDOMEvent } from './ResponderEventTypes';
-import isSelectionValid from '../../modules/isSelectionValid';
 
 const keyName = '__reactResponderId';
 

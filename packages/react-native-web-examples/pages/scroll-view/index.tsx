@@ -1,3 +1,4 @@
+import { useRef, useState, type ComponentRef } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -5,9 +6,9 @@ import {
   Pressable,
   View
 } from 'react-native-web';
+
 import Button from '../../shared/button';
 import Example from '../../shared/example';
-import { useRef, useState, type ComponentRef } from 'react';
 
 const ITEMS = [...Array(12)].map((_, i) => `Item ${i}`);
 

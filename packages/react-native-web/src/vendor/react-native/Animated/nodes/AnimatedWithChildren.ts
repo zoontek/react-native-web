@@ -9,11 +9,10 @@
 
 'use strict';
 
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
 import type { Nullable } from '../../../../types';
-
-import AnimatedNode from './AnimatedNode';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import AnimatedNode from './AnimatedNode';
 
 class AnimatedWithChildren extends AnimatedNode {
   _children: Array<AnimatedNode>;

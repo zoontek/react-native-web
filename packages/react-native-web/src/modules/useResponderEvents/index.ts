@@ -15,12 +15,12 @@
  *   }
  */
 
+import { useDebugValue, useEffect, useRef, type RefObject } from 'react';
+
 import type { Nullable } from '../../types';
 import type { ResponderConfig } from './ResponderSystem';
-import type { ResponderNode } from './utils';
-
 import * as ResponderSystem from './ResponderSystem';
-import { useDebugValue, useEffect, useRef, type RefObject } from 'react';
+import type { ResponderNode } from './utils';
 
 const emptyObject = {};
 let idCounter = 0;

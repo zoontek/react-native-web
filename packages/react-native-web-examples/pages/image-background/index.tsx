@@ -1,5 +1,5 @@
-import React from 'react';
 import { ImageBackground, StyleSheet, Text } from 'react-native-web';
+
 import Example from '../../shared/example';
 
 const source =

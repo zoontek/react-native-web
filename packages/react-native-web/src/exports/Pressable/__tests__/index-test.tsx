@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Pressable from '../';
-import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
-import type { Nullable, PlatformMethods } from '../../../types';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { createRef, useState } from 'react';
+
+import Pressable from '../';
+import type { Nullable, PlatformMethods } from '../../../types';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);

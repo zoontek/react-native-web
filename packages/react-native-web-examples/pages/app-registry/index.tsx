@@ -1,6 +1,7 @@
-import { AppRegistry, Text, StyleSheet } from 'react-native-web';
-import Example from '../../shared/example';
 import { useEffect, useRef } from 'react';
+import { AppRegistry, Text, StyleSheet } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 function App() {
   return <Text style={styles.text}>Should be red and bold</Text>;

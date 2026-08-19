@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -5,9 +6,9 @@ import {
   Text,
   Pressable
 } from 'react-native-web';
+
 import Button from '../../shared/button';
 import Example from '../../shared/example';
-import { useRef, useState } from 'react';
 
 type Event = {
   id: number;

@@ -9,14 +9,12 @@
 
 'use strict';
 
-import type AnimatedNode from './AnimatedNode';
-
-import AnimatedInterpolation from './AnimatedInterpolation';
-import AnimatedWithChildren from './AnimatedWithChildren';
-
-import type { InterpolationConfigType } from './AnimatedInterpolation';
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
 import type { Nullable } from '../../../../types';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import AnimatedInterpolation from './AnimatedInterpolation';
+import type { InterpolationConfigType } from './AnimatedInterpolation';
+import type AnimatedNode from './AnimatedNode';
+import AnimatedWithChildren from './AnimatedWithChildren';
 
 class AnimatedModulo extends AnimatedWithChildren {
   _a: AnimatedNode;

@@ -6,10 +6,10 @@
  */
 
 import type { ReactNode } from 'react';
-
 import { createContext, useContext, useMemo } from 'react';
-import { isLocaleRTL } from './isLocaleRTL';
+
 import type { Nullable } from '../../types';
+import { isLocaleRTL } from './isLocaleRTL';
 
 type Locale = string;
 export type WritingDirection = 'ltr' | 'rtl';
