@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,7 +6,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-import React from 'react';
+import React, { type ComponentProps, type ReactNode } from 'react';
 import {
   Image,
   PixelRatio,
@@ -18,25 +16,27 @@ import {
   Text,
   Switch,
   View
-} from 'react-native';
+} from 'react-native-web';
 import Example from '../../shared/example';
 
 const SCALE = PixelRatio.get();
 const IMAGE_DIMENSION = 100 * SCALE;
-const IMAGE_SIZE = [IMAGE_DIMENSION, IMAGE_DIMENSION];
+const IMAGE_SIZE = [IMAGE_DIMENSION, IMAGE_DIMENSION] as const;
 const iconSource =
   'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzIwMCcgZmlsbD0iIzAwMDAwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEwMCAxMDAiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGQ9Ik0yNS44NjcsNDguODUzQzMyLjgwNiw1MC4xNzYsNDYuNDYsNTIuNSw2MS4yMTUsNTIuNWgwLjAwNWM5LjcxLDAsMTguNDAxLTEuMDU3LDI1LjkzOC0yLjkxMyAgIGMwLjE1OS0wLjA0NiwwLjM1LTAuMTM1LDAuNTY1LTAuMTg3YzAuMjgyLTAuMDcyLDAuNTY1LTAuMTY0LDAuODQ0LTAuMjM4YzMuMTg0LTAuOTY0LDIuNTc3LTMuMDUxLDIuMTk5LTMuODUyICAgYy00LjE2Ni03LjcxOS0xNS4wODYtMjMuNDE1LTM1LjAyOC0yMy40MTVjLTIyLjE2OSwwLTMwLjI2MiwxMC42MzUtMzMuMTQsMTkuNTg5QzIyLjU0NSw0Mi4zMzMsMjIuNDA3LDQ3LjEzNSwyNS44NjcsNDguODUzeiAgICBNMjguNjc2LDM4LjAzMmMwLjAxMy0wLjAzNiwwLjYxNC0xLjYyNiwxLjkyMy0xLjAwOGMxLjEzMywwLjUzNSwwLjk2MSwxLjU2MywwLjg4NywxLjg1Yy0wLjAwNywwLjAyNC0wLjAxNCwwLjA0OC0wLjAyMSwwLjA3MyAgIGMwLDAuMDAxLTAuMDAxLDAuMDA0LTAuMDAxLDAuMDA0bDAsMGMtMC4yNDksMC45MjktMC40MDQsMi4wODYtMC4wMTcsMi44NmMwLjE2LDAuMzE5LDAuNDkyLDAuNzY4LDEuNTQyLDAuOTg3bDAuMzY2LDAuMDc3ICAgYzIwLjgxNiw0LjM2LDM2LDIuOTMzLDQ1LjY3OCwwLjYyNmwtMC4wMDQsMC4wMDJjMCwwLDAuMDA1LTAuMDAyLDAuMDA3LTAuMDAzYzAuMjEyLTAuMDUsMC40MjEtMC4xMDEsMC42MjgtMC4xNTIgICBjMC41MDktMC4wNSwxLjE3MywwLjA3OCwxLjM5OSwxYzAuMzUxLDEuNDI0LTAuOTczLDEuODk1LTEuMjE3LDEuOTY5Yy01LjMyNSwxLjI3OS0xMi4yNjYsMi4zMDYtMjAuODM1LDIuMzA3ICAgYy03LjUwNSwwLTE2LjI1NS0wLjc4Ny0yNi4yNTctMi44ODJsLTAuMzY0LTAuMDc3Yy0yLjEyLTAuNDQyLTMuMTExLTEuNjMzLTMuNTY5LTIuNTU1QzI3Ljk4NSw0MS40MjEsMjguMjgxLDM5LjQxNiwyOC42NzYsMzguMDMyICAgeiI+PC9wYXRoPjxjaXJjbGUgY3g9IjEwLjQ5MyIgY3k9IjIzLjQ1NSIgcj0iMC42MTkiPjwvY2lyY2xlPjxwYXRoIGQ9Ik0yLjA4LDI4LjMwOGMwLjY3Ni0wLjE3OCwwLjk4My0wLjM1MiwxLjE3NC0wLjVDNC42OSwyNi42OSw2LjUsMjcuNDgzLDcuNSwyOC4zNTd2MC4wMDJjMCwwLDEuNzExLDEuMjM1LDAuNzM3LDIuMjAyICAgYy0wLjk3NCwwLjk2NS0yLjMxOSwwLjAwNi0yLjMxOSwwLjAwNmwwLjAzNSwwLjAxNmMtMC4zMjctMC4yMDMtMC42LTAuNTYxLTAuNzgtMC41ODRjLTAuMzcsMC4yNi0wLjg3NiwwLjUtMS40NzYsMC41SDMuNyAgIGMwLDAtMS4zNDUsMC43MDksMC4xNzgsMS42NTJjMC4wMDEsMC4wMDEsMC4wMDIsMC4wNzIsMC4wMDQsMC4wNzNjMy45MzksMi4zNDIsOC4yNzEsNS43MDEsOC4yNzEsOC44OCAgIGMwLDAuNjkxLDAuMiwxNy4wNDIsMTcuNjI2LDI0LjczOWwwLjk2NywwLjQ0MmwtMC4xLDEuMDU5Yy0wLjQyMSw0LjM5LDEuMTQ1LDEwLjE5MSwxMC45OTMsMTIuODg4bDAuMTEzLDAuMDM4ICAgYzAuMDY3LDAuMDIzLDYuNzMyLDIuNDI5LDEwLjkwNywyLjQyOWMxLjU4NCwwLDIuMTU1LTAuMzUyLDIuMjQzLTAuNTYxYzAuMDg1LTAuMjAyLDAuNjEyLTIuMTY0LTYuMzMyLTkuMzg3bDAuMDAyLTAuMTgzICAgYzAsMC0yLjQ3Ny0zLjA3LDEuNTMzLTMuMDdjMC4wMSwwLDAuMDE5LDAsMC4wMjksMGMxLjI4NSwwLDIuNjA4LDAuMjE1LDMuOTgsMC4xODRjNC43NzEtMC4xMTcsOS4zMTYtMC40MjUsMTMuNTA2LTEuMDk2ICAgbDAuNDc0LTAuMDI4bDAuNjY4LDAuMTU4YzkuNjUxLDQuOTQ4LDE2LjczOCw3LjcxNiwxOS43MzgsNy43MTZ2MC4wMDZjMCwwLDAuMTY0LDAuMDExLDAuMjMsMC4wMDQgICBjLTAuMTg5LTAuNzIzLTIuMjMtMi44LTcuMjMtOS4wNzl2MC4wMjFjMCwwLTEuNTEyLTEuNjU4LDAuNzk3LTIuNjUzYzAuMDYzLTAuMDI2LDAuMDA4LDAuMDIzLDAuMDYtMC4wMDEgICBjOC42MzktMy41MDksMTMuNTAxLTguMjA0LDE1LjQxMS0xMS43NzVjMS4xNDUtMi4xMjksMC4yMDYtMi43ODQtMC42NTktMi45NzZjLTAuMzE3LTAuMDM4LTAuNjM0LTAuMDYyLTAuOTEyLTAuMDYyICAgYy0wLjIwNSwwLTAuMzc5LDAuMDEtMC41MjgsMC4wMjdsLTMuMTQzLDEuMjE0QzgzLjczMiw1My45MjYsNzMuMjE4LDU1LjUsNjEuMjIsNTUuNWMtMC4wMDIsMC0wLjAwNSwwLTAuMDA1LDAgICBjLTE1LjEyOCwwLTI5LjEwMS0yLjQzMi0zNi4wODMtMy43NzFsLTAuMTczLTAuMTExbC0wLjE2LTAuMTI2Yy01Ljg1OC0yLjY4MS01LjEzNy0xMC4yMDItNS4xMDMtMTAuNTE5bDAuMDYtMC4zICAgYzAuODk1LTIuODM4LDIuNDY3LTYuMzUyLDUuMjEzLTkuNzE5Yy0xLjgwOC0xLjM2OS00LjU5LTQuMTg4LTQuNDMtOC40OTRjMC4wNDYtMS4yNDQtMC40ODYtMi41MDgtMS40OTgtMy41NTkgICBjLTEuNDk4LTEuNTU1LTMuNzg1LTIuNDQ2LTYuMjc0LTIuNDQ2Yy0xLjc3LDAtMy41NTMsMC40NDItNS4yOTMsMS4zMTRjLTQuMDYxLDIuMDM1LTQuODU1LDQuNzM2LTUuNjkyLDcuNTk2ICAgYy0wLjEzNiwwLjQ2OC0wLjI4NCwwLjkzOS0wLjQzOCwxLjQxYy0wLjAwNiwwLjAxOS0wLjAyMiwwLjAzNS0wLjAyOCwwLjA1NkMwLjgzMywyOC40MjMsMS42OTEsMjguMzksMi4wOCwyOC4zMDh6IE0xMC40OTMsMTkuOTA4ICAgYzEuOTU2LDAsMy41NDgsMS41OTEsMy41NDgsMy41NDdjMCwxLjk1Ny0xLjU5MiwzLjU0OC0zLjU0OCwzLjU0OGMtMS45NTcsMC0zLjU0OC0xLjU5Mi0zLjU0OC0zLjU0OCAgIEM2Ljk0NCwyMS40OTksOC41MzYsMTkuOTA4LDEwLjQ5MywxOS45MDh6Ij48L3BhdGg+PC9nPjwvc3ZnPg==';
 
-function ListItem(props) {
+type ListItemProps = {
+  imageSource: ComponentProps<typeof Image>['source'];
+};
+
+function ListItem(props: ListItemProps) {
   return (
     <View style={styles.row}>
       <View style={styles.column1}>
         <Image source={props.imageSource} style={styles.icon} />
       </View>
       <View style={styles.column2}>
-        <View style={styles.textBox}>
-          <Text>Text Text Text</Text>
-        </View>
+        <Text>Text Text Text</Text>
       </View>
       <View style={styles.column3}>
         <Pressable onPress={() => {}} style={styles.smallButton}>
@@ -47,7 +47,14 @@ function ListItem(props) {
   );
 }
 
-function TextAlignmentExample(props) {
+type TextAlignmentExampleProps = {
+  description?: string;
+  // TODO: use TextProps, or TextStyle
+  style: ComponentProps<typeof Text>['style'];
+  title: string;
+};
+
+function TextAlignmentExample(props: TextAlignmentExampleProps) {
   return (
     <Block description={props.description} title={props.title}>
       <View>
@@ -68,10 +75,15 @@ function TextAlignmentExample(props) {
   );
 }
 
-function withRTLState(Component) {
-  return class extends React.Component {
-    constructor(...args) {
-      super(...args);
+type RTLProps = {
+  isRTL: boolean;
+  setRTL: (isRTL: boolean) => void;
+};
+
+function withRTLState(Component: React.ComponentType<RTLProps>) {
+  return class extends React.Component<object, { isRTL: boolean }> {
+    constructor(props: object) {
+      super(props);
       this.state = {
         isRTL: false
       };
@@ -79,20 +91,16 @@ function withRTLState(Component) {
 
     render() {
       const isRTL = this.state.isRTL;
-      const setRTL = (isRTL) => this.setState({ isRTL: isRTL });
+      const setRTL = (isRTL: boolean) => this.setState({ isRTL: isRTL });
       return <Component isRTL={isRTL} setRTL={setRTL} />;
     }
   };
 }
 
-const RTLToggler = ({ isRTL, setRTL }) => {
+const RTLToggler = ({ isRTL, setRTL }: RTLProps) => {
   const toggleRTL = () => setRTL(!isRTL);
   return (
-    <Pressable
-      aria-label="Change layout direction"
-      color="gray"
-      onPress={toggleRTL}
-    >
+    <Pressable aria-label="Change layout direction" onPress={toggleRTL}>
       <Text>{isRTL ? 'RTL' : 'LTR'}</Text>
     </Pressable>
   );
@@ -307,7 +315,13 @@ const BorderRadiiExample = withRTLState(({ isRTL, setRTL }) => {
   );
 });
 
-function Block(props) {
+type BlockProps = {
+  children: ReactNode;
+  description?: string;
+  title: string;
+};
+
+function Block(props: BlockProps) {
   let description;
   if (props.description) {
     description = (
@@ -367,8 +381,14 @@ const blockStyles = StyleSheet.create({
   }
 });
 
-class LayoutRTLExample extends React.Component {
-  constructor(props) {
+type LayoutRTLExampleState = {
+  toggleStatus: Record<string, boolean>;
+  isRTL: boolean;
+  containerWidth: number;
+};
+
+class LayoutRTLExample extends React.Component<object, LayoutRTLExampleState> {
+  constructor(props: object) {
     super(props);
 
     this.state = {

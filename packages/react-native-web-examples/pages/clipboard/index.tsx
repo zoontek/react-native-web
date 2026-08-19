@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import { Clipboard, StyleSheet, TextInput, View } from 'react-native';
+import { Clipboard, StyleSheet, TextInput, View } from 'react-native-web';
 import React from 'react';
 import Button from '../../shared/button';
 import Example from '../../shared/example';

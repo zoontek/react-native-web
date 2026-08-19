@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -18,7 +16,7 @@ import {
   Text,
   TextInput,
   View
-} from 'react-native';
+} from 'react-native-web';
 import bandaged from '../../assets/lists/bandaged.png';
 import call from '../../assets/lists/call.png';
 import dislike from '../../assets/lists/dislike.png';
@@ -33,15 +31,13 @@ import superlike from '../../assets/lists/superlike.png';
 import victory from '../../assets/lists/victory.png';
 import Example from '../../shared/example';
 
-/*::
 type Item = {
-  title: string,
-  text: string,
-  key: string,
-  pressed: boolean,
-  noImage?: ?boolean
+  title: string;
+  text: string;
+  key: string;
+  pressed: boolean;
+  noImage?: boolean | null;
 };
-*/
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -75,11 +71,8 @@ const LOREM_IPSUM =
   'vulputate est, vel an accusam intellegam interesset. Nam eu stet pericula reprimique, ea vim illud ' +
   'modus, putant invidunt reprehendunt ne qui.';
 
-function genItemData(
-  count /*: number */,
-  start /*: number */ = 0
-) /*: Array<Item> */ {
-  const dataBlob = [];
+function genItemData(count: number, start: number = 0): Array<Item> {
+  const dataBlob: Array<Item> = [];
   for (let ii = start; ii < count + start; ii++) {
     const itemHash = Math.abs(hashCode('Item ' + ii));
     dataBlob.push({
@@ -92,18 +85,16 @@ function genItemData(
   return dataBlob;
 }
 
-/*::
 type ItemComponentProps = {
-  fixedHeight?: ?boolean,
-  horizontal?: ?boolean,
-  item: Item,
-  onPress: (key: string) => void,
-  onShowUnderlay?: () => void,
-  onHideUnderlay?: () => void
+  fixedHeight?: boolean | null;
+  horizontal?: boolean | null;
+  item: Item;
+  onPress: (key: string) => void;
+  onShowUnderlay?: () => void;
+  onHideUnderlay?: () => void;
 };
-*/
 
-class ItemComponent extends React.PureComponent /*:: <ItemComponentProps> */ {
+class ItemComponent extends React.PureComponent<ItemComponentProps> {
   _onPress = () => {
     this.props.onPress(this.props.item.key);
   };
@@ -138,7 +129,7 @@ class ItemComponent extends React.PureComponent /*:: <ItemComponentProps> */ {
   }
 }
 
-class FooterComponent extends React.PureComponent /*:: <{}> */ {
+class FooterComponent extends React.PureComponent {
   render() {
     return (
       <View style={styles.headerFooterContainer}>
@@ -151,7 +142,7 @@ class FooterComponent extends React.PureComponent /*:: <{}> */ {
   }
 }
 
-class HeaderComponent extends React.PureComponent /*:: <{}> */ {
+class HeaderComponent extends React.PureComponent {
   render() {
     return (
       <View style={styles.headerFooterContainer}>
@@ -164,13 +155,16 @@ class HeaderComponent extends React.PureComponent /*:: <{}> */ {
   }
 }
 
-class SeparatorComponent extends React.PureComponent /*:: <{}> */ {
+class SeparatorComponent extends React.PureComponent {
   render() {
     return <View style={styles.separator} />;
   }
 }
 
-class ItemSeparatorComponent extends React.PureComponent /*:: <{}> */ {
+class ItemSeparatorComponent extends React.PureComponent<{
+  highlighted: boolean;
+  leadingItem: unknown;
+}> {
   render() {
     const style = this.props.highlighted
       ? [
@@ -182,13 +176,17 @@ class ItemSeparatorComponent extends React.PureComponent /*:: <{}> */ {
   }
 }
 
-class Spindicator extends React.PureComponent /*:: <{}> */ {
+class Spindicator extends React.PureComponent<{
+  value: InstanceType<typeof Animated.Value>;
+}> {
   render() {
     return (
       <Animated.View
         style={[
+          // @ts-expect-error
           styles.spindicator,
           {
+            // @ts-expect-error
             rotate: this.props.value.interpolate({
               inputRange: [0, 5000],
               outputRange: ['0deg', '360deg'],
@@ -201,7 +199,7 @@ class Spindicator extends React.PureComponent /*:: <{}> */ {
   }
 }
 
-function hashCode(str /*: string */) /*: number */ {
+function hashCode(str: string): number {
   let hash = 15;
   for (let ii = str.length - 1; ii >= 0; ii--) {
     hash = (hash << 5) - hash + str.charCodeAt(ii);
@@ -210,9 +208,9 @@ function hashCode(str /*: string */) /*: number */ {
 }
 
 function getItemLayout(
-  data /*: any */,
-  index /*: number */,
-  horizontal /*: void | boolean */
+  data: unknown,
+  index: number,
+  horizontal?: boolean | null
 ) {
   const [length, separator, header] = horizontal
     ? [HORIZ_WIDTH, 0, HEADER.width]
@@ -220,13 +218,13 @@ function getItemLayout(
   return { length, offset: (length + separator) * index + header, index };
 }
 
-function pressItem(context /*: Object */, key /*: string */) {
+function pressItem(context: SingleColumnExample, key: string) {
   const index = Number(key);
-  const pressed = !context.state.data[index].pressed;
+  const pressed = !(context.state.data[index] as Item).pressed;
   context.setState((state) => {
     const newData = [...state.data];
     newData[index] = {
-      ...state.data[index],
+      ...(state.data[index] as Item),
       pressed,
       title: 'Item ' + key + (pressed ? ' (pressed)' : '')
     };
@@ -234,12 +232,25 @@ function pressItem(context /*: Object */, key /*: string */) {
   });
 }
 
-function renderSmallSwitchOption(context /*: Object */, key /*: string */) {
+type SwitchOptionKey =
+  | 'debug'
+  | 'fixedHeight'
+  | 'horizontal'
+  | 'inverted'
+  | 'logViewable'
+  | 'virtualized';
+
+function renderSmallSwitchOption(
+  context: SingleColumnExample,
+  key: SwitchOptionKey
+) {
   return (
     <View style={styles.option}>
       <Text>{key}:</Text>
       <Switch
-        onValueChange={(value) => context.setState({ [key]: value })}
+        onValueChange={(value) =>
+          context.setState({ [key]: value } as Pick<State, SwitchOptionKey>)
+        }
         style={styles.smallSwitch}
         value={context.state[key]}
       />
@@ -247,11 +258,13 @@ function renderSmallSwitchOption(context /*: Object */, key /*: string */) {
   );
 }
 
-function PlainInput(props /*: Object */) {
+// TODO: use TextInputProps
+function PlainInput(props: React.ComponentProps<typeof TextInput>) {
   return (
     <TextInput
       autoCapitalize="none"
       autoCorrect={false}
+      // @ts-expect-error add support for clearButtonMode
       clearButtonMode="always"
       style={styles.searchTextInput}
       underlineColorAndroid="transparent"
@@ -260,9 +273,22 @@ function PlainInput(props /*: Object */) {
   );
 }
 
-class SingleColumnExample extends React.PureComponent {
+type State = {
+  data: Array<Item>;
+  debug: boolean;
+  horizontal: boolean;
+  inverted: boolean;
+  filterText: string;
+  fixedHeight: boolean;
+  logViewable: boolean;
+  virtualized: boolean;
+};
+
+class SingleColumnExample extends React.PureComponent<object, State> {
   static title = '<FlatList>';
   static description = 'Performant, scrollable list of data.';
+
+  _listRef: FlatList<Item> | null = null;
 
   state = {
     data: genItemData(100),
@@ -275,12 +301,12 @@ class SingleColumnExample extends React.PureComponent {
     virtualized: true
   };
 
-  _onChangeFilterText = (filterText) => {
+  _onChangeFilterText = (filterText: string) => {
     this.setState({ filterText });
   };
 
-  _onChangeScrollToIndex = (text) => {
-    this._listRef.scrollToIndex({ viewPosition: 0.5, index: Number(text) });
+  _onChangeScrollToIndex = (text: string) => {
+    this._listRef?.scrollToIndex({ viewPosition: 0.5, index: Number(text) });
   };
 
   _scrollPos = new Animated.Value(0);
@@ -298,12 +324,12 @@ class SingleColumnExample extends React.PureComponent {
   );
 
   componentDidUpdate() {
-    this._listRef.recordInteraction(); // e.g. flipping logViewable switch
+    this._listRef?.recordInteraction(); // e.g. flipping logViewable switch
   }
 
   render() {
     const filterRegex = new RegExp(String(this.state.filterText), 'i');
-    const filter = (item) =>
+    const filter = (item: Item) =>
       filterRegex.test(item.text) || filterRegex.test(item.title);
     const filteredData = this.state.data.filter(filter);
     return (
@@ -333,6 +359,7 @@ class SingleColumnExample extends React.PureComponent {
         <SeparatorComponent />
         <AnimatedFlatList
           ItemSeparatorComponent={ItemSeparatorComponent}
+          // @ts-expect-error
           ListFooterComponent={FooterComponent}
           ListHeaderComponent={<HeaderComponent />}
           contentContainerStyle={styles.list}
@@ -350,26 +377,29 @@ class SingleColumnExample extends React.PureComponent {
           }
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="always"
+          // @ts-expect-error add support for legacyImplementation prop
           legacyImplementation={false}
           numColumns={1}
           onEndReached={this._onEndReached}
           onRefresh={this._onRefresh}
+          // @ts-expect-error
           onScroll={
             this.state.horizontal ? this._scrollSinkX : this._scrollSinkY
           }
           onViewableItemsChanged={this._onViewableItemsChanged}
           ref={this._captureRef}
           refreshing={false}
+          // @ts-expect-error
           renderItem={this._renderItemComponent}
           viewabilityConfig={VIEWABILITY_CONFIG}
         />
       </View>
     );
   }
-  _captureRef = (ref) => {
+  _captureRef = (ref: FlatList<Item> | null) => {
     this._listRef = ref;
   };
-  _getItemLayout = (data /*: any */, index /*: number */) => {
+  _getItemLayout = (data: unknown, index: number) => {
     return getItemLayout(data, index, this.state.horizontal);
   };
   _onEndReached = () => {
@@ -381,7 +411,13 @@ class SingleColumnExample extends React.PureComponent {
     }));
   };
   _onRefresh = () => console.log('onRefresh: nothing to refresh :P');
-  _renderItemComponent = ({ item, separators }) => {
+  _renderItemComponent = ({
+    item,
+    separators
+  }: {
+    item: Item;
+    separators: { highlight: () => void; unhighlight: () => void };
+  }) => {
     return (
       <ItemComponent
         fixedHeight={this.state.fixedHeight}
@@ -395,17 +431,15 @@ class SingleColumnExample extends React.PureComponent {
   };
   // This is called when items change viewability by scrolling into or out of
   // the viewable area.
-  _onViewableItemsChanged = (
-    info /*: {
+  _onViewableItemsChanged = (info: {
     changed: Array<{
-      key: string,
-      isViewable: boolean,
-      item: any,
-      index: ?number,
-      section?: any
-    }>
-  } */
-  ) => {
+      key: string;
+      isViewable: boolean;
+      item: unknown;
+      index?: number | null;
+      section?: unknown;
+    }>;
+  }) => {
     // Impressions can be logged here
     if (this.state.logViewable) {
       console.log(
@@ -414,11 +448,10 @@ class SingleColumnExample extends React.PureComponent {
       );
     }
   };
-  _pressItem = (key /*: string */) => {
-    this._listRef.recordInteraction();
+  _pressItem = (key: string) => {
+    this._listRef?.recordInteraction();
     pressItem(this, key);
   };
-  /*:: _listRef: AnimatedFlatList; */
 }
 
 const styles = StyleSheet.create({

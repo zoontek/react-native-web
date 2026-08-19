@@ -1,10 +1,14 @@
-// @ts-nocheck
-
-import { StyleSheet, Text, View } from 'react-native';
+import type { ReactNode } from 'react';
+import { StyleSheet, Text, View } from 'react-native-web';
 
 const isEmbedded = window.self !== window.top;
 
-export default function Example(props) {
+type Props = {
+  children: ReactNode;
+  title: string;
+};
+
+export default function Example(props: Props) {
   return (
     <View style={styles.root}>
       {!isEmbedded && (
