@@ -9,7 +9,6 @@ import * as AssetRegistry from '../../../modules/AssetRegistry';
 import Image from '../';
 import ImageLoader, { ImageUriCache } from '../../../modules/ImageLoader';
 import PixelRatio from '../../PixelRatio';
-import React from 'react';
 import { act, render } from '@testing-library/react';
 import type { ResizeMode } from '../types';
 

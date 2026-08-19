@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
 import { act, render } from '@testing-library/react';
 import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { addEventListener } from '..';
 import type { Nullable } from '../../../types';
+import { createRef, useEffect } from 'react';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);
@@ -18,10 +18,10 @@ describe('addEventListener', () => {
   describe('addEventListener()', () => {
     test('event dispatched on target', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (targetRef.current != null) {
             return addEventListener(targetRef.current, 'click', listener);
           }
@@ -43,11 +43,11 @@ describe('addEventListener', () => {
     test('event dispatched on parent', () => {
       const listener = jest.fn();
       const listenerCapture = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
-      const parentRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
+      const parentRef = createRef<HTMLDivElement>();
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (targetRef.current != null) {
             const removeClickListener = addEventListener(
               targetRef.current,
@@ -93,11 +93,11 @@ describe('addEventListener', () => {
       const listenerCapture = jest.fn(() => {
         log.push('capture');
       });
-      const targetRef = React.createRef<HTMLDivElement>();
-      const childRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
+      const childRef = createRef<HTMLDivElement>();
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (targetRef.current != null) {
             const removeClickListener = addEventListener(
               targetRef.current,
@@ -138,11 +138,11 @@ describe('addEventListener', () => {
 
     test('event dispatched on text node', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
-      const childRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
+      const childRef = createRef<HTMLDivElement>();
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (targetRef.current != null) {
             return addEventListener(targetRef.current, 'click', listener);
           }
@@ -167,10 +167,10 @@ describe('addEventListener', () => {
 
     test('listener can be attached to document', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
 
       function Component({ target }: { target: EventTarget }) {
-        React.useEffect(() => {
+        useEffect(() => {
           return addEventListener(target, 'click', listener);
         });
         return <div ref={targetRef} />;
@@ -189,10 +189,10 @@ describe('addEventListener', () => {
 
     test('listener can be attached to window ', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
 
       function Component({ target }: { target: EventTarget }) {
-        React.useEffect(() => {
+        useEffect(() => {
           return addEventListener(target, 'click', listener);
         });
         return <div ref={targetRef} />;
@@ -211,10 +211,10 @@ describe('addEventListener', () => {
 
     test('custom event dispatched on target', () => {
       const listener = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (targetRef.current != null) {
             return addEventListener(targetRef.current, 'magic-event', listener);
           }
@@ -234,9 +234,9 @@ describe('addEventListener', () => {
 
     test('listeners can be set on multiple targets simultaneously', () => {
       const log: string[][] = [];
-      const targetRef = React.createRef<HTMLDivElement>();
-      const parentRef = React.createRef<HTMLDivElement>();
-      const childRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
+      const parentRef = createRef<HTMLDivElement>();
+      const childRef = createRef<HTMLDivElement>();
 
       const listener = jest.fn((e: Event) => {
         log.push(['bubble', (e.currentTarget as HTMLElement).id]);
@@ -246,7 +246,7 @@ describe('addEventListener', () => {
       });
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           // the same event handle is used to set listeners on different targets
           if (targetRef.current != null && parentRef.current != null) {
             addEventListener(targetRef.current, 'click', listener);
@@ -288,8 +288,8 @@ describe('addEventListener', () => {
 
     test('listeners are specific to each event handle', () => {
       const log: string[][] = [];
-      const targetRef = React.createRef<HTMLDivElement>();
-      const childRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
+      const childRef = createRef<HTMLDivElement>();
       const listener = jest.fn((e: Event) => {
         log.push(['bubble', 'target']);
       });
@@ -304,7 +304,7 @@ describe('addEventListener', () => {
       });
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (targetRef.current != null) {
             addEventListener(targetRef.current, 'click', listener);
             addEventListener(targetRef.current, 'click', listenerAlt);
@@ -350,11 +350,11 @@ describe('addEventListener', () => {
         e.stopPropagation();
       });
       const targetListener = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
-      const childRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
+      const childRef = createRef<HTMLDivElement>();
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (childRef.current != null && targetRef.current != null) {
             addEventListener(childRef.current, 'click', childListener);
             addEventListener(targetRef.current, 'click', targetListener);
@@ -384,10 +384,10 @@ describe('addEventListener', () => {
         e.stopImmediatePropagation();
       });
       const secondListener = jest.fn();
-      const targetRef = React.createRef<HTMLDivElement>();
+      const targetRef = createRef<HTMLDivElement>();
 
       function Component() {
-        React.useEffect(() => {
+        useEffect(() => {
           if (targetRef.current != null) {
             addEventListener(targetRef.current, 'click', firstListener);
             addEventListener(targetRef.current, 'click', secondListener);

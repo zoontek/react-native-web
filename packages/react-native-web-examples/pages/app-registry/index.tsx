@@ -1,6 +1,6 @@
-import React from 'react';
 import { AppRegistry, Text, StyleSheet } from 'react-native-web';
 import Example from '../../shared/example';
+import { useEffect, useRef } from 'react';
 
 function App() {
   return <Text style={styles.text}>Should be red and bold</Text>;
@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
 AppRegistry.registerComponent('App', () => App);
 
 export default function AppStatePage() {
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
-  const shadowRef = React.useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const iframeElement = iframeRef.current;
     const iframeBody = iframeElement?.contentWindow?.document.body;
     const iframeRootTag = document.createElement('div');

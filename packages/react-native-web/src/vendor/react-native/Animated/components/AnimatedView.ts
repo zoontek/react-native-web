@@ -7,14 +7,13 @@
  * @format
  */
 
-import * as React from 'react';
-
+import type { ComponentProps, ElementRef } from 'react';
 import View from '../../../../exports/View';
 import createAnimatedComponent from '../createAnimatedComponent';
 
 import type { AnimatedComponentType } from '../createAnimatedComponent';
 
 export default createAnimatedComponent(View) as AnimatedComponentType<
-  React.ComponentProps<typeof View>,
-  React.ElementRef<typeof View>
+  ComponentProps<typeof View>,
+  ElementRef<typeof View>
 >;

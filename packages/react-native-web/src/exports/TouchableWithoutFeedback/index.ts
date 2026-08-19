@@ -15,8 +15,14 @@ import type { ElementProps } from '../../modules/createDOMProps';
 import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
-import { useMemo, useRef } from 'react';
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  memo,
+  useMemo,
+  useRef
+} from 'react';
 import pick from '../../modules/pick';
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
@@ -114,7 +120,7 @@ function TouchableWithoutFeedback(
 
   const pressEventHandlers = usePressEvents(hostRef, pressConfig);
 
-  const element = React.Children.only(props.children) as ReactElement<{
+  const element = Children.only(props.children) as ReactElement<{
     children?: Nullable<ReactNode>;
     ref?: Nullable<Ref<HTMLElement & PlatformMethods>>;
     [key: string]: unknown;
@@ -127,11 +133,11 @@ function TouchableWithoutFeedback(
 
   const elementProps = Object.assign(supportedProps, pressEventHandlers);
 
-  return React.cloneElement(element, elementProps, ...children);
+  return cloneElement(element, elementProps, ...children);
 }
 
-const MemoedTouchableWithoutFeedback = React.memo(
-  React.forwardRef(TouchableWithoutFeedback)
+const MemoedTouchableWithoutFeedback = memo(
+  forwardRef(TouchableWithoutFeedback)
 );
 MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback';
 

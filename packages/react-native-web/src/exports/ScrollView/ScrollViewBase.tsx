@@ -5,11 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UIEvent } from 'react';
+import { forwardRef, useRef, type UIEvent } from 'react';
 import type { Nullable, PlatformMethods } from '../../types';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 import useMergeRefs from '../../modules/useMergeRefs';
@@ -72,7 +71,7 @@ type TNode = HTMLElement & PlatformMethods;
 /**
  * Encapsulates the Web-specific scroll throttling and disabling logic
  */
-const ScrollViewBase = React.forwardRef<TNode, Props>((props, forwardedRef) => {
+const ScrollViewBase = forwardRef<TNode, Props>((props, forwardedRef) => {
   const {
     onScroll,
     onTouchMove,
@@ -85,10 +84,9 @@ const ScrollViewBase = React.forwardRef<TNode, Props>((props, forwardedRef) => {
     ...rest
   } = props;
 
-  const scrollState = React.useRef({ isScrolling: false, scrollLastTick: 0 });
-  const scrollTimeout =
-    React.useRef<Nullable<ReturnType<typeof setTimeout>>>(null);
-  const scrollRef = React.useRef<TNode | null>(null);
+  const scrollState = useRef({ isScrolling: false, scrollLastTick: 0 });
+  const scrollTimeout = useRef<Nullable<ReturnType<typeof setTimeout>>>(null);
+  const scrollRef = useRef<TNode | null>(null);
 
   function createPreventableScrollHandler<T>(handler?: (e: T) => void) {
     return (e: T) => {

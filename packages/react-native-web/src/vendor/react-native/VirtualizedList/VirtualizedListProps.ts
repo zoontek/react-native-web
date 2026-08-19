@@ -17,8 +17,12 @@ import type {
   ViewabilityConfigCallbackPair,
   ViewToken
 } from '../ViewabilityHelper';
-
-import type * as React from 'react';
+import type {
+  ComponentPropsWithoutRef,
+  ComponentType,
+  ReactElement,
+  ReactNode
+} from 'react';
 
 export type Item = unknown;
 
@@ -36,7 +40,7 @@ export type RenderItemProps<ItemT> = {
 
 export type CellRendererProps<ItemT> = Readonly<{
   cellKey: string;
-  children: React.ReactNode;
+  children: ReactNode;
   index: number;
   item: ItemT;
   onFocusCapture?: (event: FocusEvent) => void;
@@ -44,9 +48,7 @@ export type CellRendererProps<ItemT> = Readonly<{
   style: ViewStyleProp;
 }>;
 
-export type RenderItemType<ItemT> = (
-  info: RenderItemProps<ItemT>
-) => React.ReactNode;
+export type RenderItemType<ItemT> = (info: RenderItemProps<ItemT>) => ReactNode;
 
 type RequiredProps = {
   /**
@@ -116,9 +118,7 @@ type OptionalProps = {
    * underlying ScrollView. This component must accept event handlers which
    * notify VirtualizedList of changes within the cell.
    */
-  CellRendererComponent?: Nullable<
-    React.ComponentType<CellRendererProps<Item>>
-  >;
+  CellRendererComponent?: Nullable<ComponentType<CellRendererProps<Item>>>;
   /**
    * Rendered in between each item, but not at the top or bottom. By default, `highlighted` and
    * `leadingItem` props are provided. `renderItem` provides `separators.highlight`/`unhighlight`
@@ -126,7 +126,7 @@ type OptionalProps = {
    * `separators.updateProps`.
    */
   ItemSeparatorComponent?: Nullable<
-    React.ComponentType<{ highlighted: boolean; leadingItem: Nullable<Item> }>
+    ComponentType<{ highlighted: boolean; leadingItem: Nullable<Item> }>
   >;
   /**
    * Takes an item from `data` and renders it into the list. Example usage:
@@ -154,22 +154,18 @@ type OptionalProps = {
    * `highlight` and `unhighlight` (which set the `highlighted: boolean` prop) are insufficient for
    * your use-case.
    */
-  ListItemComponent?: Nullable<
-    React.ComponentType<unknown> | React.ReactElement<unknown>
-  >;
+  ListItemComponent?: Nullable<ComponentType<unknown> | ReactElement<unknown>>;
   /**
    * Rendered when the list is empty. Can be a React Component Class, a render function, or
    * a rendered element.
    */
-  ListEmptyComponent?: Nullable<
-    React.ComponentType<unknown> | React.ReactElement<unknown>
-  >;
+  ListEmptyComponent?: Nullable<ComponentType<unknown> | ReactElement<unknown>>;
   /**
    * Rendered at the bottom of all the items. Can be a React Component Class, a render function, or
    * a rendered element.
    */
   ListFooterComponent?: Nullable<
-    React.ComponentType<unknown> | React.ReactElement<unknown>
+    ComponentType<unknown> | ReactElement<unknown>
   >;
   /**
    * Styling for internal View for ListFooterComponent
@@ -180,7 +176,7 @@ type OptionalProps = {
    * a rendered element.
    */
   ListHeaderComponent?: Nullable<
-    React.ComponentType<unknown> | React.ReactElement<unknown>
+    ComponentType<unknown> | ReactElement<unknown>
   >;
   /**
    * Styling for internal View for ListHeaderComponent
@@ -253,7 +249,7 @@ type OptionalProps = {
    * <RefreshControl> component built internally. The onRefresh and refreshing
    * props are also ignored. Only works for vertical VirtualizedList.
    */
-  refreshControl?: Nullable<React.ReactElement<unknown>>;
+  refreshControl?: Nullable<ReactElement<unknown>>;
   /**
    * Set this true while waiting for new data from a refresh.
    */
@@ -267,7 +263,7 @@ type OptionalProps = {
   /**
    * Render a custom scroll component, e.g. with a differently styled `RefreshControl`.
    */
-  renderScrollComponent?: (props: unknown) => React.ReactElement<unknown>;
+  renderScrollComponent?: (props: unknown) => ReactElement<unknown>;
   /**
    * Amount of time between low-pri item render batches, e.g. for rendering items quite a ways off
    * screen. Similar fill rate/responsiveness tradeoff as `maxToRenderPerBatch`.
@@ -297,7 +293,7 @@ type OptionalProps = {
 };
 
 export type Props = Omit<
-  React.ComponentPropsWithoutRef<typeof ScrollView>,
+  ComponentPropsWithoutRef<typeof ScrollView>,
   keyof RequiredProps | keyof OptionalProps
 > &
   RequiredProps &

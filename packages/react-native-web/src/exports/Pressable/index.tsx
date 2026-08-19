@@ -22,8 +22,14 @@ import type {
 } from '../../modules/usePressEvents/PressResponder';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
-import { forwardRef, memo, useMemo, useState, useRef } from 'react';
+import {
+  forwardRef,
+  memo,
+  useMemo,
+  useState,
+  useRef,
+  useCallback
+} from 'react';
 import useMergeRefs from '../../modules/useMergeRefs';
 import useHover from '../../modules/useHover';
 import usePressEvents from '../../modules/usePressEvents';
@@ -155,7 +161,7 @@ function Pressable(
 
   const interactionState = { hovered, focused, pressed };
 
-  const blurHandler = React.useCallback(
+  const blurHandler = useCallback(
     (e: FocusEvent<HTMLElement>) => {
       if (e.nativeEvent.target === hostRef.current) {
         setFocused(false);
@@ -167,7 +173,7 @@ function Pressable(
     [hostRef, setFocused, onBlur]
   );
 
-  const focusHandler = React.useCallback(
+  const focusHandler = useCallback(
     (e: FocusEvent<HTMLElement>) => {
       if (e.nativeEvent.target === hostRef.current) {
         setFocused(true);
@@ -179,7 +185,7 @@ function Pressable(
     [hostRef, setFocused, onFocus]
   );
 
-  const contextMenuHandler = React.useCallback(
+  const contextMenuHandler = useCallback(
     (e: MouseEvent<HTMLElement>) => {
       if (onContextMenuPress != null) {
         onContextMenuPress(e);
@@ -191,7 +197,7 @@ function Pressable(
     [onContextMenu, onContextMenuPress]
   );
 
-  const keyDownHandler = React.useCallback(
+  const keyDownHandler = useCallback(
     (e: KeyboardEvent<HTMLElement>) => {
       if (onKeyDownPress != null) {
         onKeyDownPress(e as unknown as PressKeyboardEvent);

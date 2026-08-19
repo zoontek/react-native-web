@@ -1,7 +1,7 @@
-import * as React from 'react';
+import { useEffect, useState, type ComponentType } from 'react';
 import HomePage from './pages/index';
 
-const modules = import.meta.glob<{ default: React.ComponentType }>(
+const modules = import.meta.glob<{ default: ComponentType }>(
   './pages/*/index.tsx',
   { eager: true }
 );
@@ -16,9 +16,9 @@ function getPageFromHash() {
 }
 
 export default function App() {
-  const [page, setPage] = React.useState(getPageFromHash);
+  const [page, setPage] = useState(getPageFromHash);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const onHashChange = () => setPage(getPageFromHash());
     window.addEventListener('hashchange', onHashChange);
 

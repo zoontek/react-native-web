@@ -8,12 +8,17 @@
 
 'use client';
 
-import type { ElementType } from 'react';
+import {
+  Children,
+  forwardRef,
+  useContext,
+  useRef,
+  type ElementType
+} from 'react';
 import type { PlatformMethods } from '../../types';
 import type { ElementProps } from '../../modules/createDOMProps';
 import type { ViewProps } from './types';
 
-import * as React from 'react';
 import createElement from '../createElement';
 import * as forwardedProps from '../../modules/forwardedProps';
 import pick from '../../modules/pick';
@@ -47,7 +52,7 @@ const forwardPropsList = Object.assign(
 const pickProps = (props: ViewProps): ElementProps =>
   pick(props, forwardPropsList);
 
-const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
+const View = forwardRef<HTMLElement & PlatformMethods, ViewProps>(
   (props, forwardedRef) => {
     const {
       hrefAttrs,
@@ -72,7 +77,7 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
     } = props;
 
     if (process.env.NODE_ENV !== 'production') {
-      React.Children.toArray(props.children).forEach((item) => {
+      Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
           console.error(
             `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
@@ -81,8 +86,8 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
       });
     }
 
-    const hasTextAncestor = React.useContext(TextAncestorContext);
-    const hostRef = React.useRef<(HTMLElement & PlatformMethods) | null>(null);
+    const hasTextAncestor = useContext(TextAncestorContext);
+    const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
     const { direction: contextDirection } = useLocaleContext();
 
     useElementLayout(hostRef, onLayout);

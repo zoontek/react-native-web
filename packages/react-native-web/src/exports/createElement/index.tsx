@@ -9,7 +9,7 @@
 
 import AccessibilityUtil from '../../modules/AccessibilityUtil';
 import createDOMProps from '../../modules/createDOMProps';
-import React from 'react';
+import { createElement as reactCreateElement } from 'react';
 import { LocaleProvider } from '../../modules/useLocale';
 import type { ElementType, ReactNode } from 'react';
 import type { ElementProps } from '../../modules/createDOMProps';
@@ -29,7 +29,7 @@ const createElement = (
   const Component = accessibilityComponent || component;
   const domProps = createDOMProps(Component, props, options);
 
-  const element = React.createElement(Component, domProps);
+  const element = reactCreateElement(Component, domProps);
 
   // Update locale context if element's writing direction prop changes
   const elementWithLocaleProvider = domProps.dir ? (

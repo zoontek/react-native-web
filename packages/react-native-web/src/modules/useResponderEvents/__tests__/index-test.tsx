@@ -8,7 +8,7 @@
 import type { Nullable } from '../../../types';
 import type { ResponderEvent } from '../createResponderEvent';
 import { act, render } from '@testing-library/react';
-import React, { createRef, type RefObject } from 'react';
+import { createRef, type RefObject } from 'react';
 import useResponderEvents from '..';
 import { getResponderNode, terminateResponder } from '../ResponderSystem';
 import {

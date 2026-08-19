@@ -1,15 +1,15 @@
-import React from 'react';
 import { AppState, Text } from 'react-native-web';
 import Example from '../../shared/example';
+import { useEffect, useState } from 'react';
 
 export default function AppStatePage() {
-  const [state, setState] = React.useState(() => ({
+  const [state, setState] = useState(() => ({
     currentState: AppState.currentState,
     active: 0,
     background: 0
   }));
 
-  React.useEffect(() => {
+  useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextState) => {
       setState((previousState) => ({
         ...previousState,
