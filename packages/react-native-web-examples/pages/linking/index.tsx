@@ -21,11 +21,15 @@ export default function LinkingPage() {
 
   function handlePress() {
     // @ts-expect-error correctly type canOpenURL
-    Linking.canOpenURL(url).then((supported) => {
-      setCount((x) => x + 1);
-      const v = Linking.openURL(url);
-      return v;
-    });
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        setCount((x) => x + 1);
+        const v = Linking.openURL(url);
+        return v;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (

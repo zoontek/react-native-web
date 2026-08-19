@@ -189,11 +189,13 @@ describe('promise tasks', () => {
   it('should handle nested promises', () => {
     const task1 = jest.fn(() => {
       expect(++sequenceId).toBe(1);
-      return new Promise<void>((resolve) => {
+      return new Promise<void>((resolve, reject) => {
         InteractionManager.runAfterInteractions({
           gen: task2,
           name: 'gen2'
-        }).then(resolve);
+        })
+          .then(resolve)
+          .catch(reject);
       });
     });
     const task2 = jest.fn(() => {
@@ -210,9 +212,11 @@ describe('promise tasks', () => {
     const task1 = createSequenceTask(1);
     const task2 = jest.fn(() => {
       expect(++sequenceId).toBe(2);
-      return new Promise<void>((resolve) => {
+      return new Promise<void>((resolve, reject) => {
         setTimeout(() => {
-          InteractionManager.runAfterInteractions(task3).then(resolve);
+          InteractionManager.runAfterInteractions(task3)
+            .then(resolve)
+            .catch(reject);
         }, 1);
       });
     });
@@ -267,7 +271,7 @@ describe('promise tasks', () => {
     const task1 = createSequenceTask(1);
     const task2 = jest.fn(() => {
       expect(++sequenceId).toBe(2);
-      return new Promise<void>((resolve) => {
+      return new Promise<void>((resolve, reject) => {
         InteractionManager.runAfterInteractions(task3);
         setTimeout(() => {
           InteractionManager.runAfterInteractions({
@@ -278,20 +282,22 @@ describe('promise tasks', () => {
             .then(() => {
               // Explicit exhaustion of the task queue is required
               jest.runAllTimers();
-            });
+            })
+            .catch(reject);
         }, 1);
       });
     });
     const task3 = createSequenceTask(3);
     const task4 = jest.fn(() => {
       expect(++sequenceId).toBe(4);
-      return new Promise<void>((resolve) => {
+      return new Promise<void>((resolve, reject) => {
         InteractionManager.runAfterInteractions(task5)
           .then(resolve)
           .then(() => {
             // Explicit exhaustion of the task queue is required
             jest.runAllTimers();
-          });
+          })
+          .catch(reject);
       });
     });
     const task5 = createSequenceTask(5);
@@ -299,7 +305,8 @@ describe('promise tasks', () => {
 
     InteractionManager.runAfterInteractions(task1);
     InteractionManager.runAfterInteractions({ gen: task2, name: 'gen2' });
-    InteractionManager.runAfterInteractions(task6).then(() => {
+
+    void InteractionManager.runAfterInteractions(task6).then(() => {
       expectToBeCalledOnce(task1);
       expectToBeCalledOnce(task2);
       expectToBeCalledOnce(task3);
