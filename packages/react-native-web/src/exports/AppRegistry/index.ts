@@ -14,8 +14,9 @@ import type { Root } from 'react-dom/client';
 
 import type { Nullable } from '../../types';
 import unmountComponentAtNode from '../unmountComponentAtNode';
-import renderApplication, {
+import {
   getApplication,
+  renderApplication,
   type AppProps,
   type Application,
   type ApplicationElement,
