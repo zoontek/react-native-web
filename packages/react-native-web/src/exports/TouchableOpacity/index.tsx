@@ -10,13 +10,11 @@
 'use client';
 
 import {
-  forwardRef,
   memo,
   useCallback,
   useMemo,
   useRef,
   useState,
-  type ForwardedRef,
   type ReactNode
 } from 'react';
 
@@ -45,10 +43,7 @@ type Props = Readonly<
  * A wrapper for making views respond properly to touches.
  * On press down, the opacity of the wrapped view is decreased, dimming it.
  */
-function TouchableOpacity(
-  props: Props,
-  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
-): ReactNode {
+function TouchableOpacity(props: Props): ReactNode {
   const {
     activeOpacity,
     delayPressIn,
@@ -60,13 +55,14 @@ function TouchableOpacity(
     onPress,
     onPressIn,
     onPressOut,
+    ref,
     rejectResponderTermination,
     style,
     ...rest
   } = props;
 
   const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
-  const setRef = useMergeRefs(forwardedRef, hostRef);
+  const setRef = useMergeRefs(ref, hostRef);
 
   const [duration, setDuration] = useState('0s');
   const [opacityOverride, setOpacityOverride] =
@@ -168,7 +164,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const MemoedTouchableOpacity = memo(forwardRef(TouchableOpacity));
+const MemoedTouchableOpacity = memo(TouchableOpacity);
 MemoedTouchableOpacity.displayName = 'TouchableOpacity';
 
 export default MemoedTouchableOpacity;

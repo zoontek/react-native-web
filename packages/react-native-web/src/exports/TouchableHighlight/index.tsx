@@ -12,13 +12,11 @@
 import {
   Children,
   cloneElement,
-  forwardRef,
   memo,
   useCallback,
   useMemo,
   useRef,
   useState,
-  type ForwardedRef,
   type ReactElement,
   type ReactNode
 } from 'react';
@@ -87,10 +85,7 @@ function hasPressHandler(props: Props): boolean {
  * TouchableHighlight must have one child (not zero or more than one).
  * If you wish to have several child components, wrap them in a View.
  */
-function TouchableHighlight(
-  props: Props,
-  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
-): ReactNode {
+function TouchableHighlight(props: Props): ReactNode {
   const {
     activeOpacity,
     children,
@@ -105,6 +100,7 @@ function TouchableHighlight(
     onPressIn,
     onPressOut,
     onShowUnderlay,
+    ref,
     rejectResponderTermination,
     style,
     testOnly_pressed,
@@ -113,7 +109,7 @@ function TouchableHighlight(
   } = props;
 
   const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
-  const setRef = useMergeRefs(forwardedRef, hostRef);
+  const setRef = useMergeRefs(ref, hostRef);
 
   const [extraStyles, setExtraStyles] = useState<Nullable<ExtraStyles>>(
     testOnly_pressed === true
@@ -219,7 +215,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const MemoedTouchableHighlight = memo(forwardRef(TouchableHighlight));
+const MemoedTouchableHighlight = memo(TouchableHighlight);
 MemoedTouchableHighlight.displayName = 'TouchableHighlight';
 
 export default MemoedTouchableHighlight;

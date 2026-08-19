@@ -9,16 +9,14 @@
 'use client';
 
 import {
-  forwardRef,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   type ChangeEvent,
   type FocusEvent,
-  type ForwardRefExoticComponent,
   type KeyboardEvent as ReactKeyboardEvent,
-  type RefAttributes,
+  type Ref,
   type SyntheticEvent
 } from 'react';
 
@@ -118,16 +116,7 @@ function isEventComposing(nativeEvent: KeyboardEvent) {
 
 let focusTimeout: Nullable<ReturnType<typeof setTimeout>> = null;
 
-type TextInputComponent = ForwardRefExoticComponent<
-  Props & RefAttributes<TextInputNode>
-> & {
-  State: typeof TextInputState;
-};
-
-// TODO: remove the alias after forwardRef removal
-type TNode = TextInputNode;
-
-const TextInput = forwardRef<TNode, Props>((props, forwardedRef) => {
+const TextInput = (props: Props & { ref?: Ref<TextInputNode> }) => {
   const {
     autoCapitalize = 'sentences',
     autoComplete,
@@ -170,6 +159,7 @@ const TextInput = forwardRef<TNode, Props>((props, forwardedRef) => {
     onSubmitEditing,
     placeholderTextColor,
     readOnly = false,
+    ref,
     returnKeyType,
     rows,
     secureTextEntry = false,
@@ -475,12 +465,7 @@ const TextInput = forwardRef<TNode, Props>((props, forwardedRef) => {
 
   const platformMethodsRef = usePlatformMethods();
 
-  const setRef = useMergeRefs(
-    hostRef,
-    platformMethodsRef,
-    imperativeRef,
-    forwardedRef
-  );
+  const setRef = useMergeRefs(hostRef, platformMethodsRef, imperativeRef, ref);
 
   supportedProps.ref = setRef;
 
@@ -494,7 +479,7 @@ const TextInput = forwardRef<TNode, Props>((props, forwardedRef) => {
   });
 
   return element;
-}) as TextInputComponent;
+};
 
 TextInput.displayName = 'TextInput';
 TextInput.State = TextInputState;
