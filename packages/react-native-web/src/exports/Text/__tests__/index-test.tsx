@@ -178,7 +178,7 @@ describe('components/Text', () => {
 
   describe('prop "onBlur"', () => {
     test('is called', () => {
-      const onBlur = jest.fn();
+      const onBlur = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onBlur={onBlur} ref={ref} />);
@@ -195,7 +195,7 @@ describe('components/Text', () => {
 
   describe('prop "onClick"', () => {
     test('is called', () => {
-      const onClick = jest.fn();
+      const onClick = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onClick={onClick} ref={ref} />);
@@ -208,7 +208,7 @@ describe('components/Text', () => {
     });
 
     test('is still called if "onPress" is provided', () => {
-      const onClick = jest.fn();
+      const onClick = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onClick={onClick} onPress={() => {}} ref={ref} />);
@@ -223,7 +223,7 @@ describe('components/Text', () => {
 
   describe('prop "onFocus"', () => {
     test('is called', () => {
-      const onFocus = jest.fn();
+      const onFocus = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onFocus={onFocus} ref={ref} />);
@@ -245,7 +245,7 @@ describe('components/Text', () => {
     });
 
     test('is called', () => {
-      const onPointerDown = jest.fn();
+      const onPointerDown = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onPointerDown={onPointerDown} ref={ref} />);
@@ -260,7 +260,7 @@ describe('components/Text', () => {
 
   describe('prop "onPress"', () => {
     test('is called', () => {
-      const onPress = jest.fn();
+      const onPress = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onPress={onPress} ref={ref} />);
@@ -274,7 +274,7 @@ describe('components/Text', () => {
     });
 
     test('is not called if "onClick" is provided', () => {
-      const onPress = jest.fn();
+      const onPress = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onClick={() => {}} onPress={onPress} ref={ref} />);
@@ -289,13 +289,13 @@ describe('components/Text', () => {
 
   describe('prop "ref"', () => {
     test('value is set', () => {
-      const ref = jest.fn();
+      const ref = vi.fn();
       render(<Text ref={ref} />);
       expect(ref).toHaveBeenCalled();
     });
 
     test('is not called for prop changes', () => {
-      const ref = jest.fn();
+      const ref = vi.fn();
       let rerender!: RenderResult['rerender'];
       act(() => {
         ({ rerender } = render(

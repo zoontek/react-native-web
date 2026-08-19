@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`components/Image prop "aria-label" 1`] = `
+exports[`components/Image > prop "aria-label" 1`] = `
 <div
   aria-label="accessibilityLabel"
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
@@ -18,7 +18,7 @@ exports[`components/Image prop "aria-label" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "blurRadius" 1`] = `
+exports[`components/Image > prop "blurRadius" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -35,7 +35,7 @@ exports[`components/Image prop "blurRadius" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "defaultSource" does not override "height" and "width" styles 1`] = `
+exports[`components/Image > prop "defaultSource" > does not override "height" and "width" styles 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
   style="height: 20px; width: 40px;"
@@ -53,7 +53,7 @@ exports[`components/Image prop "defaultSource" does not override "height" and "w
 </div>
 `;
 
-exports[`components/Image prop "defaultSource" sets "height" and "width" styles if missing 1`] = `
+exports[`components/Image > prop "defaultSource" > sets "height" and "width" styles if missing 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
   style="height: 10px; width: 20px;"
@@ -71,7 +71,7 @@ exports[`components/Image prop "defaultSource" sets "height" and "width" styles 
 </div>
 `;
 
-exports[`components/Image prop "defaultSource" sets background image when value is a string 1`] = `
+exports[`components/Image > prop "defaultSource" > sets background image when value is a string 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -88,7 +88,7 @@ exports[`components/Image prop "defaultSource" sets background image when value 
 </div>
 `;
 
-exports[`components/Image prop "defaultSource" sets background image when value is an object 1`] = `
+exports[`components/Image > prop "defaultSource" > sets background image when value is an object 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -105,7 +105,7 @@ exports[`components/Image prop "defaultSource" sets background image when value 
 </div>
 `;
 
-exports[`components/Image prop "draggable" 1`] = `
+exports[`components/Image > prop "draggable" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -122,7 +122,7 @@ exports[`components/Image prop "draggable" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "focusable" 1`] = `
+exports[`components/Image > prop "focusable" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
   tabindex="0"
@@ -133,7 +133,7 @@ exports[`components/Image prop "focusable" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "nativeID" 1`] = `
+exports[`components/Image > prop "nativeID" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
   id="nativeID"
@@ -144,7 +144,7 @@ exports[`components/Image prop "nativeID" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "resizeMode" value "contain" 1`] = `
+exports[`components/Image > prop "resizeMode" > value "contain" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -154,7 +154,7 @@ exports[`components/Image prop "resizeMode" value "contain" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "resizeMode" value "cover" 1`] = `
+exports[`components/Image > prop "resizeMode" > value "cover" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -164,7 +164,7 @@ exports[`components/Image prop "resizeMode" value "cover" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "resizeMode" value "none" 1`] = `
+exports[`components/Image > prop "resizeMode" > value "none" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -174,7 +174,7 @@ exports[`components/Image prop "resizeMode" value "none" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "resizeMode" value "repeat" 1`] = `
+exports[`components/Image > prop "resizeMode" > value "repeat" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -184,7 +184,7 @@ exports[`components/Image prop "resizeMode" value "repeat" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "resizeMode" value "stretch" 1`] = `
+exports[`components/Image > prop "resizeMode" > value "stretch" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -194,7 +194,7 @@ exports[`components/Image prop "resizeMode" value "stretch" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "resizeMode" value "undefined" 1`] = `
+exports[`components/Image > prop "resizeMode" > value "undefined" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -204,7 +204,7 @@ exports[`components/Image prop "resizeMode" value "undefined" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "source" is correctly updated only when loaded if defaultSource provided 1`] = `
+exports[`components/Image > prop "source" > is correctly updated only when loaded if defaultSource provided 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -221,7 +221,7 @@ exports[`components/Image prop "source" is correctly updated only when loaded if
 </div>
 `;
 
-exports[`components/Image prop "source" is correctly updated only when loaded if defaultSource provided 2`] = `
+exports[`components/Image > prop "source" > is correctly updated only when loaded if defaultSource provided 2`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -238,7 +238,7 @@ exports[`components/Image prop "source" is correctly updated only when loaded if
 </div>
 `;
 
-exports[`components/Image prop "source" is correctly updated when missing in initial render 1`] = `
+exports[`components/Image > prop "source" > is correctly updated when missing in initial render 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -255,7 +255,7 @@ exports[`components/Image prop "source" is correctly updated when missing in ini
 </div>
 `;
 
-exports[`components/Image prop "source" is not set immediately if the image has not already been loaded 1`] = `
+exports[`components/Image > prop "source" > is not set immediately if the image has not already been loaded 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -272,7 +272,7 @@ exports[`components/Image prop "source" is not set immediately if the image has 
 </div>
 `;
 
-exports[`components/Image prop "source" is set immediately if the image has already been loaded 1`] = `
+exports[`components/Image > prop "source" > is set immediately if the image has already been loaded 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -289,7 +289,7 @@ exports[`components/Image prop "source" is set immediately if the image has alre
 </div>
 `;
 
-exports[`components/Image prop "source" is set immediately if the image has already been loaded 2`] = `
+exports[`components/Image > prop "source" > is set immediately if the image has already been loaded 2`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -306,7 +306,7 @@ exports[`components/Image prop "source" is set immediately if the image has alre
 </div>
 `;
 
-exports[`components/Image prop "source" is set immediately if the image was preloaded 1`] = `
+exports[`components/Image > prop "source" > is set immediately if the image was preloaded 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -323,7 +323,7 @@ exports[`components/Image prop "source" is set immediately if the image was prel
 </div>
 `;
 
-exports[`components/Image prop "style" removes other unsupported View styles 1`] = `
+exports[`components/Image > prop "style" > removes other unsupported View styles 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -351,7 +351,7 @@ exports[`components/Image prop "style" removes other unsupported View styles 1`]
 </div>
 `;
 
-exports[`components/Image prop "style" supports "shadow" properties (converts to filter) 1`] = `
+exports[`components/Image > prop "style" > supports "shadow" properties (converts to filter) 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >
@@ -362,7 +362,7 @@ exports[`components/Image prop "style" supports "shadow" properties (converts to
 </div>
 `;
 
-exports[`components/Image prop "style" supports static and dynamic styles 1`] = `
+exports[`components/Image > prop "style" > supports static and dynamic styles 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010 pos-abs"
   style="transition-timing-function: ease-in;"
@@ -373,7 +373,7 @@ exports[`components/Image prop "style" supports static and dynamic styles 1`] = 
 </div>
 `;
 
-exports[`components/Image prop "testID" 1`] = `
+exports[`components/Image > prop "testID" 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
   data-testid="testID"
@@ -384,7 +384,7 @@ exports[`components/Image prop "testID" 1`] = `
 </div>
 `;
 
-exports[`components/Image prop "tintColor" convert to filter 1`] = `
+exports[`components/Image > prop "tintColor" > convert to filter 1`] = `
 <div
   class="css-view-g5y9jx r-flexBasis-1mlwlqe r-overflow-1udh08x r-zIndex-417010"
 >

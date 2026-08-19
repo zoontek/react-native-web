@@ -5,8 +5,8 @@ export default defineConfig({
   ignorePatterns: ['packages/**/vendor/*', 'packages/**/types/*'],
   env: {
     browser: true,
-    jest: true,
-    node: true
+    node: true,
+    vitest: true
   },
   options: {
     typeAware: true

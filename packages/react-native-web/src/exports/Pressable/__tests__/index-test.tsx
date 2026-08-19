@@ -73,8 +73,8 @@ describe('components/Pressable', () => {
 
   test('focus interaction', () => {
     let container!: HTMLElement;
-    const onBlur = jest.fn();
-    const onFocus = jest.fn();
+    const onBlur = vi.fn();
+    const onFocus = vi.fn();
     const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
@@ -105,8 +105,8 @@ describe('components/Pressable', () => {
   });
 
   test('focus interaction (disabled)', () => {
-    const onBlur = jest.fn();
-    const onFocus = jest.fn();
+    const onBlur = vi.fn();
+    const onFocus = vi.fn();
     const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       render(
@@ -132,8 +132,8 @@ describe('components/Pressable', () => {
 
   test('hover interaction', () => {
     let container!: HTMLElement;
-    const onHoverIn = jest.fn();
-    const onHoverOut = jest.fn();
+    const onHoverIn = vi.fn();
+    const onHoverOut = vi.fn();
     const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
@@ -164,10 +164,10 @@ describe('components/Pressable', () => {
 
   test('press interaction (pointer)', () => {
     let container!: HTMLElement;
-    const onContextMenu = jest.fn();
-    const onPress = jest.fn();
-    const onPressIn = jest.fn();
-    const onPressOut = jest.fn();
+    const onContextMenu = vi.fn();
+    const onPress = vi.fn();
+    const onPressIn = vi.fn();
+    const onPressOut = vi.fn();
     const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
@@ -188,13 +188,13 @@ describe('components/Pressable', () => {
     expect(container.firstChild).toMatchSnapshot();
     act(() => {
       target.pointerdown({ button: 0 });
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
     expect(onPressIn).toHaveBeenCalled();
     expect(container.firstChild).toMatchSnapshot();
     act(() => {
       target.pointerup({ button: 0 });
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
     expect(onPressOut).toHaveBeenCalled();
     expect(onPress).toHaveBeenCalled();
@@ -208,9 +208,9 @@ describe('components/Pressable', () => {
   describe('press interaction (keyboard)', () => {
     test('trigger press when keyup is on the same element', () => {
       let container!: HTMLElement;
-      const onPress = jest.fn();
-      const onPressIn = jest.fn();
-      const onPressOut = jest.fn();
+      const onPress = vi.fn();
+      const onPressIn = vi.fn();
+      const onPressOut = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
 
       function TestCase() {
@@ -239,13 +239,13 @@ describe('components/Pressable', () => {
       expect(container.firstChild).toMatchSnapshot();
       act(() => {
         target.keydown({ key: 'Enter' });
-        jest.runAllTimers();
+        vi.runAllTimers();
       });
       expect(onPressIn).toHaveBeenCalled();
       expect(container.firstChild).toMatchSnapshot();
       act(() => {
         target.keyup({ key: 'Enter' });
-        jest.runAllTimers();
+        vi.runAllTimers();
       });
       expect(onPressOut).toHaveBeenCalled();
       expect(onPress).toHaveBeenCalled();
@@ -253,7 +253,7 @@ describe('components/Pressable', () => {
     });
 
     test('ignore press when keyup is on a different element', () => {
-      const onPress = jest.fn();
+      const onPress = vi.fn();
       const firstRef = createRef<HTMLElement & PlatformMethods>();
 
       function TestCase() {
@@ -275,15 +275,15 @@ describe('components/Pressable', () => {
       act(() => {
         target.keydown({ key: 'Enter' });
         body.keyup({ key: 'Enter' });
-        jest.runAllTimers();
+        vi.runAllTimers();
       });
       expect(onPress).not.toHaveBeenCalled();
     });
   });
 
   test('press interaction as button (keyboard)', () => {
-    const onPress = jest.fn();
-    const preventDefault = jest.fn();
+    const onPress = vi.fn();
+    const preventDefault = vi.fn();
     const ref = createRef<HTMLElement & PlatformMethods>();
 
     function TestCase() {
@@ -304,7 +304,7 @@ describe('components/Pressable', () => {
     const target = createEventTarget(ref.current);
     act(() => {
       target.keydown({ key: ' ', preventDefault });
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
     // Calling preventDefault prevents native 'click' event dispatch
     expect(preventDefault).not.toHaveBeenCalled();
@@ -312,7 +312,7 @@ describe('components/Pressable', () => {
 
   describe('prop "ref"', () => {
     test('value is set', () => {
-      const ref = jest.fn();
+      const ref = vi.fn();
       render(<Pressable ref={ref} />);
       expect(ref).toHaveBeenCalled();
     });

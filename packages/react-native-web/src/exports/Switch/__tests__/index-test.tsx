@@ -91,7 +91,7 @@ describe('components/Switch', () => {
 
   describe('onValueChange', () => {
     test('when value is "false" it receives "true"', () => {
-      const onValueChange = jest.fn();
+      const onValueChange = vi.fn();
       const { container } = render(
         <Switch onValueChange={onValueChange} value={false} />
       );
@@ -101,7 +101,7 @@ describe('components/Switch', () => {
     });
 
     test('when value is "true" it receives "false"', () => {
-      const onValueChange = jest.fn();
+      const onValueChange = vi.fn();
       const { container } = render(
         <Switch onValueChange={onValueChange} value />
       );

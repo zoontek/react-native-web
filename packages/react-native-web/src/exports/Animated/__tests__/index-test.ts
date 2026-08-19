@@ -6,7 +6,9 @@
  */
 
 import Animated from '..';
+import type { Nullable } from '../../../types';
 import AnimatedImplementation from '../../../vendor/react-native/Animated/AnimatedImplementation';
+import type { EndCallback } from '../../../vendor/react-native/Animated/animations/Animation';
 import Easing from '../../Easing';
 
 const AnimatedInterpolation = Animated.Interpolation;
@@ -331,23 +333,28 @@ describe('Animated', () => {
 
   describe('sequence and loop', () => {
     const mockAnimation = () => ({
-      start: jest.fn(),
-      stop: jest.fn(),
-      reset: jest.fn(),
-      _isUsingNativeDriver: jest.fn(),
-      _startNativeLoop: jest.fn()
+      start: vi.fn<(callback?: Nullable<EndCallback>) => void>(),
+      stop: vi.fn(),
+      reset: vi.fn(),
+      _isUsingNativeDriver: vi.fn(),
+      _startNativeLoop: vi.fn()
     });
+
+    const finish = (animation: ReturnType<typeof mockAnimation>) => {
+      const [callback] = animation.start.mock.calls[0] as [EndCallback];
+      callback({ finished: true });
+    };
 
     it('supports restarting sequence after it was stopped during execution', () => {
       const anim1 = mockAnimation();
       const anim2 = mockAnimation();
-      const cb = jest.fn();
+      const cb = vi.fn();
 
       const seq = AnimatedImplementation.sequence([anim1, anim2]);
 
       seq.start(cb);
 
-      anim1.start.mock.calls[0][0]({ finished: true });
+      finish(anim1);
       seq.stop();
 
       // anim1 should be finished so anim2 should also start
@@ -364,13 +371,13 @@ describe('Animated', () => {
     it('supports restarting sequence after it was finished without a reset', () => {
       const anim1 = mockAnimation();
       const anim2 = mockAnimation();
-      const cb = jest.fn();
+      const cb = vi.fn();
 
       const seq = AnimatedImplementation.sequence([anim1, anim2]);
 
       seq.start(cb);
-      anim1.start.mock.calls[0][0]({ finished: true });
-      anim2.start.mock.calls[0][0]({ finished: true });
+      finish(anim1);
+      finish(anim2);
 
       // sequence should be finished
       expect(cb).toHaveBeenCalledWith({ finished: true });
@@ -396,11 +403,11 @@ describe('Animated', () => {
 
       expect(anim1.start).toHaveBeenCalledTimes(1);
 
-      anim1.start.mock.calls[0][0]({ finished: true });
+      finish(anim1);
 
       expect(anim2.start).toHaveBeenCalledTimes(1);
 
-      anim2.start.mock.calls[0][0]({ finished: true });
+      finish(anim2);
 
       // after anim2 is finished, the sequence is finished,
       // hence the loop iteration is finished, so the next iteration starts
