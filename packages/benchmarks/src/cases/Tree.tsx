@@ -1,9 +1,17 @@
-// @ts-nocheck
+import type { ComponentsType } from '../impl';
 
 import { BenchmarkType } from '../app/Benchmark';
 import React, { Component } from 'react';
 
-class Tree extends Component {
+type Props = {
+  breadth: number;
+  components: ComponentsType;
+  depth: number;
+  id: number;
+  wrap: number;
+};
+
+class Tree extends Component<Props> {
   static displayName = 'Tree';
 
   static benchmarkType = BenchmarkType.MOUNT;

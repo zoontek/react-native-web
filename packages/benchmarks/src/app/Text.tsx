@@ -1,10 +1,12 @@
-// @ts-nocheck
+import type { ComponentProps } from 'react';
 
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native-web';
 import { colors } from './theme';
 
-class AppText extends React.Component {
+type Props = ComponentProps<typeof Text>;
+
+class AppText extends React.Component<Props> {
   static displayName = '@app/Text';
 
   render() {

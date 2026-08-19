@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Platform } from 'react-native-web';
 
 const baseFontSize = 14;
 const baseUnit = 1.3125;
@@ -10,7 +8,7 @@ const canUseDOM = !!(
   window.document.createElement
 );
 
-const createPlatformLength = (multiplier) =>
+const createPlatformLength = (multiplier: number) =>
   Platform.select({
     web: `${multiplier}rem`,
     default: multiplier * baseFontSize
@@ -95,7 +93,7 @@ export const spaces = {
 if (Platform.OS === 'web' && canUseDOM) {
   const { medium, large } = breakpoints;
   const htmlElement = document.documentElement;
-  const setFontSize = (width) => {
+  const setFontSize = (width: number) => {
     const fontSize =
       width > medium ? (width > large ? '18px' : '17px') : '16px';
     if (htmlElement) {

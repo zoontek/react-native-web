@@ -1,4 +1,6 @@
-// @ts-nocheck
+import type { ChangeEvent, ComponentRef } from 'react';
+import type { BenchResultsType } from './Benchmark/types';
+import type { TestSetupType, TestsType } from '../index';
 
 import Benchmark from './Benchmark';
 import {
@@ -7,7 +9,7 @@ import {
   Pressable,
   View,
   unstable_createElement as createElement
-} from 'react-native';
+} from 'react-native-web';
 import React, { Component } from 'react';
 import Button from './Button';
 import { IconClear, IconEye } from './Icons';
@@ -18,10 +20,25 @@ import { colors } from './theme';
 
 const Overlay = () => <View style={[StyleSheet.absoluteFill, { zIndex: 2 }]} />;
 
-const Select = ({ disabled, onValueChange, options, style, value }) =>
+type SelectProps = {
+  disabled: boolean;
+  onValueChange: (value: string) => void;
+  options: Array<string>;
+  style?: NonNullable<Parameters<typeof createElement>[1]>['style'];
+  value: string;
+};
+
+const Select = ({
+  disabled,
+  onValueChange,
+  options,
+  style,
+  value
+}: SelectProps) =>
   createElement('select', {
     disabled,
-    onChange: (e) => onValueChange(e.target.value),
+    onChange: (e: ChangeEvent<HTMLSelectElement>) =>
+      onValueChange(e.target.value),
     style,
     value,
     children: options.map((option) =>
@@ -29,12 +46,35 @@ const Select = ({ disabled, onValueChange, options, style, value }) =>
     )
   });
 
-export default class App extends Component {
+type Props = {
+  tests: TestsType;
+};
+
+type ResultType = BenchResultsType & {
+  id: string;
+  benchmarkName: string;
+  libraryName: string;
+  libraryVersion: string;
+};
+
+type State = {
+  currentBenchmarkName: string;
+  currentLibraryName: string;
+  status: 'complete' | 'idle' | 'running';
+  results: Array<ResultType>;
+};
+
+export default class App extends Component<Props, State> {
   static displayName = '@app/App';
 
-  constructor(props, context) {
-    super(props, context);
-    const currentBenchmarkName = Object.keys(props.tests)[0];
+  _benchmarkRef: Benchmark | null = null;
+  _benchWrapperRef: HTMLElement | null = null;
+  _scrollRef: ComponentRef<typeof ScrollView> | null = null;
+  _shouldHideBenchmark = false;
+
+  constructor(props: Props) {
+    super(props);
+    const currentBenchmarkName = Object.keys(props.tests)[0] ?? '';
     this.state = {
       currentBenchmarkName,
       currentLibraryName: 'react-native-web',
@@ -47,10 +87,17 @@ export default class App extends Component {
     const { tests } = this.props;
     const { currentBenchmarkName, status, currentLibraryName, results } =
       this.state;
-    const currentImplementation =
-      tests[currentBenchmarkName][currentLibraryName];
-    const { Component, Provider, getComponentProps, sampleCount } =
-      currentImplementation;
+    const currentBenchmark = tests[currentBenchmarkName] ?? {};
+    const currentImplementation = currentBenchmark[
+      currentLibraryName
+    ] as TestSetupType;
+    const {
+      benchmarkType,
+      Component,
+      Provider,
+      getComponentProps,
+      sampleCount
+    } = currentImplementation;
 
     return (
       <Layout
@@ -64,7 +111,7 @@ export default class App extends Component {
                 <Select
                   disabled={status === 'running'}
                   onValueChange={this._handleChangeLibrary}
-                  options={Object.keys(tests[currentBenchmarkName])}
+                  options={Object.keys(currentBenchmark)}
                   style={styles.picker}
                   value={currentLibraryName}
                 />
@@ -156,7 +203,7 @@ export default class App extends Component {
                       ref={this._setBenchRef}
                       sampleCount={sampleCount}
                       timeout={20000}
-                      type={Component.benchmarkType}
+                      type={benchmarkType}
                     />
                   </View>
                 </React.Fragment>
@@ -172,11 +219,11 @@ export default class App extends Component {
     );
   }
 
-  _handleChangeBenchmark = (value) => {
+  _handleChangeBenchmark = (value: string) => {
     this.setState(() => ({ currentBenchmarkName: value }));
   };
 
-  _handleChangeLibrary = (value) => {
+  _handleChangeLibrary = (value: string) => {
     this.setState(() => ({ currentLibraryName: value }));
   };
 
@@ -185,9 +232,9 @@ export default class App extends Component {
       () => ({ status: 'running' }),
       () => {
         if (this._shouldHideBenchmark && this._benchWrapperRef) {
-          this._benchWrapperRef.style.opacity = 0;
+          this._benchWrapperRef.style.opacity = '0';
         }
-        this._benchmarkRef.start();
+        this._benchmarkRef?.start();
         this._scrollToEnd();
       }
     );
@@ -197,13 +244,23 @@ export default class App extends Component {
   _handleVisuallyHideBenchmark = () => {
     this._shouldHideBenchmark = !this._shouldHideBenchmark;
     if (this._benchWrapperRef) {
-      this._benchWrapperRef.style.opacity = this._shouldHideBenchmark ? 0 : 1;
+      this._benchWrapperRef.style.opacity = this._shouldHideBenchmark
+        ? '0'
+        : '1';
     }
   };
 
   _createHandleComplete =
-    ({ benchmarkName, libraryName, sampleCount }) =>
-    (results) => {
+    ({
+      benchmarkName,
+      libraryName,
+      sampleCount
+    }: {
+      benchmarkName: string;
+      libraryName: string;
+      sampleCount: number;
+    }) =>
+    (results: BenchResultsType) => {
       this.setState(
         (state) => ({
           results: state.results.concat([
@@ -213,10 +270,10 @@ export default class App extends Component {
               benchmarkName,
               libraryName,
               libraryVersion:
-                this.props.tests[benchmarkName][libraryName].version
+                this.props.tests[benchmarkName]?.[libraryName]?.version ?? ''
             }
           ]),
-          status: 'complete'
+          status: 'complete' as const
         }),
         this._scrollToEnd
       );
@@ -228,15 +285,15 @@ export default class App extends Component {
     this.setState(() => ({ results: [] }));
   };
 
-  _setBenchRef = (ref) => {
+  _setBenchRef = (ref: Benchmark | null) => {
     this._benchmarkRef = ref;
   };
 
-  _setBenchWrapperRef = (ref) => {
+  _setBenchWrapperRef = (ref: HTMLElement | null) => {
     this._benchWrapperRef = ref;
   };
 
-  _setScrollRef = (ref) => {
+  _setScrollRef = (ref: ComponentRef<typeof ScrollView> | null) => {
     this._scrollRef = ref;
   };
 
@@ -244,7 +301,7 @@ export default class App extends Component {
   _scrollToEnd = () => {
     window.requestAnimationFrame(() => {
       if (this._scrollRef) {
-        this._scrollRef.scrollToEnd();
+        this._scrollRef.scrollToEnd?.();
       }
     });
   };

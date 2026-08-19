@@ -1,4 +1,4 @@
-// @ts-nocheck
+import type { BoxProps } from '../../impl';
 
 import classnames from 'classnames';
 import React from 'react';
@@ -11,14 +11,15 @@ const Box = ({
   layout = 'column',
   outer = false,
   ...other
-}) => (
+}: BoxProps) => (
   <View
     {...other}
-    className={classnames(styles[`color${color}`], {
-      [styles.fixed]: fixed,
-      [styles.outer]: outer,
-      [styles.row]: layout === 'row'
-    })}
+    className={classnames(
+      styles[`color${color}`],
+      fixed && styles.fixed,
+      outer && styles.outer,
+      layout === 'row' && styles.row
+    )}
   />
 );
 
