@@ -122,11 +122,16 @@ export default defineConfig({
         // 'typescript/strict-boolean-expressions': [
         //   'error',
         //   {
-        //     allowNullableObject: false,
-        //     allowNumber: false,
-        //     allowString: false
+        //     allowAny: true,
+        //     allowNullableBoolean: true,
+        //     allowNullableEnum: true,
+        //     allowNullableNumber: true,
+        //     allowNullableObject: true,
+        //     allowNullableString: true,
+        //     allowNumber: true,
+        //     allowString: true
         //   }
-        // ],
+        // ]
       }
     }
   ]
