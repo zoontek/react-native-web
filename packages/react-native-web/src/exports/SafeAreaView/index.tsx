@@ -10,8 +10,7 @@ import { forwardRef } from 'react';
 
 import type { PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
-import type { ViewProps } from '../View';
-import View from '../View';
+import View, { type ViewProps } from '../View';
 
 const SafeAreaView = forwardRef<HTMLElement & PlatformMethods, ViewProps>(
   (props, ref) => {

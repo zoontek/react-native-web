@@ -11,8 +11,7 @@
 import { Component, type ReactNode } from 'react';
 
 import type { LayoutEvent, LayoutValue, Nullable } from '../../types';
-import type { ViewProps } from '../View';
-import View from '../View';
+import View, { type ViewProps } from '../View';
 
 type KeyboardAvoidingViewProps = ViewProps & {
   behavior?: 'height' | 'padding' | 'position';

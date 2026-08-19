@@ -11,8 +11,9 @@
 
 import type { Nullable } from '../../../../types';
 import type { PlatformConfig } from '../AnimatedPlatformConfig';
-import AnimatedInterpolation from './AnimatedInterpolation';
-import type { InterpolationConfigType } from './AnimatedInterpolation';
+import AnimatedInterpolation, {
+  type InterpolationConfigType
+} from './AnimatedInterpolation';
 import AnimatedNode from './AnimatedNode';
 import AnimatedValue from './AnimatedValue';
 import AnimatedWithChildren from './AnimatedWithChildren';

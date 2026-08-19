@@ -6,8 +6,9 @@
  */
 
 import type { Nullable } from '../../../types';
-import type { StyleValue } from './normalizeValueWithProperty';
-import normalizeValueWithProperty from './normalizeValueWithProperty';
+import normalizeValueWithProperty, {
+  type StyleValue
+} from './normalizeValueWithProperty';
 
 export type Style = { [key: string]: StyleValue | null | undefined };
 

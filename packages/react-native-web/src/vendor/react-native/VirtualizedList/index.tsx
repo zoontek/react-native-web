@@ -21,16 +21,14 @@ import {
 import RefreshControl from '../../../exports/RefreshControl';
 import ScrollView from '../../../exports/ScrollView';
 import StyleSheet from '../../../exports/StyleSheet';
-import View from '../../../exports/View';
-import type { ViewProps } from '../../../exports/View';
+import View, { type ViewProps } from '../../../exports/View';
 import type { LayoutEvent, Nullable } from '../../../types';
 import Batchinator from '../Batchinator';
 import FillRateHelper from '../FillRateHelper';
 import infoLog from '../infoLog';
 import type { ScrollEvent } from '../Types/CoreEventTypes';
 import clamp from '../Utilities/clamp';
-import type { ViewToken } from '../ViewabilityHelper';
-import ViewabilityHelper from '../ViewabilityHelper';
+import ViewabilityHelper, { type ViewToken } from '../ViewabilityHelper';
 import {
   computeWindowedRenderLimits,
   keyExtractor as defaultKeyExtractor

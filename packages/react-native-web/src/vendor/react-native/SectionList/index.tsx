@@ -9,18 +9,17 @@
 
 'use strict';
 
-import Platform from '../../../exports/Platform';
-import type { Nullable } from '../../../types';
-import VirtualizedSectionList from '../VirtualizedSectionList';
-
-type ScrollResponderType = unknown;
 import { PureComponent, type ReactElement, type ReactNode } from 'react';
 
-import type {
-  SectionBase as _SectionBase,
-  Props as VirtualizedSectionListProps,
-  ScrollToLocationParamsType
+import Platform from '../../../exports/Platform';
+import type { Nullable } from '../../../types';
+import VirtualizedSectionList, {
+  type SectionBase as _SectionBase,
+  type ScrollToLocationParamsType,
+  type Props as VirtualizedSectionListProps
 } from '../VirtualizedSectionList';
+
+type ScrollResponderType = unknown;
 
 type Item = unknown;
 

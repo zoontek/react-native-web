@@ -10,8 +10,9 @@
 import { forwardRef, type ComponentProps, type ComponentRef } from 'react';
 
 import FlatList from '../../../../exports/FlatList';
-import createAnimatedComponent from '../createAnimatedComponent';
-import type { AnimatedComponentType } from '../createAnimatedComponent';
+import createAnimatedComponent, {
+  type AnimatedComponentType
+} from '../createAnimatedComponent';
 
 /**
  * @see https://github.com/facebook/react-native/commit/b8c8562

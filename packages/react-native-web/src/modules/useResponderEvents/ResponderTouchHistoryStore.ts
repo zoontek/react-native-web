@@ -5,8 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Touch, TouchEvent } from './ResponderEventTypes';
-import { isStartish, isMoveish, isEndish } from './ResponderEventTypes';
+import {
+  isEndish,
+  isMoveish,
+  isStartish,
+  type Touch,
+  type TouchEvent
+} from './ResponderEventTypes';
 
 type TouchRecord = {
   currentPageX: number;

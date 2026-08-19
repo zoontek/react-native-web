@@ -6,12 +6,12 @@
  */
 
 import type { Nullable } from '../../../types';
-import createReactDOMStyle from './createReactDOMStyle';
-import type { Style } from './createReactDOMStyle';
+import createReactDOMStyle, { type Style } from './createReactDOMStyle';
 import hash from './hash';
 import hyphenateStyleName from './hyphenateStyleName';
-import normalizeValueWithProperty from './normalizeValueWithProperty';
-import type { StyleValue } from './normalizeValueWithProperty';
+import normalizeValueWithProperty, {
+  type StyleValue
+} from './normalizeValueWithProperty';
 
 type Rule = string;
 type Rules = Array<Rule>;

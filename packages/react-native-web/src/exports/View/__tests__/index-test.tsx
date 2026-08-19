@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { act, render } from '@testing-library/react';
-import type { RenderResult } from '@testing-library/react';
+import { act, render, type RenderResult } from '@testing-library/react';
 import {
   createEventTarget as createEventTargetImpl,
   setPointerEvent

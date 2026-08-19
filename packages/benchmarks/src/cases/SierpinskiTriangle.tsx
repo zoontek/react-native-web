@@ -1,6 +1,6 @@
 import {
-  interpolatePurples,
   interpolateBuPu,
+  interpolatePurples,
   interpolateRdPu
 } from 'd3-scale-chromatic';
 import { Component, Fragment } from 'react';
