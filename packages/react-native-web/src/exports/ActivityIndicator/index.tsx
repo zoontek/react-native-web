@@ -9,10 +9,10 @@
 'use client';
 
 import { forwardRef, type CSSProperties } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
-import type { ViewProps } from '../View';
 
+import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
+import type { ViewProps } from '../View';
 import View from '../View';
 
 const createSvgCircle = (style: CSSProperties) => (

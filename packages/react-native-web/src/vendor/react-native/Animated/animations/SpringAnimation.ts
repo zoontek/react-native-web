@@ -9,22 +9,18 @@
 
 'use strict';
 
-import type AnimatedValue from '../nodes/AnimatedValue';
-import type AnimatedValueXY from '../nodes/AnimatedValueXY';
-import type AnimatedInterpolation from '../nodes/AnimatedInterpolation';
-
-import Animation from './Animation';
-import SpringConfig from '../SpringConfig';
-
 import invariant from 'fbjs/lib/invariant';
 
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
-
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
-import type { AnimationConfig, EndCallback } from './Animation';
 import type { Nullable } from '../../../../types';
-
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
 import AnimatedColor from '../nodes/AnimatedColor';
+import type AnimatedInterpolation from '../nodes/AnimatedInterpolation';
+import type AnimatedValue from '../nodes/AnimatedValue';
+import type AnimatedValueXY from '../nodes/AnimatedValueXY';
+import SpringConfig from '../SpringConfig';
+import Animation from './Animation';
+import type { AnimationConfig, EndCallback } from './Animation';
 
 export type SpringAnimationConfig = AnimationConfig & {
   toValue:

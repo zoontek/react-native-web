@@ -7,23 +7,23 @@
  * @format
  */
 
+import normalizeColor from '@react-native/normalize-colors';
 import type { ReactNode } from 'react';
-import type { EdgeInsetsValue, LayoutCallback, Nullable } from '../../types';
+
+import AccessibilityUtil from '../../modules/AccessibilityUtil';
 import type { ResponderEvent } from '../../modules/useResponderEvents/createResponderEvent';
 import type {
   Touch,
   TouchEvent
 } from '../../modules/useResponderEvents/ResponderEventTypes';
-import type { BoundingDimensionsInstance } from './BoundingDimensions';
-import type { PositionInstance } from './Position';
-
-import AccessibilityUtil from '../../modules/AccessibilityUtil';
-import BoundingDimensions from './BoundingDimensions';
-import normalizeColor from '@react-native/normalize-colors';
-import Position from './Position';
+import { warnOnce } from '../../modules/warnOnce';
+import type { EdgeInsetsValue, LayoutCallback, Nullable } from '../../types';
 import UIManager from '../UIManager';
 import View from '../View';
-import { warnOnce } from '../../modules/warnOnce';
+import type { BoundingDimensionsInstance } from './BoundingDimensions';
+import BoundingDimensions from './BoundingDimensions';
+import type { PositionInstance } from './Position';
+import Position from './Position';
 
 type PressEvent = ResponderEvent;
 type Event = PressEvent & { key: string; type: string };

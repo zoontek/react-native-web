@@ -9,12 +9,11 @@
 
 'use strict';
 
-import AnimatedValue from './AnimatedValue';
-import AnimatedWithChildren from './AnimatedWithChildren';
-
 import invariant from 'fbjs/lib/invariant';
 
 import type { Nullable } from '../../../../types';
+import AnimatedValue from './AnimatedValue';
+import AnimatedWithChildren from './AnimatedWithChildren';
 
 type ValueXYListenerCallback = (value: { x: number; y: number }) => unknown;
 

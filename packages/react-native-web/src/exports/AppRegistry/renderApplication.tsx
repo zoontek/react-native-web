@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import invariant from 'fbjs/lib/invariant';
 import type {
   ComponentProps,
   ComponentType,
   ReactElement,
   ReactNode
 } from 'react';
-import type { Nullable } from '../../types';
 
-import AppContainer from './AppContainer';
-import invariant from 'fbjs/lib/invariant';
+import type { Nullable } from '../../types';
 import render, { hydrate } from '../render';
 import StyleSheet from '../StyleSheet';
+import AppContainer from './AppContainer';
 
 export type Application = {
   unmount: () => void;

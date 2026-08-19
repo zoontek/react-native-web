@@ -7,23 +7,24 @@
  * @format
  */
 
-import NativeAnimatedNonTurboModule from './NativeAnimatedModule';
-import NativeAnimatedTurboModule from './NativeAnimatedTurboModule';
+import invariant from 'fbjs/lib/invariant';
+
+import type { Nullable } from '../../../types';
 import NativeEventEmitter from '../EventEmitter/NativeEventEmitter';
+import RCTDeviceEventEmitter from '../EventEmitter/RCTDeviceEventEmitter';
+import ReactNativeFeatureFlags from '../ReactNative/ReactNativeFeatureFlags';
 import Platform from '../Utilities/Platform';
+import type { EventSubscription } from '../vendor/emitter/EventEmitter';
 import type { EventConfig } from './AnimatedEvent';
+import type { AnimationConfig, EndCallback } from './animations/Animation';
+import NativeAnimatedNonTurboModule from './NativeAnimatedModule';
 import type {
   EventMapping,
   AnimatedNodeConfig,
   AnimatingNodeConfig
 } from './NativeAnimatedModule';
-import type { AnimationConfig, EndCallback } from './animations/Animation';
+import NativeAnimatedTurboModule from './NativeAnimatedTurboModule';
 import type { InterpolationConfigType } from './nodes/AnimatedInterpolation';
-import ReactNativeFeatureFlags from '../ReactNative/ReactNativeFeatureFlags';
-import invariant from 'fbjs/lib/invariant';
-import RCTDeviceEventEmitter from '../EventEmitter/RCTDeviceEventEmitter';
-import type { EventSubscription } from '../vendor/emitter/EventEmitter';
-import type { Nullable } from '../../../types';
 
 // TODO T69437152 @petetheheat - Delete this fork when Fabric ships to 100%.
 const NativeAnimatedModule =

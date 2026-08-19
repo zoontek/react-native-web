@@ -9,17 +9,16 @@
 
 'use strict';
 
-import AnimatedInterpolation from './AnimatedInterpolation';
-import AnimatedWithChildren from './AnimatedWithChildren';
 import InteractionManager from '../../../../exports/InteractionManager';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
-
-import type AnimatedNode from './AnimatedNode';
+import type { Nullable } from '../../../../types';
 import type Animation from '../animations/Animation';
 import type { EndCallback } from '../animations/Animation';
+import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import AnimatedInterpolation from './AnimatedInterpolation';
 import type { InterpolationConfigType } from './AnimatedInterpolation';
+import type AnimatedNode from './AnimatedNode';
 import type AnimatedTracking from './AnimatedTracking';
-import type { Nullable } from '../../../../types';
+import AnimatedWithChildren from './AnimatedWithChildren';
 
 export type AnimatedValueConfig = Readonly<{
   useNativeDriver: boolean;

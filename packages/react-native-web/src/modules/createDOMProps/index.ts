@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import AccessibilityUtil from '../AccessibilityUtil';
-import StyleSheet from '../../exports/StyleSheet';
-import { warnOnce } from '../warnOnce';
 import type { ComponentType } from 'react';
-import type { GenericStyleProp, Nullable } from '../../types';
+
+import StyleSheet from '../../exports/StyleSheet';
 import type { Options, StyleObject } from '../../exports/StyleSheet';
+import type { GenericStyleProp, Nullable } from '../../types';
+import AccessibilityUtil from '../AccessibilityUtil';
 import type { WritingDirection } from '../useLocale';
+import { warnOnce } from '../warnOnce';
 
 export type ElementProps = {
   'aria-controls'?: Nullable<string | Array<string>>;

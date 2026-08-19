@@ -6,8 +6,9 @@
  */
 
 import { render } from '@testing-library/react';
-import useStable from '..';
 import type { ReactNode } from 'react';
+
+import useStable from '..';
 
 describe('useStable', () => {
   let spy: { value?: unknown } = {};

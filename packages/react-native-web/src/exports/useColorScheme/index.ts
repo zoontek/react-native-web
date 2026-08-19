@@ -9,6 +9,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import type { AppearancePreferences, ColorSchemeName } from '../Appearance';
 import Appearance from '../Appearance';
 

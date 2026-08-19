@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../types';
 import { addEventListener } from '../addEventListener';
 import useLayoutEffect from '../useLayoutEffect';
 import useStable from '../useStable';
-import type { Nullable } from '../../types';
 
 type Callback = null | ((e: Event) => void);
 

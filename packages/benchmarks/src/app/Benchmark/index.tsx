@@ -6,6 +6,7 @@
 
 import type { ComponentType, ReactNode } from 'react';
 import { Component } from 'react';
+
 import { getMean, getStdDev } from './math';
 import type {
   BenchResultsType,

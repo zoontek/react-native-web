@@ -1,6 +1,7 @@
-import { StyleSheet, TextInput, View } from 'react-native-web';
-import Example from '../../shared/example';
 import { useRef, type ComponentRef } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 export default function TextInputPage() {
   const nextFocus = useRef<ComponentRef<typeof TextInput>>(null);

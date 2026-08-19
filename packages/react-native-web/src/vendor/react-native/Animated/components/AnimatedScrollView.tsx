@@ -8,9 +8,9 @@
  */
 
 import { forwardRef, type ComponentProps, type ComponentRef } from 'react';
+
 import ScrollView from '../../../../exports/ScrollView';
 import createAnimatedComponent from '../createAnimatedComponent';
-
 import type { AnimatedComponentType } from '../createAnimatedComponent';
 
 /**

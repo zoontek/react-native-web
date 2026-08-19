@@ -8,6 +8,8 @@
 
 'use client';
 
+import invariant from 'fbjs/lib/invariant';
+import warning from 'fbjs/lib/warning';
 import {
   Children,
   cloneElement,
@@ -17,21 +19,19 @@ import {
   type Ref,
   type TouchEvent
 } from 'react';
-import type { LayoutEvent, Nullable, PlatformMethods } from '../../types';
-import type { ResponderEvent } from '../../modules/useResponderEvents/createResponderEvent';
-import type { ViewProps, ViewStyle } from '../View/types';
 
-import Dimensions from '../Dimensions';
 import dismissKeyboard from '../../modules/dismissKeyboard';
-import invariant from 'fbjs/lib/invariant';
 import mergeRefs from '../../modules/mergeRefs';
-import Platform from '../Platform';
-import ScrollViewBase from './ScrollViewBase';
-import StyleSheet from '../StyleSheet';
 import TextInputState from '../../modules/TextInputState';
+import type { ResponderEvent } from '../../modules/useResponderEvents/createResponderEvent';
+import type { LayoutEvent, Nullable, PlatformMethods } from '../../types';
+import Dimensions from '../Dimensions';
+import Platform from '../Platform';
+import StyleSheet from '../StyleSheet';
 import UIManager from '../UIManager';
 import View from '../View';
-import warning from 'fbjs/lib/warning';
+import type { ViewProps, ViewStyle } from '../View/types';
+import ScrollViewBase from './ScrollViewBase';
 
 type ScrollViewProps = Omit<ViewProps, 'onScroll'> & {
   centerContent?: boolean;

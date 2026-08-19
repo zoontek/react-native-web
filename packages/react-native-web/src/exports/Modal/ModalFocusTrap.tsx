@@ -7,13 +7,13 @@
  */
 
 import { useEffect, useRef, type ReactNode } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
 
-import View from '../View';
+import canUseDOM from '../../modules/canUseDom';
+import type { Nullable, PlatformMethods } from '../../types';
 import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
 import UIManager from '../UIManager';
-import canUseDOM from '../../modules/canUseDom';
+import View from '../View';
 
 /**
  * This Component is used to "wrap" the modal we're opening

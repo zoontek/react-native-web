@@ -8,7 +8,6 @@
 'use client';
 
 import type { Context } from 'react';
-
 import { createContext } from 'react';
 
 const TextAncestorContext: Context<boolean> = createContext(false);

@@ -14,14 +14,6 @@ import type {
   MouseEvent,
   ReactNode
 } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
-import type { HoverEventsConfig } from '../../modules/useHover';
-import type {
-  EventHandlers,
-  PressResponderConfig
-} from '../../modules/usePressEvents/PressResponder';
-import type { ViewProps } from '../View';
-
 import {
   forwardRef,
   memo,
@@ -30,10 +22,18 @@ import {
   useRef,
   useCallback
 } from 'react';
-import useMergeRefs from '../../modules/useMergeRefs';
+
+import type { HoverEventsConfig } from '../../modules/useHover';
 import useHover from '../../modules/useHover';
+import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
+import type {
+  EventHandlers,
+  PressResponderConfig
+} from '../../modules/usePressEvents/PressResponder';
+import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
+import type { ViewProps } from '../View';
 import View from '../View';
 
 export type StateCallbackType = Readonly<{

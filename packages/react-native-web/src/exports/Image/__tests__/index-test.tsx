@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as AssetRegistry from '../../../modules/AssetRegistry';
+import { act, render } from '@testing-library/react';
+
 import Image from '../';
+import * as AssetRegistry from '../../../modules/AssetRegistry';
 import ImageLoader, { ImageUriCache } from '../../../modules/ImageLoader';
 import PixelRatio from '../../PixelRatio';
-import { act, render } from '@testing-library/react';
 import type { ResizeMode } from '../types';
 
 const originalImage = window.Image;

@@ -5,15 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Text from '../';
+import { act, render } from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
 import {
   createEventTarget as createEventTargetImpl,
   setPointerEvent
 } from 'dom-event-testing-library';
-import { act, render } from '@testing-library/react';
-import type { RenderResult } from '@testing-library/react';
-import type { Nullable, PlatformMethods } from '../../../types';
 import { createRef } from 'react';
+
+import Text from '../';
+import type { Nullable, PlatformMethods } from '../../../types';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);

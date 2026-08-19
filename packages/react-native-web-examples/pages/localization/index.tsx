@@ -22,6 +22,7 @@ import {
   Text,
   View
 } from 'react-native-web';
+
 import Example from '../../shared/example';
 
 const SCALE = PixelRatio.get();

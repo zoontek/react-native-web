@@ -10,6 +10,7 @@
 'use strict';
 
 import invariant from 'fbjs/lib/invariant';
+
 import Platform from '../../../exports/Platform';
 import type { Nullable } from '../../../types';
 import type {

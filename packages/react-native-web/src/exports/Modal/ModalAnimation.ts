@@ -14,10 +14,10 @@ import {
   type AnimationEvent,
   type ReactNode
 } from 'react';
-import type { Nullable } from '../../types';
 
-import StyleSheet from '../StyleSheet';
+import type { Nullable } from '../../types';
 import createElement from '../createElement';
+import StyleSheet from '../StyleSheet';
 
 const ANIMATION_DURATION = 250;
 

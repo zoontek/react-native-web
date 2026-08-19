@@ -7,12 +7,12 @@
  */
 
 import { forwardRef, useEffect, useMemo, type ReactNode } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
-import type { ViewProps } from '../View';
 
-import View from '../View';
-import StyleSheet from '../StyleSheet';
 import canUseDOM from '../../modules/canUseDom';
+import type { Nullable, PlatformMethods } from '../../types';
+import StyleSheet from '../StyleSheet';
+import type { ViewProps } from '../View';
+import View from '../View';
 
 export type ModalContentProps = ViewProps & {
   active?: Nullable<boolean | (() => boolean)>;

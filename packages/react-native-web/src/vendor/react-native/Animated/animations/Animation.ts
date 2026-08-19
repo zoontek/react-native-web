@@ -9,10 +9,10 @@
 
 'use strict';
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
-import type AnimatedValue from '../nodes/AnimatedValue';
 import type { Nullable } from '../../../../types';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import type AnimatedValue from '../nodes/AnimatedValue';
 
 export type EndResult = { finished: boolean };
 export type EndCallback = (result: EndResult) => void;

@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native-web';
+
 import Example from '../../shared/example';
 
 export default function AnimatedPage() {

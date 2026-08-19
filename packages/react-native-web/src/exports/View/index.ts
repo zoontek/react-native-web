@@ -15,20 +15,20 @@ import {
   useRef,
   type ElementType
 } from 'react';
-import type { PlatformMethods } from '../../types';
-import type { ElementProps } from '../../modules/createDOMProps';
-import type { ViewProps } from './types';
 
-import createElement from '../createElement';
+import type { ElementProps } from '../../modules/createDOMProps';
 import * as forwardedProps from '../../modules/forwardedProps';
 import pick from '../../modules/pick';
 import useElementLayout from '../../modules/useElementLayout';
+import { useLocaleContext, getLocaleDirection } from '../../modules/useLocale';
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePlatformMethods from '../../modules/usePlatformMethods';
 import useResponderEvents from '../../modules/useResponderEvents';
+import type { PlatformMethods } from '../../types';
+import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
 import TextAncestorContext from '../Text/TextAncestorContext';
-import { useLocaleContext, getLocaleDirection } from '../../modules/useLocale';
+import type { ViewProps } from './types';
 
 const forwardPropsList = Object.assign(
   {},
