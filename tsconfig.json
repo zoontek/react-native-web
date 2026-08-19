@@ -11,7 +11,6 @@
     "noEmit": true,
     "stripInternal": true,
     "sourceMap": true,
-    "outDir": "dist/",
 
     // JavaScript Support
     "allowJs": false,
