@@ -7,8 +7,12 @@
 
 import { buttonType, buttonsType } from './constants';
 import type { EventPayload } from './createEvent';
-import type { Platform } from './domEnvironment';
-import { hasPointerEvent, platform, setPointerEvent } from './domEnvironment';
+import {
+  hasPointerEvent,
+  platform,
+  setPointerEvent,
+  type Platform
+} from './domEnvironment';
 import type {
   FocusEventPayload,
   KeyboardEventPayload,

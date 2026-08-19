@@ -14,13 +14,13 @@ import type { Root } from 'react-dom/client';
 
 import type { Nullable } from '../../types';
 import unmountComponentAtNode from '../unmountComponentAtNode';
-import type {
-  AppProps,
-  Application,
-  ApplicationElement,
-  WrapperComponentType
+import renderApplication, {
+  getApplication,
+  type AppProps,
+  type Application,
+  type ApplicationElement,
+  type WrapperComponentType
 } from './renderApplication';
-import renderApplication, { getApplication } from './renderApplication';
 
 type AppParams = {
   callback?: () => void;

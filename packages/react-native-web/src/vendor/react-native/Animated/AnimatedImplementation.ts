@@ -10,28 +10,29 @@
 'use strict';
 
 import type { Nullable } from '../../../types';
-import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent';
-import type { Mapping, EventConfig } from './AnimatedEvent';
+import {
+  AnimatedEvent,
+  attachNativeEvent,
+  type EventConfig,
+  type Mapping
+} from './AnimatedEvent';
 import type Animation from './animations/Animation';
 import type {
   AnimationConfig,
   EndCallback,
   EndResult
 } from './animations/Animation';
-import DecayAnimation from './animations/DecayAnimation';
-import type {
-  DecayAnimationConfig,
-  DecayAnimationConfigSingle
+import DecayAnimation, {
+  type DecayAnimationConfig,
+  type DecayAnimationConfigSingle
 } from './animations/DecayAnimation';
-import SpringAnimation from './animations/SpringAnimation';
-import type {
-  SpringAnimationConfig,
-  SpringAnimationConfigSingle
+import SpringAnimation, {
+  type SpringAnimationConfig,
+  type SpringAnimationConfigSingle
 } from './animations/SpringAnimation';
-import TimingAnimation from './animations/TimingAnimation';
-import type {
-  TimingAnimationConfig,
-  TimingAnimationConfigSingle
+import TimingAnimation, {
+  type TimingAnimationConfig,
+  type TimingAnimationConfigSingle
 } from './animations/TimingAnimation';
 import createAnimatedComponent from './createAnimatedComponent';
 import AnimatedAddition from './nodes/AnimatedAddition';

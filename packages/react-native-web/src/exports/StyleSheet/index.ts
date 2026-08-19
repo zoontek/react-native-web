@@ -5,10 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { styleq } from 'styleq';
-import type { Styles, StyleqResult } from 'styleq';
-import { localizeStyle } from 'styleq/transform-localize-style';
-import type { LocalizedStyle } from 'styleq/transform-localize-style';
+import { styleq, type StyleqResult, type Styles } from 'styleq';
+import {
+  localizeStyle,
+  type LocalizedStyle
+} from 'styleq/transform-localize-style';
 
 import canUseDOM from '../../modules/canUseDom';
 import type { GenericStyleProp } from '../../types';

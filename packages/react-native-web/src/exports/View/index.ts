@@ -20,7 +20,7 @@ import type { ElementProps } from '../../modules/createDOMProps';
 import * as forwardedProps from '../../modules/forwardedProps';
 import pick from '../../modules/pick';
 import useElementLayout from '../../modules/useElementLayout';
-import { useLocaleContext, getLocaleDirection } from '../../modules/useLocale';
+import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale';
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePlatformMethods from '../../modules/usePlatformMethods';
 import useResponderEvents from '../../modules/useResponderEvents';

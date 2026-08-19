@@ -7,8 +7,10 @@
 
 import type { ComponentType } from 'react';
 
-import StyleSheet from '../../exports/StyleSheet';
-import type { Options, StyleObject } from '../../exports/StyleSheet';
+import StyleSheet, {
+  type Options,
+  type StyleObject
+} from '../../exports/StyleSheet';
 import type { GenericStyleProp, Nullable } from '../../types';
 import AccessibilityUtil from '../AccessibilityUtil';
 import type { WritingDirection } from '../useLocale';

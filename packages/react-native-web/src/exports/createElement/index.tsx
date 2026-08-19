@@ -7,12 +7,16 @@
 
 'use client';
 
-import { createElement as reactCreateElement } from 'react';
-import type { ElementType, ReactNode } from 'react';
+import {
+  createElement as reactCreateElement,
+  type ElementType,
+  type ReactNode
+} from 'react';
 
 import AccessibilityUtil from '../../modules/AccessibilityUtil';
-import createDOMProps from '../../modules/createDOMProps';
-import type { ElementProps } from '../../modules/createDOMProps';
+import createDOMProps, {
+  type ElementProps
+} from '../../modules/createDOMProps';
 import { LocaleProvider } from '../../modules/useLocale';
 import type { Options } from '../StyleSheet';
 

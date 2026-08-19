@@ -7,9 +7,9 @@
 
 import { act, render } from '@testing-library/react';
 import {
-  describeWithPointerEvent,
   clearPointers,
   createEventTarget as createEventTargetImpl,
+  describeWithPointerEvent,
   setPointerEvent
 } from 'dom-event-testing-library';
 import { createRef, type RefObject } from 'react';

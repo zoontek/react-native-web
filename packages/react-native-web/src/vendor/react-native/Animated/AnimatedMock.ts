@@ -11,10 +11,10 @@
 
 import type { Nullable } from '../../../types';
 import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent';
-import AnimatedImplementation from './AnimatedImplementation';
-import type { Numeric as AnimatedNumeric } from './AnimatedImplementation';
-import type { EndResult } from './animations/Animation';
-import type { EndCallback } from './animations/Animation';
+import AnimatedImplementation, {
+  type Numeric as AnimatedNumeric
+} from './AnimatedImplementation';
+import type { EndCallback, EndResult } from './animations/Animation';
 import type { DecayAnimationConfig } from './animations/DecayAnimation';
 import type { SpringAnimationConfig } from './animations/SpringAnimation';
 import type { TimingAnimationConfig } from './animations/TimingAnimation';
