@@ -28,7 +28,7 @@ let _uniqueId = 1;
 class AnimatedValueXY extends AnimatedWithChildren {
   x: AnimatedValue;
   y: AnimatedValue;
-  _listeners: {
+  override _listeners: {
     [key: string]: {
       x: string;
       y: string;
@@ -103,7 +103,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
     this.y.extractOffset();
   }
 
-  __getValue(): {
+  override __getValue(): {
     x: number;
     y: number;
   } {
@@ -146,9 +146,9 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#addlistener
    */
-  addListener(callback: (state: { value: number }) => unknown): string;
-  addListener(callback: ValueXYListenerCallback): string;
-  addListener(callback: Function): string {
+  override addListener(callback: (state: { value: number }) => unknown): string;
+  override addListener(callback: ValueXYListenerCallback): string;
+  override addListener(callback: Function): string {
     const id = String(_uniqueId++);
     const jointCallback = ({ value: number }: { value: number }) => {
       callback(this.__getValue());
@@ -166,7 +166,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#removelistener
    */
-  removeListener(id: string): void {
+  override removeListener(id: string): void {
     this.x.removeListener(this._listeners[id]!.x);
     this.y.removeListener(this._listeners[id]!.y);
     delete this._listeners[id];
@@ -177,7 +177,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#removealllisteners
    */
-  removeAllListeners(): void {
+  override removeAllListeners(): void {
     this.x.removeAllListeners();
     this.y.removeAllListeners();
     this._listeners = {};

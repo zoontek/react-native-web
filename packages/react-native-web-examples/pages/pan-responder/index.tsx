@@ -45,11 +45,11 @@ class DraggableCircle extends PureComponent {
     };
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     this._updateNativeStyles();
   }
 
-  render() {
+  override render() {
     return (
       <View style={styles.container}>
         {/* @ts-expect-error */}
@@ -133,7 +133,7 @@ class LocationXY extends Component<object, LocationXYState> {
     }));
   };
 
-  render() {
+  override render() {
     const transform = { transform: `translateX(${this.state.translateX}px)` };
     return (
       <View style={styles.box}>

@@ -8,7 +8,7 @@ type Props = ComponentProps<typeof Text>;
 class AppText extends Component<Props> {
   static displayName = '@app/Text';
 
-  render() {
+  override render() {
     const { style, ...rest } = this.props;
     return <Text {...rest} style={[styles.baseText, style]} />;
   }

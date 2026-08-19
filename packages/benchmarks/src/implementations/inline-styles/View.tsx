@@ -11,7 +11,7 @@ const compose = (s1?: CSSProperties, s2?: CSSProperties) => {
 type Props = ComponentProps<'div'>;
 
 class View extends Component<Props> {
-  render() {
+  override render() {
     const { style, ...other } = this.props;
     return <div {...other} style={compose(viewStyle, style)} />;
   }

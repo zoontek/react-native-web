@@ -127,13 +127,13 @@ export default class Benchmark extends Component<
     this._samples = [];
   }
 
-  componentWillReceiveProps(nextProps: BenchmarkPropsType) {
+  override componentWillReceiveProps(nextProps: BenchmarkPropsType) {
     this.setState((state) => ({
       componentProps: nextProps.getComponentProps({ cycle: state.cycle })
     }));
   }
 
-  componentWillUpdate(
+  override componentWillUpdate(
     _nextProps: BenchmarkPropsType,
     nextState: BenchmarkStateType
   ) {
@@ -142,7 +142,7 @@ export default class Benchmark extends Component<
     }
   }
 
-  componentDidUpdate() {
+  override componentDidUpdate() {
     const { forceLayout, sampleCount, timeout, type } = this.props;
     const { cycle, running } = this.state;
 
@@ -173,13 +173,13 @@ export default class Benchmark extends Component<
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     if (this._raf) {
       window.cancelAnimationFrame(this._raf);
     }
   }
 
-  render(): ReactNode {
+  override render(): ReactNode {
     const { component: Component, type } = this.props;
     const { componentProps, cycle, running } = this.state;
     if (running && shouldRecord(cycle, type)) {
