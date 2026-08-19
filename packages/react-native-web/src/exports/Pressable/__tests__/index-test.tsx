@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import Pressable from '../';
 import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
 import type { Nullable, PlatformMethods } from '../../../types';
+import { createRef, useState } from 'react';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);
@@ -74,7 +74,7 @@ describe('components/Pressable', () => {
     let container!: HTMLElement;
     const onBlur = jest.fn();
     const onFocus = jest.fn();
-    const ref = React.createRef<HTMLElement & PlatformMethods>();
+    const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
         <Pressable
@@ -106,7 +106,7 @@ describe('components/Pressable', () => {
   test('focus interaction (disabled)', () => {
     const onBlur = jest.fn();
     const onFocus = jest.fn();
-    const ref = React.createRef<HTMLElement & PlatformMethods>();
+    const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       render(
         <Pressable
@@ -133,7 +133,7 @@ describe('components/Pressable', () => {
     let container!: HTMLElement;
     const onHoverIn = jest.fn();
     const onHoverOut = jest.fn();
-    const ref = React.createRef<HTMLElement & PlatformMethods>();
+    const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
         <Pressable
@@ -167,7 +167,7 @@ describe('components/Pressable', () => {
     const onPress = jest.fn();
     const onPressIn = jest.fn();
     const onPressOut = jest.fn();
-    const ref = React.createRef<HTMLElement & PlatformMethods>();
+    const ref = createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
         <Pressable
@@ -210,10 +210,10 @@ describe('components/Pressable', () => {
       const onPress = jest.fn();
       const onPressIn = jest.fn();
       const onPressOut = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
 
       function TestCase() {
-        const [shown, setShown] = React.useState(true);
+        const [shown, setShown] = useState(true);
         return shown ? (
           <Pressable
             children={({ pressed }) =>
@@ -253,7 +253,7 @@ describe('components/Pressable', () => {
 
     test('ignore press when keyup is on a different element', () => {
       const onPress = jest.fn();
-      const firstRef = React.createRef<HTMLElement & PlatformMethods>();
+      const firstRef = createRef<HTMLElement & PlatformMethods>();
 
       function TestCase() {
         return (
@@ -283,7 +283,7 @@ describe('components/Pressable', () => {
   test('press interaction as button (keyboard)', () => {
     const onPress = jest.fn();
     const preventDefault = jest.fn();
-    const ref = React.createRef<HTMLElement & PlatformMethods>();
+    const ref = createRef<HTMLElement & PlatformMethods>();
 
     function TestCase() {
       return (
@@ -317,7 +317,7 @@ describe('components/Pressable', () => {
     });
 
     test('node has imperative methods', () => {
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Pressable ref={ref} />);
       });

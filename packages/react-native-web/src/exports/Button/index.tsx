@@ -8,10 +8,10 @@
 
 import type { Nullable, PlatformMethods } from '../../types';
 
-import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import TouchableOpacity from '../TouchableOpacity';
 import Text from '../Text';
+import { forwardRef } from 'react';
 
 type ButtonProps = {
   accessibilityLabel?: Nullable<string>;
@@ -22,7 +22,7 @@ type ButtonProps = {
   title: string;
 };
 
-const Button = React.forwardRef<HTMLElement & PlatformMethods, ButtonProps>(
+const Button = forwardRef<HTMLElement & PlatformMethods, ButtonProps>(
   (props, forwardedRef) => {
     const { accessibilityLabel, color, disabled, onPress, testID, title } =
       props;

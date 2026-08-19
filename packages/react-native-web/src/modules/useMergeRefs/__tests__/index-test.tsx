@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
 import type { RenderResult } from '@testing-library/react';
 import { act, render } from '@testing-library/react';
 import useMergeRefs from '..';
+import { createRef, type ComponentProps, type Ref } from 'react';
 
 describe('modules/useMergeRefs', () => {
   function TestComponent({
     refs,
     ...rest
-  }: React.ComponentProps<'div'> & {
-    refs: ReadonlyArray<React.Ref<HTMLDivElement> | undefined>;
+  }: ComponentProps<'div'> & {
+    refs: ReadonlyArray<Ref<HTMLDivElement> | undefined>;
   }) {
     const mergedRef = useMergeRefs(...refs);
     return <div ref={mergedRef} {...rest} />;
@@ -30,8 +30,8 @@ describe('modules/useMergeRefs', () => {
   test('merges any number of varying refs', () => {
     const callbackRef1 = jest.fn();
     const callbackRef2 = jest.fn();
-    const objectRef1 = React.createRef<HTMLDivElement>();
-    const objectRef2 = React.createRef<HTMLDivElement>();
+    const objectRef1 = createRef<HTMLDivElement>();
+    const objectRef2 = createRef<HTMLDivElement>();
     const nullRef = null;
 
     act(() => {

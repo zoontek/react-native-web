@@ -6,10 +6,10 @@
  */
 
 import ActivityIndicator from '..';
-import React from 'react';
 import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
 import type { Nullable, PlatformMethods } from '../../../types';
+import { createRef } from 'react';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);
@@ -86,7 +86,7 @@ describe('components/ActivityIndicator', () => {
   describe('prop "onBlur"', () => {
     test('is called', () => {
       const onBlur = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<ActivityIndicator onBlur={onBlur} ref={ref} />);
       });
@@ -103,7 +103,7 @@ describe('components/ActivityIndicator', () => {
   describe('prop "onFocus"', () => {
     test('is called', () => {
       const onFocus = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<ActivityIndicator onFocus={onFocus} ref={ref} />);
       });

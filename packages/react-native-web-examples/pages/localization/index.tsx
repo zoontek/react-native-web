@@ -6,7 +6,12 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-import React, { type ComponentProps, type ReactNode } from 'react';
+import {
+  Component,
+  type ComponentProps,
+  type ComponentType,
+  type ReactNode
+} from 'react';
 import {
   Image,
   PixelRatio,
@@ -80,8 +85,8 @@ type RTLProps = {
   setRTL: (isRTL: boolean) => void;
 };
 
-function withRTLState(Component: React.ComponentType<RTLProps>) {
-  return class extends React.Component<object, { isRTL: boolean }> {
+function withRTLState(RTLComponent: ComponentType<RTLProps>) {
+  return class extends Component<object, { isRTL: boolean }> {
     constructor(props: object) {
       super(props);
       this.state = {
@@ -92,7 +97,7 @@ function withRTLState(Component: React.ComponentType<RTLProps>) {
     render() {
       const isRTL = this.state.isRTL;
       const setRTL = (isRTL: boolean) => this.setState({ isRTL: isRTL });
-      return <Component isRTL={isRTL} setRTL={setRTL} />;
+      return <RTLComponent isRTL={isRTL} setRTL={setRTL} />;
     }
   };
 }
@@ -387,7 +392,7 @@ type LayoutRTLExampleState = {
   containerWidth: number;
 };
 
-class LayoutRTLExample extends React.Component<object, LayoutRTLExampleState> {
+class LayoutRTLExample extends Component<object, LayoutRTLExampleState> {
   constructor(props: object) {
     super(props);
 

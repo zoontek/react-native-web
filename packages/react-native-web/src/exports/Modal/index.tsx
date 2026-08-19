@@ -8,11 +8,17 @@
 
 'use client';
 
-import type { ReactNode } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode
+} from 'react';
 import type { Nullable, PlatformMethods } from '../../types';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
 import ModalPortal from './ModalPortal';
 import ModalAnimation from './ModalAnimation';
 import ModalContent from './ModalContent';
@@ -89,7 +95,7 @@ function addActiveModal(
 // TODO: remove the alias after forwardRef removal
 type TNode = HTMLElement & PlatformMethods;
 
-const Modal = React.forwardRef<TNode, ModalProps>((props, forwardedRef) => {
+const Modal = forwardRef<TNode, ModalProps>((props, forwardedRef) => {
   const {
     animationType,
     children,
@@ -103,25 +109,25 @@ const Modal = React.forwardRef<TNode, ModalProps>((props, forwardedRef) => {
 
   // Set a unique model identifier so we can correctly route
   // dismissals and check the layering of modals.
-  const modalId = React.useMemo(() => uniqueModalIdentifier++, []);
+  const modalId = useMemo(() => uniqueModalIdentifier++, []);
 
-  const [isActive, setIsActive] = React.useState(false);
+  const [isActive, setIsActive] = useState(false);
 
-  const onDismissCallback = React.useCallback(() => {
+  const onDismissCallback = useCallback(() => {
     removeActiveModal(modalId);
     if (onDismiss) {
       onDismiss();
     }
   }, [modalId, onDismiss]);
 
-  const onShowCallback = React.useCallback(() => {
+  const onShowCallback = useCallback(() => {
     addActiveModal(modalId, setIsActive);
     if (onShow) {
       onShow();
     }
   }, [modalId, onShow]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => removeActiveModal(modalId);
   }, [modalId]);
 

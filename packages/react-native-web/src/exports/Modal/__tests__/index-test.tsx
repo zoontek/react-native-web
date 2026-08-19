@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { useEffect } from 'react';
 import Modal from '..';
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 describe('components/Modal', () => {
@@ -642,7 +642,7 @@ describe('components/Modal', () => {
     const spy = jest.fn();
 
     function TestComponent() {
-      React.useEffect(() => spy('mount'), []);
+      useEffect(() => spy('mount'), []);
       return (
         <Modal visible={true}>
           <a ref={(ref) => (ref ? spy('ref') : spy('noref'))} />

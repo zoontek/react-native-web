@@ -10,7 +10,7 @@ import {
   View,
   unstable_createElement as createElement
 } from 'react-native-web';
-import React, { Component } from 'react';
+import { Component, Fragment } from 'react';
 import Button from './Button';
 import { IconClear, IconEye } from './Icons';
 import ReportCard from './ReportCard';
@@ -188,7 +188,7 @@ export default class App extends Component<Props, State> {
 
             <Provider>
               {status === 'running' ? (
-                <React.Fragment>
+                <Fragment>
                   <View ref={this._setBenchWrapperRef}>
                     <Benchmark
                       component={Component}
@@ -204,7 +204,7 @@ export default class App extends Component<Props, State> {
                       type={benchmarkType}
                     />
                   </View>
-                </React.Fragment>
+                </Fragment>
               ) : (
                 <Component {...getComponentProps({ cycle: 10 })} />
               )}

@@ -5,20 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
+import { createRef, useRef, type RefObject } from 'react';
 import mergeRefs from '..';
 import { render } from '@testing-library/react';
 
 describe('modules/mergeRefs', () => {
   test('merges refs of different types', () => {
-    const ref = React.createRef<HTMLDivElement>();
+    const ref = createRef<HTMLDivElement>();
     let functionRefValue: HTMLDivElement | null = null;
-    let hookRef!: React.RefObject<HTMLDivElement | null>;
+    let hookRef!: RefObject<HTMLDivElement | null>;
     function Component() {
       const functionRef = (x: HTMLDivElement | null) => {
         functionRefValue = x;
       };
-      hookRef = React.useRef<HTMLDivElement | null>(null);
+      hookRef = useRef<HTMLDivElement | null>(null);
       return <div ref={mergeRefs(ref, hookRef, functionRef)} />;
     }
 

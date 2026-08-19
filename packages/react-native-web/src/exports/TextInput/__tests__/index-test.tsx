@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import TextInput from '..';
 import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
 import type { Nullable } from '../../../types';
+import { createRef, type ComponentRef, type SyntheticEvent } from 'react';
 
 const createEventTarget = <T extends Node>(node: Nullable<T>) =>
   createEventTargetImpl(node as T);
@@ -329,7 +329,7 @@ describe('components/TextInput', () => {
 
   test('prop "onBlur"', () => {
     const onBlur = jest.fn();
-    const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
+    const ref = createRef<ComponentRef<typeof TextInput>>();
     act(() => {
       render(<TextInput onBlur={onBlur} ref={ref} />);
     });
@@ -365,7 +365,7 @@ describe('components/TextInput', () => {
 
   test('prop "onFocus"', () => {
     const onFocus = jest.fn();
-    const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
+    const ref = createRef<ComponentRef<typeof TextInput>>();
     act(() => {
       render(<TextInput onFocus={onFocus} ref={ref} />);
     });
@@ -381,7 +381,7 @@ describe('components/TextInput', () => {
   describe('prop "onKeyPress"', () => {
     test('arrow key', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -403,7 +403,7 @@ describe('components/TextInput', () => {
 
     test('backspace key', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -425,7 +425,7 @@ describe('components/TextInput', () => {
 
     test('enter key', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -447,7 +447,7 @@ describe('components/TextInput', () => {
 
     test('escape key', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -469,7 +469,7 @@ describe('components/TextInput', () => {
 
     test('space key', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -491,7 +491,7 @@ describe('components/TextInput', () => {
 
     test('tab key', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -513,7 +513,7 @@ describe('components/TextInput', () => {
 
     test('text key', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -535,7 +535,7 @@ describe('components/TextInput', () => {
 
     test('modifier keys are included', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -565,7 +565,7 @@ describe('components/TextInput', () => {
 
     test('meta key + Enter calls "onKeyPress"', () => {
       const onKeyPress = jest.fn((e: unknown) => {
-        (e as React.SyntheticEvent).persist();
+        (e as SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -785,13 +785,13 @@ describe('components/TextInput', () => {
 
   describe('imperative methods', () => {
     test('node.clear()', () => {
-      const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
+      const ref = createRef<ComponentRef<typeof TextInput>>();
       render(<TextInput ref={ref} />);
       expect(typeof ref.current?.clear).toBe('function');
     });
 
     test('node.isFocused()', () => {
-      const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
+      const ref = createRef<ComponentRef<typeof TextInput>>();
       render(<TextInput ref={ref} />);
       expect(typeof ref.current?.isFocused).toBe('function');
     });

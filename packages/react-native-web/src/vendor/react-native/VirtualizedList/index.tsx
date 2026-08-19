@@ -45,7 +45,14 @@ import {
 } from '../VirtualizeUtils';
 import invariant from 'fbjs/lib/invariant';
 import nullthrows from 'nullthrows';
-import * as React from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  type ComponentProps,
+  type ContextType,
+  type ReactElement,
+  type ReactNode
+} from 'react';
 
 export type { RenderItemProps, RenderItemType, Separators };
 
@@ -199,7 +206,7 @@ function findLastWhere<T>(
 class VirtualizedList extends StateSafePureComponent<Props, State> {
   static contextType: typeof VirtualizedListContext = VirtualizedListContext;
 
-  declare context: React.ContextType<typeof VirtualizedListContext>;
+  declare context: ContextType<typeof VirtualizedListContext>;
 
   // scrollToEnd may be janky without getItemLayout prop
   scrollToEnd(params?: Nullable<{ animated?: Nullable<boolean> }>) {
@@ -828,7 +835,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
   }
 
   _pushCells(
-    cells: Array<React.ReactNode>,
+    cells: Array<ReactNode>,
     stickyHeaderIndices: Array<number>,
     stickyIndicesFromProps: Set<number>,
     first: number,
@@ -953,7 +960,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     return key;
   }
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     this._checkProps(this.props);
     const { ListEmptyComponent, ListFooterComponent, ListHeaderComponent } =
       this.props;
@@ -963,7 +970,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
         ? styles.horizontallyInverted
         : styles.verticallyInverted
       : null;
-    const cells: Array<React.ReactNode> = [];
+    const cells: Array<ReactNode> = [];
     const stickyIndicesFromProps = new Set(this.props.stickyHeaderIndices);
     const stickyHeaderIndices: Array<number> = [];
 
@@ -972,7 +979,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
       if (stickyIndicesFromProps.has(0)) {
         stickyHeaderIndices.push(0);
       }
-      const element = React.isValidElement(ListHeaderComponent) ? (
+      const element = isValidElement(ListHeaderComponent) ? (
         ListHeaderComponent
       ) : (
         <ListHeaderComponent />
@@ -996,12 +1003,12 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     const itemCount = this.props.getItemCount(data);
     if (itemCount === 0 && ListEmptyComponent) {
       const element = (
-        React.isValidElement(ListEmptyComponent) ? (
+        isValidElement(ListEmptyComponent) ? (
           ListEmptyComponent
         ) : (
           <ListEmptyComponent />
         )
-      ) as React.ReactElement<{
+      ) as ReactElement<{
         onLayout?: (event: LayoutEvent) => void;
         style?: ViewStyleProp;
       }>;
@@ -1010,7 +1017,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
           cellKey={this._getCellKey() + '-empty'}
           key="$empty"
         >
-          {React.cloneElement(element, {
+          {cloneElement(element, {
             onLayout: (event: LayoutEvent) => {
               this._onLayoutEmpty(event);
               if (element.props.onLayout) {
@@ -1090,7 +1097,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
 
     // 3. Add cell for ListFooterComponent
     if (ListFooterComponent) {
-      const element = React.isValidElement(ListFooterComponent) ? (
+      const element = isValidElement(ListFooterComponent) ? (
         ListFooterComponent
       ) : (
         <ListFooterComponent />
@@ -1148,11 +1155,11 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
           unregisterAsNestedChild: this._unregisterAsNestedChild
         }}
       >
-        {React.cloneElement(
+        {cloneElement(
           (
             this.props.renderScrollComponent ||
             this._defaultRenderScrollComponent
-          )(scrollProps) as React.ReactElement<{
+          )(scrollProps) as ReactElement<{
             ref?: (ref: Nullable<ScrollRef>) => void;
           }>,
           {
@@ -1162,7 +1169,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
         )}
       </VirtualizedListContextProvider>
     );
-    let ret: React.ReactNode = innerRet;
+    let ret: ReactNode = innerRet;
     /* https://github.com/necolas/react-native-web/issues/2239: Re-enable when ScrollView.Context.Consumer is available.
     if (__DEV__) {
       ret = (
@@ -1176,7 +1183,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
               this.context == null &&
               this.props.scrollEnabled !== false
             ) {
-              // TODO (T46547044): use React.warn once 16.9 is sync'd: https://github.com/facebook/react/pull/15170
+              // TODO (T46547044): use warn once 16.9 is sync'd: https://github.com/facebook/react/pull/15170
               console.error(
                 'VirtualizedLists should never be nested inside plain ScrollViews with the same ' +
                   'orientation because it can break windowing and other functionality - use another ' +
@@ -1294,7 +1301,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
       );
       return (
         <ScrollView
-          {...(props as unknown as React.ComponentProps<typeof ScrollView>)}
+          {...(props as unknown as ComponentProps<typeof ScrollView>)}
           refreshControl={
             props.refreshControl == null ? (
               <RefreshControl
@@ -1303,7 +1310,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
                 progressViewOffset={props.progressViewOffset}
               />
             ) : (
-              (props.refreshControl as React.ReactElement<{
+              (props.refreshControl as ReactElement<{
                 style?: unknown;
               }>)
             )
@@ -1313,7 +1320,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     } else {
       return (
         <ScrollView
-          {...(props as unknown as React.ComponentProps<typeof ScrollView>)}
+          {...(props as unknown as ComponentProps<typeof ScrollView>)}
         />
       );
     }
