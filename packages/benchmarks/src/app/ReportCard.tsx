@@ -14,7 +14,6 @@ type Props = {
   mean?: number;
   meanLayout?: number;
   meanScripting?: number;
-  runTime?: number;
   sampleCount?: number;
   stdDev?: number;
 };
@@ -80,10 +79,6 @@ const styles = StyleSheet.create({
   smallText: { fontSize: 12 },
   monoFont: {
     fontFamily: 'monospace'
-  },
-  centerText: {
-    display: 'flex',
-    alignItems: 'center'
   },
   left: {
     width: '50%'

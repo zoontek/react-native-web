@@ -25,10 +25,9 @@ export type ComponentsType = {
   Box: ComponentType<BoxProps>;
   Dot?: ComponentType<DotProps>;
   Provider: ComponentType<{ children?: ReactNode }>;
-  View: ComponentType<{ children?: ReactNode }>;
 };
 
-export type ImplementationType = {
+type ImplementationType = {
   components: ComponentsType;
   name: string;
   version: string;

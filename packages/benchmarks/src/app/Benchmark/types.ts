@@ -1,12 +1,5 @@
 export type BenchResultsType = {
-  startTime: number;
-  endTime: number;
-  runTime: number;
   sampleCount: number;
-  samples: Array<FullSampleTimingType>;
-  max: number;
-  min: number;
-  median: number;
   mean: number;
   stdDev: number;
   meanLayout: number;
