@@ -70,7 +70,7 @@ describe('useResponderEvents', () => {
     const buttons = [1, 2, 3, 4];
     // gesture
     act(() => {
-      buttons.forEach((button) => {
+      buttons.forEach(() => {
         target.pointerdown({
           pointerType: 'mouse',
           button: buttonType.auxiliary,
@@ -198,7 +198,7 @@ describe('useResponderEvents', () => {
       (pointerType) => {
         let grantCurrentTarget;
         const grandParentCallbacks = {
-          onStartShouldSetResponderCapture: jest.fn((e: ResponderEvent) => {
+          onStartShouldSetResponderCapture: jest.fn(() => {
             return true;
           }),
           onResponderGrant: jest.fn((e: ResponderEvent) => {
@@ -2401,56 +2401,56 @@ describe('useResponderEvents', () => {
       const eventLog: Array<string> = [];
 
       const targetConfig = {
-        onStartShouldSetResponderCapture(e: ResponderEvent) {
+        onStartShouldSetResponderCapture() {
           eventLog.push('target: onStartShouldSetResponderCapture');
           return false;
         },
-        onStartShouldSetResponder(e: ResponderEvent) {
+        onStartShouldSetResponder() {
           eventLog.push('target: onStartShouldSetResponder');
           return true;
         },
-        onMoveShouldSetResponderCapture(e: ResponderEvent) {
+        onMoveShouldSetResponderCapture() {
           eventLog.push('target: onMoveShouldSetResponderCapture');
           return false;
         },
-        onMoveShouldSetResponder(e: ResponderEvent) {
+        onMoveShouldSetResponder() {
           eventLog.push('target: onMoveShouldSetResponder');
           return false;
         },
-        onResponderGrant(e: ResponderEvent) {
+        onResponderGrant() {
           eventLog.push('target: onResponderGrant');
         },
-        onResponderStart(e: ResponderEvent) {
+        onResponderStart() {
           eventLog.push('target: onResponderStart');
         },
-        onResponderMove(e: ResponderEvent) {
+        onResponderMove() {
           eventLog.push('target: onResponderMove');
         }
       };
       const siblingConfig = {
-        onStartShouldSetResponderCapture(e: ResponderEvent) {
+        onStartShouldSetResponderCapture() {
           eventLog.push('sibling: onStartShouldSetResponderCapture');
           return true;
         },
-        onStartShouldSetResponder(e: ResponderEvent) {
+        onStartShouldSetResponder() {
           eventLog.push('sibling: onStartShouldSetResponder');
           return true;
         },
-        onMoveShouldSetResponderCapture(e: ResponderEvent) {
+        onMoveShouldSetResponderCapture() {
           eventLog.push('sibling: onMoveShouldSetResponderCapture');
           return true;
         },
-        onMoveShouldSetResponder(e: ResponderEvent) {
+        onMoveShouldSetResponder() {
           eventLog.push('sibling: onMoveShouldSetResponder');
           return true;
         },
-        onResponderGrant(e: ResponderEvent) {
+        onResponderGrant() {
           eventLog.push('sibling: onResponderGrant');
         },
-        onResponderStart(e: ResponderEvent) {
+        onResponderStart() {
           eventLog.push('sibling: onResponderStart');
         },
-        onResponderMove(e: ResponderEvent) {
+        onResponderMove() {
           eventLog.push('sibling: onResponderMove');
         }
       };

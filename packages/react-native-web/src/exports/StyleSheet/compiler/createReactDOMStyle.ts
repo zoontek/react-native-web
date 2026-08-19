@@ -192,7 +192,7 @@ const createReactDOMStyle = (
           resolvedStyle.paddingBottom = value;
         }
       } else if (longFormProperties) {
-        longFormProperties.forEach((longForm, i) => {
+        longFormProperties.forEach((longForm) => {
           // The value of any longform property in the original styles takes
           // precedence over the shortform's value.
           if (style[longForm] == null) {
