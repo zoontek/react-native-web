@@ -8,7 +8,7 @@ function Gap() {
   return <View style={styles.gap} />;
 }
 
-type AnimationType = ComponentProps<typeof Modal>['animationType'];
+type AnimationType = NonNullable<ComponentProps<typeof Modal>['animationType']>;
 
 function AnimatedModal({ animationType }: { animationType: AnimationType }) {
   const [isVisible, setIsVisible] = useState(false);

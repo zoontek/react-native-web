@@ -15,7 +15,7 @@ const Box = ({
   <View
     {...other}
     className={classnames(
-      styles[`color${color}`],
+      styles[`color${color ?? ''}`],
       fixed && styles.fixed,
       outer && styles.outer,
       layout === 'row' && styles.row

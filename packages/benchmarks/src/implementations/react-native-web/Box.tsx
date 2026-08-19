@@ -12,7 +12,7 @@ const Box = ({
   <View
     {...other}
     style={[
-      styles[`color${color}` as keyof typeof styles],
+      styles[`color${color ?? ''}` as keyof typeof styles],
       fixed && styles.fixed,
       layout === 'row' && styles.row,
       outer && styles.outer
