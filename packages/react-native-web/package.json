@@ -7,6 +7,7 @@
   "description": "React Native for Web",
   "module": "dist/index.js",
   "main": "dist/cjs/index.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "files": [
     "dist",
@@ -18,10 +19,10 @@
     "build": "npm-run-all clean -p \"build:* {@}\" --",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --config-file ../../configs/babel.config.js --extensions \".ts,.tsx,.js,.jsx\" --out-dir dist/cjs --ignore \"**/__tests__\"",
     "build:es": "babel src --config-file ../../configs/babel.config.js --extensions \".ts,.tsx,.js,.jsx\" --out-dir dist --ignore \"**/__tests__\"",
+    "build:types": "tsc --project tsconfig.build.json",
     "dev": "npm-run-all clean -p \"build:* {@} -- --watch\""
   },
   "dependencies": {
-    "@babel/runtime": "^7.29.7",
     "@react-native/normalize-colors": "^0.74.1",
     "fbjs": "^3.0.5",
     "memoize-one": "^6.0.0",

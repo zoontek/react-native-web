@@ -13,12 +13,10 @@ const createConfig = ({ modules }) => {
           }
         }
       ],
-      '@babel/preset-react',
+      ['@babel/preset-react', { runtime: 'automatic' }],
       ['@babel/preset-typescript', { allowDeclareFields: true }]
     ],
-    plugins: ['@babel/plugin-transform-runtime'].concat(
-      modules ? ['babel-plugin-add-module-exports'] : []
-    )
+    plugins: modules ? ['babel-plugin-add-module-exports'] : []
   };
 };
 
