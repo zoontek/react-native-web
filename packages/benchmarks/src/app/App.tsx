@@ -163,7 +163,6 @@ export default class App extends Component<Props, State> {
                     mean={r.mean}
                     meanLayout={r.meanLayout}
                     meanScripting={r.meanScripting}
-                    runTime={r.runTime}
                     sampleCount={r.sampleCount}
                     stdDev={r.stdDev}
                   />
@@ -196,7 +195,6 @@ export default class App extends Component<Props, State> {
                       forceLayout={true}
                       getComponentProps={getComponentProps}
                       onComplete={this._createHandleComplete({
-                        sampleCount,
                         benchmarkName: currentBenchmarkName,
                         libraryName: currentLibraryName
                       })}
@@ -253,12 +251,10 @@ export default class App extends Component<Props, State> {
   _createHandleComplete =
     ({
       benchmarkName,
-      libraryName,
-      sampleCount
+      libraryName
     }: {
       benchmarkName: string;
       libraryName: string;
-      sampleCount: number;
     }) =>
     (results: BenchResultsType) => {
       this.setState(
@@ -277,8 +273,6 @@ export default class App extends Component<Props, State> {
         }),
         this._scrollToEnd
       );
-      // console.log(results);
-      // console.log(results.samples.map(sample => sample.elapsed.toFixed(1)).join('\n'));
     };
 
   _handleClear = () => {
