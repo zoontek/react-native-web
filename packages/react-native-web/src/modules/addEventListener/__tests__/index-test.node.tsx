@@ -12,7 +12,7 @@ import { addEventListener } from '..';
 
 describe('addEventListener', () => {
   test('can render correctly using ReactDOMServer', () => {
-    const listener = jest.fn();
+    const listener = vi.fn();
     const targetRef = createRef<HTMLDivElement>();
 
     function Component() {

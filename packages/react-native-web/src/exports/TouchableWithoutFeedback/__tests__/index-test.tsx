@@ -5,7 +5,7 @@ import View from '../../View';
 
 describe('components/TouchableWithoutFeedback', () => {
   test('forwards ref', () => {
-    const ref = jest.fn();
+    const ref = vi.fn();
     render(
       <TouchableWithoutFeedback ref={ref}>
         <View />
@@ -15,7 +15,7 @@ describe('components/TouchableWithoutFeedback', () => {
   });
 
   test('forwards ref of child', () => {
-    const ref = jest.fn();
+    const ref = vi.fn();
     render(
       <TouchableWithoutFeedback>
         <View ref={ref} />

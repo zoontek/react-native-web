@@ -5,13 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { MockInstance } from 'vitest';
+
 import { validate } from '../validate';
 
 describe('validate', () => {
-  let consoleError: jest.SpyInstance;
+  let consoleError: MockInstance;
 
   beforeAll(() => {
-    consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
   afterAll(() => {
     consoleError.mockRestore();
