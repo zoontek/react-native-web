@@ -37,8 +37,7 @@ export type { EventSubscription };
  */
 export default class NativeEventEmitter<
   TEventToArgsMap extends Record<string, unknown[]>
-> implements IEventEmitter<TEventToArgsMap>
-{
+> implements IEventEmitter<TEventToArgsMap> {
   _nativeModule: Nullable<NativeModule>;
 
   constructor(nativeModule: Nullable<NativeModule>) {
