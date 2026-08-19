@@ -50,7 +50,7 @@ type MultiSelectListState = {
 class MultiSelectList extends PureComponent<object, MultiSelectListState> {
   state: MultiSelectListState = { selected: new Map() };
 
-  _keyExtractor = (item: MultiSelectItem, index: number) => String(item.id);
+  _keyExtractor = (item: MultiSelectItem) => String(item.id);
 
   _onPressItem = (id: number) => {
     // updater functions are preferred for transactional updates

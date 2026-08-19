@@ -341,16 +341,16 @@ describe('use-event', () => {
       const targetRef = createRef<HTMLDivElement>();
       const childRef = createRef<HTMLDivElement>();
 
-      const listener = jest.fn((e: Event) => {
+      const listener = jest.fn(() => {
         log.push(['bubble', 'target']);
       });
-      const listenerAlt = jest.fn((e: Event) => {
+      const listenerAlt = jest.fn(() => {
         log.push(['bubble', 'target-alt']);
       });
-      const listenerCapture = jest.fn((e: Event) => {
+      const listenerCapture = jest.fn(() => {
         log.push(['capture', 'target']);
       });
-      const listenerCaptureAlt = jest.fn((e: Event) => {
+      const listenerCaptureAlt = jest.fn(() => {
         log.push(['capture', 'target-alt']);
       });
 
