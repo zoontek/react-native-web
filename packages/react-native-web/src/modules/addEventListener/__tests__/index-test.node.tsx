@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as ReactDOMServer from 'react-dom/server';
-import { addEventListener } from '..';
 import { createRef, useEffect } from 'react';
+import { renderToString } from 'react-dom/server';
+import { addEventListener } from '..';
 
 describe('addEventListener', () => {
   test('can render correctly using ReactDOMServer', () => {
@@ -23,7 +23,7 @@ describe('addEventListener', () => {
       return <div ref={targetRef} />;
     }
 
-    const output = ReactDOMServer.renderToString(<Component />);
+    const output = renderToString(<Component />);
     expect(output).toBe('<div></div>');
   });
 });
