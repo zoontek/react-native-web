@@ -201,7 +201,8 @@ function findLastWhere<T>(
  *
  */
 class VirtualizedList extends StateSafePureComponent<Props, State> {
-  static contextType: typeof VirtualizedListContext = VirtualizedListContext;
+  static override contextType: typeof VirtualizedListContext =
+    VirtualizedListContext;
 
   declare context: ContextType<typeof VirtualizedListContext>;
 
@@ -759,7 +760,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     return null;
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     if (this._isNestedWithSameOrientation()) {
       this.context!.registerAsNestedChild({
         ref: this,
@@ -771,7 +772,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     this.setupWebWheelHandler();
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     if (this._isNestedWithSameOrientation()) {
       this.context!.unregisterAsNestedChild({ ref: this });
     }
@@ -957,7 +958,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     return key;
   }
 
-  render(): ReactNode {
+  override render(): ReactNode {
     this._checkProps(this.props);
     const { ListEmptyComponent, ListFooterComponent, ListHeaderComponent } =
       this.props;
@@ -1205,7 +1206,7 @@ class VirtualizedList extends StateSafePureComponent<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  override componentDidUpdate(prevProps: Props) {
     const { data, extraData } = this.props;
     if (data !== prevProps.data || extraData !== prevProps.extraData) {
       // clear the viewableIndices cache to also trigger

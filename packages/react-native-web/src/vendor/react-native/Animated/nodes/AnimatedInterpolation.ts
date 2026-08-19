@@ -311,12 +311,12 @@ class AnimatedInterpolation<
     this._interpolation = createInterpolation(config);
   }
 
-  __makeNative(platformConfig?: Nullable<PlatformConfig>) {
+  override __makeNative(platformConfig?: Nullable<PlatformConfig>) {
     this._parent.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
 
-  __getValue(): number | string {
+  override __getValue(): number | string {
     const parentValue = this._parent.__getValue();
     invariant(
       typeof parentValue === 'number',
@@ -331,11 +331,11 @@ class AnimatedInterpolation<
     return new AnimatedInterpolation(this, config);
   }
 
-  __attach(): void {
+  override __attach(): void {
     this._parent.__addChild(this);
   }
 
-  __detach(): void {
+  override __detach(): void {
     this._parent.__removeChild(this);
     super.__detach();
   }
@@ -344,7 +344,7 @@ class AnimatedInterpolation<
     return range.map(NativeAnimatedHelper.transformDataType);
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     if (__DEV__) {
       NativeAnimatedHelper.validateInterpolation(this._config);
     }

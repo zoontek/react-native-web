@@ -14,11 +14,11 @@ type State = {
 };
 
 export default class Layout extends Component<Props, State> {
-  state: State = {
+  override state: State = {
     widescreen: false
   };
 
-  render() {
+  override render() {
     const { viewPanel, actionPanel, listPanel } = this.props;
     const { widescreen } = this.state;
     return (

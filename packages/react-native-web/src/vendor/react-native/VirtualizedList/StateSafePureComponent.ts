@@ -32,7 +32,7 @@ export default class StateSafePureComponent<
     this._installSetStateHooks();
   }
 
-  setState<K extends keyof State>(
+  override setState<K extends keyof State>(
     partialState: Nullable<
       | Pick<State, K>
       | State

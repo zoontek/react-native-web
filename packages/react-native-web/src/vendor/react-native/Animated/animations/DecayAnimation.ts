@@ -48,7 +48,7 @@ class DecayAnimation extends Animation {
     this.__iterations = config.iterations ?? 1;
   }
 
-  __getNativeAnimationConfig(): {
+  override __getNativeAnimationConfig(): {
     deceleration: number;
     iterations: number;
     type: 'decay';
@@ -62,7 +62,7 @@ class DecayAnimation extends Animation {
     };
   }
 
-  start(
+  override start(
     fromValue: number,
     onUpdate: (value: number) => void,
     onEnd: Nullable<EndCallback>,
@@ -103,7 +103,7 @@ class DecayAnimation extends Animation {
     }
   }
 
-  stop(): void {
+  override stop(): void {
     super.stop();
     this.__active = false;
     global.cancelAnimationFrame(this._animationFrame);
