@@ -97,6 +97,7 @@ export default defineConfig({
         // temporarily disabled
         'typescript/consistent-return': 'off',
         'typescript/no-extraneous-class': 'off',
+        'typescript/no-unnecessary-boolean-literal-compare': 'off',
         'typescript/no-unsafe-type-assertion': 'off',
         'typescript/unbound-method': 'off',
         // 'typescript/explicit-function-return-type': 'error',
