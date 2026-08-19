@@ -106,7 +106,7 @@ class TaskQueue {
         }
         this.hasTasksToProcess() && this._onMoreTasks();
       })
-      .catch((ex) => {
+      .catch((ex: Error) => {
         setTimeout(() => {
           ex.message = `TaskQueue: Error resolving Promise in task ${task.name}: ${ex.message}`;
           throw ex;

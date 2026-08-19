@@ -150,7 +150,7 @@ function resolveAssetUri(source: Nullable<Source>): Nullable<string> {
           : prev
       );
     }
-    const scaleSuffix = scale !== 1 ? `@${scale}x` : '';
+    const scaleSuffix = scale !== 1 ? `@${scale ?? 0}x` : '';
     uri = asset
       ? `${asset.httpServerLocation}/${asset.name}${scaleSuffix}.${asset.type}`
       : '';
@@ -168,7 +168,7 @@ function resolveAssetUri(source: Nullable<Source>): Nullable<string> {
     const match = uri.match(svgDataUriPattern);
     // inline SVG markup may contain characters (e.g., #, ") that need to be escaped
     if (match) {
-      const [, prefix, svg = ''] = match;
+      const [, prefix = '', svg = ''] = match;
       const encodedSvg = encodeURIComponent(svg);
       return `${prefix}${encodedSvg}`;
     }

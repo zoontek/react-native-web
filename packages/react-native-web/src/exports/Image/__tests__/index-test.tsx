@@ -233,7 +233,7 @@ describe('components/Image', () => {
     ];
 
     resizeModes.forEach((resizeMode) => {
-      test(`value "${resizeMode}"`, () => {
+      test(`value "${String(resizeMode)}"`, () => {
         const { container } = render(<Image resizeMode={resizeMode} />);
         expect(container.firstChild).toMatchSnapshot();
       });
