@@ -73,10 +73,7 @@ export default defineConfig({
 
     // react-hooks
     'react/rules-of-hooks': 'error',
-    'react/exhaustive-deps': 'warn',
-
-    // temporarily disabled
-    'no-unused-expressions': 'off'
+    'react/exhaustive-deps': 'warn'
 
     // 'no-unused-vars': [
     //   'error',

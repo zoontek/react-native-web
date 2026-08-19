@@ -104,7 +104,9 @@ class TaskQueue {
         if (stackItem != null) {
           stackItem.popable = true;
         }
-        this.hasTasksToProcess() && this._onMoreTasks();
+        if (this.hasTasksToProcess()) {
+          this._onMoreTasks();
+        }
       })
       .catch((ex: Error) => {
         setTimeout(() => {

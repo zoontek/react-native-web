@@ -154,6 +154,7 @@ export default class Benchmark extends Component<
       if (forceLayout) {
         sample.layoutStart = Timing.now();
         if (document.body) {
+          // oxlint-disable-next-line no-unused-expressions
           document.body.offsetWidth;
         }
         sample.layoutEnd = Timing.now();

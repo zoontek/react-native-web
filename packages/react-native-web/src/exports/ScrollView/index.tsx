@@ -207,14 +207,14 @@ class ScrollView extends Component<ScrollViewProps> {
   scrollResponderHandleTouchEnd = (e: TouchEvent<HTMLElement>) => {
     const nativeEvent = e.nativeEvent;
     this.isTouching = nativeEvent.touches.length !== 0;
-    this.props.onTouchEnd && this.props.onTouchEnd(e);
+    this.props.onTouchEnd?.(e);
   };
 
   /**
    * Invoke this from an `onResponderRelease` event.
    */
   scrollResponderHandleResponderRelease = (e: ResponderEvent) => {
-    this.props.onResponderRelease && this.props.onResponderRelease(e);
+    this.props.onResponderRelease?.(e);
 
     // By default scroll views will unfocus a textField
     // if another touch occurs outside of it
@@ -226,15 +226,14 @@ class ScrollView extends Component<ScrollViewProps> {
       !this.observedScrollSinceBecomingResponder &&
       !this.becameResponderWhileAnimating
     ) {
-      this.props.onScrollResponderKeyboardDismissed &&
-        this.props.onScrollResponderKeyboardDismissed(e);
+      this.props.onScrollResponderKeyboardDismissed?.(e);
       TextInputState.blurTextInput(currentlyFocusedTextInput);
     }
   };
 
   scrollResponderHandleScroll = (e: unknown) => {
     this.observedScrollSinceBecomingResponder = true;
-    this.props.onScroll && this.props.onScroll(e);
+    this.props.onScroll?.(e);
   };
 
   /**
@@ -242,7 +241,7 @@ class ScrollView extends Component<ScrollViewProps> {
    */
   scrollResponderHandleResponderGrant = (e: ResponderEvent) => {
     this.observedScrollSinceBecomingResponder = false;
-    this.props.onResponderGrant && this.props.onResponderGrant(e);
+    this.props.onResponderGrant?.(e);
     this.becameResponderWhileAnimating = this.scrollResponderIsAnimating();
   };
 
@@ -254,14 +253,14 @@ class ScrollView extends Component<ScrollViewProps> {
    * Invoke this from an `onScrollBeginDrag` event.
    */
   scrollResponderHandleScrollBeginDrag = (e: unknown) => {
-    this.props.onScrollBeginDrag && this.props.onScrollBeginDrag(e);
+    this.props.onScrollBeginDrag?.(e);
   };
 
   /**
    * Invoke this from an `onScrollEndDrag` event.
    */
   scrollResponderHandleScrollEndDrag = (e: unknown) => {
-    this.props.onScrollEndDrag && this.props.onScrollEndDrag(e);
+    this.props.onScrollEndDrag?.(e);
   };
 
   /**
@@ -269,7 +268,7 @@ class ScrollView extends Component<ScrollViewProps> {
    */
   scrollResponderHandleMomentumScrollBegin = (e: unknown) => {
     this.lastMomentumScrollBeginTime = Date.now();
-    this.props.onMomentumScrollBegin && this.props.onMomentumScrollBegin(e);
+    this.props.onMomentumScrollBegin?.(e);
   };
 
   /**
@@ -277,7 +276,7 @@ class ScrollView extends Component<ScrollViewProps> {
    */
   scrollResponderHandleMomentumScrollEnd = (e: unknown) => {
     this.lastMomentumScrollEndTime = Date.now();
-    this.props.onMomentumScrollEnd && this.props.onMomentumScrollEnd(e);
+    this.props.onMomentumScrollEnd?.(e);
   };
 
   /**
@@ -293,7 +292,7 @@ class ScrollView extends Component<ScrollViewProps> {
    */
   scrollResponderHandleTouchStart = (e: TouchEvent<HTMLElement>) => {
     this.isTouching = true;
-    this.props.onTouchStart && this.props.onTouchStart(e);
+    this.props.onTouchStart?.(e);
   };
 
   /**
@@ -308,7 +307,7 @@ class ScrollView extends Component<ScrollViewProps> {
    * @param {SyntheticEvent} e Touch Start event.
    */
   scrollResponderHandleTouchMove = (e: TouchEvent<HTMLElement>) => {
-    this.props.onTouchMove && this.props.onTouchMove(e);
+    this.props.onTouchMove?.(e);
   };
 
   /**
@@ -482,12 +481,12 @@ class ScrollView extends Component<ScrollViewProps> {
    */
   scrollResponderKeyboardWillShow = (e: KeyboardEvent) => {
     this.keyboardWillOpenTo = e;
-    this.props.onKeyboardWillShow && this.props.onKeyboardWillShow(e);
+    this.props.onKeyboardWillShow?.(e);
   };
 
   scrollResponderKeyboardWillHide = (e: KeyboardEvent) => {
     this.keyboardWillOpenTo = null;
-    this.props.onKeyboardWillHide && this.props.onKeyboardWillHide(e);
+    this.props.onKeyboardWillHide?.(e);
   };
 
   scrollResponderKeyboardDidShow = (e: KeyboardEvent) => {
@@ -496,12 +495,12 @@ class ScrollView extends Component<ScrollViewProps> {
     if (e) {
       this.keyboardWillOpenTo = e;
     }
-    this.props.onKeyboardDidShow && this.props.onKeyboardDidShow(e);
+    this.props.onKeyboardDidShow?.(e);
   };
 
   scrollResponderKeyboardDidHide = (e: KeyboardEvent) => {
     this.keyboardWillOpenTo = null;
-    this.props.onKeyboardDidHide && this.props.onKeyboardDidHide(e);
+    this.props.onKeyboardDidHide?.(e);
   };
 
   /**
