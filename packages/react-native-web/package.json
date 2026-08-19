@@ -16,11 +16,11 @@
   ],
   "scripts": {
     "clean": "del-cli ./dist",
-    "build": "npm-run-all clean -p \"build:* {@}\" --",
+    "build": "pnpm clean && pnpm build:types && pnpm build:es && pnpm build:commonjs",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --config-file ../../configs/babel.config.js --extensions \".ts,.tsx,.js,.jsx\" --out-dir dist/cjs --ignore \"**/__tests__\"",
     "build:es": "babel src --config-file ../../configs/babel.config.js --extensions \".ts,.tsx,.js,.jsx\" --out-dir dist --ignore \"**/__tests__\"",
     "build:types": "tsc --project tsconfig.build.json",
-    "dev": "npm-run-all clean -p \"build:* {@} -- --watch\""
+    "dev": "npm-run-all clean -p \"build:* {@} --watch\""
   },
   "dependencies": {
     "@react-native/normalize-colors": "^0.74.1",
