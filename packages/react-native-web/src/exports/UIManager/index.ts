@@ -76,7 +76,7 @@ const UIManager = {
       // elements that should not prevent keyboard focus.
       if (
         node.getAttribute('tabIndex') == null &&
-        !node.isContentEditable &&
+        node.isContentEditable !== true &&
         elementsToIgnore[name] == null
       ) {
         node.setAttribute('tabIndex', '-1');
