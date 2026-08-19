@@ -96,12 +96,12 @@ export default defineConfig({
 
         // temporarily disabled
         'typescript/consistent-return': 'off',
-        // 'typescript/explicit-function-return-type': 'error',
-        // 'typescript/explicit-module-boundary-types': 'error',
-        // 'typescript/no-dynamic-delete': 'error',
         'typescript/no-extraneous-class': 'off',
         'typescript/no-unsafe-type-assertion': 'off',
         'typescript/unbound-method': 'off',
+        // 'typescript/explicit-function-return-type': 'error',
+        // 'typescript/explicit-module-boundary-types': 'error',
+        // 'typescript/no-dynamic-delete': 'error',
 
         'typescript/restrict-template-expressions': [
           'error',
