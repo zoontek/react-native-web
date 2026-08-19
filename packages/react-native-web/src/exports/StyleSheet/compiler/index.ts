@@ -299,7 +299,7 @@ export function inline(originalStyle: Nullable<Style>, isRTL?: boolean): Style {
     const propPolyfill = PROPERTIES_I18N[originalProp];
     if (propPolyfill != null) {
       prop = isRTL
-        ? PROPERTIES_FLIP[propPolyfill] ?? propPolyfill
+        ? (PROPERTIES_FLIP[propPolyfill] ?? propPolyfill)
         : propPolyfill;
     }
     // BiDi flip transitionProperty value
@@ -312,7 +312,7 @@ export function inline(originalStyle: Nullable<Style>, isRTL?: boolean): Style {
           const valuePolyfill = PROPERTIES_I18N[val];
           if (valuePolyfill != null) {
             originalValues[i] = isRTL
-              ? PROPERTIES_FLIP[valuePolyfill] ?? valuePolyfill
+              ? (PROPERTIES_FLIP[valuePolyfill] ?? valuePolyfill)
               : valuePolyfill;
 
             value = originalValues.map(stringifyStyleValue).join(' ');

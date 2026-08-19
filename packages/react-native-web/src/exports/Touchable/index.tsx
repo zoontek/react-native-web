@@ -107,8 +107,8 @@ const extractSingleTouch = (nativeEvent: TouchEvent) => {
   return !hasTouches && hasChangedTouches
     ? (changedTouches[0] as Touch)
     : hasTouches
-    ? (touches[0] as Touch)
-    : nativeEvent;
+      ? (touches[0] as Touch)
+      : nativeEvent;
 };
 
 /**
