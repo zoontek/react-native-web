@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { PureComponent, type ComponentProps } from 'react';
 import {
   Animated,
   FlatList,
@@ -16,6 +17,7 @@ import {
   TextInput,
   View
 } from 'react-native-web';
+
 import bandaged from '../../assets/lists/bandaged.png';
 import call from '../../assets/lists/call.png';
 import dislike from '../../assets/lists/dislike.png';
@@ -29,7 +31,6 @@ import poke from '../../assets/lists/poke.png';
 import superlike from '../../assets/lists/superlike.png';
 import victory from '../../assets/lists/victory.png';
 import Example from '../../shared/example';
-import { PureComponent, type ComponentProps } from 'react';
 
 type Item = {
   title: string;

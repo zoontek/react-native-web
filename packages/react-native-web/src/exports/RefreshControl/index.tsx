@@ -6,10 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ColorValue } from '../../types';
-import type { ViewProps } from '../View';
 import type { ReactNode } from 'react';
 
+import type { ColorValue } from '../../types';
+import type { ViewProps } from '../View';
 import View from '../View';
 
 type RefreshControlProps = ViewProps & {

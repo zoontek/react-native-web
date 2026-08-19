@@ -1,9 +1,9 @@
-import type { DotProps } from '../../impl';
-
 import {
   unstable_createElement as createElement,
   StyleSheet
 } from 'react-native-web';
+
+import type { DotProps } from '../../impl';
 
 const Dot = ({ size, x, y, children, color }: DotProps) =>
   createElement('div', {

@@ -8,12 +8,12 @@
 'use client';
 
 import { forwardRef, useRef, type ChangeEvent, type FocusEvent } from 'react';
-import type { ColorValue, DimensionValue, PlatformMethods } from '../../types';
-import type { ViewProps } from '../View';
 
-import createElement from '../createElement';
 import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
+import type { ColorValue, DimensionValue, PlatformMethods } from '../../types';
+import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
+import type { ViewProps } from '../View';
 import View from '../View';
 
 type SwitchProps = ViewProps & {

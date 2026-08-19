@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ColorValue, DimensionValue, Nullable } from './index';
 import type { StyleValue } from '../exports/StyleSheet/compiler/normalizeValueWithProperty';
+import type { ColorValue, DimensionValue, Nullable } from './index';
 
 type NumberOrString = number | string;
 

@@ -5,12 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Nullable } from '../../../types';
-import type { ResponderEvent } from '../createResponderEvent';
 import { act, render } from '@testing-library/react';
-import { createRef, type RefObject } from 'react';
-import useResponderEvents from '..';
-import { getResponderNode, terminateResponder } from '../ResponderSystem';
 import {
   buttonType,
   buttonsType,
@@ -18,6 +13,12 @@ import {
   createEventTarget as createEventTargetImpl,
   testWithPointerType
 } from 'dom-event-testing-library';
+import { createRef, type RefObject } from 'react';
+
+import useResponderEvents from '..';
+import type { Nullable } from '../../../types';
+import type { ResponderEvent } from '../createResponderEvent';
+import { getResponderNode, terminateResponder } from '../ResponderSystem';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);

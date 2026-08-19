@@ -5,9 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useEffect } from 'react';
-import Modal from '..';
 import { fireEvent, render } from '@testing-library/react';
+import { useEffect } from 'react';
+
+import Modal from '..';
 
 describe('components/Modal', () => {
   test('visible by default', () => {

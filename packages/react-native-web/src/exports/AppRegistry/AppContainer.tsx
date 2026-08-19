@@ -12,8 +12,8 @@ import {
   type ComponentType,
   type ReactNode
 } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
 
+import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 

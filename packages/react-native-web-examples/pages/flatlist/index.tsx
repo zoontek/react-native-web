@@ -1,6 +1,7 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native-web';
-import Example from '../../shared/example';
 import { PureComponent } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 type MultiSelectItem = {
   id: number;

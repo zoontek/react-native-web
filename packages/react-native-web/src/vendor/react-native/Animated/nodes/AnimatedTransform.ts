@@ -9,11 +9,10 @@
 
 'use strict';
 
+import type { Nullable } from '../../../../types';
+import NativeAnimatedHelper from '../NativeAnimatedHelper';
 import AnimatedNode from './AnimatedNode';
 import AnimatedWithChildren from './AnimatedWithChildren';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
-
-import type { Nullable } from '../../../../types';
 
 class AnimatedTransform extends AnimatedWithChildren {
   _transforms: ReadonlyArray<Record<string, unknown>>;

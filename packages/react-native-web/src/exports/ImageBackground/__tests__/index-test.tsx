@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import ImageBackground from '..';
 import { render } from '@testing-library/react';
+
+import ImageBackground from '..';
 import Text from '../../Text';
 
 function findImage(container: HTMLElement) {

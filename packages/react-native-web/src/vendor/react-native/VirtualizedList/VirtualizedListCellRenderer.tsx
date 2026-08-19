@@ -7,18 +7,6 @@
  * @format
  */
 
-import type { LayoutEvent, Nullable } from '../../../types';
-import type { FocusEvent } from '../Types/CoreEventTypes';
-import type {
-  CellRendererProps,
-  RenderItemProps,
-  RenderItemType
-} from './VirtualizedListProps';
-
-import View from '../../../exports/View';
-import type { ViewProps } from '../../../exports/View';
-import StyleSheet from '../../../exports/StyleSheet';
-import { VirtualizedListCellContextProvider } from './VirtualizedListContext';
 import invariant from 'fbjs/lib/invariant';
 import {
   Component,
@@ -28,6 +16,18 @@ import {
   type ReactElement,
   type ReactNode
 } from 'react';
+
+import StyleSheet from '../../../exports/StyleSheet';
+import View from '../../../exports/View';
+import type { ViewProps } from '../../../exports/View';
+import type { LayoutEvent, Nullable } from '../../../types';
+import type { FocusEvent } from '../Types/CoreEventTypes';
+import { VirtualizedListCellContextProvider } from './VirtualizedListContext';
+import type {
+  CellRendererProps,
+  RenderItemProps,
+  RenderItemType
+} from './VirtualizedListProps';
 
 type ViewStyleProp = ViewProps['style'];
 

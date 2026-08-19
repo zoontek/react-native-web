@@ -5,12 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import AppRegistry from '..';
+import { createElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
+
+import AppRegistry from '..';
 import StyleSheet from '../../StyleSheet';
 import Text from '../../Text';
 import View from '../../View';
-import { createElement } from 'react';
 
 const NoopComponent = () => createElement('div');
 

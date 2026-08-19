@@ -6,6 +6,7 @@
  */
 
 import type { RefObject } from 'react';
+
 import UIManager from '../../exports/UIManager';
 import type { LayoutEvent, Nullable } from '../../types';
 import canUseDOM from '../canUseDom';

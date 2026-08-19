@@ -7,8 +7,9 @@
 
 import type { RenderResult } from '@testing-library/react';
 import { act, render } from '@testing-library/react';
-import useMergeRefs from '..';
 import { createRef, type ComponentProps, type Ref } from 'react';
+
+import useMergeRefs from '..';
 
 describe('modules/useMergeRefs', () => {
   function TestComponent({

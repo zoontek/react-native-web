@@ -4,7 +4,7 @@ export default defineConfig({
   ignorePatterns: ['**/dist', 'packages/**/*.html', '**/node_modules'],
   printWidth: 80,
   singleQuote: true,
-  sortImports: false,
+  sortImports: true,
   sortPackageJson: false,
   trailingComma: 'none'
 });

@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react';
-
-import { StyleSheet, TouchableHighlight, Text } from 'react-native-web';
 import { Component } from 'react';
+import { StyleSheet, TouchableHighlight, Text } from 'react-native-web';
 
 type Props = {
   onPress?: ComponentProps<typeof TouchableHighlight>['onPress'];

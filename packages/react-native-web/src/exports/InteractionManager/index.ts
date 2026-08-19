@@ -7,11 +7,12 @@
  */
 
 import invariant from 'fbjs/lib/invariant';
-import type { Task } from './TaskQueue';
-import TaskQueue from './TaskQueue';
-import EventEmitter from '../../vendor/react-native/vendor/emitter/EventEmitter';
+
 import requestIdleCallback from '../../modules/requestIdleCallback';
 import type { Nullable } from '../../types';
+import EventEmitter from '../../vendor/react-native/vendor/emitter/EventEmitter';
+import type { Task } from './TaskQueue';
+import TaskQueue from './TaskQueue';
 
 const _emitter = new EventEmitter<{
   interactionComplete: [];

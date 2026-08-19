@@ -1,6 +1,7 @@
-import { Linking, StyleSheet, Text } from 'react-native-web';
-import Example from '../../shared/example';
 import { useEffect, useState } from 'react';
+import { Linking, StyleSheet, Text } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 const url = 'https://mathiasbynens.github.io/rel-noopener/malicious.html';
 

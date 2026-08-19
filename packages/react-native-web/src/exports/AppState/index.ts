@@ -9,11 +9,12 @@
 'use client';
 
 import invariant from 'fbjs/lib/invariant';
+
+import canUseDOM from '../../modules/canUseDom';
+import type { Nullable } from '../../types';
 import EventEmitter, {
   type EventSubscription
 } from '../../vendor/react-native/vendor/emitter/EventEmitter';
-import canUseDOM from '../../modules/canUseDom';
-import type { Nullable } from '../../types';
 
 type AppStateEvent = 'change' | 'memoryWarning';
 type AppStateStatus = 'active' | 'background';

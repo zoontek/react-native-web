@@ -9,14 +9,12 @@
 
 'use strict';
 
+import StyleSheet from '../../../../exports/StyleSheet';
+import type { Nullable } from '../../../../types';
+import NativeAnimatedHelper from '../NativeAnimatedHelper';
 import AnimatedNode from './AnimatedNode';
 import AnimatedTransform from './AnimatedTransform';
 import AnimatedWithChildren from './AnimatedWithChildren';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
-
-import StyleSheet from '../../../../exports/StyleSheet';
-
-import type { Nullable } from '../../../../types';
 
 const flattenStyle = StyleSheet.flatten;
 

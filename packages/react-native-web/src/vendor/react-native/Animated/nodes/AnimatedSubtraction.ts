@@ -9,12 +9,11 @@
 
 'use strict';
 
-import type AnimatedNode from './AnimatedNode';
-import type { InterpolationConfigType } from './AnimatedInterpolation';
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
 import type { Nullable } from '../../../../types';
-
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import type { InterpolationConfigType } from './AnimatedInterpolation';
 import AnimatedInterpolation from './AnimatedInterpolation';
+import type AnimatedNode from './AnimatedNode';
 import AnimatedValue from './AnimatedValue';
 import AnimatedWithChildren from './AnimatedWithChildren';
 

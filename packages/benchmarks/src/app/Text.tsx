@@ -1,6 +1,6 @@
 import { Component, type ComponentProps } from 'react';
-
 import { StyleSheet, Text } from 'react-native-web';
+
 import { colors } from './theme';
 
 type Props = ComponentProps<typeof Text>;

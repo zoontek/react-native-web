@@ -9,9 +9,10 @@
 
 'use strict';
 
-import type { TurboModule } from './RCTExport';
-import type { Nullable } from '../../../types';
 import invariant from 'fbjs/lib/invariant';
+
+import type { Nullable } from '../../../types';
+import type { TurboModule } from './RCTExport';
 
 export function get<T extends TurboModule>(name: string): Nullable<T> {
   return null;

@@ -7,6 +7,7 @@
  */
 
 import invariant from 'fbjs/lib/invariant';
+
 import canUseDOM from '../../modules/canUseDom';
 
 const initialURL = canUseDOM ? window.location.href : '';

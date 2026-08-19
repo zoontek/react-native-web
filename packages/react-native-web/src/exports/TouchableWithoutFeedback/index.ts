@@ -10,11 +10,6 @@
 'use client';
 
 import type { ForwardedRef, ReactElement, ReactNode, Ref } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
-import type { ElementProps } from '../../modules/createDOMProps';
-import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
-import type { ViewProps } from '../View';
-
 import {
   Children,
   cloneElement,
@@ -23,10 +18,15 @@ import {
   useMemo,
   useRef
 } from 'react';
+
+import type { ElementProps } from '../../modules/createDOMProps';
 import pick from '../../modules/pick';
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
+import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
 import { warnOnce } from '../../modules/warnOnce';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { ViewProps } from '../View';
 
 export type Props = Readonly<{
   accessibilityLabel?: ViewProps['accessibilityLabel'];

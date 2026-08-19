@@ -1,6 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native-web';
-import Example from '../../shared/example';
 import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 const log = (
   // @ts-expect-error use exported PressableProps
