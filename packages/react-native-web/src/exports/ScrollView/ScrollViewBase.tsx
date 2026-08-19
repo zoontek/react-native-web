@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { forwardRef, useRef, type UIEvent } from 'react';
+import { useRef, type Ref, type UIEvent } from 'react';
 
 import useMergeRefs from '../../modules/useMergeRefs';
 import type { Nullable, PlatformMethods } from '../../types';
@@ -20,6 +20,7 @@ type Props = Omit<ViewProps, 'onScroll'> & {
   onScrollEndDrag?: (e: unknown) => void;
   onTouchMove?: ViewProps['onTouchMove'];
   onWheel?: ViewProps['onWheel'];
+  ref?: Ref<HTMLElement & PlatformMethods>;
   scrollEnabled?: boolean;
   scrollEventThrottle?: number;
   showsHorizontalScrollIndicator?: boolean;
@@ -64,17 +65,15 @@ function shouldEmitScrollEvent(lastTick: number, eventThrottle: number) {
   return eventThrottle > 0 && timeSinceLastTick >= eventThrottle;
 }
 
-// TODO: remove the alias after forwardRef removal
-type TNode = HTMLElement & PlatformMethods;
-
 /**
  * Encapsulates the Web-specific scroll throttling and disabling logic
  */
-const ScrollViewBase = forwardRef<TNode, Props>((props, forwardedRef) => {
+const ScrollViewBase = (props: Props) => {
   const {
     onScroll,
     onTouchMove,
     onWheel,
+    ref,
     scrollEnabled = true,
     scrollEventThrottle = 0,
     showsHorizontalScrollIndicator,
@@ -85,7 +84,7 @@ const ScrollViewBase = forwardRef<TNode, Props>((props, forwardedRef) => {
 
   const scrollState = useRef({ isScrolling: false, scrollLastTick: 0 });
   const scrollTimeout = useRef<Nullable<ReturnType<typeof setTimeout>>>(null);
-  const scrollRef = useRef<TNode | null>(null);
+  const scrollRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
 
   function createPreventableScrollHandler<T>(handler?: (e: T) => void) {
     return (e: T) => {
@@ -154,7 +153,7 @@ const ScrollViewBase = forwardRef<TNode, Props>((props, forwardedRef) => {
       onScroll={handleScroll}
       onTouchMove={createPreventableScrollHandler(onTouchMove)}
       onWheel={createPreventableScrollHandler(onWheel)}
-      ref={useMergeRefs(scrollRef, forwardedRef)}
+      ref={useMergeRefs(scrollRef, ref)}
       style={[
         style,
         !scrollEnabled && styles.scrollDisabled,
@@ -162,7 +161,7 @@ const ScrollViewBase = forwardRef<TNode, Props>((props, forwardedRef) => {
       ]}
     />
   );
-});
+};
 
 // Chrome doesn't support e.preventDefault in this case; touch-action must be
 // used to disable scrolling.

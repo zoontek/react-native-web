@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 
 import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
@@ -18,37 +18,36 @@ type ButtonProps = {
   color?: Nullable<string>;
   disabled?: boolean;
   onPress?: Nullable<(e: unknown) => void>;
+  ref?: Ref<HTMLElement & PlatformMethods>;
   testID?: Nullable<string>;
   title: string;
 };
 
-const Button = forwardRef<HTMLElement & PlatformMethods, ButtonProps>(
-  (props, forwardedRef) => {
-    const { accessibilityLabel, color, disabled, onPress, testID, title } =
-      props;
+const Button = (props: ButtonProps) => {
+  const { accessibilityLabel, color, disabled, onPress, ref, testID, title } =
+    props;
 
-    return (
-      <TouchableOpacity
-        accessibilityLabel={accessibilityLabel}
-        accessibilityRole="button"
-        disabled={disabled}
-        focusable={!disabled}
-        onPress={onPress}
-        ref={forwardedRef}
-        style={[
-          styles.button,
-          color && { backgroundColor: color },
-          disabled && styles.buttonDisabled
-        ]}
-        testID={testID}
-      >
-        <Text style={[styles.text, disabled && styles.textDisabled]}>
-          {title}
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-);
+  return (
+    <TouchableOpacity
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole="button"
+      disabled={disabled}
+      focusable={!disabled}
+      onPress={onPress}
+      ref={ref}
+      style={[
+        styles.button,
+        color && { backgroundColor: color },
+        disabled && styles.buttonDisabled
+      ]}
+      testID={testID}
+    >
+      <Text style={[styles.text, disabled && styles.textDisabled]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 Button.displayName = 'Button';
 

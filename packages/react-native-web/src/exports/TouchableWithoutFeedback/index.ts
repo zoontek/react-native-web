@@ -12,11 +12,9 @@
 import {
   Children,
   cloneElement,
-  forwardRef,
   memo,
   useMemo,
   useRef,
-  type ForwardedRef,
   type ReactElement,
   type ReactNode,
   type Ref
@@ -49,6 +47,7 @@ export type Props = Readonly<{
   onPress?: PressResponderConfig['onPress'];
   onPressIn?: PressResponderConfig['onPressStart'];
   onPressOut?: PressResponderConfig['onPressEnd'];
+  ref?: Ref<HTMLElement & PlatformMethods>;
   rejectResponderTermination?: Nullable<boolean>;
   testID?: ViewProps['testID'];
 }>;
@@ -72,10 +71,7 @@ const forwardPropsList = {
 
 const pickProps = (props: Props): ElementProps => pick(props, forwardPropsList);
 
-function TouchableWithoutFeedback(
-  props: Props,
-  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
-): ReactNode {
+function TouchableWithoutFeedback(props: Props): ReactNode {
   warnOnce(
     'TouchableWithoutFeedback',
     'TouchableWithoutFeedback is deprecated. Please use Pressable.'
@@ -91,6 +87,7 @@ function TouchableWithoutFeedback(
     onPress,
     onPressIn,
     onPressOut,
+    ref,
     rejectResponderTermination
   } = props;
 
@@ -132,16 +129,14 @@ function TouchableWithoutFeedback(
   const supportedProps = pickProps(props);
   supportedProps.accessibilityDisabled = disabled;
   supportedProps.focusable = !disabled && focusable !== false;
-  supportedProps.ref = useMergeRefs(forwardedRef, hostRef, element.props.ref);
+  supportedProps.ref = useMergeRefs(ref, hostRef, element.props.ref);
 
   const elementProps = Object.assign(supportedProps, pressEventHandlers);
 
   return cloneElement(element, elementProps, ...children);
 }
 
-const MemoedTouchableWithoutFeedback = memo(
-  forwardRef(TouchableWithoutFeedback)
-);
+const MemoedTouchableWithoutFeedback = memo(TouchableWithoutFeedback);
 MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback';
 
 export default MemoedTouchableWithoutFeedback;
