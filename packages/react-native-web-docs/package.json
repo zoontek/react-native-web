@@ -1,15 +1,15 @@
 {
-  "private": true,
   "name": "react-native-web-docs",
   "version": "0.21.2",
+  "private": true,
   "description": "Documentation website for React Native for Web",
+  "homepage": "https://github.com/necolas/react-native-web",
   "scripts": {
     "build:examples": "pnpm --filter react-native-web-examples build",
     "dev": "pnpm run build:examples && eleventy --serve",
     "build": "pnpm run build:examples && ELEVENTY_PRODUCTION=true eleventy",
     "preview": "eleventy --serve"
   },
-  "homepage": "https://github.com/necolas/react-native-web",
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-navigation": "^1.0.5",
