@@ -1,6 +1,6 @@
 'use strict';
 
-const babelConfig = require('./babel.config.js');
+const configFile = require.resolve('./babel.config.js');
 
 module.exports = {
   fakeTimers: {
@@ -20,6 +20,6 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/__tests__/**/?(*-)+(spec|test).node.[jt]s?(x)'],
   transform: {
-    '\\.[jt]sx?$': ['babel-jest', babelConfig()]
+    '\\.[jt]sx?$': ['babel-jest', { configFile }]
   }
 };

@@ -274,5 +274,3 @@ export const preprocess = <T extends Record<string, unknown>>(
 
   return nextStyle as T;
 };
-
-export default preprocess;

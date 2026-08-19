@@ -2,7 +2,7 @@ export { default as unstable_createElement } from './exports/createElement';
 export { default as findNodeHandle } from './exports/findNodeHandle';
 export { default as NativeModules } from './exports/NativeModules';
 export { default as processColor } from './exports/processColor';
-export { default as render } from './exports/render';
+export { render } from './exports/render';
 export { default as unmountComponentAtNode } from './exports/unmountComponentAtNode';
 
 // APIs

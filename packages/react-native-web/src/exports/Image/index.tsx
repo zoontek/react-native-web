@@ -11,7 +11,7 @@
 import { useContext, useEffect, useRef, useState, type Ref } from 'react';
 
 import { getAssetByID } from '../../modules/AssetRegistry';
-import ImageLoader from '../../modules/ImageLoader';
+import { ImageLoader } from '../../modules/ImageLoader';
 import { warnOnce } from '../../modules/warnOnce';
 import type {
   ColorValue,
