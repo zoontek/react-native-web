@@ -484,7 +484,7 @@ function eventListener(domEvent: Event & Partial<ResponderDOMEvent>) {
           } else if (onResponderTerminationRequest != null) {
             responderEvent.dispatchConfig.registrationName =
               'onResponderTerminationRequest';
-            if (onResponderTerminationRequest(responderEvent) === false) {
+            if (!onResponderTerminationRequest(responderEvent)) {
               shouldTerminate = false;
             }
           }
@@ -536,7 +536,7 @@ function findWantsResponder(
       const shouldSetCallback = config[callbackName];
       if (shouldSetCallback != null) {
         responderEvent.currentTarget = node;
-        if (shouldSetCallback(responderEvent) === true) {
+        if (shouldSetCallback(responderEvent)) {
           // Start the path from the potential responder
           const prunedIdPath = idPath.slice(idPath.indexOf(id));
           return { id, node, idPath: prunedIdPath };
@@ -552,7 +552,7 @@ function findWantsResponder(
       if (result != null) {
         return result;
       }
-      if (responderEvent.isPropagationStopped() === true) {
+      if (responderEvent.isPropagationStopped()) {
         return;
       }
     }
@@ -566,7 +566,7 @@ function findWantsResponder(
         if (result != null) {
           return result;
         }
-        if (responderEvent.isPropagationStopped() === true) {
+        if (responderEvent.isPropagationStopped()) {
           return;
         }
       }
@@ -616,7 +616,7 @@ function attemptTransfer(
       responderEvent.currentTarget = currentNode;
       responderEvent.dispatchConfig.registrationName =
         'onResponderTerminationRequest';
-      if (onResponderTerminationRequest(responderEvent) === false) {
+      if (!onResponderTerminationRequest(responderEvent)) {
         allowTransfer = false;
       }
     }

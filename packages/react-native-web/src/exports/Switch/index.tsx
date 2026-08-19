@@ -83,7 +83,7 @@ const Switch = forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
     const trackBorderRadius = multiplyStyleLengthValue(height, 0.5);
 
     const trackCurrentColor = (function () {
-      if (value === true) {
+      if (value) {
         if (trackColor != null && typeof trackColor === 'object') {
           return trackColor.true;
         } else {
@@ -113,7 +113,7 @@ const Switch = forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
     ];
 
     const disabledTrackColor = (function () {
-      if (value === true) {
+      if (value) {
         if (
           (typeof activeTrackColor === 'string' && activeTrackColor != null) ||
           (typeof trackColor === 'object' && trackColor?.true)
@@ -135,7 +135,7 @@ const Switch = forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
     })();
 
     const disabledThumbColor = (function () {
-      if (value === true) {
+      if (value) {
         if (activeThumbColor == null) {
           return defaultDisabledThumbColor;
         } else {
