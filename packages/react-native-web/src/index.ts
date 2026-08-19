@@ -49,7 +49,6 @@ export { default as StatusBar } from './exports/StatusBar';
 export { default as Switch } from './exports/Switch';
 export { default as Text } from './exports/Text';
 export { default as TextInput } from './exports/TextInput';
-export { default as Touchable } from './exports/Touchable';
 export { default as TouchableHighlight } from './exports/TouchableHighlight';
 export { default as TouchableNativeFeedback } from './exports/TouchableNativeFeedback';
 export { default as TouchableOpacity } from './exports/TouchableOpacity';
@@ -64,3 +63,6 @@ export { default as DeviceEventEmitter } from './exports/DeviceEventEmitter';
 export { default as useColorScheme } from './exports/useColorScheme';
 export { default as useLocaleContext } from './exports/useLocaleContext';
 export { default as useWindowDimensions } from './exports/useWindowDimensions';
+
+/** @internal Runtime-only shim for react-native-svg; not part of the public API. */
+export { default as Touchable } from './exports/Touchable';
