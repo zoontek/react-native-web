@@ -87,7 +87,7 @@ export default class App extends Component<Props, State> {
     };
   }
 
-  render() {
+  override render() {
     const { tests } = this.props;
     const { currentBenchmarkName, status, currentLibraryName, results } =
       this.state;

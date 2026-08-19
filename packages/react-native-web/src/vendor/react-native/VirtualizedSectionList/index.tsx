@@ -156,7 +156,7 @@ class VirtualizedSectionList<
     return this._listRef;
   }
 
-  render(): ReactNode {
+  override render(): ReactNode {
     const {
       ItemSeparatorComponent, // don't pass through, rendered with renderItem
       SectionSeparatorComponent,

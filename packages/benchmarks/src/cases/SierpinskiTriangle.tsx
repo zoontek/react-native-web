@@ -29,7 +29,7 @@ class SierpinskiTriangle extends Component<Props> {
     renderCount: 0
   };
 
-  render() {
+  override render() {
     const { components, x, y, depth, renderCount } = this.props;
     let { s } = this.props;
     const { Dot } = components;

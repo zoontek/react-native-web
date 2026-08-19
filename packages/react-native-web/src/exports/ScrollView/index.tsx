@@ -588,7 +588,7 @@ class ScrollView extends Component<ScrollViewProps> {
     this.scrollResponderScrollTo({ x, y, animated });
   };
 
-  render() {
+  override render() {
     const {
       contentContainerStyle,
       horizontal,

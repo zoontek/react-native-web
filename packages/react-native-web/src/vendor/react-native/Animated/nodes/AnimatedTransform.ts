@@ -22,7 +22,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     this._transforms = transforms;
   }
 
-  __makeNative() {
+  override __makeNative() {
     this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
@@ -34,7 +34,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__makeNative();
   }
 
-  __getValue(): ReadonlyArray<Record<string, unknown>> {
+  override __getValue(): ReadonlyArray<Record<string, unknown>> {
     return this._transforms.map((transform) => {
       const result: Record<string, unknown> = {};
       for (const key in transform) {
@@ -49,7 +49,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __getAnimatedValue(): ReadonlyArray<Record<string, unknown>> {
+  override __getAnimatedValue(): ReadonlyArray<Record<string, unknown>> {
     return this._transforms.map((transform) => {
       const result: Record<string, unknown> = {};
       for (const key in transform) {
@@ -65,7 +65,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __attach(): void {
+  override __attach(): void {
     this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
@@ -76,7 +76,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __detach(): void {
+  override __detach(): void {
     this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
@@ -88,7 +88,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__detach();
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     const transConfigs: Array<
       | {
           type: 'animated';

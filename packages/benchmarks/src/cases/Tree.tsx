@@ -16,7 +16,7 @@ class Tree extends Component<Props> {
 
   static benchmarkType = BenchmarkType.MOUNT;
 
-  render() {
+  override render() {
     const { breadth, components, depth, id, wrap } = this.props;
     const { Box } = components;
 
