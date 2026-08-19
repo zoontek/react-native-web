@@ -1,7 +1,8 @@
 {
-  "private": true,
   "name": "react-native-web-examples",
   "version": "0.21.2",
+  "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "vite build",
     "dev": "vite",
@@ -15,6 +16,5 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.5",
     "vite": "^8.2.0"
-  },
-  "license": "MIT"
+  }
 }
