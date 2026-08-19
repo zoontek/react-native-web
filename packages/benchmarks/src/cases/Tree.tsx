@@ -1,7 +1,7 @@
 import type { ComponentsType } from '../impl';
 
 import { BenchmarkType } from '../app/Benchmark';
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 type Props = {
   breadth: number;

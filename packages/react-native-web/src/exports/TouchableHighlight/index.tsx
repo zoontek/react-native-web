@@ -15,8 +15,16 @@ import type { PressResponderConfig } from '../../modules/usePressEvents/PressRes
 import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
-import { useCallback, useMemo, useState, useRef } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+  Children,
+  cloneElement,
+  forwardRef,
+  memo
+} from 'react';
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
 import StyleSheet from '../StyleSheet';
@@ -173,7 +181,7 @@ function TouchableHighlight(
 
   const pressEventHandlers = usePressEvents(hostRef, pressConfig);
 
-  const child = React.Children.only(children) as ReactElement<{
+  const child = Children.only(children) as ReactElement<{
     style?: ViewStyle;
     [key: string]: unknown;
   }>;
@@ -193,7 +201,7 @@ function TouchableHighlight(
         extraStyles && extraStyles.underlay
       ]}
     >
-      {React.cloneElement(child, {
+      {cloneElement(child, {
         style: [child.props.style, extraStyles && extraStyles.child]
       })}
     </View>
@@ -210,9 +218,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const MemoedTouchableHighlight = React.memo(
-  React.forwardRef(TouchableHighlight)
-);
+const MemoedTouchableHighlight = memo(forwardRef(TouchableHighlight));
 MemoedTouchableHighlight.displayName = 'TouchableHighlight';
 
 export default MemoedTouchableHighlight;

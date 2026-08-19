@@ -21,7 +21,7 @@ import type { Nullable } from '../../../types';
  *
  * Make sure to cleanup with dispose().  Example:
  *
- *   class Widget extends React.Component {
+ *   class Widget extends Component {
  *     _batchedSave: new Batchinator(() => this._saveState, 1000);
  *     _saveSate() {
  *       // save this.state to disk

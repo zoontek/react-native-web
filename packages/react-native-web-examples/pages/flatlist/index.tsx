@@ -1,6 +1,6 @@
-import React from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native-web';
 import Example from '../../shared/example';
+import { PureComponent } from 'react';
 
 type MultiSelectItem = {
   id: number;
@@ -23,7 +23,7 @@ type MyListItemProps = {
   title: string;
 };
 
-class MyListItem extends React.PureComponent<MyListItemProps> {
+class MyListItem extends PureComponent<MyListItemProps> {
   _onPress = () => {
     this.props.onPressItem(this.props.id);
   };
@@ -46,10 +46,7 @@ type MultiSelectListState = {
   selected: Map<number, boolean>;
 };
 
-class MultiSelectList extends React.PureComponent<
-  object,
-  MultiSelectListState
-> {
+class MultiSelectList extends PureComponent<object, MultiSelectListState> {
   state: MultiSelectListState = { selected: new Map() };
 
   _keyExtractor = (item: MultiSelectItem, index: number) => String(item.id);

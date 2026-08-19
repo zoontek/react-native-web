@@ -6,11 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ReactNode } from 'react';
+import { forwardRef, useEffect, useMemo, type ReactNode } from 'react';
 import type { Nullable, PlatformMethods } from '../../types';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
 import View from '../View';
 import StyleSheet from '../StyleSheet';
 import canUseDOM from '../../modules/canUseDom';
@@ -22,13 +21,13 @@ export type ModalContentProps = ViewProps & {
   transparent?: Nullable<boolean>;
 };
 
-const ModalContent = React.forwardRef<
+const ModalContent = forwardRef<
   HTMLElement & PlatformMethods,
   ModalContentProps
 >((props, forwardedRef) => {
   const { active, children, onRequestClose, transparent, ...rest } = props;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (canUseDOM) {
       const closeOnEscape = (e: KeyboardEvent) => {
         if (active && e.key === 'Escape') {
@@ -43,7 +42,7 @@ const ModalContent = React.forwardRef<
     }
   }, [active, onRequestClose]);
 
-  const style = React.useMemo(() => {
+  const style = useMemo(() => {
     return [
       styles.modal,
       transparent ? styles.modalTransparent : styles.modalOpaque

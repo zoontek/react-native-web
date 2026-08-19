@@ -8,17 +8,23 @@
 
 'use client';
 
-import type {
-  ChangeEvent,
-  FocusEvent,
-  KeyboardEvent as ReactKeyboardEvent,
-  SyntheticEvent
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  type ChangeEvent,
+  type FocusEvent,
+  type ForwardRefExoticComponent,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type RefAttributes,
+  type SyntheticEvent
 } from 'react';
 import type { Nullable, PlatformMethods } from '../../types';
 import type { ElementProps } from '../../modules/createDOMProps';
 import type { TextInputProps as Props } from './types';
 
-import * as React from 'react';
 import createElement from '../createElement';
 import * as forwardedProps from '../../modules/forwardedProps';
 import pick from '../../modules/pick';
@@ -112,8 +118,8 @@ function isEventComposing(nativeEvent: KeyboardEvent) {
 
 let focusTimeout: Nullable<ReturnType<typeof setTimeout>> = null;
 
-type TextInputComponent = React.ForwardRefExoticComponent<
-  Props & React.RefAttributes<TextInputNode>
+type TextInputComponent = ForwardRefExoticComponent<
+  Props & RefAttributes<TextInputNode>
 > & {
   State: typeof TextInputState;
 };
@@ -121,7 +127,7 @@ type TextInputComponent = React.ForwardRefExoticComponent<
 // TODO: remove the alias after forwardRef removal
 type TNode = TextInputNode;
 
-const TextInput = React.forwardRef<TNode, Props>((props, forwardedRef) => {
+const TextInput = forwardRef<TNode, Props>((props, forwardedRef) => {
   const {
     autoCapitalize = 'sentences',
     autoComplete,
@@ -221,22 +227,22 @@ const TextInput = React.forwardRef<TNode, Props>((props, forwardedRef) => {
     type = 'password';
   }
 
-  const dimensions = React.useRef<{
+  const dimensions = useRef<{
     height: Nullable<number>;
     width: Nullable<number>;
   }>({ height: null, width: null });
-  const hostRef = React.useRef<TextInputNode | null>(null);
-  const prevSelection = React.useRef<TextInputSelection | null>(null);
-  const prevSecureTextEntry = React.useRef<Nullable<boolean>>(false);
+  const hostRef = useRef<TextInputNode | null>(null);
+  const prevSelection = useRef<TextInputSelection | null>(null);
+  const prevSecureTextEntry = useRef<Nullable<boolean>>(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (hostRef.current && prevSelection.current) {
       setSelection(hostRef.current, prevSelection.current);
     }
     prevSecureTextEntry.current = secureTextEntry;
   }, [secureTextEntry]);
 
-  const handleContentSizeChange = React.useCallback(
+  const handleContentSizeChange = useCallback(
     (hostNode: HTMLInputElement | HTMLTextAreaElement) => {
       if (multiline && onContentSizeChange && hostNode != null) {
         const newHeight = hostNode.scrollHeight;
@@ -261,7 +267,7 @@ const TextInput = React.forwardRef<TNode, Props>((props, forwardedRef) => {
     [multiline, onContentSizeChange]
   );
 
-  const imperativeRef = React.useMemo(
+  const imperativeRef = useMemo(
     () => (hostNode: TextInputNode | null) => {
       // TextInput needs to add more methods to the hostNode in addition to those
       // added by `usePlatformMethods`. This is temporarily until an API like

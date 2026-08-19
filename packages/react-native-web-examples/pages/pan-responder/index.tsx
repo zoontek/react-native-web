@@ -1,6 +1,6 @@
-import React from 'react';
 import { PanResponder, StyleSheet, View } from 'react-native-web';
 import Example from '../../shared/example';
+import { Component, PureComponent, type ComponentRef } from 'react';
 
 const CIRCLE_SIZE = 80;
 
@@ -18,12 +18,12 @@ type CircleStyles = {
   backgroundColor: string;
 };
 
-class DraggableCircle extends React.PureComponent {
+class DraggableCircle extends PureComponent {
   _panResponder: ReturnType<typeof PanResponder.create>;
   _previousLeft = 0;
   _previousTop = 0;
   _circleStyles: CircleStyles;
-  circle: React.ComponentRef<typeof View> | null = null;
+  circle: ComponentRef<typeof View> | null = null;
 
   constructor(props: object) {
     super(props);
@@ -61,7 +61,7 @@ class DraggableCircle extends React.PureComponent {
     );
   }
 
-  _setCircleRef = (circle: React.ComponentRef<typeof View> | null) => {
+  _setCircleRef = (circle: ComponentRef<typeof View> | null) => {
     this.circle = circle;
   };
 
@@ -110,7 +110,7 @@ type LocationXYState = {
   translateX: number;
 };
 
-class LocationXY extends React.Component<object, LocationXYState> {
+class LocationXY extends Component<object, LocationXYState> {
   panResponder: ReturnType<typeof PanResponder.create>;
 
   constructor(props: object) {

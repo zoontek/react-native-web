@@ -15,8 +15,14 @@ import type { PressResponderConfig } from '../../modules/usePressEvents/PressRes
 import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
-import { useCallback, useMemo, useState, useRef } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+  forwardRef,
+  memo
+} from 'react';
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
 import StyleSheet from '../StyleSheet';
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const MemoedTouchableOpacity = React.memo(React.forwardRef(TouchableOpacity));
+const MemoedTouchableOpacity = memo(forwardRef(TouchableOpacity));
 MemoedTouchableOpacity.displayName = 'TouchableOpacity';
 
 export default MemoedTouchableOpacity;

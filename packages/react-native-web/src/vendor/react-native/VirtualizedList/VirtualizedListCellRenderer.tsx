@@ -20,20 +20,23 @@ import type { ViewProps } from '../../../exports/View';
 import StyleSheet from '../../../exports/StyleSheet';
 import { VirtualizedListCellContextProvider } from './VirtualizedListContext';
 import invariant from 'fbjs/lib/invariant';
-import * as React from 'react';
+import {
+  Component,
+  createElement,
+  isValidElement,
+  type ComponentType,
+  type ReactElement,
+  type ReactNode
+} from 'react';
 
 type ViewStyleProp = ViewProps['style'];
 
 export type Props<ItemT> = {
-  CellRendererComponent?: Nullable<
-    React.ComponentType<CellRendererProps<ItemT>>
-  >;
+  CellRendererComponent?: Nullable<ComponentType<CellRendererProps<ItemT>>>;
   ItemSeparatorComponent: Nullable<
-    React.ComponentType<{ highlighted: boolean; leadingItem: Nullable<ItemT> }>
+    ComponentType<{ highlighted: boolean; leadingItem: Nullable<ItemT> }>
   >;
-  ListItemComponent?: Nullable<
-    React.ComponentType<unknown> | React.ReactElement<unknown>
-  >;
+  ListItemComponent?: Nullable<ComponentType<unknown> | ReactElement<unknown>>;
   cellKey: string;
   horizontal: Nullable<boolean>;
   index: number;
@@ -59,7 +62,7 @@ type State<ItemT> = {
   separatorProps: SeparatorProps<ItemT>;
 };
 
-export default class CellRenderer<ItemT> extends React.Component<
+export default class CellRenderer<ItemT> extends Component<
   Props<ItemT>,
   State<ItemT>
 > {
@@ -130,7 +133,7 @@ export default class CellRenderer<ItemT> extends React.Component<
     ListItemComponent: unknown,
     item: ItemT,
     index: number
-  ): React.ReactNode {
+  ): ReactNode {
     if (renderItem && ListItemComponent) {
       console.warn(
         'VirtualizedList: Both ListItemComponent and renderItem props are present. ListItemComponent will take' +
@@ -139,8 +142,8 @@ export default class CellRenderer<ItemT> extends React.Component<
     }
 
     if (ListItemComponent) {
-      return React.createElement(
-        ListItemComponent as React.ComponentType<RenderItemProps<ItemT>>,
+      return createElement(
+        ListItemComponent as ComponentType<RenderItemProps<ItemT>>,
         {
           item,
           index,
@@ -163,7 +166,7 @@ export default class CellRenderer<ItemT> extends React.Component<
     );
   }
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     const {
       CellRendererComponent,
       ItemSeparatorComponent,
@@ -186,9 +189,7 @@ export default class CellRenderer<ItemT> extends React.Component<
 
     // NOTE: that when this is a sticky header, `onLayout` will get automatically extracted and
     // called explicitly by `ScrollViewStickyHeader`.
-    const itemSeparator: React.ReactNode = React.isValidElement(
-      ItemSeparatorComponent
-    )
+    const itemSeparator: ReactNode = isValidElement(ItemSeparatorComponent)
       ? ItemSeparatorComponent
       : ItemSeparatorComponent && (
           <ItemSeparatorComponent {...this.state.separatorProps} />

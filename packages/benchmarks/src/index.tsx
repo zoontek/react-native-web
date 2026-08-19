@@ -7,7 +7,6 @@ import impl from './impl';
 import Tree from './cases/Tree';
 import SierpinskiTriangle from './cases/SierpinskiTriangle';
 
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 export type TestSetupType = {

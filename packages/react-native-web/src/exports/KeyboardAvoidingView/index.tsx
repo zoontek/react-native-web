@@ -10,9 +10,8 @@
 
 import type { LayoutEvent, LayoutValue, Nullable } from '../../types';
 import type { ViewProps } from '../View';
-import type { ReactNode } from 'react';
+import { Component, type ReactNode } from 'react';
 
-import * as React from 'react';
 import View from '../View';
 
 type KeyboardAvoidingViewProps = ViewProps & {
@@ -21,7 +20,7 @@ type KeyboardAvoidingViewProps = ViewProps & {
   keyboardVerticalOffset: number;
 };
 
-class KeyboardAvoidingView extends React.Component<KeyboardAvoidingViewProps> {
+class KeyboardAvoidingView extends Component<KeyboardAvoidingViewProps> {
   frame: Nullable<LayoutValue> = null;
 
   relativeKeyboardHeight(keyboardFrame: Nullable<{ screenY: number }>): number {

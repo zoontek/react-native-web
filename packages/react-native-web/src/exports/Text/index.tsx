@@ -8,12 +8,18 @@
 
 'use client';
 
-import type { ElementType, MouseEvent } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useContext,
+  useRef,
+  type ElementType,
+  type MouseEvent
+} from 'react';
 import type { PlatformMethods } from '../../types';
 import type { ElementProps } from '../../modules/createDOMProps';
 import type { TextProps } from './types';
 
-import * as React from 'react';
 import createElement from '../createElement';
 import * as forwardedProps from '../../modules/forwardedProps';
 import pick from '../../modules/pick';
@@ -45,7 +51,7 @@ const forwardPropsList = Object.assign(
 const pickProps = (props: TextProps): ElementProps =>
   pick(props, forwardPropsList);
 
-const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
+const Text = forwardRef<HTMLElement & PlatformMethods, TextProps>(
   (props, forwardedRef) => {
     const {
       hrefAttrs,
@@ -73,8 +79,8 @@ const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
       ...rest
     } = props;
 
-    const hasTextAncestor = React.useContext(TextAncestorContext);
-    const hostRef = React.useRef<(HTMLElement & PlatformMethods) | null>(null);
+    const hasTextAncestor = useContext(TextAncestorContext);
+    const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
     const { direction: contextDirection } = useLocaleContext();
 
     useElementLayout(hostRef, onLayout);
@@ -97,7 +103,7 @@ const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
       onStartShouldSetResponderCapture
     });
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (e: MouseEvent<HTMLElement>) => {
         if (onClick != null) {
           onClick(e);

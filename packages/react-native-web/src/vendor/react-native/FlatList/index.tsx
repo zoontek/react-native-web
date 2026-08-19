@@ -13,7 +13,6 @@ import StyleSheet from '../../../exports/StyleSheet';
 import deepDiffer from '../deepDiffer';
 import Platform from '../../../exports/Platform';
 import invariant from 'fbjs/lib/invariant';
-import * as React from 'react';
 
 import type { Nullable } from '../../../types';
 
@@ -29,6 +28,14 @@ import VirtualizedList from '../VirtualizedList';
 import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
 
 import memoizeOne from 'memoize-one';
+import {
+  Fragment,
+  PureComponent,
+  type ComponentProps,
+  type ComponentType,
+  type ReactElement,
+  type ReactNode
+} from 'react';
 
 type RequiredProps<ItemT> = {
   /**
@@ -172,7 +179,7 @@ function isArrayLike(data: unknown): boolean {
 
 type FlatListProps<ItemT> = RequiredProps<ItemT> & OptionalProps<ItemT>;
 
-type VirtualizedListProps = React.ComponentProps<typeof VirtualizedList>;
+type VirtualizedListProps = ComponentProps<typeof VirtualizedList>;
 
 export type Props<ItemT> = Omit<
   VirtualizedListProps,
@@ -214,7 +221,7 @@ export type Props<ItemT> = Omit<
  * - `keyExtractor` tells the list to use the `id`s for the react keys instead of the default `key` property.
  *
  *
- *     class MyListItem extends React.PureComponent {
+ *     class MyListItem extends PureComponent {
  *       _onPress = () => {
  *         this.props.onPressItem(this.props.id);
  *       };
@@ -233,7 +240,7 @@ export type Props<ItemT> = Omit<
  *       }
  *     }
  *
- *     class MultiSelectList extends React.PureComponent {
+ *     class MultiSelectList extends PureComponent {
  *       state = {selected: (new Map(): Map<string, boolean>)};
  *
  *       _keyExtractor = (item, index) => item.id;
@@ -288,7 +295,7 @@ export type Props<ItemT> = Omit<
  *
  * Also inherits [ScrollView Props](docs/scrollview.html#props), unless it is nested in another FlatList of same orientation.
  */
-class FlatList<ItemT> extends React.PureComponent<Props<ItemT>> {
+class FlatList<ItemT> extends PureComponent<Props<ItemT>> {
   /**
    * Scrolls to the end of the content. May be janky without `getItemLayout` prop.
    */
@@ -567,9 +574,7 @@ class FlatList<ItemT> extends React.PureComponent<Props<ItemT>> {
   }
 
   _renderer = (
-    ListItemComponent: Nullable<
-      React.ComponentType<unknown> | React.ReactElement<unknown>
-    >,
+    ListItemComponent: Nullable<ComponentType<unknown> | ReactElement<unknown>>,
     renderItem: Nullable<RenderItemType<ItemT>>,
     columnWrapperStyle: Nullable<ViewStyleProp>,
     numColumns: Nullable<number>,
@@ -577,9 +582,9 @@ class FlatList<ItemT> extends React.PureComponent<Props<ItemT>> {
   ) => {
     const cols = numColumnsOrDefault(numColumns);
 
-    const render = (props: RenderItemProps<ItemT>): React.ReactNode => {
+    const render = (props: RenderItemProps<ItemT>): ReactNode => {
       if (ListItemComponent) {
-        const Component = ListItemComponent as React.ComponentType<
+        const Component = ListItemComponent as ComponentType<
           RenderItemProps<ItemT>
         >;
         return <Component {...props} />;
@@ -606,7 +611,7 @@ class FlatList<ItemT> extends React.PureComponent<Props<ItemT>> {
                 separators: info.separators
               });
               return element != null ? (
-                <React.Fragment key={kk}>{element}</React.Fragment>
+                <Fragment key={kk}>{element}</Fragment>
               ) : null;
             })}
           </View>
@@ -623,7 +628,7 @@ class FlatList<ItemT> extends React.PureComponent<Props<ItemT>> {
 
   _memoizedRenderer = memoizeOne(this._renderer);
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     const {
       numColumns,
       columnWrapperStyle,
