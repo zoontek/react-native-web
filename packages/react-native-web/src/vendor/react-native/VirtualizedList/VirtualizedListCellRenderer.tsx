@@ -18,8 +18,7 @@ import {
 } from 'react';
 
 import StyleSheet from '../../../exports/StyleSheet';
-import View from '../../../exports/View';
-import type { ViewProps } from '../../../exports/View';
+import View, { type ViewProps } from '../../../exports/View';
 import type { LayoutEvent, Nullable } from '../../../types';
 import type { FocusEvent } from '../Types/CoreEventTypes';
 import { VirtualizedListCellContextProvider } from './VirtualizedListContext';

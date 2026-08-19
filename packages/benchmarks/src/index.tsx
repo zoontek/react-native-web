@@ -5,8 +5,7 @@ import App from './app/App';
 import type { BenchmarkTypeValue, ComponentPropsType } from './app/Benchmark';
 import SierpinskiTriangle from './cases/SierpinskiTriangle';
 import Tree from './cases/Tree';
-import type { ComponentsType } from './impl';
-import impl from './impl';
+import impl, { type ComponentsType } from './impl';
 
 export type TestSetupType = {
   Component: ComponentType<ComponentPropsType>;

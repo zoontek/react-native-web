@@ -10,8 +10,7 @@ import { forwardRef, useRef, type UIEvent } from 'react';
 import useMergeRefs from '../../modules/useMergeRefs';
 import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
-import type { ViewProps } from '../View';
-import View from '../View';
+import View, { type ViewProps } from '../View';
 
 type Props = Omit<ViewProps, 'onScroll'> & {
   onMomentumScrollBegin?: (e: unknown) => void;

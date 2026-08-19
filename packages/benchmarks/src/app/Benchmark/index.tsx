@@ -4,8 +4,7 @@
  * https://github.com/paularmstrong/react-component-benchmark
  */
 
-import type { ComponentType, ReactNode } from 'react';
-import { Component } from 'react';
+import { Component, type ComponentType, type ReactNode } from 'react';
 
 import { getMean, getStdDev } from './math';
 import type {

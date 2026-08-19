@@ -7,12 +7,13 @@
  * @format
  */
 
-import type { RefObject } from 'react';
-import { useDebugValue, useEffect, useRef } from 'react';
+import { useDebugValue, useEffect, useRef, type RefObject } from 'react';
 
 import type { Nullable } from '../../types';
-import type { EventHandlers, PressResponderConfig } from './PressResponder';
-import PressResponder from './PressResponder';
+import PressResponder, {
+  type EventHandlers,
+  type PressResponderConfig
+} from './PressResponder';
 
 export default function usePressEvents(
   hostRef: RefObject<Nullable<HTMLElement>>,

@@ -11,8 +11,7 @@ import { forwardRef, useEffect, useMemo, type ReactNode } from 'react';
 import canUseDOM from '../../modules/canUseDom';
 import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
-import type { ViewProps } from '../View';
-import View from '../View';
+import View, { type ViewProps } from '../View';
 
 export type ModalContentProps = ViewProps & {
   active?: Nullable<boolean | (() => boolean)>;

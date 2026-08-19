@@ -9,10 +9,11 @@
 
 'use strict';
 
+import invariant from 'fbjs/lib/invariant';
+
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
 
 const NativeAnimatedAPI = NativeAnimatedHelper.API;
-import invariant from 'fbjs/lib/invariant';
 
 import type { Nullable } from '../../../../types';
 import type { EventSubscription } from '../../vendor/emitter/EventEmitter';

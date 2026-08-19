@@ -1,9 +1,13 @@
-import type { ChangeEvent, ComponentRef } from 'react';
-import { Component, Fragment } from 'react';
 import {
-  StyleSheet,
-  ScrollView,
+  Component,
+  Fragment,
+  type ChangeEvent,
+  type ComponentRef
+} from 'react';
+import {
   Pressable,
+  ScrollView,
+  StyleSheet,
   View,
   unstable_createElement as createElement
 } from 'react-native-web';

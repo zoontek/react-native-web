@@ -1,5 +1,4 @@
-import { StyleSheet } from 'react-native-web';
-import { SectionList, Text, View } from 'react-native-web';
+import { StyleSheet, SectionList, Text, View } from 'react-native-web';
 
 import Example from '../../shared/example';
 

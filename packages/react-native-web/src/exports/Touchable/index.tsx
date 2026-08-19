@@ -20,10 +20,10 @@ import { warnOnce } from '../../modules/warnOnce';
 import type { EdgeInsetsValue, LayoutCallback, Nullable } from '../../types';
 import UIManager from '../UIManager';
 import View from '../View';
-import type { BoundingDimensionsInstance } from './BoundingDimensions';
-import BoundingDimensions from './BoundingDimensions';
-import type { PositionInstance } from './Position';
-import Position from './Position';
+import BoundingDimensions, {
+  type BoundingDimensionsInstance
+} from './BoundingDimensions';
+import Position, { type PositionInstance } from './Position';
 
 type PressEvent = ResponderEvent;
 type Event = PressEvent & { key: string; type: string };

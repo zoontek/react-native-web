@@ -7,17 +7,18 @@
  * @format
  */
 
-import type ScrollView from '../../../exports/ScrollView';
-import type { ViewProps } from '../../../exports/View';
-import type { LayoutEvent, Nullable } from '../../../types';
-import type { FocusEvent } from '../Types/CoreEventTypes';
-type ViewStyleProp = ViewProps['style'];
 import type {
   ComponentPropsWithoutRef,
   ComponentType,
   ReactElement,
   ReactNode
 } from 'react';
+
+import type ScrollView from '../../../exports/ScrollView';
+import type { ViewProps } from '../../../exports/View';
+import type { LayoutEvent, Nullable } from '../../../types';
+import type { FocusEvent } from '../Types/CoreEventTypes';
+type ViewStyleProp = ViewProps['style'];
 
 import type {
   ViewabilityConfig,

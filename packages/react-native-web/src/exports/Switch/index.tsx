@@ -13,8 +13,7 @@ import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
 import type { ColorValue, DimensionValue, PlatformMethods } from '../../types';
 import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
-import type { ViewProps } from '../View';
-import View from '../View';
+import View, { type ViewProps } from '../View';
 
 type SwitchProps = ViewProps & {
   activeThumbColor?: ColorValue;
