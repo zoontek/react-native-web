@@ -1,8 +1,13 @@
-// @ts-nocheck
+import { StyleSheet, Text, Pressable } from 'react-native-web';
 
-import { StyleSheet, Text, Pressable } from 'react-native';
+type Props = {
+  // @ts-expect-error use exported ColorValue
+  color?: ColorValue;
+  title: string;
+  onPress?: () => void;
+};
 
-export default function Button(props) {
+export default function Button(props: Props) {
   const { title, ...other } = props;
   return (
     <Pressable {...other} style={styles.button}>

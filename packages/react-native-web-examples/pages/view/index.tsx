@@ -1,17 +1,22 @@
-// @ts-nocheck
-
 import React from 'react';
-import { StyleSheet, Text, Pressable, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native-web';
 import Example from '../../shared/example';
 
-const log = (...msg) => {
+const log = (
+  // @ts-expect-error use exported PressableProps
+  ...msg: Parameters<NonNullable<PressResponderConfig['onPress']>>
+) => {
   console.log(...msg);
 };
 
 const l1 = { width: '100%', paddingLeft: 0, paddingTop: 0 };
 const l2 = { width: '75%', paddingLeft: 10, paddingTop: 10 };
 
-function Box({ pointerEvents }) {
+function Box({
+  pointerEvents
+}: {
+  pointerEvents: keyof typeof pointerEventsStyles;
+}) {
   return (
     <Pressable
       onPress={log}
@@ -44,10 +49,6 @@ export default function ViewPage() {
     };
   }, []);
 
-  const handleLayout = ({ nativeEvent }) => {
-    setLayoutInfo(() => ({ ...nativeEvent.layout }));
-  };
-
   return (
     <Example title="View">
       <View style={styles.container}>
@@ -56,7 +57,12 @@ export default function ViewPage() {
         </Text>
         <View>
           <View style={[styles.layoutContainer, layoutStyle]}>
-            <View onLayout={handleLayout} style={styles.layoutBox} />
+            <View
+              style={styles.layoutBox}
+              onLayout={({ nativeEvent }) => {
+                setLayoutInfo(() => ({ ...nativeEvent.layout }));
+              }}
+            />
           </View>
           <Text>{JSON.stringify(layoutInfo, null, 2)}</Text>
         </View>

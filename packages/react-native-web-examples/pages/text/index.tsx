@@ -1,12 +1,10 @@
-// @ts-nocheck
-
-import React from 'react';
-import { Image, Text, View } from 'react-native';
+import type { ReactNode } from 'react';
+import { Image, Text, View } from 'react-native-web';
 import Example from '../../shared/example';
 
 const Spacer = () => <View style={{ height: '1rem' }} />;
 
-const Heading = ({ children }) => (
+const Heading = ({ children }: { children: ReactNode }) => (
   <Text
     children={children}
     role="heading"
@@ -78,27 +76,27 @@ function FontVariant() {
   return (
     <View>
       <Heading>fontVariant</Heading>
-      <Text style={{ fontVariant: 'small-caps' }}>Small Caps{'\n'}</Text>
+      <Text style={{ fontVariant: ['small-caps'] }}>Small Caps{'\n'}</Text>
       <Text
         style={{
-          fontVariant: 'oldstyle-nums'
+          fontVariant: ['oldstyle-nums']
         }}
       >
         Old Style nums 0123456789{'\n'}
       </Text>
       <Text
         style={{
-          fontVariant: 'lining-nums'
+          fontVariant: ['lining-nums']
         }}
       >
         Lining nums 0123456789{'\n'}
       </Text>
-      <Text style={{ fontVariant: 'tabular-nums' }}>
+      <Text style={{ fontVariant: ['tabular-nums'] }}>
         Tabular nums{'\n'}
         1111{'\n'}
         2222{'\n'}
       </Text>
-      <Text style={{ fontVariant: 'proportional-nums' }}>
+      <Text style={{ fontVariant: ['proportional-nums'] }}>
         Proportional nums{'\n'}
         1111{'\n'}
         2222{'\n'}
@@ -309,7 +307,13 @@ function TextShadow() {
   );
 }
 
-function LineExample({ description, children }) {
+function LineExample({
+  description,
+  children
+}: {
+  description: string;
+  children: ReactNode;
+}) {
   return (
     <View style={{ marginTop: 20 }}>
       <Text style={{ color: 'gray', marginBottom: 5 }}>{description}</Text>

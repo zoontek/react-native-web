@@ -1,13 +1,17 @@
-// @ts-nocheck
-
 import React from 'react';
-import { ScrollView, StyleSheet, Text, Pressable, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  Pressable,
+  View
+} from 'react-native-web';
 import Button from '../../shared/button';
 import Example from '../../shared/example';
 
 const ITEMS = [...Array(12)].map((_, i) => `Item ${i}`);
 
-function createItemRow(msg, index) {
+function createItemRow(msg: string, index: number) {
   return (
     <Pressable key={index} style={[styles.item]}>
       <Text style={styles.text}>{msg}</Text>
@@ -22,7 +26,7 @@ function Divider() {
 export default function ScrollViewPage() {
   const [scrollEnabled, setEnabled] = React.useState(true);
   const [throttle, setThrottle] = React.useState(16);
-  const scrollRef = React.useRef(null);
+  const scrollRef = React.useRef<React.ComponentRef<typeof ScrollView>>(null);
 
   return (
     <Example title="ScrollView">
@@ -57,21 +61,24 @@ export default function ScrollViewPage() {
         <View style={styles.buttons}>
           <Button
             onPress={() => {
-              scrollRef.current.scrollTo({ y: 0 });
+              // @ts-expect-error
+              scrollRef.current?.scrollTo({ y: 0 });
             }}
             title="To start"
           />
           <Divider />
           <Button
             onPress={() => {
-              scrollRef.current.scrollTo({ y: 50 });
+              // @ts-expect-error
+              scrollRef.current?.scrollTo({ y: 50 });
             }}
             title="To 50px"
           />
           <Divider />
           <Button
             onPress={() => {
-              scrollRef.current.scrollToEnd({ animated: true });
+              // @ts-expect-error
+              scrollRef.current?.scrollToEnd({ animated: true });
             }}
             title="To end"
           />

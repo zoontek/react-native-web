@@ -1,7 +1,5 @@
-// @ts-nocheck
-
 import React from 'react';
-import { StyleSheet, Switch, View } from 'react-native';
+import { StyleSheet, Switch, View } from 'react-native-web';
 import Example from '../../shared/example';
 
 function Divider() {
