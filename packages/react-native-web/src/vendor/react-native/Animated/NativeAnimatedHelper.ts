@@ -11,10 +11,8 @@ import invariant from 'fbjs/lib/invariant';
 
 import type { Nullable } from '../../../types';
 import NativeEventEmitter from '../EventEmitter/NativeEventEmitter';
-import RCTDeviceEventEmitter from '../EventEmitter/RCTDeviceEventEmitter';
 import ReactNativeFeatureFlags from '../ReactNative/ReactNativeFeatureFlags';
 import Platform from '../Utilities/Platform';
-import type { EventSubscription } from '../vendor/emitter/EventEmitter';
 import type { EventConfig } from './AnimatedEvent';
 import type { AnimationConfig, EndCallback } from './animations/Animation';
 import NativeAnimatedNonTurboModule, {
@@ -52,9 +50,6 @@ let flushQueueTimeout: Nullable<ReturnType<typeof setImmediate>> = null;
 const eventListenerGetValueCallbacks: Record<number, (value: number) => void> =
   {};
 const eventListenerAnimationFinishedCallbacks: Record<number, EndCallback> = {};
-let globalEventEmitterGetValueListener: Nullable<EventSubscription> = null;
-let globalEventEmitterAnimationFinishedListener: Nullable<EventSubscription> =
-  null;
 
 const nativeOps: Nullable<typeof NativeAnimatedModule> = useSingleOpBatching
   ? ((function () {
@@ -341,34 +336,6 @@ const API = {
     );
   }
 };
-
-function setupGlobalEventEmitterListeners() {
-  globalEventEmitterGetValueListener = RCTDeviceEventEmitter.addListener(
-    'onNativeAnimatedModuleGetValue',
-    function (params) {
-      const { tag } = params as { tag: number; value: number };
-      const callback = eventListenerGetValueCallbacks[tag];
-      if (!callback) {
-        return;
-      }
-      callback((params as { tag: number; value: number }).value);
-      delete eventListenerGetValueCallbacks[tag];
-    }
-  );
-  globalEventEmitterAnimationFinishedListener =
-    RCTDeviceEventEmitter.addListener(
-      'onNativeAnimatedModuleAnimationFinished',
-      function (params) {
-        const { animationId } = params as { animationId: number };
-        const callback = eventListenerAnimationFinishedCallbacks[animationId];
-        if (!callback) {
-          return;
-        }
-        callback(params as { finished: boolean });
-        delete eventListenerAnimationFinishedCallbacks[animationId];
-      }
-    );
-}
 
 /**
  * Styles allowed by the native animated implementation.
