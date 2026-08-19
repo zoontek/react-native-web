@@ -1,10 +1,14 @@
-// @ts-nocheck
+import type { ReactNode } from 'react';
 
 import React, { Fragment } from 'react';
 import {
   unstable_createElement as createElement,
   StyleSheet
-} from 'react-native';
+} from 'react-native-web';
+
+type IconProps = {
+  style?: NonNullable<Parameters<typeof createElement>[1]>['style'];
+};
 
 const styles = StyleSheet.create({
   root: {
@@ -18,8 +22,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const createIcon = (children) => {
-  const Icon = (props) =>
+const createIcon = (children: ReactNode) => {
+  const Icon = (props: IconProps) =>
     createElement('svg', {
       children,
       style: [styles.root, props.style],

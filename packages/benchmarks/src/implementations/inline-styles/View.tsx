@@ -1,8 +1,8 @@
-// @ts-nocheck
+import type { ComponentProps, CSSProperties } from 'react';
 
 import React from 'react';
 
-const compose = (s1, s2) => {
+const compose = (s1?: CSSProperties, s2?: CSSProperties) => {
   if (s1 && s2) {
     return { ...s1, ...s2 };
   } else {
@@ -10,7 +10,9 @@ const compose = (s1, s2) => {
   }
 };
 
-class View extends React.Component {
+type Props = ComponentProps<'div'>;
+
+class View extends React.Component<Props> {
   render() {
     const { style, ...other } = this.props;
     return <div {...other} style={compose(viewStyle, style)} />;
@@ -33,6 +35,6 @@ const viewStyle = {
   padding: 0,
   position: 'relative',
   zIndex: 0
-};
+} satisfies CSSProperties;
 
 export default View;

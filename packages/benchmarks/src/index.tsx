@@ -1,4 +1,6 @@
-// @ts-nocheck
+import type { ComponentType } from 'react';
+import type { ComponentsType } from './impl';
+import type { BenchmarkTypeValue, ComponentPropsType } from './app/Benchmark';
 
 import App from './app/App';
 import impl from './impl';
@@ -8,37 +10,54 @@ import SierpinskiTriangle from './cases/SierpinskiTriangle';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-const implementations = impl;
-const packageNames = Object.keys(implementations);
-
-const createTestBlock = (fn) => {
-  return packageNames.reduce((testSetups, packageName) => {
-    const { name, components, version } = implementations[packageName];
-    const {
-      Component,
-      getComponentProps,
-      sampleCount,
-      Provider,
-      benchmarkType
-    } = fn(components);
-
-    testSetups[packageName] = {
-      Component,
-      getComponentProps,
-      sampleCount,
-      Provider,
-      benchmarkType,
-      version,
-      name
-    };
-    return testSetups;
-  }, {});
+export type TestSetupType = {
+  Component: ComponentType<ComponentPropsType>;
+  getComponentProps: (options: { cycle: number }) => ComponentPropsType;
+  sampleCount: number;
+  Provider: ComponentsType['Provider'];
+  benchmarkType: BenchmarkTypeValue;
+  version: string;
+  name: string;
 };
 
-const tests = {
+export type TestsType = Record<string, Record<string, TestSetupType>>;
+
+type TestBlockType = Omit<TestSetupType, 'version' | 'name'>;
+
+const implementations = impl;
+
+const createTestBlock = (
+  fn: (components: ComponentsType) => TestBlockType
+): Record<string, TestSetupType> => {
+  return Object.entries(implementations).reduce<Record<string, TestSetupType>>(
+    (testSetups, [packageName, { name, components, version }]) => {
+      const {
+        Component,
+        getComponentProps,
+        sampleCount,
+        Provider,
+        benchmarkType
+      } = fn(components);
+
+      testSetups[packageName] = {
+        Component,
+        getComponentProps,
+        sampleCount,
+        Provider,
+        benchmarkType,
+        version,
+        name
+      };
+      return testSetups;
+    },
+    {}
+  );
+};
+
+const tests: TestsType = {
   'Mount deep tree': createTestBlock((components) => ({
     benchmarkType: 'mount',
-    Component: Tree,
+    Component: Tree as unknown as ComponentType<ComponentPropsType>,
     getComponentProps: () => ({
       breadth: 2,
       components,
@@ -51,7 +70,7 @@ const tests = {
   })),
   'Mount wide tree': createTestBlock((components) => ({
     benchmarkType: 'mount',
-    Component: Tree,
+    Component: Tree as unknown as ComponentType<ComponentPropsType>,
     getComponentProps: () => ({
       breadth: 6,
       components,
@@ -64,7 +83,8 @@ const tests = {
   })),
   'Update dynamic styles': createTestBlock((components) => ({
     benchmarkType: 'update',
-    Component: SierpinskiTriangle,
+    Component:
+      SierpinskiTriangle as unknown as ComponentType<ComponentPropsType>,
     getComponentProps: ({ cycle }) => {
       return { components, s: 200, renderCount: cycle, x: 0, y: 0 };
     },
@@ -76,4 +96,6 @@ const tests = {
 const root = document.querySelector('.root');
 const element = <App tests={tests} />;
 
-createRoot(root).render(element);
+if (root != null) {
+  createRoot(root).render(element);
+}

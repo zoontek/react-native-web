@@ -1,10 +1,12 @@
-// @ts-nocheck
+import type { ComponentProps } from 'react';
 
 import classnames from 'classnames';
 import React from 'react';
 import styles from './view-styles.module.css';
 
-class View extends React.Component {
+type Props = ComponentProps<'div'>;
+
+class View extends React.Component<Props> {
   render() {
     const props = this.props;
     return (
