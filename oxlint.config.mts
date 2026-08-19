@@ -92,6 +92,7 @@ export default defineConfig({
         'typescript/no-invalid-void-type': 'error',
         'typescript/no-misused-spread': 'error',
         'typescript/no-non-null-assertion': 'error',
+        'typescript/no-wrapper-object-types': 'error',
 
         // temporarily disabled
         'typescript/consistent-return': 'off',
@@ -100,7 +101,6 @@ export default defineConfig({
         // 'typescript/no-dynamic-delete': 'error',
         'typescript/no-extraneous-class': 'off',
         'typescript/no-unsafe-type-assertion': 'off',
-        'typescript/no-wrapper-object-types': 'off',
         'typescript/unbound-method': 'off',
 
         'typescript/restrict-template-expressions': [
