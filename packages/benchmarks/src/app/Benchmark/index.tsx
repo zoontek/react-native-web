@@ -6,7 +6,7 @@
 
 import type { ComponentType, ReactNode } from 'react';
 import { Component } from 'react';
-import { getMean, getMedian, getStdDev } from './math';
+import { getMean, getStdDev } from './math';
 import * as Timing from './timing';
 import type {
   BenchResultsType,
@@ -16,8 +16,7 @@ import type {
 
 export const BenchmarkType = {
   MOUNT: 'mount',
-  UPDATE: 'update',
-  UNMOUNT: 'unmount'
+  UPDATE: 'update'
 } as const;
 
 export type BenchmarkTypeValue =
@@ -28,7 +27,6 @@ const shouldRender = (cycle: number, type: BenchmarkTypeValue): boolean => {
     // Render every odd iteration (first, third, etc)
     // Mounts and unmounts the component
     case BenchmarkType.MOUNT:
-    case BenchmarkType.UNMOUNT:
       return !((cycle + 1) % 2);
     // Render every iteration (updates previously rendered module)
     case BenchmarkType.UPDATE:
@@ -46,9 +44,6 @@ const shouldRecord = (cycle: number, type: BenchmarkTypeValue): boolean => {
     // Record every iteration
     case BenchmarkType.UPDATE:
       return true;
-    // Record every even iteration (when unmounted)
-    case BenchmarkType.UNMOUNT:
-      return !(cycle % 2);
     default:
       return false;
   }
@@ -64,8 +59,6 @@ const isDone = (
       return cycle >= sampleCount * 2 - 1;
     case BenchmarkType.UPDATE:
       return cycle >= sampleCount - 1;
-    case BenchmarkType.UNMOUNT:
-      return cycle >= sampleCount * 2;
     default:
       return true;
   }
@@ -111,8 +104,6 @@ export default class Benchmark extends Component<
     type: BenchmarkType.MOUNT
   };
 
-  static Type: typeof BenchmarkType = BenchmarkType;
-
   constructor(props: BenchmarkPropsType) {
     super(props);
     const cycle = 0;
@@ -127,11 +118,9 @@ export default class Benchmark extends Component<
   }
 
   componentWillReceiveProps(nextProps: BenchmarkPropsType) {
-    if (nextProps) {
-      this.setState((state) => ({
-        componentProps: nextProps.getComponentProps({ cycle: state.cycle })
-      }));
-    }
+    this.setState((state) => ({
+      componentProps: nextProps.getComponentProps({ cycle: state.cycle })
+    }));
   }
 
   componentWillUpdate(
@@ -169,7 +158,7 @@ export default class Benchmark extends Component<
       ) {
         this._handleCycleComplete();
       } else {
-        this._handleComplete(now);
+        this._handleComplete();
       }
     }
   }
@@ -236,13 +225,12 @@ export default class Benchmark extends Component<
     );
   }
 
-  _handleComplete(endTime: number) {
+  _handleComplete() {
     const { onComplete } = this.props;
     const samples = this.getSamples();
 
     this.setState(() => ({ running: false, cycle: 0 }));
 
-    const runTime = endTime - this._startTime;
     const sortedElapsedTimes = samples
       .map(({ start, end }) => end - start)
       .sort(sortNumbers);
@@ -256,14 +244,7 @@ export default class Benchmark extends Component<
       .sort(sortNumbers);
 
     onComplete({
-      startTime: this._startTime,
-      endTime,
-      runTime,
       sampleCount: samples.length,
-      samples: samples,
-      max: sortedElapsedTimes[sortedElapsedTimes.length - 1] ?? 0,
-      min: sortedElapsedTimes[0] ?? 0,
-      median: getMedian(sortedElapsedTimes),
       mean: getMean(sortedElapsedTimes),
       stdDev: getStdDev(sortedElapsedTimes),
       meanLayout: getMean(sortedLayoutElapsedTimes),
