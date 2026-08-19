@@ -80,27 +80,27 @@ class DraggableCircle extends PureComponent {
     this.forceUpdate();
   }
 
-  _handleStartShouldSetPanResponder: ActiveCallback = (e, gestureState) => {
+  _handleStartShouldSetPanResponder: ActiveCallback = () => {
     // Should we become active when the user presses down on the circle?
     return true;
   };
 
-  _handleMoveShouldSetPanResponder: ActiveCallback = (e, gestureState) => {
+  _handleMoveShouldSetPanResponder: ActiveCallback = () => {
     // Should we become active when the user moves a touch over the circle?
     return true;
   };
 
-  _handlePanResponderGrant: PassiveCallback = (e, gestureState) => {
+  _handlePanResponderGrant: PassiveCallback = () => {
     this._highlight();
   };
 
-  _handlePanResponderMove: PassiveCallback = (e, gestureState) => {
+  _handlePanResponderMove: PassiveCallback = (_, gestureState) => {
     this._circleStyles.left = this._previousLeft + gestureState.dx;
     this._circleStyles.top = this._previousTop + gestureState.dy;
     this._updateNativeStyles();
   };
 
-  _handlePanResponderEnd: PassiveCallback = (e, gestureState) => {
+  _handlePanResponderEnd: PassiveCallback = (_, gestureState) => {
     this._unHighlight();
     this._previousLeft += gestureState.dx;
     this._previousTop += gestureState.dy;

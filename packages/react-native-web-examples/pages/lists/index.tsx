@@ -209,7 +209,7 @@ function hashCode(str: string): number {
 }
 
 function getItemLayout(
-  data: unknown,
+  _data: unknown,
   index: number,
   horizontal?: boolean | null
 ) {

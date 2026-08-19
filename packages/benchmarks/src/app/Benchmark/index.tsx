@@ -134,7 +134,7 @@ export default class Benchmark extends Component<
   }
 
   componentWillUpdate(
-    nextProps: BenchmarkPropsType,
+    _nextProps: BenchmarkPropsType,
     nextState: BenchmarkStateType
   ) {
     if (nextState.running && !this.state.running) {
