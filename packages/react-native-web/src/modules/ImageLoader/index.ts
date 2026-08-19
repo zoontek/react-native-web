@@ -79,7 +79,7 @@ export class ImageUriCache {
 let id = 0;
 const requests: Record<string, HTMLImageElement> = {};
 
-const ImageLoader = {
+export const ImageLoader = {
   abort(requestId: number) {
     let image: Nullable<HTMLImageElement> = requests[`${requestId}`];
     if (image) {
@@ -169,5 +169,3 @@ const ImageLoader = {
     return Promise.resolve(result);
   }
 };
-
-export default ImageLoader;

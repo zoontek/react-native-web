@@ -9,7 +9,7 @@ import { act, render } from '@testing-library/react';
 
 import Image from '../';
 import * as AssetRegistry from '../../../modules/AssetRegistry';
-import ImageLoader, { ImageUriCache } from '../../../modules/ImageLoader';
+import { ImageLoader, ImageUriCache } from '../../../modules/ImageLoader';
 import PixelRatio from '../../PixelRatio';
 import type { ResizeMode } from '../types';
 

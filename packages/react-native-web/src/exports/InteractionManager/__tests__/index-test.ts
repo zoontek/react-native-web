@@ -16,7 +16,7 @@ describe('InteractionManager', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    InteractionManager = require('..');
+    InteractionManager = require('..').default;
   });
 
   it('run tasks asynchronously when there are interactions', () => {
