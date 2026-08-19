@@ -150,7 +150,7 @@ describe('StyleSheet', () => {
   });
 
   test('hairlineWidth', () => {
-    expect(Number.isInteger(StyleSheet.hairlineWidth) === true).toBeTruthy();
+    expect(Number.isInteger(StyleSheet.hairlineWidth)).toBeTruthy();
   });
 
   describe('resolve', () => {

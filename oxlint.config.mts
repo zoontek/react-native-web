@@ -99,7 +99,6 @@ export default defineConfig({
         // 'typescript/explicit-module-boundary-types': 'error',
         // 'typescript/no-dynamic-delete': 'error',
         'typescript/no-extraneous-class': 'off',
-        'typescript/no-unnecessary-boolean-literal-compare': 'off',
         'typescript/no-unnecessary-type-conversion': 'off',
         'typescript/no-unsafe-type-assertion': 'off',
         'typescript/no-wrapper-object-types': 'off',

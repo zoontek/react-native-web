@@ -137,7 +137,8 @@ const Text = forwardRef<HTMLElement & PlatformMethods, TextProps>(
     supportedProps.style = [
       numberOfLines != null &&
         numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
-      hasTextAncestor === true ? styles.textHasAncestor$raw : styles.text$raw,
+
+      hasTextAncestor ? styles.textHasAncestor$raw : styles.text$raw,
       numberOfLines === 1 && styles.textOneLine,
       numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
       props.style,
