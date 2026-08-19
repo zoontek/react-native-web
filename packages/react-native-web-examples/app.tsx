@@ -1,9 +1,10 @@
-// @ts-nocheck
-
 import * as React from 'react';
 import HomePage from './pages/index';
 
-const modules = import.meta.glob('./pages/*/index.tsx', { eager: true });
+const modules = import.meta.glob<{ default: React.ComponentType }>(
+  './pages/*/index.tsx',
+  { eager: true }
+);
 
 const pages = Object.keys(modules)
   .map((path) => path.match(/^\.\/pages\/(.+)\/index\.tsx$/)?.[1])

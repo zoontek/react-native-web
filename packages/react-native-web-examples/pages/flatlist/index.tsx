@@ -1,18 +1,29 @@
-// @ts-nocheck
-
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native-web';
 import Example from '../../shared/example';
-import { FlatList, Text, Pressable, View } from 'react-native-web';
 
-const multiSelectData = ['First', 'Second', 'Third'].map((title, id) => ({
-  id,
-  title
-}));
+type MultiSelectItem = {
+  id: number;
+  title: string;
+};
+
+const multiSelectData: MultiSelectItem[] = ['First', 'Second', 'Third'].map(
+  (title, id) => ({
+    id,
+    title
+  })
+);
 const minimalData = ['a', 'b', 'c', 'd', 'e'].map((key) => ({ key }));
 const pageExamplesData = ['minimal', 'multiSelect'].map((type) => ({ type }));
 
-class MyListItem extends React.PureComponent {
+type MyListItemProps = {
+  id: number;
+  onPressItem: (id: number) => void;
+  selected: boolean;
+  title: string;
+};
+
+class MyListItem extends React.PureComponent<MyListItemProps> {
   _onPress = () => {
     this.props.onPressItem(this.props.id);
   };
@@ -31,12 +42,19 @@ class MyListItem extends React.PureComponent {
   }
 }
 
-class MultiSelectList extends React.PureComponent {
-  state = { selected: new Map() };
+type MultiSelectListState = {
+  selected: Map<number, boolean>;
+};
 
-  _keyExtractor = (item, index) => item.id;
+class MultiSelectList extends React.PureComponent<
+  object,
+  MultiSelectListState
+> {
+  state: MultiSelectListState = { selected: new Map() };
 
-  _onPressItem = (id) => {
+  _keyExtractor = (item: MultiSelectItem, index: number) => String(item.id);
+
+  _onPressItem = (id: number) => {
     // updater functions are preferred for transactional updates
     this.setState((state) => {
       // copy the map rather than modifying state.
@@ -46,7 +64,7 @@ class MultiSelectList extends React.PureComponent {
     });
   };
 
-  _renderItem = ({ item }) => (
+  _renderItem = ({ item }: { item: MultiSelectItem }) => (
     <MyListItem
       id={item.id}
       onPressItem={this._onPressItem}
@@ -67,7 +85,7 @@ class MultiSelectList extends React.PureComponent {
   }
 }
 
-function renderExampleItem({ item }) {
+function renderExampleItem({ item }: { item: { type: string } }) {
   switch (item.type) {
     case 'minimal':
       // Example Minimal FlatList, directly from FlatList's own JSDoc details.

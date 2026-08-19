@@ -12,6 +12,7 @@ describe('apis/AppState', () => {
 
   describe('addEventListener', () => {
     test('throws if the provided "eventType" is not supported', () => {
+      // @ts-expect-error cast as exported AppStateEvent
       expect(() => AppState.addEventListener('foo', handler)).toThrow();
       expect(() =>
         AppState.addEventListener('change', handler)?.remove()
