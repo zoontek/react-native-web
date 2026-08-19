@@ -9,12 +9,12 @@
 'use client';
 
 import {
-  forwardRef,
   useCallback,
   useContext,
   useRef,
   type ElementType,
-  type MouseEvent
+  type MouseEvent,
+  type Ref
 } from 'react';
 
 import type { ElementProps } from '../../modules/createDOMProps';
@@ -51,137 +51,138 @@ const forwardPropsList = Object.assign(
 const pickProps = (props: TextProps): ElementProps =>
   pick(props, forwardPropsList);
 
-const Text = forwardRef<HTMLElement & PlatformMethods, TextProps>(
-  (props, forwardedRef) => {
-    const {
-      hrefAttrs,
-      numberOfLines,
-      onClick,
-      onLayout,
-      onPress,
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onResponderEnd,
-      onResponderGrant,
-      onResponderMove,
-      onResponderReject,
-      onResponderRelease,
-      onResponderStart,
-      onResponderTerminate,
-      onResponderTerminationRequest,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-      selectable,
-      ...rest
-    } = props;
+const Text = (
+  props: TextProps & { ref?: Ref<HTMLElement & PlatformMethods> }
+) => {
+  const {
+    hrefAttrs,
+    numberOfLines,
+    onClick,
+    onLayout,
+    onPress,
+    onMoveShouldSetResponder,
+    onMoveShouldSetResponderCapture,
+    onResponderEnd,
+    onResponderGrant,
+    onResponderMove,
+    onResponderReject,
+    onResponderRelease,
+    onResponderStart,
+    onResponderTerminate,
+    onResponderTerminationRequest,
+    onScrollShouldSetResponder,
+    onScrollShouldSetResponderCapture,
+    onSelectionChangeShouldSetResponder,
+    onSelectionChangeShouldSetResponderCapture,
+    onStartShouldSetResponder,
+    onStartShouldSetResponderCapture,
+    ref,
+    selectable,
+    ...rest
+  } = props;
 
-    const hasTextAncestor = useContext(TextAncestorContext);
-    const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
-    const { direction: contextDirection } = useLocaleContext();
+  const hasTextAncestor = useContext(TextAncestorContext);
+  const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
+  const { direction: contextDirection } = useLocaleContext();
 
-    useElementLayout(hostRef, onLayout);
-    useResponderEvents(hostRef, {
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onResponderEnd,
-      onResponderGrant,
-      onResponderMove,
-      onResponderReject,
-      onResponderRelease,
-      onResponderStart,
-      onResponderTerminate,
-      onResponderTerminationRequest,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture
-    });
+  useElementLayout(hostRef, onLayout);
+  useResponderEvents(hostRef, {
+    onMoveShouldSetResponder,
+    onMoveShouldSetResponderCapture,
+    onResponderEnd,
+    onResponderGrant,
+    onResponderMove,
+    onResponderReject,
+    onResponderRelease,
+    onResponderStart,
+    onResponderTerminate,
+    onResponderTerminationRequest,
+    onScrollShouldSetResponder,
+    onScrollShouldSetResponderCapture,
+    onSelectionChangeShouldSetResponder,
+    onSelectionChangeShouldSetResponderCapture,
+    onStartShouldSetResponder,
+    onStartShouldSetResponderCapture
+  });
 
-    const handleClick = useCallback(
-      (e: MouseEvent<HTMLElement>) => {
-        if (onClick != null) {
-          onClick(e);
-        } else if (onPress != null) {
-          e.stopPropagation();
-          onPress(e);
-        }
-      },
-      [onClick, onPress]
-    );
+  const handleClick = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      if (onClick != null) {
+        onClick(e);
+      } else if (onPress != null) {
+        e.stopPropagation();
+        onPress(e);
+      }
+    },
+    [onClick, onPress]
+  );
 
-    let component: ElementType = hasTextAncestor ? 'span' : 'div';
+  let component: ElementType = hasTextAncestor ? 'span' : 'div';
 
-    const langDirection =
-      props.lang != null ? getLocaleDirection(props.lang) : null;
-    const componentDirection = props.dir || langDirection;
-    const writingDirection = componentDirection || contextDirection;
+  const langDirection =
+    props.lang != null ? getLocaleDirection(props.lang) : null;
+  const componentDirection = props.dir || langDirection;
+  const writingDirection = componentDirection || contextDirection;
 
-    const supportedProps = pickProps(rest);
-    supportedProps.dir = componentDirection;
-    // 'auto' by default allows browsers to infer writing direction (root elements only)
-    if (!hasTextAncestor) {
-      supportedProps.dir =
-        componentDirection != null ? componentDirection : 'auto';
-    }
+  const supportedProps = pickProps(rest);
+  supportedProps.dir = componentDirection;
+  // 'auto' by default allows browsers to infer writing direction (root elements only)
+  if (!hasTextAncestor) {
+    supportedProps.dir =
+      componentDirection != null ? componentDirection : 'auto';
+  }
 
-    if (onClick || onPress) {
-      supportedProps.onClick = handleClick;
-    }
+  if (onClick || onPress) {
+    supportedProps.onClick = handleClick;
+  }
 
-    supportedProps.style = [
-      numberOfLines != null &&
-        numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
+  supportedProps.style = [
+    numberOfLines != null &&
+      numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
 
-      hasTextAncestor ? styles.textHasAncestor$raw : styles.text$raw,
-      numberOfLines === 1 && styles.textOneLine,
-      numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
-      props.style,
-      selectable === true && styles.selectable,
-      selectable === false && styles.notSelectable,
-      onPress && styles.pressable
-    ];
+    hasTextAncestor ? styles.textHasAncestor$raw : styles.text$raw,
+    numberOfLines === 1 && styles.textOneLine,
+    numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
+    props.style,
+    selectable === true && styles.selectable,
+    selectable === false && styles.notSelectable,
+    onPress && styles.pressable
+  ];
 
-    if (props.href != null) {
-      component = 'a';
-      if (hrefAttrs != null) {
-        const { download, rel, target } = hrefAttrs;
-        if (download != null) {
-          supportedProps.download = download;
-        }
-        if (rel != null) {
-          supportedProps.rel = rel;
-        }
-        if (typeof target === 'string') {
-          supportedProps.target =
-            target.charAt(0) !== '_' ? '_' + target : target;
-        }
+  if (props.href != null) {
+    component = 'a';
+    if (hrefAttrs != null) {
+      const { download, rel, target } = hrefAttrs;
+      if (download != null) {
+        supportedProps.download = download;
+      }
+      if (rel != null) {
+        supportedProps.rel = rel;
+      }
+      if (typeof target === 'string') {
+        supportedProps.target =
+          target.charAt(0) !== '_' ? '_' + target : target;
       }
     }
-
-    const platformMethodsRef = usePlatformMethods();
-    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef);
-
-    supportedProps.ref = setRef;
-
-    const element = createElement(component, supportedProps, {
-      writingDirection
-    });
-
-    return hasTextAncestor ? (
-      element
-    ) : (
-      <TextAncestorContext.Provider value={true}>
-        {element}
-      </TextAncestorContext.Provider>
-    );
   }
-);
+
+  const platformMethodsRef = usePlatformMethods();
+  const setRef = useMergeRefs(hostRef, platformMethodsRef, ref);
+
+  supportedProps.ref = setRef;
+
+  const element = createElement(component, supportedProps, {
+    writingDirection
+  });
+
+  return hasTextAncestor ? (
+    element
+  ) : (
+    <TextAncestorContext.Provider value={true}>
+      {element}
+    </TextAncestorContext.Provider>
+  );
+};
 
 Text.displayName = 'Text';
 

@@ -10,10 +10,10 @@
 
 import {
   Children,
-  forwardRef,
   useContext,
   useRef,
-  type ElementType
+  type ElementType,
+  type Ref
 } from 'react';
 
 import type { ElementProps } from '../../modules/createDOMProps';
@@ -52,103 +52,104 @@ const forwardPropsList = Object.assign(
 const pickProps = (props: ViewProps): ElementProps =>
   pick(props, forwardPropsList);
 
-const View = forwardRef<HTMLElement & PlatformMethods, ViewProps>(
-  (props, forwardedRef) => {
-    const {
-      hrefAttrs,
-      onLayout,
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onResponderEnd,
-      onResponderGrant,
-      onResponderMove,
-      onResponderReject,
-      onResponderRelease,
-      onResponderStart,
-      onResponderTerminate,
-      onResponderTerminationRequest,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-      ...rest
-    } = props;
+const View = (
+  props: ViewProps & { ref?: Ref<HTMLElement & PlatformMethods> }
+) => {
+  const {
+    hrefAttrs,
+    onLayout,
+    onMoveShouldSetResponder,
+    onMoveShouldSetResponderCapture,
+    onResponderEnd,
+    onResponderGrant,
+    onResponderMove,
+    onResponderReject,
+    onResponderRelease,
+    onResponderStart,
+    onResponderTerminate,
+    onResponderTerminationRequest,
+    onScrollShouldSetResponder,
+    onScrollShouldSetResponderCapture,
+    onSelectionChangeShouldSetResponder,
+    onSelectionChangeShouldSetResponderCapture,
+    onStartShouldSetResponder,
+    onStartShouldSetResponderCapture,
+    ref,
+    ...rest
+  } = props;
 
-    if (process.env.NODE_ENV !== 'production') {
-      Children.toArray(props.children).forEach((item) => {
-        if (typeof item === 'string') {
-          console.error(
-            `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
-          );
-        }
-      });
-    }
-
-    const hasTextAncestor = useContext(TextAncestorContext);
-    const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
-    const { direction: contextDirection } = useLocaleContext();
-
-    useElementLayout(hostRef, onLayout);
-    useResponderEvents(hostRef, {
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onResponderEnd,
-      onResponderGrant,
-      onResponderMove,
-      onResponderReject,
-      onResponderRelease,
-      onResponderStart,
-      onResponderTerminate,
-      onResponderTerminationRequest,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture
+  if (process.env.NODE_ENV !== 'production') {
+    Children.toArray(props.children).forEach((item) => {
+      if (typeof item === 'string') {
+        console.error(
+          `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
+        );
+      }
     });
+  }
 
-    let component: ElementType = 'div';
+  const hasTextAncestor = useContext(TextAncestorContext);
+  const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
+  const { direction: contextDirection } = useLocaleContext();
 
-    const langDirection =
-      props.lang != null ? getLocaleDirection(props.lang) : null;
-    const componentDirection = props.dir || langDirection;
-    const writingDirection = componentDirection || contextDirection;
+  useElementLayout(hostRef, onLayout);
+  useResponderEvents(hostRef, {
+    onMoveShouldSetResponder,
+    onMoveShouldSetResponderCapture,
+    onResponderEnd,
+    onResponderGrant,
+    onResponderMove,
+    onResponderReject,
+    onResponderRelease,
+    onResponderStart,
+    onResponderTerminate,
+    onResponderTerminationRequest,
+    onScrollShouldSetResponder,
+    onScrollShouldSetResponderCapture,
+    onSelectionChangeShouldSetResponder,
+    onSelectionChangeShouldSetResponderCapture,
+    onStartShouldSetResponder,
+    onStartShouldSetResponderCapture
+  });
 
-    const supportedProps = pickProps(rest);
-    supportedProps.dir = componentDirection;
-    supportedProps.style = [
-      styles.view$raw,
-      hasTextAncestor && styles.inline,
-      props.style
-    ];
-    if (props.href != null) {
-      component = 'a';
-      if (hrefAttrs != null) {
-        const { download, rel, target } = hrefAttrs;
-        if (download != null) {
-          supportedProps.download = download;
-        }
-        if (rel != null) {
-          supportedProps.rel = rel;
-        }
-        if (typeof target === 'string') {
-          supportedProps.target =
-            target.charAt(0) !== '_' ? '_' + target : target;
-        }
+  let component: ElementType = 'div';
+
+  const langDirection =
+    props.lang != null ? getLocaleDirection(props.lang) : null;
+  const componentDirection = props.dir || langDirection;
+  const writingDirection = componentDirection || contextDirection;
+
+  const supportedProps = pickProps(rest);
+  supportedProps.dir = componentDirection;
+  supportedProps.style = [
+    styles.view$raw,
+    hasTextAncestor && styles.inline,
+    props.style
+  ];
+  if (props.href != null) {
+    component = 'a';
+    if (hrefAttrs != null) {
+      const { download, rel, target } = hrefAttrs;
+      if (download != null) {
+        supportedProps.download = download;
+      }
+      if (rel != null) {
+        supportedProps.rel = rel;
+      }
+      if (typeof target === 'string') {
+        supportedProps.target =
+          target.charAt(0) !== '_' ? '_' + target : target;
       }
     }
-
-    const platformMethodsRef = usePlatformMethods();
-    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef);
-
-    supportedProps.ref = setRef;
-
-    return createElement(component, supportedProps, { writingDirection });
   }
-);
+
+  const platformMethodsRef = usePlatformMethods();
+  const setRef = useMergeRefs(hostRef, platformMethodsRef, ref);
+
+  supportedProps.ref = setRef;
+
+  return createElement(component, supportedProps, { writingDirection });
+};
 
 View.displayName = 'View';
 
