@@ -1,4 +1,4 @@
-// @ts-nocheck
+import type { ComponentsType } from '../impl';
 
 import { BenchmarkType } from '../app/Benchmark';
 import React from 'react';
@@ -10,7 +10,16 @@ import {
 
 const targetSize = 10;
 
-class SierpinskiTriangle extends React.Component {
+type Props = {
+  components: ComponentsType;
+  depth: number;
+  renderCount: number;
+  s: number;
+  x: number;
+  y: number;
+};
+
+class SierpinskiTriangle extends React.Component<Props> {
   static displayName = 'SierpinskiTriangle';
 
   static benchmarkType = BenchmarkType.UPDATE;

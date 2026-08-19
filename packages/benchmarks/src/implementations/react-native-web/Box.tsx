@@ -1,7 +1,7 @@
-// @ts-nocheck
+import type { BoxProps } from '../../impl';
 
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native-web';
 
 const Box = ({
   color,
@@ -9,11 +9,11 @@ const Box = ({
   layout = 'column',
   outer = false,
   ...other
-}) => (
+}: BoxProps) => (
   <View
     {...other}
     style={[
-      styles[`color${color}`],
+      styles[`color${color}` as keyof typeof styles],
       fixed && styles.fixed,
       layout === 'row' && styles.row,
       outer && styles.outer
