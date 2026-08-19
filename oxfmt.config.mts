@@ -5,6 +5,5 @@ export default defineConfig({
   printWidth: 80,
   singleQuote: true,
   sortImports: true,
-  sortPackageJson: false,
   trailingComma: 'none'
 });
