@@ -86,6 +86,8 @@ export default defineConfig({
       plugins: ['typescript'],
       rules: {
         'typescript/no-empty-object-type': 'error',
+        'typescript/no-explicit-any': 'error',
+        'typescript/no-floating-promises': 'error',
         'typescript/no-import-type-side-effects': 'error',
         'typescript/no-invalid-void-type': 'error',
         'typescript/no-non-null-assertion': 'error',
@@ -95,9 +97,7 @@ export default defineConfig({
         'typescript/explicit-function-return-type': 'off',
         'typescript/explicit-module-boundary-types': 'off',
         'typescript/no-dynamic-delete': 'off',
-        'typescript/no-explicit-any': 'off',
         'typescript/no-extraneous-class': 'off',
-        'typescript/no-floating-promises': 'off',
         'typescript/no-misused-spread': 'off',
         'typescript/no-this-alias': 'off',
         'typescript/no-unnecessary-boolean-literal-compare': 'off',
