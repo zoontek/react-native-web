@@ -5,35 +5,37 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Mock } from 'vitest';
+
 import type TaskQueueType from '../TaskQueue';
 
-function expectToBeCalledOnce(fn: jest.Mock) {
+function expectToBeCalledOnce(fn: Mock) {
   expect(fn.mock.calls.length).toBe(1);
 }
 
 function clearTaskQueue(taskQueue: TaskQueueType) {
   do {
-    jest.runAllTimers();
+    vi.runAllTimers();
     taskQueue.processNext();
-    jest.runAllTimers();
+    vi.runAllTimers();
   } while (taskQueue.hasTasksToProcess());
 }
 
 describe('TaskQueue', () => {
   let taskQueue: TaskQueueType;
-  let onMoreTasks: jest.Mock;
+  let onMoreTasks: Mock;
   let sequenceId: number;
 
   function createSequenceTask(expectedSequenceId: number) {
-    return jest.fn(() => {
+    return vi.fn(() => {
       expect(++sequenceId).toBe(expectedSequenceId);
     });
   }
 
-  beforeEach(() => {
-    jest.resetModules();
-    onMoreTasks = jest.fn();
-    const TaskQueue = require('../TaskQueue').default;
+  beforeEach(async () => {
+    vi.resetModules();
+    onMoreTasks = vi.fn();
+    const TaskQueue = (await import('../TaskQueue')).default;
     taskQueue = new TaskQueue({ onMoreTasks });
     sequenceId = 0;
   });
@@ -49,10 +51,10 @@ describe('TaskQueue', () => {
   it('should handle blocking promise task', () => {
     onMoreTasks.mockImplementation(() => {
       taskQueue.processNext();
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
 
-    const task1 = jest.fn(() => {
+    const task1 = vi.fn(() => {
       return new Promise<void>((resolve) => {
         setTimeout(() => {
           expect(++sequenceId).toBe(1);
@@ -84,7 +86,7 @@ describe('TaskQueue', () => {
   });
 
   it('should handle nested simple tasks', () => {
-    const task1 = jest.fn(() => {
+    const task1 = vi.fn(() => {
       expect(++sequenceId).toBe(1);
       taskQueue.enqueue({ run: task3, name: 'run3' });
     });
@@ -103,10 +105,10 @@ describe('TaskQueue', () => {
   it('should handle nested promises', () => {
     onMoreTasks.mockImplementation(() => {
       taskQueue.processNext();
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
 
-    const task1 = jest.fn(() => {
+    const task1 = vi.fn(() => {
       return new Promise<void>((resolve) => {
         setTimeout(() => {
           expect(++sequenceId).toBe(1);
@@ -115,7 +117,7 @@ describe('TaskQueue', () => {
         }, 1);
       });
     });
-    const task2 = jest.fn(() => {
+    const task2 = vi.fn(() => {
       return new Promise<void>((resolve) => {
         setTimeout(() => {
           expect(++sequenceId).toBe(2);
@@ -144,9 +146,9 @@ describe('TaskQueue', () => {
   });
 
   it('should be able to cancel tasks', () => {
-    const task1 = jest.fn();
+    const task1 = vi.fn();
     const task2 = createSequenceTask(1);
-    const task3 = jest.fn();
+    const task3 = vi.fn();
     const task4 = createSequenceTask(2);
     taskQueue.enqueue(task1);
     taskQueue.enqueue(task2);
@@ -162,7 +164,7 @@ describe('TaskQueue', () => {
   });
 
   it('should not crash when last task is cancelled', () => {
-    const task1 = jest.fn();
+    const task1 = vi.fn();
     taskQueue.enqueue(task1);
     taskQueue.cancelTasks([task1]);
     clearTaskQueue(taskQueue);
@@ -171,7 +173,7 @@ describe('TaskQueue', () => {
   });
 
   it('should not crash when task is cancelled between being started and resolved', () => {
-    const task1 = jest.fn(() => {
+    const task1 = vi.fn(() => {
       return new Promise<void>((resolve) => {
         setTimeout(() => {
           resolve();
@@ -182,6 +184,6 @@ describe('TaskQueue', () => {
     taskQueue.enqueue({ gen: task1, name: 'gen1' });
     taskQueue.processNext();
     taskQueue.cancelTasks([task1]);
-    jest.runAllTimers();
+    vi.runAllTimers();
   });
 });

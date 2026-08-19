@@ -44,7 +44,7 @@ export function setPointerEvent(bool: boolean) {
  * Change environment host platform.
  */
 
-const platformGetter = jest.spyOn(global.navigator, 'platform', 'get');
+const platformGetter = vi.spyOn(global.navigator, 'platform', 'get');
 
 export const platform = {
   clear() {

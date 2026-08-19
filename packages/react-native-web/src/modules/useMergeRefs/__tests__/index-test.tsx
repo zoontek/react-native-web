@@ -28,8 +28,8 @@ describe('modules/useMergeRefs', () => {
   });
 
   test('merges any number of varying refs', () => {
-    const callbackRef1 = jest.fn();
-    const callbackRef2 = jest.fn();
+    const callbackRef1 = vi.fn();
+    const callbackRef2 = vi.fn();
     const objectRef1 = createRef<HTMLDivElement>();
     const objectRef2 = createRef<HTMLDivElement>();
     const nullRef = null;
@@ -49,8 +49,8 @@ describe('modules/useMergeRefs', () => {
   });
 
   test('ref is called when ref changes', () => {
-    const ref = jest.fn();
-    const nextRef = jest.fn();
+    const ref = vi.fn();
+    const nextRef = vi.fn();
     let rerender!: RenderResult['rerender'];
 
     act(() => {
@@ -64,7 +64,7 @@ describe('modules/useMergeRefs', () => {
   });
 
   test('ref is not called for each rerender', () => {
-    const ref = jest.fn();
+    const ref = vi.fn();
     let rerender!: RenderResult['rerender'];
 
     act(() => {
@@ -78,7 +78,7 @@ describe('modules/useMergeRefs', () => {
   });
 
   test('ref is not called for props changes', () => {
-    const ref = jest.fn();
+    const ref = vi.fn();
     let rerender!: RenderResult['rerender'];
 
     act(() => {
