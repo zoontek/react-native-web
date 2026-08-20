@@ -27,10 +27,11 @@ const { positionals, values } = parseArgs({
 const version = positionals[0];
 const skipGit = values['skip-git'];
 const oneTimeCode = values.otp;
+const otpFlag = oneTimeCode == null ? '' : ` --otp ${oneTimeCode}`;
 
 if (version == null) {
   console.error(
-    'Usage: node ./scripts/releaseReactNativeWebPackages.mts <version> [--skip-git] [--otp <code>]'
+    'Usage: node ./scripts/releaseReactNativeWebPackages.ts <version> [--skip-git] [--otp <code>]'
   );
   process.exit(1);
 }
@@ -91,7 +92,7 @@ if (!skipGit) {
 // Publish public packages
 workspaces.forEach(({ directory, packageJson }) => {
   if (!packageJson.private) {
-    execSync(`cd ${directory} && npm publish --otp ${oneTimeCode}`);
+    execSync(`cd ${directory} && npm publish${otpFlag}`);
   }
 });
 

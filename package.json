@@ -4,6 +4,7 @@
   "private": true,
   "license": "MIT",
   "author": "Nicolas Gallagher",
+  "type": "module",
   "scripts": {
     "clean": "del-cli ./packages/*/dist",
     "build": "pnpm clean && pnpm --recursive --if-present build",
@@ -13,7 +14,7 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "prerelease": "pnpm test && pnpm build",
-    "release": "node ./scripts/releaseReactNativeWebPackages.mts",
+    "release": "node ./scripts/releaseReactNativeWebPackages.ts",
     "release:benchmarks": "git checkout gh-pages && rm -rf ./docs/benchmarks && mv packages/benchmarks/dist ./docs/benchmarks && git add -A && git commit -m \"Deploy benchmarks\" && git push origin gh-pages && git checkout -",
     "release:react-native-web-docs": "git checkout gh-pages && rm -rf ./docs && mv packages/react-native-web-docs/dist ./docs && git add ./docs && git commit -m \"Deploy documentation\" && git push origin gh-pages && git checkout -",
     "postrelease": "pnpm release:react-native-web-docs && pnpm release:benchmarks",
