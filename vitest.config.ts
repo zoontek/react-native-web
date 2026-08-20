@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 
-const setupFiles = ['./vitest.setup.mts'];
+const setupFiles = ['./vitest.setup.ts'];
 
 export default defineConfig({
   test: {
@@ -18,7 +18,7 @@ export default defineConfig({
           },
           // Only a VM context makes the JSDOM window the test global, which
           // DOM events rely on to report 'window' as their target
-          setupFiles: [...setupFiles, './vitest.setup.dom.mts']
+          setupFiles: [...setupFiles, './vitest.setup.dom.ts']
         }
       },
       {
