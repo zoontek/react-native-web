@@ -2,6 +2,7 @@ import { defineConfig, type UserConfig } from 'tsdown';
 
 const common: UserConfig = {
   platform: 'neutral',
+  logLevel: 'warn',
   entry: ['./src/**/*.{ts,tsx}', '!./src/**/__tests__'],
   target: ['chrome95', 'firefox93', 'safari15.1'],
   deps: { neverBundle: true },
