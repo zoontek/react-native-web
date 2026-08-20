@@ -4,7 +4,6 @@ const common: UserConfig = {
   platform: 'neutral',
   entry: ['./src/**/*.{ts,tsx}', '!./src/**/__tests__'],
   target: ['chrome95', 'firefox93', 'safari15.1'],
-  outExtensions: () => ({ js: '.js', dts: '.d.ts' }),
   deps: { neverBundle: true },
   minify: process.env.MINIFY === 'true',
   unbundle: true,

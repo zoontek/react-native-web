@@ -4,6 +4,7 @@
   "private": true,
   "description": "Documentation website for React Native for Web",
   "homepage": "https://github.com/necolas/react-native-web",
+  "type": "module",
   "scripts": {
     "build:examples": "pnpm --filter react-native-web-examples build",
     "dev": "pnpm run build:examples && eleventy --serve",
