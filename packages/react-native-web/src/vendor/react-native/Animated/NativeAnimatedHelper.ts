@@ -9,10 +9,10 @@
 
 import invariant from 'fbjs/lib/invariant';
 
+import Platform from '../../../exports/Platform';
 import type { Nullable } from '../../../types';
 import NativeEventEmitter from '../EventEmitter/NativeEventEmitter';
 import ReactNativeFeatureFlags from '../ReactNative/ReactNativeFeatureFlags';
-import Platform from '../Utilities/Platform';
 import type { EventConfig } from './AnimatedEvent';
 import type { AnimationConfig, EndCallback } from './animations/Animation';
 import NativeAnimatedNonTurboModule, {
