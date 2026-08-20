@@ -701,7 +701,7 @@ describe('components/TextInput', () => {
 
   describe('prop "selectTextOnFocus"', () => {
     testIfDocumentIsFocused('value "false"', () => {
-      const { container } = render(<TextInput defaultValue={'text'} />);
+      const { container } = render(<TextInput defaultValue="text" />);
       const input = findInput(container);
       input.focus();
       expect(input.selectionEnd).toEqual(4);
@@ -709,7 +709,7 @@ describe('components/TextInput', () => {
     });
 
     // testIfDocumentIsFocused('value "true"', () => {
-    // const input = findNativeInput(mount(<TextInput defaultValue={'text'} selectTextOnFocus />));
+    // const input = findNativeInput(mount(<TextInput defaultValue="text" selectTextOnFocus />));
     // input.node.focus()
     // assert.equal(input.node.selectionEnd, 4)
     // assert.equal(input.node.selectionStart, 0)
