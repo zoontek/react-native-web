@@ -27,7 +27,7 @@ function AnimatedModal({ animationType }: { animationType: AnimationType }) {
         <View style={styles.container}>
           <Text>Modal with "animationType" of "{animationType}"</Text>
           <Gap />
-          <Button onPress={() => setIsVisible(false)} title={'Close Modal'} />
+          <Button onPress={() => setIsVisible(false)} title="Close Modal" />
         </View>
       </Modal>
     </>
@@ -37,11 +37,11 @@ function AnimatedModal({ animationType }: { animationType: AnimationType }) {
 function AnimatedModalStack() {
   return (
     <>
-      <AnimatedModal animationType={'none'} />
+      <AnimatedModal animationType="none" />
       <Gap />
-      <AnimatedModal animationType={'slide'} />
+      <AnimatedModal animationType="slide" />
       <Gap />
-      <AnimatedModal animationType={'fade'} />
+      <AnimatedModal animationType="fade" />
     </>
   );
 }
@@ -60,7 +60,7 @@ function Modalception({ depth = 1 }) {
 
   return (
     <>
-      <Button onPress={() => setIsVisible(true)} title={'Open modal'} />
+      <Button onPress={() => setIsVisible(true)} title="Open modal" />
       <Modal
         onRequestClose={() => setIsVisible(false)}
         transparent
@@ -74,7 +74,7 @@ function Modalception({ depth = 1 }) {
           <Button
             color="red"
             onPress={() => setIsVisible(false)}
-            title={'Close'}
+            title="Close"
           />
         </View>
       </Modal>
@@ -87,12 +87,12 @@ function SimpleModal() {
 
   return (
     <>
-      <Button onPress={() => setIsVisible(true)} title={'Simple modal'} />
+      <Button onPress={() => setIsVisible(true)} title="Simple modal" />
       <Modal onRequestClose={() => setIsVisible(false)} visible={isVisible}>
         <View style={styles.container}>
           <Text>Hello, World!</Text>
           <Gap />
-          <Button onPress={() => setIsVisible(false)} title={'Close'} />
+          <Button onPress={() => setIsVisible(false)} title="Close" />
         </View>
       </Modal>
     </>
@@ -104,7 +104,7 @@ function TransparentModal() {
 
   return (
     <>
-      <Button onPress={() => setIsVisible(true)} title={'Transparent modal'} />
+      <Button onPress={() => setIsVisible(true)} title="Transparent modal" />
       <Modal
         onRequestClose={() => setIsVisible(false)}
         transparent
@@ -115,7 +115,7 @@ function TransparentModal() {
             Modal with "transparent" value
           </Text>
           <Gap />
-          <Button onPress={() => setIsVisible(false)} title={'Close'} />
+          <Button onPress={() => setIsVisible(false)} title="Close" />
         </View>
       </Modal>
     </>
