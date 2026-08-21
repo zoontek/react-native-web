@@ -32,7 +32,7 @@
     "dev:tsdown": "tsdown --watch",
     "dev:tsc": "tsc --project tsconfig.build.json --watch",
     "dev": "pnpm clean && pnpm run --parallel \"/^dev:/\"",
-    "build": "tsdown && tsc --project tsconfig.build.json"
+    "build": "tsdown"
   },
   "dependencies": {
     "@react-native/normalize-colors": "^0.74.1",
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "dom-event-testing-library": "workspace:*",
+    "react-native": "0.87.0",
     "tsdown": "^0.22.14"
   },
   "peerDependencies": {
