@@ -20,22 +20,20 @@ type LocaleValue = {
   locale: Nullable<Locale>;
 };
 
-type ProviderProps = LocaleValue & {
-  children: ReactNode;
-};
-
-const defaultLocale: LocaleValue = {
+const LocaleContext = createContext<LocaleValue>({
   direction: 'ltr',
   locale: 'en-US'
-};
+});
 
-const LocaleContext = createContext<LocaleValue>(defaultLocale);
+type Props = LocaleValue & {
+  children: ReactNode;
+};
 
 export function getLocaleDirection(locale: Locale): WritingDirection {
   return isLocaleRTL(locale) ? 'rtl' : 'ltr';
 }
 
-export function LocaleProvider(props: ProviderProps): ReactNode {
+export function LocaleProvider(props: Props): ReactNode {
   const { direction, locale, children } = props;
   const needsContext = direction || locale;
 

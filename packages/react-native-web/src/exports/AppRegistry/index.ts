@@ -13,7 +13,6 @@ import type { ComponentType } from 'react';
 import type { Root } from 'react-dom/client';
 
 import type { Nullable } from '../../types';
-import unmountComponentAtNode from '../unmountComponentAtNode';
 import {
   getApplication,
   renderApplication,
@@ -162,6 +161,6 @@ export default class AppRegistry {
   }
 
   static unmountApplicationComponentAtRootTag(rootTag: Root) {
-    unmountComponentAtNode(rootTag);
+    rootTag.unmount();
   }
 }
