@@ -8,8 +8,8 @@
 import type * as RN from 'react-native';
 
 const Alert: typeof RN.Alert = class {
-  static alert() {}
-  static prompt() {}
+  static alert = () => {};
+  static prompt = () => {};
 };
 
 export default Alert;

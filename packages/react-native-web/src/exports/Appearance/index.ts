@@ -23,13 +23,11 @@ const listenerMapping = new WeakMap<
 >();
 
 const Appearance: typeof RN.Appearance = {
-  getColorScheme() {
-    return query != null && query.matches ? 'dark' : 'light';
-  },
+  getColorScheme: () => (query != null && query.matches ? 'dark' : 'light'),
 
-  setColorScheme() {},
+  setColorScheme: () => {},
 
-  addChangeListener(listener) {
+  addChangeListener: (listener) => {
     let mappedListener = listenerMapping.get(listener);
 
     if (mappedListener == null) {

@@ -13,7 +13,7 @@ import type * as RN from 'react-native';
 let clipboardAvailable: boolean | undefined;
 
 const Clipboard: typeof RN.Clipboard = class {
-  static isAvailable() {
+  static isAvailable = () => {
     if (clipboardAvailable == null) {
       clipboardAvailable =
         typeof document.queryCommandSupported === 'function' &&
@@ -21,13 +21,11 @@ const Clipboard: typeof RN.Clipboard = class {
     }
 
     return clipboardAvailable;
-  }
+  };
 
-  static getString() {
-    return Promise.resolve('');
-  }
+  static getString = () => Promise.resolve('');
 
-  static setString = (text): void => {
+  static setString = (text) => {
     const body = document.body;
 
     if (body != null) {

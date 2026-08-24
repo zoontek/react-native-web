@@ -9,9 +9,9 @@
 import type * as RN from 'react-native';
 
 const BackHandler: typeof RN.BackHandler = {
-  exitApp() {},
+  exitApp: () => {},
 
-  addEventListener() {
+  addEventListener: () => {
     console.error(
       'BackHandler is not supported on web and should not be used.'
     );
