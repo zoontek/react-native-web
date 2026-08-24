@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-type AlertClass = typeof import('react-native').Alert;
+import type * as RN from 'react-native';
 
-const Alert: AlertClass = class {
+const Alert: typeof RN.Alert = class {
   static alert() {}
   static prompt() {}
 };
