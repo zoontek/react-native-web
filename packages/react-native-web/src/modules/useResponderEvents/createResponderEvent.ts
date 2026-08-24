@@ -43,7 +43,8 @@ export type ResponderEvent = {
   touchHistory: TouchHistory;
 };
 
-const emptyFunction = () => {};
+function noop() {}
+
 const emptyObject = {};
 const emptyArray: Array<ResponderTouch> = [];
 const slice: (this: Nullable<TouchList>) => Array<Touch> =
@@ -96,7 +97,7 @@ export default function createResponderEvent(
   const preventDefault =
     typeof domEvent.preventDefault === 'function'
       ? domEvent.preventDefault.bind(domEvent)
-      : emptyFunction;
+      : noop;
   const timestamp = domEvent.timeStamp;
 
   function normalizeTouches(
@@ -183,7 +184,7 @@ export default function createResponderEvent(
       touches,
       type: domEventType
     },
-    persist: emptyFunction,
+    persist: noop,
     preventDefault,
     stopPropagation() {
       propagationWasStopped = true;

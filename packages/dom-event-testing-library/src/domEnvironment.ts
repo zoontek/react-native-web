@@ -11,7 +11,7 @@
 
 export type Platform = 'mac' | 'windows';
 
-const emptyFunction = function () {};
+function noop() {}
 
 export function hasPointerEvent() {
   return global != null && global.PointerEvent != null;
@@ -27,7 +27,7 @@ export function setPointerEvent(bool: boolean) {
   };
   // The DOM lib types these as always defined, so assigning 'undefined' to
   // them does not typecheck. 'Reflect.set' writes them without a type cast.
-  Reflect.set(global, 'PointerEvent', bool ? emptyFunction : undefined);
+  Reflect.set(global, 'PointerEvent', bool ? noop : undefined);
   Reflect.set(
     global.HTMLElement.prototype,
     'setPointerCapture',
