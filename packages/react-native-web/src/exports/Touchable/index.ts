@@ -7,7 +7,7 @@
  * @format
  */
 
-const noop = () => {};
+function noop() {}
 
 /**
  * `Touchable` predates `Pressable` and nothing in react-native-web uses it.

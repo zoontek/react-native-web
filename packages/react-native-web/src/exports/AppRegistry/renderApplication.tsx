@@ -15,9 +15,9 @@ import type {
 } from 'react';
 
 import type { Nullable } from '../../types';
-import { hydrate, render } from '../render';
 import StyleSheet from '../StyleSheet';
 import AppContainer from './AppContainer';
+import { hydrate, render } from './render';
 
 export type Application = {
   unmount: () => void;
