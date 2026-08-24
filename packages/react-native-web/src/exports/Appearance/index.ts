@@ -8,55 +8,53 @@
 
 'use client';
 
+import type * as RN from 'react-native';
+
 import canUseDOM from '../../modules/canUseDom';
 
-export type ColorSchemeName = 'light' | 'dark';
-
-export type AppearancePreferences = {
-  colorScheme: ColorSchemeName;
-};
-
-type AppearanceListener = (preferences: AppearancePreferences) => void;
-type DOMAppearanceListener = (ev: MediaQueryListEvent) => void;
-
-function getQuery(): MediaQueryList | null {
-  return canUseDOM && typeof window.matchMedia === 'function'
+const query =
+  canUseDOM && typeof window.matchMedia === 'function'
     ? window.matchMedia('(prefers-color-scheme: dark)')
     : null;
-}
 
-const query = getQuery();
 const listenerMapping = new WeakMap<
-  AppearanceListener,
-  DOMAppearanceListener
+  (preferences: RN.Appearance.AppearancePreferences) => void,
+  (event: MediaQueryListEvent) => void
 >();
 
-const Appearance = {
-  getColorScheme(): ColorSchemeName {
-    return query && query.matches ? 'dark' : 'light';
+const Appearance: typeof RN.Appearance = {
+  getColorScheme() {
+    return query != null && query.matches ? 'dark' : 'light';
   },
 
-  addChangeListener(listener: AppearanceListener): { remove: () => void } {
+  setColorScheme() {},
+
+  addChangeListener(listener) {
     let mappedListener = listenerMapping.get(listener);
-    if (!mappedListener) {
-      mappedListener = ({ matches }: MediaQueryListEvent) => {
+
+    if (mappedListener == null) {
+      mappedListener = ({ matches }) => {
         listener({ colorScheme: matches ? 'dark' : 'light' });
       };
+
       listenerMapping.set(listener, mappedListener);
     }
-    if (query) {
+
+    if (query != null) {
       query.addEventListener('change', mappedListener);
     }
 
-    function remove(): void {
-      const mappedListener = listenerMapping.get(listener);
-      if (query && mappedListener) {
-        query.removeEventListener('change', mappedListener);
-      }
-      listenerMapping.delete(listener);
-    }
+    return {
+      remove() {
+        const mappedListener = listenerMapping.get(listener);
 
-    return { remove };
+        if (mappedListener != null) {
+          query?.removeEventListener('change', mappedListener);
+        }
+
+        listenerMapping.delete(listener);
+      }
+    };
   }
 };
 

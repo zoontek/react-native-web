@@ -9,31 +9,28 @@
 'use client';
 
 import invariant from 'fbjs/lib/invariant';
-import type { AppStateEvent, AppStateStatus } from 'react-native';
+import type * as RN from 'react-native';
 
 import canUseDOM from '../../modules/canUseDom';
 import strictArray from '../../modules/strictArray';
 import type { Nullable } from '../../types';
 import EventEmitter from '../../vendor/react-native/vendor/emitter/EventEmitter';
 
-type AppStateClass = typeof import('react-native').AppState;
-type AddEventListener = AppStateClass['addEventListener'];
-
 type AppStateEventDefinitions = {
-  change: [AppStateStatus];
+  change: [RN.AppStateStatus];
   memoryWarning: [];
   blur: [];
   focus: [];
 };
 
-const EVENT_TYPES = strictArray<AppStateEvent>({
+const EVENT_TYPES = strictArray<RN.AppStateEvent>({
   change: null,
   memoryWarning: null,
   blur: null,
   focus: null
 });
 
-const AppStates: Record<Uppercase<AppStateStatus>, AppStateStatus> = {
+const AppStates: Record<Uppercase<RN.AppStateStatus>, RN.AppStateStatus> = {
   INACTIVE: 'inactive',
   BACKGROUND: 'background',
   ACTIVE: 'active',
@@ -43,18 +40,18 @@ const AppStates: Record<Uppercase<AppStateStatus>, AppStateStatus> = {
 
 let changeEmitter: Nullable<EventEmitter<AppStateEventDefinitions>> = null;
 
-const AppState: AppStateClass = class Impl {
+const AppState: typeof RN.AppState = class Impl {
   static isAvailable = canUseDOM && !!document.visibilityState;
 
-  static get currentState(): AppStateStatus {
+  static get currentState(): RN.AppStateStatus {
     return !Impl.isAvailable || document.visibilityState === 'visible'
       ? AppStates.ACTIVE
       : AppStates.BACKGROUND;
   }
 
-  static addEventListener: AddEventListener = (type, handler) => {
+  static addEventListener = (type, handler) => {
     if (!Impl.isAvailable) {
-      return { remove: () => {} };
+      return { remove() {} };
     }
 
     invariant(
@@ -64,7 +61,7 @@ const AppState: AppStateClass = class Impl {
     );
 
     if (type !== 'change') {
-      return { remove: () => {} };
+      return { remove() {} };
     }
 
     if (!changeEmitter) {
@@ -72,7 +69,9 @@ const AppState: AppStateClass = class Impl {
 
       document.addEventListener(
         'visibilitychange',
-        () => changeEmitter?.emit('change', Impl.currentState),
+        () => {
+          changeEmitter?.emit('change', Impl.currentState);
+        },
         false
       );
     }
