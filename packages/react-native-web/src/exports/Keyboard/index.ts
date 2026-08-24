@@ -6,21 +6,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type * as RN from 'react-native';
+
 import dismissKeyboard from '../../modules/dismissKeyboard';
 
+function noop() {}
+
 // in the future we can use https://github.com/w3c/virtual-keyboard
-const Keyboard = {
-  isVisible(): boolean {
-    return false;
-  },
-  addListener(): { remove: () => void } {
-    return { remove: () => {} };
-  },
-  dismiss() {
-    dismissKeyboard();
-  },
-  removeAllListeners() {},
-  removeListener() {}
+const Keyboard: typeof RN.Keyboard = {
+  isVisible: () => false,
+  addListener: () => ({ remove() {} }),
+  dismiss: dismissKeyboard,
+  removeAllListeners: noop,
+  metrics: () => null,
+  scheduleLayoutAnimation: noop
 };
 
 export default Keyboard;
