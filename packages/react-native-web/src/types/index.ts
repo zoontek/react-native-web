@@ -7,6 +7,8 @@
 
 import type { CompiledStyle } from '../exports/StyleSheet/compiler';
 
+export type Except<T, K extends keyof T> = Omit<T, K>;
+
 // A value that also accepts 'null' and 'undefined'
 export type Nullable<T> = T | null | undefined;
 

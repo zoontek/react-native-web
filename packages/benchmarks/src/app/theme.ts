@@ -1,4 +1,4 @@
-import { Dimensions, Platform } from 'react-native-web';
+import { Dimensions, Platform, type DimensionsPayload } from 'react-native-web';
 
 const canUseDOM = !!(
   typeof window !== 'undefined' &&
@@ -43,6 +43,7 @@ export const colors = {
 if (Platform.OS === 'web' && canUseDOM) {
   const { medium, large } = breakpoints;
   const htmlElement = document.documentElement;
+
   const setFontSize = (width: number) => {
     const fontSize =
       width > medium ? (width > large ? '18px' : '17px') : '16px';
@@ -52,7 +53,8 @@ if (Platform.OS === 'web' && canUseDOM) {
   };
 
   setFontSize(Dimensions.get('window').width);
-  Dimensions.addEventListener('change', (dimensions) => {
-    setFontSize(dimensions.window.width);
+
+  Dimensions.addEventListener('change', (dims: DimensionsPayload) => {
+    setFontSize(dims.window?.width ?? 0);
   });
 }

@@ -6,109 +6,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import invariant from 'fbjs/lib/invariant';
+import type * as RN from 'react-native';
 
 import canUseDOM from '../../modules/canUseDom';
+import type { Except } from '../../types';
+
+type LinkingTarget = '_blank' | '_self' | '_parent' | '_top';
 
 const initialURL = canUseDOM ? window.location.href : '';
+const listeners: Record<string, Set<Function>> = {};
 
-type Callback = (...args: unknown[]) => void;
+const emit: (typeof RN.Linking)['emit'] = (type, ...args) => {
+  listeners[type]?.forEach((listener) => listener(...args));
+};
 
-class Linking {
-  /**
-   * An object mapping of event name
-   * and all the callbacks subscribing to it
-   */
-  _eventCallbacks: { [key: string]: Array<Callback> } = {};
-
-  _dispatchEvent(event: string, ...data: unknown[]) {
-    const listeners = this._eventCallbacks[event];
-    if (listeners != null && Array.isArray(listeners)) {
-      listeners.map((listener) => {
-        listener(...data);
-      });
-    }
-  }
-
-  /**
-   * Adds a event listener for the specified event. The callback will be called when the
-   * said event is dispatched.
-   */
-  addEventListener(eventType: string, callback: Callback): { remove(): void } {
-    const { _eventCallbacks } = this;
-
-    if (!_eventCallbacks[eventType]) {
-      _eventCallbacks[eventType] = [callback];
-    }
-    _eventCallbacks[eventType]?.push(callback);
-
-    return {
-      remove() {
-        const callbacks = _eventCallbacks[eventType] ?? [];
-        const filteredCallbacks = callbacks.filter(
-          (c) => c.toString() !== callback.toString()
-        );
-        _eventCallbacks[eventType] = filteredCallbacks;
-      }
-    };
-  }
-
-  /**
-   * Removes a previously added event listener for the specified event. The callback must
-   * be the same object as the one passed to `addEventListener`.
-   */
-  removeEventListener(eventType: string, callback: Callback): void {
-    console.error(
-      `Linking.removeEventListener('${eventType}', ...): Method has been ` +
-        'deprecated. Please instead use `remove()` on the subscription ' +
-        'returned by `Linking.addEventListener`.'
-    );
-    const callbacks = this._eventCallbacks[eventType] ?? [];
-    const filteredCallbacks = callbacks.filter(
-      (c) => c.toString() !== callback.toString()
-    );
-    this._eventCallbacks[eventType] = filteredCallbacks;
-  }
-
-  canOpenURL(): Promise<boolean> {
-    return Promise.resolve(true);
-  }
-
-  getInitialURL(): Promise<string> {
-    return Promise.resolve(initialURL);
-  }
-
-  /**
-   * Try to open the given url in a secure fashion. The method returns a Promise object.
-   * If a target is passed (including undefined) that target will be used, otherwise '_blank'.
-   * If the url opens, the promise is resolved. If not, the promise is rejected.
-   * Dispatches the `onOpen` event if `url` is opened successfully.
-   */
-  openURL(url: string, target?: string): Promise<void> {
-    if (arguments.length === 1) {
-      target = '_blank';
-    }
-    try {
-      open(url, target);
-      this._dispatchEvent('onOpen', url);
-      return Promise.resolve();
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  }
-
-  _validateURL(url: string) {
-    invariant(
-      typeof url === 'string',
-      'Invalid URL: should be a string. Was: ' + url
-    );
-    invariant(url, 'Invalid URL: cannot be empty');
-  }
-}
-
-const open = (url: string, target?: string) => {
+const open = (url: string, target?: LinkingTarget) => {
   if (canUseDOM) {
     const urlToOpen = new URL(url, window.location.href).toString();
+
     if (urlToOpen.indexOf('tel:') === 0) {
       window.location.href = urlToOpen;
     } else {
@@ -117,4 +32,54 @@ const open = (url: string, target?: string) => {
   }
 };
 
-export default new Linking();
+const addListener: (typeof RN.Linking)['addListener'] = (type, listener) => {
+  listeners[type] ??= new Set();
+  listeners[type].add(listener);
+
+  return {
+    remove() {
+      listeners[type]?.delete(listener);
+    }
+  };
+};
+
+const Linking: Except<typeof RN.Linking, 'openURL'> & {
+  /**
+   * Open the given URL with any installed app that can handle it. This
+   * includes URLs such as locations (e.g. "geo:37.484847,-122.148386"),
+   * contacts, or any other URL that can be opened with installed apps.
+   *
+   * This method will fail if the system doesn't know how to open the
+   * specified URL. If you're passing in a non-http(s) URL, it's best to
+   * check `canOpenURL` first. For web URLs, the protocol ("http://",
+   * "https://") must be set accordingly.
+   */
+  openURL: (url: string, target?: LinkingTarget) => Promise<void>;
+} = {
+  addListener,
+  addEventListener: addListener,
+  emit,
+
+  listenerCount: (type) => listeners[type]?.size ?? 0,
+  canOpenURL: () => Promise.resolve(true),
+  getInitialURL: () => Promise.resolve(initialURL),
+  sendIntent: () => Promise.resolve(),
+  openSettings: () => Promise.resolve(),
+
+  removeAllListeners: (type) => {
+    if (type != null) {
+      listeners[type]?.clear();
+    }
+  },
+
+  openURL: (url, target) => {
+    try {
+      open(url, target);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+};
+
+export default Linking;
