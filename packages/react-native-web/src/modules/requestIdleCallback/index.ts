@@ -25,7 +25,7 @@ const isSupported =
 const requestIdleCallback: (
   cb: IdleRequestCallback,
   options?: IdleRequestOptions
-) => number | ReturnType<typeof setTimeout> = isSupported
+) => ReturnType<typeof setTimeout> = isSupported
   ? window.requestIdleCallback
   : _requestIdleCallback;
 
