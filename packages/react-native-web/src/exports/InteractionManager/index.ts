@@ -48,7 +48,7 @@ const InteractionManager = {
 
 const _interactionSet = new Set<number>();
 const _taskQueue = new TaskQueue({ onMoreTasks: _scheduleUpdate });
-let _nextUpdateHandle: ReturnType<typeof setTimeout> | number = 0;
+let _nextUpdateHandle: ReturnType<typeof setTimeout> = 0;
 let _inc = 0;
 
 /**
