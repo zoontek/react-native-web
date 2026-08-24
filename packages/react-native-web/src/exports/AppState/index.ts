@@ -9,43 +9,51 @@
 'use client';
 
 import invariant from 'fbjs/lib/invariant';
+import type { AppStateEvent, AppStateStatus } from 'react-native';
 
 import canUseDOM from '../../modules/canUseDom';
+import strictArray from '../../modules/strictArray';
 import type { Nullable } from '../../types';
-import EventEmitter, {
-  type EventSubscription
-} from '../../vendor/react-native/vendor/emitter/EventEmitter';
+import EventEmitter from '../../vendor/react-native/vendor/emitter/EventEmitter';
 
-type AppStateEvent = 'change' | 'memoryWarning';
-type AppStateStatus = 'active' | 'background';
+type AppStateClass = typeof import('react-native').AppState;
+type AddEventListener = AppStateClass['addEventListener'];
 
-type AppStateEventToArgsMap = {
+type AppStateEventDefinitions = {
   change: [AppStateStatus];
+  memoryWarning: [];
+  blur: [];
+  focus: [];
 };
 
-const EVENT_TYPES = ['change', 'memoryWarning'];
+const EVENT_TYPES = strictArray<AppStateEvent>({
+  change: null,
+  memoryWarning: null,
+  blur: null,
+  focus: null
+});
 
-const AppStates = {
+const AppStates: Record<Uppercase<AppStateStatus>, AppStateStatus> = {
+  INACTIVE: 'inactive',
   BACKGROUND: 'background',
-  ACTIVE: 'active'
-} satisfies Record<string, AppStateStatus>;
+  ACTIVE: 'active',
+  EXTENSION: 'extension',
+  UNKNOWN: 'unknown'
+};
 
-let changeEmitter: Nullable<EventEmitter<AppStateEventToArgsMap>> = null;
+let changeEmitter: Nullable<EventEmitter<AppStateEventDefinitions>> = null;
 
-export default class AppState {
+const AppState: AppStateClass = class Impl {
   static isAvailable = canUseDOM && !!document.visibilityState;
 
   static get currentState(): AppStateStatus {
-    return !AppState.isAvailable || document.visibilityState === 'visible'
+    return !Impl.isAvailable || document.visibilityState === 'visible'
       ? AppStates.ACTIVE
       : AppStates.BACKGROUND;
   }
 
-  static addEventListener(
-    type: AppStateEvent,
-    handler: (state: AppStateStatus) => void
-  ): EventSubscription {
-    if (!AppState.isAvailable) {
+  static addEventListener: AddEventListener = (type, handler) => {
+    if (!Impl.isAvailable) {
       return { remove: () => {} };
     }
 
@@ -64,15 +72,13 @@ export default class AppState {
 
       document.addEventListener(
         'visibilitychange',
-        () => {
-          if (changeEmitter) {
-            changeEmitter.emit('change', AppState.currentState);
-          }
-        },
+        () => changeEmitter?.emit('change', Impl.currentState),
         false
       );
     }
 
     return changeEmitter.addListener(type, handler);
-  }
-}
+  };
+};
+
+export default AppState;
