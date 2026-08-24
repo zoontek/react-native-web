@@ -29,9 +29,7 @@
   },
   "scripts": {
     "clean": "del-cli ./dist",
-    "dev:tsdown": "tsdown --watch",
-    "dev:tsc": "tsc --project tsconfig.build.json --watch",
-    "dev": "pnpm clean && pnpm run --parallel \"/^dev:/\"",
+    "dev": "tsdown --watch",
     "build": "tsdown"
   },
   "dependencies": {
