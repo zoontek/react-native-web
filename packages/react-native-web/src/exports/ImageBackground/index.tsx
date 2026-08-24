@@ -6,7 +6,6 @@
  */
 
 import type { Ref } from 'react';
-import { forwardRef } from 'react';
 
 import type { PlatformMethods } from '../../types';
 import Image from '../Image';
@@ -26,21 +25,21 @@ const emptyObject = {};
 /**
  * Very simple drop-in replacement for <Image> which supports nesting views.
  */
-const ImageBackground = forwardRef<
-  HTMLElement & PlatformMethods,
-  ImageBackgroundProps
->((props, forwardedRef) => {
+const ImageBackground = (
+  props: ImageBackgroundProps & { ref?: Ref<HTMLElement & PlatformMethods> }
+) => {
   const {
     children,
     style = emptyObject,
     imageStyle,
+    ref,
     imageRef,
     ...rest
   } = props;
   const { height, width } = StyleSheet.flatten(style);
 
   return (
-    <View ref={forwardedRef} style={style}>
+    <View ref={ref} style={style}>
       <Image
         {...rest}
         ref={imageRef}
@@ -64,7 +63,7 @@ const ImageBackground = forwardRef<
       {children}
     </View>
   );
-});
+};
 
 ImageBackground.displayName = 'ImageBackground';
 
