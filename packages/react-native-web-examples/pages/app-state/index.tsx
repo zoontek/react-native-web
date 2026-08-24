@@ -6,8 +6,11 @@ import Example from '../../shared/example';
 export default function AppStatePage() {
   const [state, setState] = useState(() => ({
     currentState: AppState.currentState,
+    inactive: 0,
+    background: 0,
     active: 0,
-    background: 0
+    extension: 0,
+    unknown: 0
   }));
 
   useEffect(() => {
