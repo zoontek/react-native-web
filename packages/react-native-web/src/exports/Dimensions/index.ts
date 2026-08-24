@@ -33,7 +33,7 @@ const dimensions: DimensionsValue = {
   }
 };
 
-const listeners: Partial<Record<'change', Set<Function>>> = {};
+const listeners: Record<string, Set<Function>> = {};
 
 let shouldInit = canUseDOM;
 
@@ -84,7 +84,7 @@ function update() {
 
 function handleResize() {
   update();
-  listeners.change?.forEach((listener) => listener(dimensions));
+  listeners['change']?.forEach((listener) => listener(dimensions));
 }
 
 const Dimensions: typeof RN.Dimensions = class {
@@ -114,12 +114,12 @@ const Dimensions: typeof RN.Dimensions = class {
   };
 
   static addEventListener = (type, handler) => {
-    listeners.change ??= new Set();
-    listeners.change.add(handler);
+    listeners[type] ??= new Set();
+    listeners[type].add(handler);
 
     return {
       remove() {
-        listeners.change?.delete(handler);
+        listeners[type]?.delete(handler);
       }
     };
   };
