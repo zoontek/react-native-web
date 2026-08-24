@@ -36,6 +36,7 @@ export { default as ActivityIndicator } from './exports/ActivityIndicator';
 export { default as Button } from './exports/Button';
 export { default as FlatList } from './exports/FlatList';
 export { default as Image } from './exports/Image';
+export { default as ImageBackground } from './exports/ImageBackground';
 export { default as InputAccessoryView } from './exports/InputAccessoryView';
 export { default as KeyboardAvoidingView } from './exports/KeyboardAvoidingView';
 export { default as Modal } from './exports/Modal';
