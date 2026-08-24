@@ -5,10 +5,9 @@ import Example from '../../shared/example';
 
 export default function ClipboardPage() {
   const setString = () => {
-    const success = Clipboard.setString(
+    Clipboard.setString(
       'This text was copied to the clipboard by React Native'
     );
-    console.log(`Clipboard.setString success? ${success}`);
   };
 
   return (
@@ -16,6 +15,7 @@ export default function ClipboardPage() {
       <View style={styles.buttonBox}>
         <Button onPress={setString} title="Copy to clipboard" />
       </View>
+
       <TextInput
         multiline={true}
         placeholder="Try pasting here afterwards"
