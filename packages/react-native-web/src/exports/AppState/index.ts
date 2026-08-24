@@ -58,7 +58,7 @@ const AppState: AppStateClass = class Impl {
     }
 
     invariant(
-      EVENT_TYPES.indexOf(type) !== -1,
+      EVENT_TYPES.includes(type),
       'Trying to subscribe to unknown event: "%s"',
       type
     );
