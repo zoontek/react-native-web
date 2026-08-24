@@ -6,19 +6,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-function emptyFunction() {}
+import type * as RN from 'react-native';
 
-const BackHandler = {
-  exitApp: emptyFunction,
-  addEventListener(): { remove: () => void } {
+const BackHandler: typeof RN.BackHandler = {
+  exitApp() {},
+  addEventListener() {
     console.error(
       'BackHandler is not supported on web and should not be used.'
     );
-    return {
-      remove: emptyFunction
-    };
-  },
-  removeEventListener: emptyFunction
+
+    return { remove() {} };
+  }
 };
 
 export default BackHandler;
