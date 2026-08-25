@@ -7,96 +7,132 @@
 
 'use client';
 
+import type * as RN from 'react-native';
+
 import canUseDOM from '../../modules/canUseDom';
+import type { Except } from '../../types';
 
-type ChangeHandler = (isEnabled: boolean) => void;
-type DOMChangeListener = (ev: MediaQueryListEvent) => void;
+type ChangeHandler = (enabled: boolean) => void;
 
-function isScreenReaderEnabled(): Promise<boolean> {
-  return Promise.resolve(true);
-}
-
-const prefersReducedMotionMedia =
-  canUseDOM && typeof window.matchMedia === 'function'
-    ? window.matchMedia('(prefers-reduced-motion: reduce)')
-    : null;
-
-const handlers = new Map<ChangeHandler, DOMChangeListener>();
-
-const AccessibilityInfo = {
-  /**
-   * Query whether a screen reader is currently enabled.
-   *
-   * Returns a promise which resolves to a boolean.
-   * The result is `true` when a screen reader is enabled and `false` otherwise.
-   */
-  isScreenReaderEnabled,
-
-  /**
-   * Query whether the user prefers reduced motion.
-   *
-   * Returns a promise which resolves to a boolean.
-   * The result is `true` when a screen reader is enabled and `false` otherwise.
-   */
-  isReduceMotionEnabled(): Promise<boolean> {
-    return Promise.resolve(
-      prefersReducedMotionMedia ? prefersReducedMotionMedia.matches : true
-    );
-  },
-
-  /**
-   * Deprecated
-   */
-  fetch: isScreenReaderEnabled,
-
-  /**
-   * Add an event handler. Supported events: reduceMotionChanged
-   */
-  addEventListener: function (
-    eventName: string,
-    handler: ChangeHandler
-  ): { remove: () => void } | undefined {
-    if (eventName === 'reduceMotionChanged') {
-      if (!prefersReducedMotionMedia) {
-        return;
-      }
-      const listener = (event: MediaQueryListEvent) => {
-        handler(event.matches);
-      };
-      prefersReducedMotionMedia.addEventListener('change', listener);
-      handlers.set(handler, listener);
-    }
-
+const createMedia = (query: string) => {
+  if (!canUseDOM || typeof window.matchMedia !== 'function') {
     return {
-      remove: () => AccessibilityInfo.removeEventListener(eventName, handler)
+      get matches() {
+        return false;
+      },
+      addChangeHandler() {
+        return { remove() {} };
+      }
     };
+  }
+
+  // Wrap each handler in an object so the same function can be registered twice
+  const handlers = new Set<{ handler: ChangeHandler }>();
+  const media = window.matchMedia(query);
+
+  const listener = (event: MediaQueryListEvent) =>
+    handlers.forEach(({ handler }) => handler(event.matches));
+
+  return {
+    get matches() {
+      return media.matches;
+    },
+    addChangeHandler(handler: ChangeHandler) {
+      const entry = { handler };
+
+      if (handlers.size === 0) {
+        media.addEventListener('change', listener);
+      }
+
+      handlers.add(entry);
+
+      return {
+        remove() {
+          if (handlers.delete(entry) && handlers.size === 0) {
+            media.removeEventListener('change', listener);
+          }
+        }
+      };
+    }
+  };
+};
+
+const prefersContrastMedia = createMedia('(prefers-contrast: more)');
+
+const prefersReducedMotionMedia = createMedia(
+  '(prefers-reduced-motion: reduce)'
+);
+const prefersReducedTransparencyMedia = createMedia(
+  '(prefers-reduced-transparency: reduce)'
+);
+
+export type AccessibilityInfoStatic = Except<
+  typeof RN.AccessibilityInfo,
+  'setAccessibilityFocus'
+> & {
+  /**
+   * Set accessibility focus to a React component.
+   *
+   * @deprecated Use `sendAccessibilityEvent` with eventType `focus` instead.
+   */
+  setAccessibilityFocus: (reactTag: HTMLElement) => void;
+};
+
+export type AccessibilityHandle = Parameters<
+  AccessibilityInfoStatic['sendAccessibilityEvent']
+>[0];
+
+export type AccessibilityEventType = Parameters<
+  AccessibilityInfoStatic['sendAccessibilityEvent']
+>[1];
+
+const AccessibilityInfo: AccessibilityInfoStatic = {
+  announceForAccessibility: () => {},
+  announceForAccessibilityWithOptions: () => {},
+
+  setAccessibilityFocus: (reactTag) => {
+    if (typeof reactTag?.focus === 'function') {
+      reactTag.focus();
+    }
   },
 
-  /**
-   * Set accessibility focus to a react component.
-   */
-  setAccessibilityFocus: function (reactTag: number): void {},
-
-  /**
-   * Post a string to be announced by the screen reader.
-   */
-  announceForAccessibility: function (announcement: string): void {},
-
-  /**
-   * Remove an event handler.
-   */
-  removeEventListener: function (
-    eventName: string,
-    handler: ChangeHandler
-  ): void {
-    if (eventName === 'reduceMotionChanged') {
-      const listener = handlers.get(handler);
-      if (!listener || !prefersReducedMotionMedia) {
-        return;
-      }
-      prefersReducedMotionMedia.removeEventListener('change', listener);
+  sendAccessibilityEvent: (handle, eventType) => {
+    if (eventType === 'focus') {
+      handle.focus();
     }
-    return;
+  },
+
+  getRecommendedTimeoutMillis: (originalTimeout) =>
+    Promise.resolve(originalTimeout),
+
+  isAccessibilityServiceEnabled: () => Promise.resolve(true),
+  isScreenReaderEnabled: () => Promise.resolve(true),
+
+  isBoldTextEnabled: () => Promise.resolve(false),
+  isDarkerSystemColorsEnabled: () => Promise.resolve(false),
+  isGrayscaleEnabled: () => Promise.resolve(false),
+  isInvertColorsEnabled: () => Promise.resolve(false),
+  prefersCrossFadeTransitions: () => Promise.resolve(false),
+
+  isHighTextContrastEnabled: () =>
+    Promise.resolve(prefersContrastMedia.matches),
+  isReduceMotionEnabled: () =>
+    Promise.resolve(prefersReducedMotionMedia.matches),
+  isReduceTransparencyEnabled: () =>
+    Promise.resolve(prefersReducedTransparencyMedia.matches),
+
+  addEventListener: (eventName, handler) => {
+    const casted = handler as ChangeHandler;
+
+    if (eventName === 'highTextContrastChanged') {
+      return prefersContrastMedia.addChangeHandler(casted);
+    } else if (eventName === 'reduceMotionChanged') {
+      return prefersReducedMotionMedia.addChangeHandler(casted);
+    } else if (eventName === 'reduceTransparencyChanged') {
+      return prefersReducedTransparencyMedia.addChangeHandler(casted);
+    }
+
+    return { remove() {} };
   }
 };
 

@@ -13,11 +13,12 @@ import type { Except } from '../../types';
 
 type LinkingTarget = '_blank' | '_self' | '_parent' | '_top';
 
+// Wrap each listener in an object so the same function can be registered twice
+const listeners: Record<string, Set<{ listener: Function }>> = {};
 const initialURL = canUseDOM ? window.location.href : '';
-const listeners: Record<string, Set<Function>> = {};
 
 const emit: (typeof RN.Linking)['emit'] = (type, ...args) => {
-  listeners[type]?.forEach((listener) => listener(...args));
+  listeners[type]?.forEach(({ listener }) => listener(...args));
 };
 
 const open = (url: string, target?: LinkingTarget) => {
@@ -33,12 +34,14 @@ const open = (url: string, target?: LinkingTarget) => {
 };
 
 const addListener: (typeof RN.Linking)['addListener'] = (type, listener) => {
+  const entry = { listener };
+
   listeners[type] ??= new Set();
-  listeners[type].add(listener);
+  listeners[type].add(entry);
 
   return {
     remove() {
-      listeners[type]?.delete(listener);
+      listeners[type]?.delete(entry);
     }
   };
 };
