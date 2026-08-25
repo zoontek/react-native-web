@@ -33,7 +33,8 @@ const dimensions: DimensionsValue = {
   }
 };
 
-const listeners: Record<string, Set<Function>> = {};
+// Wrap each handler in an object so the same function can be registered twice
+const handlers: Record<string, Set<{ handler: Function }>> = {};
 
 let shouldInit = canUseDOM;
 
@@ -84,7 +85,7 @@ function update() {
 
 function handleResize() {
   update();
-  listeners['change']?.forEach((listener) => listener(dimensions));
+  handlers['change']?.forEach(({ handler }) => handler(dimensions));
 }
 
 const Dimensions: typeof RN.Dimensions = class {
@@ -114,12 +115,14 @@ const Dimensions: typeof RN.Dimensions = class {
   };
 
   static addEventListener = (type, handler) => {
-    listeners[type] ??= new Set();
-    listeners[type].add(handler);
+    const entry = { handler };
+
+    handlers[type] ??= new Set();
+    handlers[type].add(entry);
 
     return {
       remove() {
-        listeners[type]?.delete(handler);
+        handlers[type]?.delete(entry);
       }
     };
   };
