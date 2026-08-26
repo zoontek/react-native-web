@@ -6,42 +6,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type * as RN from 'react-native';
+
 import Dimensions from '../Dimensions';
 
-/**
- * PixelRatio gives access to the device pixel density.
- */
-export default class PixelRatio {
-  /**
-   * Returns the device pixel density.
-   */
-  static get(): number {
-    return Dimensions.get('window').scale;
+const get = () => Dimensions.get('window').scale;
+
+const PixelRatio: typeof RN.PixelRatio = class {
+  static get() {
+    return get();
   }
 
-  /**
-   * No equivalent for Web
-   */
-  static getFontScale(): number {
-    return Dimensions.get('window').fontScale || PixelRatio.get();
+  static getFontScale() {
+    return Dimensions.get('window').fontScale || get();
   }
 
-  /**
-   * Converts a layout size (dp) to pixel size (px).
-   * Guaranteed to return an integer number.
-   */
   static getPixelSizeForLayoutSize(layoutSize: number): number {
-    return Math.round(layoutSize * PixelRatio.get());
+    return Math.round(layoutSize * get());
   }
 
-  /**
-   * Rounds a layout size (dp) to the nearest layout size that corresponds to
-   * an integer number of pixels. For example, on a device with a PixelRatio
-   * of 3, `PixelRatio.roundToNearestPixel(8.4) = 8.33`, which corresponds to
-   * exactly (8.33 * 3) = 25 pixels.
-   */
   static roundToNearestPixel(layoutSize: number): number {
-    const ratio = PixelRatio.get();
+    const ratio = get();
     return Math.round(layoutSize * ratio) / ratio;
   }
-}
+
+  static startDetecting() {}
+};
+
+export default PixelRatio;
