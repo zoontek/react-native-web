@@ -36,6 +36,7 @@ const ImageBackground = (
     imageRef,
     ...rest
   } = props;
+
   const { height, width } = StyleSheet.flatten(style);
 
   return (
