@@ -58,14 +58,14 @@ describe('apis/UIManager', () => {
     test('supports className alias for class', () => {
       const node = createStyledNode();
       const props = { className: 'extra' };
-      UIManager.updateView(node, props);
+      UIManager.updateView(node, '', props);
       expect(node.getAttribute('class')).toEqual('extra');
     });
 
     test('adds correct DOM styles to existing style', () => {
       const node = createStyledNode('div', { color: 'red' });
       const props = { style: { marginTop: 0, marginBottom: 0, opacity: 0 } };
-      UIManager.updateView(node, props);
+      UIManager.updateView(node, '', props);
       expect(node.getAttribute('style')).toEqual(
         'color: red; margin-top: 0px; margin-bottom: 0px; opacity: 0;'
       );
@@ -77,17 +77,17 @@ describe('apis/UIManager', () => {
       const textProp = { text: 'expected-text' };
       const valueProp = { value: 'expected-value' };
 
-      UIManager.updateView(node, textProp);
+      UIManager.updateView(node, '', textProp);
       expect(node.value).toEqual('expected-text');
 
-      UIManager.updateView(node, valueProp);
+      UIManager.updateView(node, '', valueProp);
       expect(node.value).toEqual('expected-value');
     });
 
     test('sets other attribute values', () => {
       const node = createStyledNode();
       const props = { 'aria-level': '4', 'data-of-type': 'string' };
-      UIManager.updateView(node, props);
+      UIManager.updateView(node, '', props);
       expect(node.getAttribute('aria-level')).toEqual('4');
       expect(node.getAttribute('data-of-type')).toEqual('string');
     });
