@@ -75,7 +75,7 @@ export type AccessibilityInfoStatic = Except<
    *
    * @deprecated Use `sendAccessibilityEvent` with eventType `focus` instead.
    */
-  setAccessibilityFocus: (reactTag: HTMLElement) => void;
+  setAccessibilityFocus: (node: HTMLElement) => void;
 };
 
 export type AccessibilityHandle = Parameters<
@@ -90,10 +90,10 @@ const AccessibilityInfo: AccessibilityInfoStatic = {
   announceForAccessibility: () => {},
   announceForAccessibilityWithOptions: () => {},
 
-  setAccessibilityFocus: (reactTag) => {
-    if (typeof reactTag?.focus === 'function') {
-      reactTag.focus();
-    }
+  setAccessibilityFocus: (node) => {
+    try {
+      node.focus();
+    } catch {}
   },
 
   sendAccessibilityEvent: (handle, eventType) => {
