@@ -7,57 +7,55 @@
  */
 
 import invariant from 'fbjs/lib/invariant';
+import type * as RN from 'react-native';
 
-type Content =
-  | { title?: string; message?: string; url: string }
-  | { title?: string; message: string; url?: string };
-
-class Share {
-  static share(content: Content, options: unknown = {}): Promise<void> {
+const Share: typeof RN.Share = class {
+  static share = (content, options = {}) => {
     invariant(
       typeof content === 'object' && content !== null,
       'Content to share must be a valid object'
     );
+
     invariant(
       typeof content.url === 'string' || typeof content.message === 'string',
       'At least one of URL and message is required'
     );
+
     invariant(
       typeof options === 'object' && options !== null,
       'Options must be a valid object'
     );
+
     invariant(
       !content.title || typeof content.title === 'string',
       'Invalid title: title should be a string.'
     );
 
-    if (window.navigator.share !== undefined) {
-      return window.navigator.share({
-        title: content.title,
-        text: content.message,
-        url: content.url
-      });
-    } else {
+    if (window.navigator.share == null) {
       return Promise.reject(
         new Error('Share is not supported in this browser')
       );
     }
+
+    return window.navigator
+      .share({
+        title: content.title,
+        text: content.message,
+        url: content.url
+      })
+      .then(() => ({
+        action: 'sharedAction',
+        activityType: undefined
+      }));
+  };
+
+  static get sharedAction() {
+    return 'sharedAction' as const;
   }
 
-  /**
-   * The content was successfully shared.
-   */
-  static get sharedAction(): string {
-    return 'sharedAction';
+  static get dismissedAction() {
+    return 'dismissedAction' as const;
   }
-
-  /**
-   * The dialog has been dismissed.
-   * @platform ios
-   */
-  static get dismissedAction(): string {
-    return 'dismissedAction';
-  }
-}
+};
 
 export default Share;
