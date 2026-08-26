@@ -30,21 +30,13 @@ const EVENT_TYPES = strictArray<RN.AppStateEvent>({
   focus: null
 });
 
-const AppStates: Record<Uppercase<RN.AppStateStatus>, RN.AppStateStatus> = {
-  INACTIVE: 'inactive',
-  BACKGROUND: 'background',
-  ACTIVE: 'active',
-  EXTENSION: 'extension',
-  UNKNOWN: 'unknown'
-};
-
 const available = canUseDOM && !!document.visibilityState;
 let changeEmitter: Nullable<EventEmitter<AppStateEventDefinitions>> = null;
 
 const getCurrentState = (): RN.AppStateStatus =>
   !available || document.visibilityState === 'visible'
-    ? AppStates.ACTIVE
-    : AppStates.BACKGROUND;
+    ? 'active'
+    : 'background';
 
 const AppState: typeof RN.AppState = class {
   static isAvailable = available;
