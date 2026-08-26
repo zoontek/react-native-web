@@ -57,7 +57,7 @@ const Linking: Except<typeof RN.Linking, 'openURL'> & {
    * check `canOpenURL` first. For web URLs, the protocol ("http://",
    * "https://") must be set accordingly.
    */
-  openURL: (url: string, target?: LinkingTarget) => Promise<void>;
+  openURL(url: string, target?: LinkingTarget): Promise<void>;
 } = {
   addListener,
   addEventListener: addListener,

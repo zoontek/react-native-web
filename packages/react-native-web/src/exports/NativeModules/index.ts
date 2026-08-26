@@ -8,7 +8,9 @@
 import UIManager from '../UIManager';
 
 // NativeModules shim
-const NativeModules = {
+const NativeModules: {
+  UIManager: typeof UIManager;
+} = {
   UIManager
 };
 
