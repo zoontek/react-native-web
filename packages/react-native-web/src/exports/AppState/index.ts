@@ -38,19 +38,23 @@ const AppStates: Record<Uppercase<RN.AppStateStatus>, RN.AppStateStatus> = {
   UNKNOWN: 'unknown'
 };
 
+const available = canUseDOM && !!document.visibilityState;
 let changeEmitter: Nullable<EventEmitter<AppStateEventDefinitions>> = null;
 
-const AppState: typeof RN.AppState = class Impl {
-  static isAvailable = canUseDOM && !!document.visibilityState;
+const getCurrentState = (): RN.AppStateStatus =>
+  !available || document.visibilityState === 'visible'
+    ? AppStates.ACTIVE
+    : AppStates.BACKGROUND;
 
-  static get currentState(): RN.AppStateStatus {
-    return !Impl.isAvailable || document.visibilityState === 'visible'
-      ? AppStates.ACTIVE
-      : AppStates.BACKGROUND;
+const AppState: typeof RN.AppState = class {
+  static isAvailable = available;
+
+  static get currentState() {
+    return getCurrentState();
   }
 
   static addEventListener = (type, handler) => {
-    if (!Impl.isAvailable) {
+    if (!available) {
       return { remove() {} };
     }
 
@@ -70,7 +74,7 @@ const AppState: typeof RN.AppState = class Impl {
       document.addEventListener(
         'visibilitychange',
         () => {
-          changeEmitter?.emit('change', Impl.currentState);
+          changeEmitter?.emit('change', getCurrentState());
         },
         false
       );
