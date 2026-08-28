@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const accessibilityRoleToWebRole = {
+const accessibilityRoleToWebRole: Record<string, string | null> = {
   adjustable: 'slider',
   button: 'button',
   header: 'heading',
@@ -22,12 +20,13 @@ const accessibilityRoleToWebRole = {
   text: null
 };
 
-const propsToAriaRole = (
-  { accessibilityRole, role } /*: {
-  accessibilityRole?: string,
-  role?: string
-} */
-) /*: string | void */ => {
+const propsToAriaRole = ({
+  accessibilityRole,
+  role
+}: {
+  accessibilityRole?: string;
+  role?: string;
+}): string | undefined => {
   const _role = role || accessibilityRole;
   if (_role) {
     const inferredRole = accessibilityRoleToWebRole[_role];

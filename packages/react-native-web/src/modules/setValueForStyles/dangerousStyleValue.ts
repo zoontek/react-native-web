@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /* oxlint-disable */
 
 /**
@@ -22,7 +20,11 @@ import isUnitlessNumber from '../unitlessNumbers';
  * @param {*} value CSS property value such as `10px`.
  * @return {string} Normalized style value with dimensions applied.
  */
-function dangerousStyleValue(name, value, isCustomProperty) {
+function dangerousStyleValue(
+  name: string,
+  value: unknown,
+  isCustomProperty: boolean
+): string {
   // Note that we've removed escapeTextForBrowser() calls here since the
   // whole string will be escaped when the attribute is injected into
   // the markup. If you provide unsafe user data here they can inject
