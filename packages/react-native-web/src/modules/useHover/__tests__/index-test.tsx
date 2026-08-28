@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -12,11 +10,15 @@ import * as React from 'react';
 import {
   describeWithPointerEvent,
   clearPointers,
-  createEventTarget,
+  createEventTarget as createEventTargetImpl,
   setPointerEvent
 } from 'dom-event-testing-library';
 import useHover from '..';
 import { testOnly_resetActiveModality } from '../../modality';
+import type { Nullable } from '../../../types';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  createEventTargetImpl(node as Node);
 
 describeWithPointerEvent('useHover', (hasPointerEvents) => {
   beforeEach(() => {
@@ -30,15 +32,20 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('contain', () => {
-    let onHoverChange, onHoverStart, onHoverUpdate, onHoverEnd, ref, childRef;
+    let onHoverChange: jest.Mock,
+      onHoverStart: jest.Mock,
+      onHoverUpdate: jest.Mock,
+      onHoverEnd: jest.Mock,
+      ref: React.RefObject<HTMLDivElement | null>,
+      childRef: React.RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
       onHoverChange = jest.fn();
       onHoverStart = jest.fn();
       onHoverUpdate = jest.fn();
       onHoverEnd = jest.fn();
-      ref = React.createRef();
-      childRef = React.createRef();
+      ref = React.createRef<HTMLDivElement>();
+      childRef = React.createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, {
           onHoverChange,
@@ -74,14 +81,18 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('disabled', () => {
-    let onHoverChange, onHoverStart, onHoverUpdate, onHoverEnd, ref;
+    let onHoverChange: jest.Mock,
+      onHoverStart: jest.Mock,
+      onHoverUpdate: jest.Mock,
+      onHoverEnd: jest.Mock,
+      ref: React.RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
       onHoverChange = jest.fn();
       onHoverStart = jest.fn();
       onHoverUpdate = jest.fn();
       onHoverEnd = jest.fn();
-      ref = React.createRef();
+      ref = React.createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, {
           disabled: true,
@@ -110,11 +121,11 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('onHoverStart', () => {
-    let onHoverStart, ref;
+    let onHoverStart: jest.Mock, ref: React.RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
       onHoverStart = jest.fn();
-      ref = React.createRef();
+      ref = React.createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, { onHoverStart });
         return <div ref={ref} />;
@@ -154,11 +165,11 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('onHoverChange', () => {
-    let onHoverChange, ref;
+    let onHoverChange: jest.Mock, ref: React.RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
       onHoverChange = jest.fn();
-      ref = React.createRef();
+      ref = React.createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, { onHoverChange });
         return <div ref={ref} />;
@@ -193,12 +204,14 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('onHoverEnd', () => {
-    let onHoverEnd, ref, childRef;
+    let onHoverEnd: jest.Mock,
+      ref: React.RefObject<HTMLDivElement | null>,
+      childRef: React.RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
       onHoverEnd = jest.fn();
-      ref = React.createRef();
-      childRef = React.createRef();
+      ref = React.createRef<HTMLDivElement>();
+      childRef = React.createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, { onHoverEnd });
         return (
@@ -246,7 +259,7 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   describe('onHoverUpdate', () => {
     test('is called after the active pointer moves"', () => {
       const onHoverUpdate = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, { onHoverUpdate });
         return <div ref={ref} />;
@@ -264,14 +277,18 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('repeat use', () => {
-    let onHoverChange, onHoverStart, onHoverUpdate, onHoverEnd, ref;
+    let onHoverChange: jest.Mock,
+      onHoverStart: jest.Mock,
+      onHoverUpdate: jest.Mock,
+      onHoverEnd: jest.Mock,
+      ref: React.RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
       onHoverChange = jest.fn();
       onHoverStart = jest.fn();
       onHoverUpdate = jest.fn();
       onHoverEnd = jest.fn();
-      ref = React.createRef();
+      ref = React.createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, {
           onHoverChange,

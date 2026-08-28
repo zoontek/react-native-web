@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,38 +5,44 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ElementRef } from 'react'; */
-/*:: import type { LayoutEvent } from '../../types'; */
-
-import useLayoutEffect from '../useLayoutEffect';
+import type { RefObject } from 'react';
 import UIManager from '../../exports/UIManager';
+import type { LayoutEvent, Nullable } from '../../types';
 import canUseDOM from '../canUseDom';
+import useLayoutEffect from '../useLayoutEffect';
 
 const DOM_LAYOUT_HANDLER_NAME = '__reactLayoutHandler';
 
-let resizeObserver = null;
+type LayoutHandlerNode = HTMLElement & {
+  [DOM_LAYOUT_HANDLER_NAME]?: Nullable<(e: LayoutEvent) => void>;
+};
 
-function getResizeObserver() /*: ?ResizeObserver */ {
-  if (canUseDOM && resizeObserver == null) {
+let resizeObserver: Nullable<ResizeObserver> = null;
+
+function getResizeObserver(): Nullable<ResizeObserver> {
+  if (
+    canUseDOM &&
+    typeof window.ResizeObserver === 'function' &&
+    resizeObserver == null
+  ) {
     resizeObserver = new window.ResizeObserver(function (entries) {
       entries.forEach((entry) => {
-        const node = entry.target;
+        const node = entry.target as LayoutHandlerNode;
         const onLayout = node[DOM_LAYOUT_HANDLER_NAME];
         if (typeof onLayout === 'function') {
           // We still need to measure the view because browsers don't yet provide
           // border-box dimensions in the entry
           UIManager.measure(node, (x, y, width, height, left, top) => {
-            const event /*: LayoutEvent */ = {
-              // $FlowFixMe
+            const layout = { x, y, width, height, left, top };
+            const event: LayoutEvent = {
               nativeEvent: {
-                layout: { x, y, width, height, left, top }
+                layout,
+                get target() {
+                  return entry.target;
+                }
               },
               timeStamp: Date.now()
             };
-            Object.defineProperty(event.nativeEvent, 'target', {
-              enumerable: true,
-              get: () => entry.target
-            });
             onLayout(event);
           });
         }
@@ -49,8 +53,8 @@ function getResizeObserver() /*: ?ResizeObserver */ {
 }
 
 export default function useElementLayout(
-  ref /*: ElementRef<any> */,
-  onLayout /*:: ?: ?(e: LayoutEvent) => void */
+  ref: RefObject<Nullable<LayoutHandlerNode>>,
+  onLayout?: Nullable<(e: LayoutEvent) => void>
 ) {
   const observer = getResizeObserver();
 

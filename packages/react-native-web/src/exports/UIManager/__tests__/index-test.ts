@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,19 +7,14 @@
 
 import UIManager from '..';
 
-const createStyledNode = (name = 'div', style = {}) => {
+const createStyledNode = (name = 'div', style: Record<string, string> = {}) => {
   const root = document.createElement(name);
-  Object.keys(style).forEach((prop) => {
-    root.style[prop] = style[prop];
-  });
-  return root;
-};
 
-const componentStub = {
-  _reactInternalInstance: {
-    _currentElement: { _owner: {} },
-    _debugID: 1
+  for (const [prop, value] of Object.entries(style)) {
+    (root.style as CSSStyleDeclaration & Record<string, string>)[prop] = value;
   }
+
+  return root;
 };
 
 describe('apis/UIManager', () => {
@@ -55,7 +48,7 @@ describe('apis/UIManager', () => {
       // on contenteditable elements
       const div = document.createElement('div');
       div.contentEditable = 'true';
-      div.isContentEditable = true; // jsdom doesn't support this API yet (https://github.com/jsdom/jsdom/issues/1670)
+      (div as { isContentEditable: boolean }).isContentEditable = true; // jsdom doesn't support this API yet (https://github.com/jsdom/jsdom/issues/1670)
       UIManager.focus(div);
       expect(div.getAttribute('tabIndex')).toBeNull();
     });
@@ -65,21 +58,21 @@ describe('apis/UIManager', () => {
     test('supports className alias for class', () => {
       const node = createStyledNode();
       const props = { className: 'extra' };
-      UIManager.updateView(node, props, componentStub);
+      UIManager.updateView(node, props);
       expect(node.getAttribute('class')).toEqual('extra');
     });
 
     test('adds correct DOM styles to existing style', () => {
       const node = createStyledNode('div', { color: 'red' });
       const props = { style: { marginTop: 0, marginBottom: 0, opacity: 0 } };
-      UIManager.updateView(node, props, componentStub);
+      UIManager.updateView(node, props);
       expect(node.getAttribute('style')).toEqual(
         'color: red; margin-top: 0px; margin-bottom: 0px; opacity: 0;'
       );
     });
 
     test('replaces input and textarea text', () => {
-      const node = createStyledNode('textarea');
+      const node = createStyledNode('textarea') as HTMLTextAreaElement;
       node.value = 'initial';
       const textProp = { text: 'expected-text' };
       const valueProp = { value: 'expected-value' };
