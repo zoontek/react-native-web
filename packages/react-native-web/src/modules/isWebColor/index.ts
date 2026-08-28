@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const isWebColor = (color /*: string */) /*: boolean */ =>
+const isWebColor = (color: string): boolean =>
   color === 'currentcolor' ||
   color === 'currentColor' ||
   color === 'inherit' ||

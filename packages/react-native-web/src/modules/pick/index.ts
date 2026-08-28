@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default function pick(
-  obj /*: Object */,
-  list /*: { [string]: boolean } */
-) /*: Object */ {
-  const nextObj = {};
+export default function pick<T extends object>(
+  obj: T,
+  list: Record<string, boolean>
+): Partial<T> {
+  const nextObj: Partial<T> = {};
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (list[key] === true) {

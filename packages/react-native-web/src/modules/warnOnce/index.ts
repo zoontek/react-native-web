@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const warnedKeys /*: { [string]: boolean, ... } */ = {};
+const warnedKeys: Record<string, boolean> = {};
 
 /**
  * A simple function that prints a warning message once per session.
@@ -16,7 +14,7 @@ const warnedKeys /*: { [string]: boolean, ... } */ = {};
  *                       This should be unique to the callsite.
  * @param {string} message - The message to print
  */
-export function warnOnce(key /*: string */, message /*: string */) {
+export function warnOnce(key: string, message: string) {
   if (process.env.NODE_ENV !== 'production') {
     if (warnedKeys[key]) {
       return;
