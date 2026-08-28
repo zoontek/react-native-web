@@ -191,7 +191,6 @@ function isFabricInstance(instance: unknown): boolean {
 }
 
 function hasFabricHandle(instance: unknown): boolean {
-  // eslint-disable-next-line dot-notation
   return (
     (
       instance as {

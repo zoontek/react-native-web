@@ -36,7 +36,6 @@ export function elementsThatOverlapOffsets(
     let right = itemCount - 1;
 
     while (left <= right) {
-      // eslint-disable-next-line no-bitwise
       const mid = left + ((right - left) >>> 1);
       const frame = getFrameMetrics(mid, props);
       const scaledOffsetStart = frame.offset * zoomScale;
