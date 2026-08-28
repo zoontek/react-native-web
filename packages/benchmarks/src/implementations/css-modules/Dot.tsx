@@ -1,9 +1,9 @@
-// @ts-nocheck
+import type { DotProps } from '../../impl';
 
 import React from 'react';
 import styles from './dot-styles.module.css';
 
-const Dot = ({ size, x, y, children, color }) => (
+const Dot = ({ size, x, y, children, color }: DotProps) => (
   <div
     className={styles.root}
     style={{

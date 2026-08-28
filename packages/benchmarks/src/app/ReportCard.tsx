@@ -1,15 +1,24 @@
-// @ts-nocheck
-
 import Text from './Text';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native-web';
 import React, { Fragment } from 'react';
 
-const fmt = (time /*: number */) => {
-  const i = Number(Math.round(time + 'e2') + 'e-2').toFixed(2);
-  return 10 / i > 1 ? `0${i}` : i;
+const fmt = (time: number) => {
+  const i = Number(Math.round(Number(time + 'e2')) + 'e-2').toFixed(2);
+  return 10 / Number(i) > 1 ? `0${i}` : i;
 };
 
-class ReportCard extends React.PureComponent {
+type Props = {
+  benchmarkName: string;
+  libraryName: string;
+  libraryVersion?: string;
+  mean?: number;
+  meanLayout?: number;
+  meanScripting?: number;
+  sampleCount?: number;
+  stdDev?: number;
+};
+
+class ReportCard extends React.PureComponent<Props> {
   render() {
     const {
       benchmarkName,
@@ -35,7 +44,10 @@ class ReportCard extends React.PureComponent {
           </Text>
         </View>
         <View style={styles.right}>
-          {mean ? (
+          {mean != null &&
+          stdDev != null &&
+          meanScripting != null &&
+          meanLayout != null ? (
             <Fragment>
               <Text style={[styles.bold, styles.monoFont]}>
                 {fmt(mean)} ±{fmt(stdDev)} ms
@@ -67,10 +79,6 @@ const styles = StyleSheet.create({
   smallText: { fontSize: 12 },
   monoFont: {
     fontFamily: 'monospace'
-  },
-  centerText: {
-    display: 'flex',
-    alignItems: 'center'
   },
   left: {
     width: '50%'

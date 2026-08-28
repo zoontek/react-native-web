@@ -1,11 +1,21 @@
-// @ts-nocheck
+import type { ComponentProps, ReactNode } from 'react';
 
 import { colors } from './theme';
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native-web';
 
-export default class Layout extends Component {
-  state = {
+type Props = {
+  actionPanel: ReactNode;
+  listPanel: ReactNode;
+  viewPanel: ReactNode;
+};
+
+type State = {
+  widescreen: boolean;
+};
+
+export default class Layout extends Component<Props, State> {
+  state: State = {
     widescreen: false
   };
 
@@ -31,7 +41,9 @@ export default class Layout extends Component {
     );
   }
 
-  _handleLayout = ({ nativeEvent }) => {
+  _handleLayout: NonNullable<ComponentProps<typeof View>['onLayout']> = ({
+    nativeEvent
+  }) => {
     const { layout } = nativeEvent;
     const { width } = layout;
     if (width >= 740) {

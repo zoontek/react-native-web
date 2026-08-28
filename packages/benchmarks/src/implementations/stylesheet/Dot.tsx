@@ -1,9 +1,10 @@
-// @ts-nocheck
+import type { CSSProperties } from 'react';
+import type { DotProps } from '../../impl';
 
 import React from 'react';
 import { StyleSheet } from 'react-native-web';
 
-const Dot = ({ size, x, y, children, color }) => {
+const Dot = ({ size, x, y, children, color }: DotProps) => {
   const [className, inlineStyle] = StyleSheet([
     styles.root$raw,
     {
@@ -16,7 +17,13 @@ const Dot = ({ size, x, y, children, color }) => {
     }
   ]);
 
-  return <div children={children} className={className} style={inlineStyle} />;
+  return (
+    <div
+      children={children}
+      className={className}
+      style={inlineStyle as CSSProperties}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
