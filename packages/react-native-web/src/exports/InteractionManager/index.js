@@ -9,16 +9,17 @@
  */
 
 import invariant from 'fbjs/lib/invariant';
-import type { Task } from './TaskQueue';
+/*:: import type { Task } from './TaskQueue'; */
 import TaskQueue from './TaskQueue';
-import type { EventSubscription } from '../../vendor/react-native/vendor/emitter/EventEmitter';
+/*:: import type { EventSubscription } from '../../vendor/react-native/vendor/emitter/EventEmitter'; */
 import EventEmitter from '../../vendor/react-native/vendor/emitter/EventEmitter';
 import requestIdleCallback from '../../modules/requestIdleCallback';
 
-const _emitter = new EventEmitter<{
+// prettier-ignore
+const _emitter = new EventEmitter /*:: <{
   interactionComplete: [],
   interactionStart: []
-}>();
+}> */();
 
 const InteractionManager = {
   Events: {
@@ -29,12 +30,12 @@ const InteractionManager = {
   /**
    * Schedule a function to run after all interactions have completed.
    */
-  runAfterInteractions(task: ?Task): {
+  runAfterInteractions(task /*: ?Task */) /*: {
     then: Function,
     done: Function,
     cancel: Function
-  } {
-    const tasks: Array<Task> = [];
+  } */ {
+    const tasks /*: Array<Task> */ = [];
     const promise = new Promise((resolve) => {
       _scheduleUpdate();
       if (task) {
@@ -58,7 +59,7 @@ const InteractionManager = {
   /**
    * Notify manager that an interaction has started.
    */
-  createInteractionHandle(): number {
+  createInteractionHandle() /*: number */ {
     _scheduleUpdate();
     const handle = ++_inc;
     _addInteractionSet.add(handle);
@@ -68,20 +69,20 @@ const InteractionManager = {
   /**
    * Notify manager that an interaction has completed.
    */
-  clearInteractionHandle(handle: number) {
+  clearInteractionHandle(handle /*: number */) {
     invariant(!!handle, 'Must provide a handle to clear.');
     _scheduleUpdate();
     _addInteractionSet.delete(handle);
     _deleteInteractionSet.add(handle);
   },
 
-  addListener: (_emitter.addListener.bind(_emitter): EventSubscription),
+  addListener: (_emitter.addListener.bind(_emitter) /*: EventSubscription */),
 
   /**
    *
    * @param deadline
    */
-  setDeadline(deadline: number) {
+  setDeadline(deadline /*: number */) {
     _deadline = deadline;
   }
 };
@@ -90,7 +91,7 @@ const _interactionSet = new Set();
 const _addInteractionSet = new Set();
 const _deleteInteractionSet = new Set();
 const _taskQueue = new TaskQueue({ onMoreTasks: _scheduleUpdate });
-let _nextUpdateHandle: TimeoutID | number = 0;
+let _nextUpdateHandle /*: TimeoutID | number */ = 0;
 let _inc = 0;
 let _deadline = -1;
 

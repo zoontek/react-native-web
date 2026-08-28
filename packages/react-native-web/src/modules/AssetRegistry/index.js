@@ -7,7 +7,7 @@
  * @flow
  */
 
-export type PackagerAsset = {
+/*:: export type PackagerAsset = {
   __packager_asset: boolean,
   fileSystemLocation: string,
   httpServerLocation: string,
@@ -17,16 +17,16 @@ export type PackagerAsset = {
   hash: string,
   name: string,
   type: string
-};
+}; */
 
-const assets: Array<PackagerAsset> = [];
+const assets /*: Array<PackagerAsset> */ = [];
 
-export function registerAsset(asset: PackagerAsset): number {
+export function registerAsset(asset /*: PackagerAsset */) /*: number */ {
   // `push` returns new array length, so the first asset will
   // get id 1 (not 0) to make the value truthy
   return assets.push(asset);
 }
 
-export function getAssetByID(assetId: number): PackagerAsset {
+export function getAssetByID(assetId /*: number */) /*: PackagerAsset */ {
   return assets[assetId - 1];
 }

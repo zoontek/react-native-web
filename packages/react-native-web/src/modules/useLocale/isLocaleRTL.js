@@ -51,7 +51,7 @@ const cache = new Map();
 /**
  * Determine the writing direction of a locale
  */
-export function isLocaleRTL(locale: string): boolean {
+export function isLocaleRTL(locale /*: string */) /*: boolean */ {
   const cachedRTL = cache.get(locale);
   if (cachedRTL) {
     return cachedRTL;

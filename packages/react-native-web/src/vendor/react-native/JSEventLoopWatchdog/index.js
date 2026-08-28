@@ -12,10 +12,10 @@
 
 import infoLog from '../infoLog';
 
-type Handler = {
+/*:: type Handler = {
   onIterate?: () => void,
   onStall: (params: {lastInterval: number, busyTime: number}) => ?string,
-};
+}; */
 
 /**
  * A utility for tracking stalls in the JS event loop that prevent timers and
@@ -30,7 +30,7 @@ type Handler = {
  * queried with `getStats`.
  */
 const JSEventLoopWatchdog = {
-  getStats: function(): Object {
+  getStats: function()/*: Object */ {
     return {stallCount, totalStallTime, longestStall, acceptableBusyTime};
   },
   reset: function() {
@@ -40,10 +40,10 @@ const JSEventLoopWatchdog = {
     longestStall = 0;
     lastInterval = window.performance.now();
   },
-  addHandler: function(handler: Handler) {
+  addHandler: function(handler/*: Handler */) {
     handlers.push(handler);
   },
-  install: function({thresholdMS}: {thresholdMS: number}) {
+  install: function({thresholdMS}/*: {thresholdMS: number} */) {
     acceptableBusyTime = thresholdMS;
     if (installed) {
       return;
@@ -82,6 +82,6 @@ let totalStallTime = 0;
 let stallCount = 0;
 let longestStall = 0;
 let lastInterval = 0;
-const handlers: Array<Handler> = [];
+const handlers/*: Array<Handler> */ = [];
 
 export default JSEventLoopWatchdog;

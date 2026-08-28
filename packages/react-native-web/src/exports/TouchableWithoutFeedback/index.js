@@ -10,8 +10,8 @@
 
 'use client';
 
-import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
-import type { ViewProps } from '../View';
+/*:: import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
@@ -20,7 +20,7 @@ import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
 import { warnOnce } from '../../modules/warnOnce';
 
-export type Props = $ReadOnly<{|
+/*:: export type Props = $ReadOnly<{|
   accessibilityLabel?: $PropertyType<ViewProps, 'accessibilityLabel'>,
   accessibilityLiveRegion?: $PropertyType<ViewProps, 'accessibilityLiveRegion'>,
   accessibilityRole?: $PropertyType<ViewProps, 'accessibilityRole'>,
@@ -40,7 +40,7 @@ export type Props = $ReadOnly<{|
   onPressOut?: $PropertyType<PressResponderConfig, 'onPressEnd'>,
   rejectResponderTermination?: ?boolean,
   testID?: $PropertyType<ViewProps, 'testID'>
-|}>;
+|}>; */
 
 const forwardPropsList = {
   accessibilityDisabled: true,
@@ -61,7 +61,10 @@ const forwardPropsList = {
 
 const pickProps = (props) => pick(props, forwardPropsList);
 
-function TouchableWithoutFeedback(props: Props, forwardedRef): React.Node {
+function TouchableWithoutFeedback(
+  props /*: Props */,
+  forwardedRef
+) /*: React.Node */ {
   warnOnce(
     'TouchableWithoutFeedback',
     'TouchableWithoutFeedback is deprecated. Please use Pressable.'
@@ -126,7 +129,7 @@ const MemoedTouchableWithoutFeedback = React.memo(
 );
 MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback';
 
-export default (MemoedTouchableWithoutFeedback: React.AbstractComponent<
+export default (MemoedTouchableWithoutFeedback /*: React.AbstractComponent<
   Props,
   React.ElementRef<any>
->);
+> */);

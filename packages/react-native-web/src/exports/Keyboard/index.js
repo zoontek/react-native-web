@@ -12,10 +12,10 @@ import dismissKeyboard from '../../modules/dismissKeyboard';
 
 // in the future we can use https://github.com/w3c/virtual-keyboard
 const Keyboard = {
-  isVisible(): boolean {
+  isVisible() /*: boolean */ {
     return false;
   },
-  addListener(): {| remove: () => void |} {
+  addListener() /*: {| remove: () => void |} */ {
     return { remove: () => {} };
   },
   dismiss() {

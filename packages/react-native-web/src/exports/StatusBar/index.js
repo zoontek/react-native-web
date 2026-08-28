@@ -9,7 +9,7 @@
 
 const emptyFunction = () => {};
 
-function StatusBar(): null {
+function StatusBar() /*: null */ {
   return null;
 }
 

@@ -13,16 +13,16 @@ import canUseDOM from '../../modules/canUseDom';
 
 const initialURL = canUseDOM ? window.location.href : '';
 
-type Callback = (...args: any) => void;
+/*:: type Callback = (...args: any) => void; */
 
 class Linking {
   /**
    * An object mapping of event name
    * and all the callbacks subscribing to it
    */
-  _eventCallbacks: { [key: string]: Array<Callback> } = {};
+  _eventCallbacks /*: { [key: string]: Array<Callback> } */ = {};
 
-  _dispatchEvent(event: string, ...data: any) {
+  _dispatchEvent(event /*: string */, ...data /*: any */) {
     const listeners = this._eventCallbacks[event];
     if (listeners != null && Array.isArray(listeners)) {
       listeners.map((listener) => {
@@ -36,9 +36,9 @@ class Linking {
    * said event is dispatched.
    */
   addEventListener(
-    eventType: string,
-    callback: Callback
-  ): {| remove(): void |} {
+    eventType /*: string */,
+    callback /*: Callback */
+  ) /*: {| remove(): void |} */ {
     const _this = this;
 
     if (!_this._eventCallbacks[eventType]) {
@@ -61,7 +61,10 @@ class Linking {
    * Removes a previously added event listener for the specified event. The callback must
    * be the same object as the one passed to `addEventListener`.
    */
-  removeEventListener(eventType: string, callback: Callback): void {
+  removeEventListener(
+    eventType /*: string */,
+    callback /*: Callback */
+  ) /*: void */ {
     console.error(
       `Linking.removeEventListener('${eventType}', ...): Method has been ` +
         'deprecated. Please instead use `remove()` on the subscription ' +
@@ -74,11 +77,11 @@ class Linking {
     this._eventCallbacks[eventType] = filteredCallbacks;
   }
 
-  canOpenURL(): Promise<boolean> {
+  canOpenURL() /*: Promise<boolean> */ {
     return Promise.resolve(true);
   }
 
-  getInitialURL(): Promise<string> {
+  getInitialURL() /*: Promise<string> */ {
     return Promise.resolve(initialURL);
   }
 
@@ -88,7 +91,10 @@ class Linking {
    * If the url opens, the promise is resolved. If not, the promise is rejected.
    * Dispatches the `onOpen` event if `url` is opened successfully.
    */
-  openURL(url: string, target?: string): Promise<Object | void> {
+  openURL(
+    url /*: string */,
+    target /*:: ?: string */
+  ) /*: Promise<Object | void> */ {
     if (arguments.length === 1) {
       target = '_blank';
     }
@@ -101,7 +107,7 @@ class Linking {
     }
   }
 
-  _validateURL(url: string) {
+  _validateURL(url /*: string */) {
     invariant(
       typeof url === 'string',
       'Invalid URL: should be a string. Was: ' + url
@@ -121,4 +127,4 @@ const open = (url, target) => {
   }
 };
 
-export default (new Linking(): Linking);
+export default (new Linking() /*: Linking */);

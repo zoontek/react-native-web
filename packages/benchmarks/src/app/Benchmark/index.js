@@ -5,19 +5,17 @@
  * @flow
  */
 
-/* global $Values */
-
-import type { Node } from 'react';
+/*:: import type { Node } from 'react'; */
 
 import * as Timing from './timing';
 import React, { Component } from 'react';
 import { getMean, getMedian, getStdDev } from './math';
 
-import type {
+/*:: import type {
   BenchResultsType,
   FullSampleTimingType,
   SampleTimingType
-} from './types';
+} from './types'; */
 
 export const BenchmarkType = {
   MOUNT: 'mount',
@@ -26,9 +24,9 @@ export const BenchmarkType = {
 };
 
 const shouldRender = (
-  cycle: number,
-  type: $Values<typeof BenchmarkType>
-): boolean => {
+  cycle /*: number */,
+  type /*: $Values<typeof BenchmarkType> */
+) /*: boolean */ => {
   switch (type) {
     // Render every odd iteration (first, third, etc)
     // Mounts and unmounts the component
@@ -44,9 +42,9 @@ const shouldRender = (
 };
 
 const shouldRecord = (
-  cycle: number,
-  type: $Values<typeof BenchmarkType>
-): boolean => {
+  cycle /*: number */,
+  type /*: $Values<typeof BenchmarkType> */
+) /*: boolean */ => {
   switch (type) {
     // Record every odd iteration (when mounted: first, third, etc)
     case BenchmarkType.MOUNT:
@@ -63,10 +61,10 @@ const shouldRecord = (
 };
 
 const isDone = (
-  cycle: number,
-  sampleCount: number,
-  type: $Values<typeof BenchmarkType>
-): boolean => {
+  cycle /*: number */,
+  sampleCount /*: number */,
+  type /*: $Values<typeof BenchmarkType> */
+) /*: boolean */ => {
   switch (type) {
     case BenchmarkType.MOUNT:
       return cycle >= sampleCount * 2 - 1;
@@ -79,9 +77,9 @@ const isDone = (
   }
 };
 
-const sortNumbers = (a: number, b: number): number => a - b;
+const sortNumbers = (a /*: number */, b /*: number */) /*: number */ => a - b;
 
-type BenchmarkPropsType = {
+/*:: type BenchmarkPropsType = {
   component: typeof React.Component,
   forceLayout?: boolean,
   getComponentProps: Function,
@@ -89,41 +87,41 @@ type BenchmarkPropsType = {
   sampleCount: number,
   timeout: number,
   type: $Values<typeof BenchmarkType>
-};
+}; */
 
-type BenchmarkStateType = {
+/*:: type BenchmarkStateType = {
   componentProps: Object,
   cycle: number,
   running: boolean
-};
+}; */
 
 /**
  * Benchmark
  * TODO: documentation
  */
-export default class Benchmark extends Component<
+export default class Benchmark extends Component /*:: <
   BenchmarkPropsType,
   BenchmarkStateType
-> {
-  _raf: ?Function;
-  _startTime: number;
-  _samples: Array<SampleTimingType>;
+> */ {
+  _raf /*: ?Function */;
+  _startTime /*: number */;
+  _samples /*: Array<SampleTimingType> */;
 
-  static displayName: ?string = 'Benchmark';
+  static displayName /*: ?string */ = 'Benchmark';
 
-  static defaultProps: {|
+  static defaultProps /*: {|
     sampleCount: number,
     timeout: number,
     type: $PropertyType<BenchmarkPropsType, 'type'>
-  |} = {
+  |} */ = {
     sampleCount: 50,
     timeout: 10000, // 10 seconds
     type: BenchmarkType.MOUNT
   };
 
-  static Type: typeof BenchmarkType = BenchmarkType;
+  static Type /*: typeof BenchmarkType */ = BenchmarkType;
 
-  constructor(props: BenchmarkPropsType, context?: {}) {
+  constructor(props /*: BenchmarkPropsType */, context /*:: ?: {} */) {
     super(props, context);
     const cycle = 0;
     const componentProps = props.getComponentProps({ cycle });
@@ -136,7 +134,7 @@ export default class Benchmark extends Component<
     this._samples = [];
   }
 
-  componentWillReceiveProps(nextProps: BenchmarkPropsType) {
+  componentWillReceiveProps(nextProps /*: BenchmarkPropsType */) {
     if (nextProps) {
       this.setState((state) => ({
         componentProps: nextProps.getComponentProps(state.cycle)
@@ -145,8 +143,8 @@ export default class Benchmark extends Component<
   }
 
   componentWillUpdate(
-    nextProps: BenchmarkPropsType,
-    nextState: BenchmarkStateType
+    nextProps /*: BenchmarkPropsType */,
+    nextState /*: BenchmarkStateType */
   ) {
     if (nextState.running && !this.state.running) {
       this._startTime = Timing.now();
@@ -189,7 +187,7 @@ export default class Benchmark extends Component<
     }
   }
 
-  render(): Node {
+  render() /*: Node */ {
     const { component: Component, type } = this.props;
     const { componentProps, cycle, running } = this.state;
     if (running && shouldRecord(cycle, type)) {
@@ -221,24 +219,24 @@ export default class Benchmark extends Component<
     }
 
     this._raf = window.requestAnimationFrame(() => {
-      this.setState((state: BenchmarkStateType) => ({
+      this.setState((state /*: BenchmarkStateType */) => ({
         cycle: state.cycle + 1,
         componentProps
       }));
     });
   }
 
-  getSamples(): Array<FullSampleTimingType> {
+  getSamples() /*: Array<FullSampleTimingType> */ {
     return this._samples.reduce(
       (
-        memo: Array<FullSampleTimingType>,
+        memo /*: Array<FullSampleTimingType> */,
         {
           scriptingStart,
           scriptingEnd,
           layoutStart,
           layoutEnd
-        }: SampleTimingType
-      ): Array<FullSampleTimingType> => {
+        } /*: SampleTimingType */
+      ) /*: Array<FullSampleTimingType> */ => {
         memo.push({
           start: scriptingStart,
           end: layoutEnd || scriptingEnd || 0,
@@ -253,7 +251,7 @@ export default class Benchmark extends Component<
     );
   }
 
-  _handleComplete(endTime: number) {
+  _handleComplete(endTime /*: number */) {
     const { onComplete } = this.props;
     const samples = this.getSamples();
 

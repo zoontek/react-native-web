@@ -15,11 +15,11 @@ import AnimatedWithChildren from './AnimatedWithChildren';
 
 import invariant from 'fbjs/lib/invariant';
 
-type ValueXYListenerCallback = (value: {
+/*:: type ValueXYListenerCallback = (value: {
   x: number,
   y: number,
   ...
-}) => mixed;
+}) => mixed; */
 
 let _uniqueId = 1;
 
@@ -30,26 +30,26 @@ let _uniqueId = 1;
  * See https://reactnative.dev/docs/animatedvaluexy.html
  */
 class AnimatedValueXY extends AnimatedWithChildren {
-  x: AnimatedValue;
-  y: AnimatedValue;
-  _listeners: {
+  x/*: AnimatedValue */;
+  y/*: AnimatedValue */;
+  _listeners/*: {
     [key: string]: {
       x: string,
       y: string,
       ...
     },
     ...,
-  };
+  } */;
 
   constructor(
-    valueIn?: ?{
+    valueIn/*:: ?: ?{
       +x: number | AnimatedValue,
       +y: number | AnimatedValue,
       ...
-    },
+    } */,
   ) {
     super();
-    const value: any = valueIn || {x: 0, y: 0}; // @flowfixme: shouldn't need `: any`
+    const value/*: any */ = valueIn || {x: 0, y: 0}; // @flowfixme: shouldn't need `: any`
     if (typeof value.x === 'number' && typeof value.y === 'number') {
       this.x = new AnimatedValue(value.x);
       this.y = new AnimatedValue(value.y);
@@ -71,7 +71,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#setvalue
    */
-  setValue(value: {x: number, y: number, ...}) {
+  setValue(value/*: {x: number, y: number, ...} */) {
     this.x.setValue(value.x);
     this.y.setValue(value.y);
   }
@@ -83,7 +83,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#setoffset
    */
-  setOffset(offset: {x: number, y: number, ...}) {
+  setOffset(offset/*: {x: number, y: number, ...} */) {
     this.x.setOffset(offset.x);
     this.y.setOffset(offset.y);
   }
@@ -94,7 +94,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#flattenoffset
    */
-  flattenOffset(): void {
+  flattenOffset()/*: void */ {
     this.x.flattenOffset();
     this.y.flattenOffset();
   }
@@ -105,16 +105,16 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#extractoffset
    */
-  extractOffset(): void {
+  extractOffset()/*: void */ {
     this.x.extractOffset();
     this.y.extractOffset();
   }
 
-  __getValue(): {
+  __getValue()/*: {
     x: number,
     y: number,
     ...
-  } {
+  } */ {
     return {
       x: this.x.__getValue(),
       y: this.y.__getValue(),
@@ -127,12 +127,12 @@ class AnimatedValueXY extends AnimatedWithChildren {
    * See https://reactnative.dev/docs/animatedvaluexy.html#resetanimation
    */
   resetAnimation(
-    callback?: (value: {
+    callback/*:: ?: (value: {
       x: number,
       y: number,
       ...
-    }) => void,
-  ): void {
+    }) => void */,
+  )/*: void */ {
     this.x.resetAnimation();
     this.y.resetAnimation();
     callback && callback(this.__getValue());
@@ -146,12 +146,12 @@ class AnimatedValueXY extends AnimatedWithChildren {
    * See https://reactnative.dev/docs/animatedvaluexy.html#stopanimation
    */
   stopAnimation(
-    callback?: (value: {
+    callback/*:: ?: (value: {
       x: number,
       y: number,
       ...
-    }) => void,
-  ): void {
+    }) => void */,
+  )/*: void */ {
     this.x.stopAnimation();
     this.y.stopAnimation();
     callback && callback(this.__getValue());
@@ -166,7 +166,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#addlistener
    */
-  addListener(callback: ValueXYListenerCallback): string {
+  addListener(callback/*: ValueXYListenerCallback */)/*: string */ {
     const id = String(_uniqueId++);
     const jointCallback = ({value: number}) => {
       callback(this.__getValue());
@@ -184,7 +184,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#removelistener
    */
-  removeListener(id: string): void {
+  removeListener(id/*: string */)/*: void */ {
     this.x.removeListener(this._listeners[id].x);
     this.y.removeListener(this._listeners[id].y);
     delete this._listeners[id];
@@ -195,7 +195,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#removealllisteners
    */
-  removeAllListeners(): void {
+  removeAllListeners()/*: void */ {
     this.x.removeAllListeners();
     this.y.removeAllListeners();
     this._listeners = {};
@@ -206,7 +206,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#getlayout
    */
-  getLayout(): {[key: string]: AnimatedValue, ...} {
+  getLayout()/*: {[key: string]: AnimatedValue, ...} */ {
     return {
       left: this.x,
       top: this.y,
@@ -218,7 +218,7 @@ class AnimatedValueXY extends AnimatedWithChildren {
    *
    * See https://reactnative.dev/docs/animatedvaluexy.html#gettranslatetransform
    */
-  getTranslateTransform(): Array<{[key: string]: AnimatedValue, ...}> {
+  getTranslateTransform()/*: Array<{[key: string]: AnimatedValue, ...}> */ {
     return [{translateX: this.x}, {translateY: this.y}];
   }
 }

@@ -20,21 +20,21 @@ import * as React from 'react';
  * variables are read in a state updater function, instead of the ones passed
  * in.
  */
-export default class StateSafePureComponent<
+export default class StateSafePureComponent/*:: <
   Props,
   State: interface {},
-> extends React.PureComponent<Props, State> {
+> */ extends React.PureComponent/*:: <Props, State> */ {
   _inAsyncStateUpdate = false;
 
-  constructor(props: Props) {
+  constructor(props/*: Props */) {
     super(props);
     this._installSetStateHooks();
   }
 
   setState(
-    partialState: ?($Shape<State> | ((State, Props) => ?$Shape<State>)),
-    callback?: () => mixed,
-  ): void {
+    partialState/*: ?($Shape<State> | ((State, Props) => ?$Shape<State>)) */,
+    callback/*:: ?: () => mixed */,
+  )/*: void */ {
     if (typeof partialState === 'function') {
       super.setState((state, props) => {
         this._inAsyncStateUpdate = true;
@@ -65,7 +65,7 @@ export default class StateSafePureComponent<
         );
         return props;
       },
-      set(newProps: Props) {
+      set(newProps/*: Props */) {
         props = newProps;
       },
     });
@@ -77,7 +77,7 @@ export default class StateSafePureComponent<
         );
         return state;
       },
-      set(newState: State) {
+      set(newState/*: State */) {
         state = newState;
       },
     });

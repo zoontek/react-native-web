@@ -12,18 +12,18 @@ import NativeAnimatedNonTurboModule from './NativeAnimatedModule';
 import NativeAnimatedTurboModule from './NativeAnimatedTurboModule';
 import NativeEventEmitter from '../EventEmitter/NativeEventEmitter';
 import Platform from '../Utilities/Platform';
-import type {EventConfig} from './AnimatedEvent';
-import type {
+/*:: import type {EventConfig} from './AnimatedEvent'; */
+/*:: import type {
   EventMapping,
   AnimatedNodeConfig,
   AnimatingNodeConfig,
-} from './NativeAnimatedModule';
-import type {AnimationConfig, EndCallback} from './animations/Animation';
-import type {InterpolationConfigType} from './nodes/AnimatedInterpolation';
+} from './NativeAnimatedModule'; */
+/*:: import type {AnimationConfig, EndCallback} from './animations/Animation'; */
+/*:: import type {InterpolationConfigType} from './nodes/AnimatedInterpolation'; */
 import ReactNativeFeatureFlags from '../ReactNative/ReactNativeFeatureFlags';
 import invariant from 'fbjs/lib/invariant';
 import RCTDeviceEventEmitter from '../EventEmitter/RCTDeviceEventEmitter';
-import type {EventSubscription} from '../vendor/emitter/EventEmitter';
+/*:: import type {EventSubscription} from '../vendor/emitter/EventEmitter'; */
 
 // TODO T69437152 @petetheheat - Delete this fork when Fabric ships to 100%.
 const NativeAnimatedModule =
@@ -38,9 +38,9 @@ let nativeEventEmitter;
 
 let waitingForQueuedOperations = new Set();
 let queueOperations = false;
-let queue: Array<() => void> = [];
+let queue/*: Array<() => void> */ = [];
 // $FlowFixMe
-let singleOpQueue: Array<any> = [];
+let singleOpQueue/*: Array<any> */ = [];
 
 const useSingleOpBatching = false;
   Platform.OS === 'android' &&
@@ -50,10 +50,10 @@ let flushQueueTimeout = null;
 
 const eventListenerGetValueCallbacks = {};
 const eventListenerAnimationFinishedCallbacks = {};
-let globalEventEmitterGetValueListener: ?EventSubscription = null;
-let globalEventEmitterAnimationFinishedListener: ?EventSubscription = null;
+let globalEventEmitterGetValueListener/*: ?EventSubscription */ = null;
+let globalEventEmitterAnimationFinishedListener/*: ?EventSubscription */ = null;
 
-const nativeOps: ?typeof NativeAnimatedModule = useSingleOpBatching
+const nativeOps/*: ?typeof NativeAnimatedModule */ = useSingleOpBatching
   ? ((function () {
       const apis = [
         'createAnimatedNode', // 1
@@ -84,7 +84,7 @@ const nativeOps: ?typeof NativeAnimatedModule = useSingleOpBatching
         acc[functionName] = i + 1;
         return acc;
       }, {});
-    })(): $FlowFixMe)
+    })()/*: $FlowFixMe */)
   : NativeAnimatedModule;
 
 /**
@@ -93,9 +93,9 @@ const nativeOps: ?typeof NativeAnimatedModule = useSingleOpBatching
  */
 const API = {
   getValue: function (
-    tag: number,
-    saveValueCallback: (value: number) => void,
-  ): void {
+    tag/*: number */,
+    saveValueCallback/*: (value: number) => void */,
+  )/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     if (useSingleOpBatching) {
       if (saveValueCallback) {
@@ -107,7 +107,7 @@ const API = {
       API.queueOperation(nativeOps.getValue, tag, saveValueCallback);
     }
   },
-  setWaitingForIdentifier: function (id: string): void {
+  setWaitingForIdentifier: function (id/*: string */)/*: void */ {
     waitingForQueuedOperations.add(id);
     queueOperations = true;
     if (
@@ -117,7 +117,7 @@ const API = {
       clearTimeout(flushQueueTimeout);
     }
   },
-  unsetWaitingForIdentifier: function (id: string): void {
+  unsetWaitingForIdentifier: function (id/*: string */)/*: void */ {
     waitingForQueuedOperations.delete(id);
 
     if (waitingForQueuedOperations.size === 0) {
@@ -125,7 +125,7 @@ const API = {
       API.disableQueue();
     }
   },
-  disableQueue: function (): void {
+  disableQueue: function ()/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
 
     if (ReactNativeFeatureFlags.animatedShouldDebounceQueueFlush()) {
@@ -136,7 +136,7 @@ const API = {
       API.flushQueue();
     }
   },
-  flushQueue: function (): void {
+  flushQueue: function ()/*: void */ {
     /*
     invariant(NativeAnimatedModule, 'Native animated module is not available');
     flushQueueTimeout = null;
@@ -174,10 +174,10 @@ const API = {
     }
     */
   },
-  queueOperation: <Args: $ReadOnlyArray<mixed>, Fn: (...Args) => void>(
-    fn: Fn,
-    ...args: Args
-  ): void => {
+  queueOperation: /*:: <Args: $ReadOnlyArray<mixed>, Fn: (...Args) => void> */(
+    fn/*: Fn */,
+    ...args/*: Args */
+  )/*: void */ => {
     if (useSingleOpBatching) {
       // Get the command ID from the queued function, and push that ID and any arguments needed to execute the operation
       // $FlowFixMe: surprise, fn is actually a number
@@ -194,44 +194,44 @@ const API = {
       fn(...args);
     }
   },
-  createAnimatedNode: function (tag: number, config: AnimatedNodeConfig): void {
+  createAnimatedNode: function (tag/*: number */, config/*: AnimatedNodeConfig */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.createAnimatedNode, tag, config);
   },
   updateAnimatedNodeConfig: function (
-    tag: number,
-    config: AnimatedNodeConfig,
-  ): void {
+    tag/*: number */,
+    config/*: AnimatedNodeConfig */,
+  )/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     //if (nativeOps.updateAnimatedNodeConfig) {
     //  API.queueOperation(nativeOps.updateAnimatedNodeConfig, tag, config);
     //}
   },
-  startListeningToAnimatedNodeValue: function (tag: number) {
+  startListeningToAnimatedNodeValue: function (tag/*: number */) {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.startListeningToAnimatedNodeValue, tag);
   },
-  stopListeningToAnimatedNodeValue: function (tag: number) {
+  stopListeningToAnimatedNodeValue: function (tag/*: number */) {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.stopListeningToAnimatedNodeValue, tag);
   },
-  connectAnimatedNodes: function (parentTag: number, childTag: number): void {
+  connectAnimatedNodes: function (parentTag/*: number */, childTag/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.connectAnimatedNodes, parentTag, childTag);
   },
   disconnectAnimatedNodes: function (
-    parentTag: number,
-    childTag: number,
-  ): void {
+    parentTag/*: number */,
+    childTag/*: number */,
+  )/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.disconnectAnimatedNodes, parentTag, childTag);
   },
   startAnimatingNode: function (
-    animationId: number,
-    nodeTag: number,
-    config: AnimatingNodeConfig,
-    endCallback: EndCallback,
-  ): void {
+    animationId/*: number */,
+    nodeTag/*: number */,
+    config/*: AnimatingNodeConfig */,
+    endCallback/*: EndCallback */,
+  )/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     if (useSingleOpBatching) {
       if (endCallback) {
@@ -254,34 +254,34 @@ const API = {
       );
     }
   },
-  stopAnimation: function (animationId: number) {
+  stopAnimation: function (animationId/*: number */) {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.stopAnimation, animationId);
   },
-  setAnimatedNodeValue: function (nodeTag: number, value: number): void {
+  setAnimatedNodeValue: function (nodeTag/*: number */, value/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.setAnimatedNodeValue, nodeTag, value);
   },
-  setAnimatedNodeOffset: function (nodeTag: number, offset: number): void {
+  setAnimatedNodeOffset: function (nodeTag/*: number */, offset/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.setAnimatedNodeOffset, nodeTag, offset);
   },
-  flattenAnimatedNodeOffset: function (nodeTag: number): void {
+  flattenAnimatedNodeOffset: function (nodeTag/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.flattenAnimatedNodeOffset, nodeTag);
   },
-  extractAnimatedNodeOffset: function (nodeTag: number): void {
+  extractAnimatedNodeOffset: function (nodeTag/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.extractAnimatedNodeOffset, nodeTag);
   },
-  connectAnimatedNodeToView: function (nodeTag: number, viewTag: number): void {
+  connectAnimatedNodeToView: function (nodeTag/*: number */, viewTag/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.connectAnimatedNodeToView, nodeTag, viewTag);
   },
   disconnectAnimatedNodeFromView: function (
-    nodeTag: number,
-    viewTag: number,
-  ): void {
+    nodeTag/*: number */,
+    viewTag/*: number */,
+  )/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(
       nativeOps.disconnectAnimatedNodeFromView,
@@ -289,21 +289,21 @@ const API = {
       viewTag,
     );
   },
-  restoreDefaultValues: function (nodeTag: number): void {
+  restoreDefaultValues: function (nodeTag/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     // Backwards compat with older native runtimes, can be removed later.
     if (nativeOps.restoreDefaultValues != null) {
       API.queueOperation(nativeOps.restoreDefaultValues, nodeTag);
     }
   },
-  dropAnimatedNode: function (tag: number): void {
+  dropAnimatedNode: function (tag/*: number */)/*: void */ {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(nativeOps.dropAnimatedNode, tag);
   },
   addAnimatedEventToView: function (
-    viewTag: number,
-    eventName: string,
-    eventMapping: EventMapping,
+    viewTag/*: number */,
+    eventName/*: string */,
+    eventMapping/*: EventMapping */,
   ) {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(
@@ -314,9 +314,9 @@ const API = {
     );
   },
   removeAnimatedEventFromView(
-    viewTag: number,
-    eventName: string,
-    animatedNodeTag: number,
+    viewTag/*: number */,
+    eventName/*: string */,
+    animatedNodeTag/*: number */,
   ) {
     invariant(nativeOps, 'Native animated module is not available');
     API.queueOperation(
@@ -421,36 +421,36 @@ const SUPPORTED_INTERPOLATION_PARAMS = {
   extrapolateLeft: true,
 };
 
-function addWhitelistedStyleProp(prop: string): void {
+function addWhitelistedStyleProp(prop/*: string */)/*: void */ {
   SUPPORTED_STYLES[prop] = true;
 }
 
-function addWhitelistedTransformProp(prop: string): void {
+function addWhitelistedTransformProp(prop/*: string */)/*: void */ {
   SUPPORTED_TRANSFORMS[prop] = true;
 }
 
-function addWhitelistedInterpolationParam(param: string): void {
+function addWhitelistedInterpolationParam(param/*: string */)/*: void */ {
   SUPPORTED_INTERPOLATION_PARAMS[param] = true;
 }
 
-function isSupportedColorStyleProp(prop: string): boolean {
+function isSupportedColorStyleProp(prop/*: string */)/*: boolean */ {
   return SUPPORTED_COLOR_STYLES.hasOwnProperty(prop);
 }
 
-function isSupportedStyleProp(prop: string): boolean {
+function isSupportedStyleProp(prop/*: string */)/*: boolean */ {
   return SUPPORTED_STYLES.hasOwnProperty(prop);
 }
 
-function isSupportedTransformProp(prop: string): boolean {
+function isSupportedTransformProp(prop/*: string */)/*: boolean */ {
   return SUPPORTED_TRANSFORMS.hasOwnProperty(prop);
 }
 
-function isSupportedInterpolationParam(param: string): boolean {
+function isSupportedInterpolationParam(param/*: string */)/*: boolean */ {
   return SUPPORTED_INTERPOLATION_PARAMS.hasOwnProperty(param);
 }
 
 function validateTransform(
-  configs: Array<
+  configs/*: Array<
     | {
         type: 'animated',
         property: string,
@@ -463,8 +463,8 @@ function validateTransform(
         value: number | string,
         ...
       },
-  >,
-): void {
+  > */,
+)/*: void */ {
   configs.forEach(config => {
     if (!isSupportedTransformProp(config.property)) {
       throw new Error(
@@ -474,7 +474,7 @@ function validateTransform(
   });
 }
 
-function validateStyles(styles: {[key: string]: ?number, ...}): void {
+function validateStyles(styles/*: {[key: string]: ?number, ...} */)/*: void */ {
   for (const key in styles) {
     if (!isSupportedStyleProp(key)) {
       throw new Error(
@@ -484,9 +484,9 @@ function validateStyles(styles: {[key: string]: ?number, ...}): void {
   }
 }
 
-function validateInterpolation<OutputT: number | string>(
-  config: InterpolationConfigType<OutputT>,
-): void {
+function validateInterpolation/*:: <OutputT: number | string> */(
+  config/*: InterpolationConfigType<OutputT> */,
+)/*: void */ {
   for (const key in config) {
     if (!isSupportedInterpolationParam(key)) {
       throw new Error(
@@ -496,23 +496,23 @@ function validateInterpolation<OutputT: number | string>(
   }
 }
 
-function generateNewNodeTag(): number {
+function generateNewNodeTag()/*: number */ {
   return __nativeAnimatedNodeTagCount++;
 }
 
-function generateNewAnimationId(): number {
+function generateNewAnimationId()/*: number */ {
   return __nativeAnimationIdCount++;
 }
 
-function assertNativeAnimatedModule(): void {
+function assertNativeAnimatedModule()/*: void */ {
   invariant(NativeAnimatedModule, 'Native animated module is not available');
 }
 
 let _warnedMissingNativeAnimated = false;
 
 function shouldUseNativeDriver(
-  config: $ReadOnly<{...AnimationConfig, ...}> | EventConfig,
-): boolean {
+  config/*: $ReadOnly<{...AnimationConfig, ...}> | EventConfig */,
+)/*: boolean */ {
   if (config.useNativeDriver == null) {
     console.warn(
       'Animated: `useNativeDriver` was not specified. This is a required ' +
@@ -537,7 +537,7 @@ function shouldUseNativeDriver(
   return config.useNativeDriver || false;
 }
 
-function transformDataType(value: number | string): number | string {
+function transformDataType(value/*: number | string */)/*: number | string */ {
   // Change the string type to number type so we can reuse the same logic in
   // iOS and Android platform
   if (typeof value !== 'string') {
@@ -590,7 +590,7 @@ export default {
   transformDataType,
   // $FlowExpectedError[unsafe-getters-setters] - unsafe getter lint suppresion
   // $FlowExpectedError[missing-type-arg] - unsafe getter lint suppresion
-  get nativeEventEmitter(): NativeEventEmitter {
+  get nativeEventEmitter()/*: NativeEventEmitter */ {
     if (!nativeEventEmitter) {
       nativeEventEmitter = new NativeEventEmitter(
         // T88715063: NativeEventEmitter only used this parameter on iOS. Now it uses it on all platforms, so this code was modified automatically to preserve its behavior

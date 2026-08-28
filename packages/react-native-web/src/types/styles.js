@@ -7,25 +7,25 @@
  * @flow
  */
 
-import type { ColorValue, DimensionValue } from './index';
+/*:: import type { ColorValue, DimensionValue } from './index'; */
 
-type NumberOrString = number | string;
+/*:: type NumberOrString = number | string; */
 
 /**
  * Animations and transitions
  */
 
-type AnimationDirection =
+/*:: type AnimationDirection =
   | 'alternate'
   | 'alternate-reverse'
   | 'normal'
-  | 'reverse';
-type AnimationFillMode = 'none' | 'forwards' | 'backwards' | 'both';
-type AnimationIterationCount = number | 'infinite';
-type AnimationKeyframes = string | Object;
-type AnimationPlayState = 'paused' | 'running';
+  | 'reverse'; */
+/*:: type AnimationFillMode = 'none' | 'forwards' | 'backwards' | 'both'; */
+/*:: type AnimationIterationCount = number | 'infinite'; */
+/*:: type AnimationKeyframes = string | Object; */
+/*:: type AnimationPlayState = 'paused' | 'running'; */
 
-export type AnimationStyles = {|
+/*:: export type AnimationStyles = {|
   animationDelay?: ?(string | Array<string>),
   animationDirection?: ?(AnimationDirection | Array<AnimationDirection>),
   animationDuration?: ?(string | Array<string>),
@@ -41,16 +41,16 @@ export type AnimationStyles = {|
   transitionDuration?: ?(string | Array<string>),
   transitionProperty?: ?(string | Array<string>),
   transitionTimingFunction?: ?(string | Array<string>)
-|};
+|}; */
 
 /**
  * Border
  */
 
-type BorderRadiusValue = number | string;
-type BorderStyleValue = 'solid' | 'dotted' | 'dashed';
+/*:: type BorderRadiusValue = number | string; */
+/*:: type BorderStyleValue = 'solid' | 'dotted' | 'dashed'; */
 
-export type BorderStyles = {|
+/*:: export type BorderStyles = {|
   // color
   borderColor?: ?ColorValue,
   borderBlockColor?: ?ColorValue,
@@ -94,13 +94,13 @@ export type BorderStyles = {|
   borderBottomStartRadius?: ?BorderRadiusValue,
   borderTopEndRadius?: ?BorderRadiusValue,
   borderTopStartRadius?: ?BorderRadiusValue
-|};
+|}; */
 
 /**
  * Interactions
  */
 
-type CursorValue =
+/*:: type CursorValue =
   | 'alias'
   | 'all-scroll'
   | 'auto'
@@ -137,9 +137,9 @@ type CursorValue =
   | 'sw-resize'
   | 'w-resize'
   | 'nesw-resize'
-  | 'nwse-resize';
+  | 'nwse-resize'; */
 
-type TouchActionValue =
+/*:: type TouchActionValue =
   | 'auto'
   | 'inherit'
   | 'manipulation'
@@ -150,11 +150,11 @@ type TouchActionValue =
   | 'pan-up'
   | 'pan-x'
   | 'pan-y'
-  | 'pinch-zoom';
+  | 'pinch-zoom'; */
 
-type UserSelect = 'all' | 'auto' | 'contain' | 'none' | 'text';
+/*:: type UserSelect = 'all' | 'auto' | 'contain' | 'none' | 'text'; */
 
-export type InteractionStyles = {|
+/*:: export type InteractionStyles = {|
   // https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Formal_syntax
   cursor?: ?CursorValue,
   // https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action#Formal_syntax
@@ -162,16 +162,16 @@ export type InteractionStyles = {|
   // https://developer.mozilla.org/en-US/docs/Web/CSS/user-select#Formal_syntax_2
   userSelect?: ?UserSelect,
   willChange?: ?string
-|};
+|}; */
 
 /**
  * Layout
  */
 
-type OverflowValue = 'auto' | 'hidden' | 'scroll' | 'visible';
-type VisiblilityValue = 'hidden' | 'visible';
+/*:: type OverflowValue = 'auto' | 'hidden' | 'scroll' | 'visible'; */
+/*:: type VisiblilityValue = 'hidden' | 'visible'; */
 
-export type LayoutStyles = {|
+/*:: export type LayoutStyles = {|
   alignContent?:
     | 'center'
     | 'flex-end'
@@ -269,7 +269,7 @@ export type LayoutStyles = {|
   zIndex?: ?number,
   /**
    * @platform web
-   */
+   *-/
   gridAutoColumns?: ?string,
   gridAutoFlow?: ?string,
   gridAutoRows?: ?string,
@@ -284,7 +284,7 @@ export type LayoutStyles = {|
   gridTemplateAreas?: ?string,
   /**
    * @deprecated
-   */
+   *-/
   borderEndWidth?: ?DimensionValue,
   borderStartWidth?: ?DimensionValue,
   end?: ?DimensionValue,
@@ -297,13 +297,13 @@ export type LayoutStyles = {|
   paddingEnd?: ?DimensionValue,
   paddingVertical?: ?DimensionValue,
   start?: ?DimensionValue
-|};
+|}; */
 
 /**
  * Shadows
  */
 
-export type ShadowStyles = {|
+/*:: export type ShadowStyles = {|
   // @deprecated
   shadowColor?: ?ColorValue,
   shadowOffset?: ?{|
@@ -312,13 +312,13 @@ export type ShadowStyles = {|
   |},
   shadowOpacity?: ?number,
   shadowRadius?: ?DimensionValue
-|};
+|}; */
 
 /**
  * Transforms
  */
 
-export type TransformStyles = {|
+/*:: export type TransformStyles = {|
   perspective?: ?NumberOrString,
   perspectiveOrigin?: ?string,
   transform?:
@@ -343,4 +343,4 @@ export type TransformStyles = {|
       >,
   transformOrigin?: ?string | Array<NumberOrString>,
   transformStyle?: ?('flat' | 'preserve-3d')
-|};
+|}; */

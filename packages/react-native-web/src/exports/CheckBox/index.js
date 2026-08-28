@@ -10,15 +10,15 @@
 
 'use client';
 
-import type { ColorValue } from '../../types';
-import type { ViewProps } from '../View';
+/*:: import type { ColorValue } from '../../types'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-type CheckBoxProps = {
+/*:: type CheckBoxProps = {
   ...ViewProps,
   color?: ?ColorValue,
   disabled?: boolean,
@@ -26,12 +26,12 @@ type CheckBoxProps = {
   onValueChange?: ?(e: any) => void,
   readOnly?: boolean,
   value?: boolean
-};
+}; */
 
-const CheckBox: React.AbstractComponent<
+const CheckBox /*: React.AbstractComponent<
   CheckBoxProps,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const {
     'aria-readonly': ariaReadOnly,
     color,
@@ -44,7 +44,7 @@ const CheckBox: React.AbstractComponent<
     ...other
   } = props;
 
-  function handleChange(event: Object) {
+  function handleChange(event /*: Object */) {
     const value = event.nativeEvent.target.checked;
     event.nativeEvent.value = value;
     onChange && onChange(event);

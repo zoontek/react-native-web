@@ -15,14 +15,14 @@ import useLayoutEffect from '../useLayoutEffect';
  * Types
  */
 
-export type HoverEventsConfig = {
+/*:: export type HoverEventsConfig = {
   contain?: ?boolean,
   disabled?: ?boolean,
   onHoverStart?: ?(e: any) => void,
   onHoverChange?: ?(bool: boolean) => void,
   onHoverUpdate?: ?(e: any) => void,
   onHoverEnd?: ?(e: any) => void
-};
+}; */
 
 /**
  * Implementation
@@ -36,13 +36,13 @@ const supportsPointerEvent = () =>
   !!(typeof window !== 'undefined' && window.PointerEvent != null);
 
 function dispatchCustomEvent(
-  target: EventTarget,
-  type: string,
-  payload?: {
+  target /*: EventTarget */,
+  type /*: string */,
+  payload /*:: ?: {
     bubbles?: boolean,
     cancelable?: boolean,
     detail?: { [key: string]: mixed }
-  }
+  } */
 ) {
   const event = document.createEvent('CustomEvent');
   const { bubbles = true, cancelable = true, detail } = payload || emptyObject;
@@ -57,9 +57,9 @@ function getPointerType(event) {
 }
 
 export default function useHover(
-  targetRef: any,
-  config: HoverEventsConfig
-): void {
+  targetRef /*: any */,
+  config /*: HoverEventsConfig */
+) /*: void */ {
   const {
     contain,
     disabled,
