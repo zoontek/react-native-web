@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -33,13 +31,12 @@ describeWithPointerEvent('describeWithPointerEvent', (pointerEvent) => {
  * createEventTarget
  */
 describe('createEventTarget', () => {
-  let node;
+  let node: HTMLDivElement;
   beforeEach(() => {
     node = document.createElement('div');
   });
 
   afterEach(() => {
-    node = null;
     clearPointers();
   });
 

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -11,27 +9,35 @@
  * Change environment support for PointerEvent.
  */
 
+export type Platform = 'mac' | 'windows';
+
 const emptyFunction = function () {};
 
 export function hasPointerEvent() {
   return global != null && global.PointerEvent != null;
 }
 
-export function setPointerEvent(bool) {
-  const pointerCaptureFn = (name) => (id) => {
+export function setPointerEvent(bool: boolean) {
+  const pointerCaptureFn = (name: string) => (id: unknown) => {
     if (typeof id !== 'number') {
       if (process.env.NODE_ENV !== 'production') {
         console.error('A pointerId must be passed to "%s"', name);
       }
     }
   };
-  global.PointerEvent = bool ? emptyFunction : undefined;
-  global.HTMLElement.prototype.setPointerCapture = bool
-    ? pointerCaptureFn('setPointerCapture')
-    : undefined;
-  global.HTMLElement.prototype.releasePointerCapture = bool
-    ? pointerCaptureFn('releasePointerCapture')
-    : undefined;
+  // The DOM lib types these as always defined, so assigning 'undefined' to
+  // them does not typecheck. 'Reflect.set' writes them without a type cast.
+  Reflect.set(global, 'PointerEvent', bool ? emptyFunction : undefined);
+  Reflect.set(
+    global.HTMLElement.prototype,
+    'setPointerCapture',
+    bool ? pointerCaptureFn('setPointerCapture') : undefined
+  );
+  Reflect.set(
+    global.HTMLElement.prototype,
+    'releasePointerCapture',
+    bool ? pointerCaptureFn('releasePointerCapture') : undefined
+  );
 }
 
 /**
@@ -44,10 +50,10 @@ export const platform = {
   clear() {
     platformGetter.mockClear();
   },
-  get() {
+  get(): Platform {
     return global.navigator.platform === 'MacIntel' ? 'mac' : 'windows';
   },
-  set(name) {
+  set(name: Platform) {
     switch (name) {
       case 'mac': {
         platformGetter.mockReturnValue('MacIntel');
