@@ -1,7 +1,7 @@
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({
-  plugins: ['promise', 'react'],
+  plugins: ['promise', 'react', 'typescript'],
   ignorePatterns: ['packages/**/vendor/*', 'packages/**/types/*'],
   env: {
     browser: true,
@@ -53,6 +53,11 @@ export default defineConfig({
     radix: 'error',
     yoda: ['error', 'never'],
 
+    // 'no-unused-vars': [
+    //   'error',
+    //   { argsIgnorePattern: '^_', ignoreRestSiblings: true }
+    // ]
+
     // node
     'node/handle-callback-err': ['error', '^(err|error)$'],
     'node/no-path-concat': 'error',
@@ -62,72 +67,64 @@ export default defineConfig({
     'promise/param-names': 'error',
 
     // react
+    'react/globals': 'off',
     'react/iframe-missing-sandbox': 'off',
+    'react/immutability': 'off',
     'react/jsx-pascal-case': 'error',
     'react/no-children-prop': 'off',
     'react/no-this-in-sfc': 'off',
     'react/no-unknown-property': 'error',
     'react/prefer-es6-class': 'error',
     'react/react-in-jsx-scope': 'off',
+    'react/refs': 'off',
     'react/self-closing-comp': 'error',
+    'react/set-state-in-effect': 'off',
 
     // react-hooks
     'react/rules-of-hooks': 'error',
-    'react/exhaustive-deps': 'warn'
+    'react/exhaustive-deps': 'warn',
 
-    // 'no-unused-vars': [
-    //   'error',
-    //   { argsIgnorePattern: '^_', ignoreRestSiblings: true }
-    // ]
-  },
-  overrides: [
-    {
-      files: ['**/*.{ts,tsx}'],
-      plugins: ['typescript'],
-      rules: {
-        'typescript/no-empty-object-type': 'error',
-        'typescript/no-explicit-any': 'error',
-        'typescript/no-floating-promises': 'error',
-        'typescript/no-import-type-side-effects': 'error',
-        'typescript/no-invalid-void-type': 'error',
-        'typescript/no-misused-spread': 'error',
-        'typescript/no-non-null-assertion': 'error',
-        'typescript/no-wrapper-object-types': 'error',
+    'typescript/no-empty-object-type': 'error',
+    'typescript/no-explicit-any': 'error',
+    'typescript/no-floating-promises': 'error',
+    'typescript/no-import-type-side-effects': 'error',
+    'typescript/no-invalid-void-type': 'error',
+    'typescript/no-misused-spread': 'error',
+    'typescript/no-non-null-assertion': 'error',
+    'typescript/no-wrapper-object-types': 'error',
 
-        // temporarily disabled
-        'typescript/consistent-return': 'off',
-        'typescript/no-extraneous-class': 'off',
-        'typescript/no-unnecessary-boolean-literal-compare': 'off',
-        'typescript/no-unsafe-type-assertion': 'off',
-        'typescript/unbound-method': 'off',
-        // 'typescript/explicit-function-return-type': 'error',
-        // 'typescript/explicit-module-boundary-types': 'error',
-        // 'typescript/no-dynamic-delete': 'error',
+    // temporarily disabled
+    'typescript/consistent-return': 'off',
+    'typescript/no-extraneous-class': 'off',
+    'typescript/no-unnecessary-boolean-literal-compare': 'off',
+    'typescript/no-unsafe-type-assertion': 'off',
+    'typescript/unbound-method': 'off',
+    // 'typescript/explicit-function-return-type': 'error',
+    // 'typescript/explicit-module-boundary-types': 'error',
+    // 'typescript/no-dynamic-delete': 'error',
 
-        'typescript/restrict-template-expressions': [
-          'error',
-          {
-            allow: [],
-            allowNullish: false,
-            allowAny: false,
-            allowRegExp: false
-          }
-        ]
-
-        // 'typescript/strict-boolean-expressions': [
-        //   'error',
-        //   {
-        //     allowAny: true,
-        //     allowNullableBoolean: true,
-        //     allowNullableEnum: true,
-        //     allowNullableNumber: true,
-        //     allowNullableObject: true,
-        //     allowNullableString: true,
-        //     allowNumber: true,
-        //     allowString: true
-        //   }
-        // ]
+    'typescript/restrict-template-expressions': [
+      'error',
+      {
+        allow: [],
+        allowNullish: false,
+        allowAny: false,
+        allowRegExp: false
       }
-    }
-  ]
+    ]
+
+    // 'typescript/strict-boolean-expressions': [
+    //   'error',
+    //   {
+    //     allowAny: true,
+    //     allowNullableBoolean: true,
+    //     allowNullableEnum: true,
+    //     allowNullableNumber: true,
+    //     allowNullableObject: true,
+    //     allowNullableString: true,
+    //     allowNumber: true,
+    //     allowString: true
+    //   }
+    // ]
+  }
 });
