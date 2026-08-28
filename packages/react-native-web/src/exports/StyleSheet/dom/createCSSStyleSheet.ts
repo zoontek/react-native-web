@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,16 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import canUseDOM from '../../../modules/canUseDom';
+import type { Nullable } from '../../../types';
 
-// $FlowFixMe: HTMLStyleElement is incorrectly typed - https://github.com/facebook/flow/issues/2696
 export default function createCSSStyleSheet(
-  id /*: string */,
-  rootNode /*:: ?: Document | ShadowRoot */,
-  textContent /*:: ?: string */
-) /*: ?CSSStyleSheet */ {
+  id: string,
+  rootNode?: Document | ShadowRoot,
+  textContent?: string
+): Nullable<CSSStyleSheet> {
   if (canUseDOM) {
     const root = rootNode != null ? rootNode : document;
-    let element = root.getElementById(id);
+    let element = root.querySelector<HTMLStyleElement>(`style[id="${id}"]`);
     if (element == null) {
       element = document.createElement('style');
       element.setAttribute('id', id);
@@ -32,7 +30,6 @@ export default function createCSSStyleSheet(
         }
       }
     }
-    // $FlowFixMe: HTMLElement is incorrectly typed
     return element.sheet;
   } else {
     return null;

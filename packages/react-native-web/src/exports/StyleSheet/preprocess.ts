@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -10,8 +8,37 @@
 import normalizeColor from './compiler/normalizeColor';
 import normalizeValueWithProperty from './compiler/normalizeValueWithProperty';
 import { warnOnce } from '../../modules/warnOnce';
+import type { Style } from './compiler/createReactDOMStyle';
+import type { Nullable } from '../../types';
 
-const emptyObject = {};
+type ShadowOffset = {
+  height?: Nullable<number | string>;
+  width?: Nullable<number | string>;
+};
+
+type ShadowStyle = {
+  shadowColor?: Nullable<number | string>;
+  shadowOffset?: Nullable<ShadowOffset>;
+  shadowOpacity?: number;
+  shadowRadius?: Nullable<number | string>;
+};
+
+type TextShadowStyle = {
+  textShadowColor?: Nullable<number | string>;
+  textShadowOffset?: Nullable<ShadowOffset>;
+  textShadowRadius?: Nullable<number | string>;
+};
+
+type BoxShadow = {
+  offsetX?: Nullable<number | string>;
+  offsetY?: Nullable<number | string>;
+  blurRadius?: Nullable<number | string>;
+  spreadDistance?: Nullable<number | string>;
+  color?: Nullable<number | string>;
+  inset?: Nullable<boolean>;
+};
+
+const emptyObject: Record<string, unknown> = {};
 
 /**
  * Shadows
@@ -20,8 +47,8 @@ const emptyObject = {};
 const defaultOffset = { height: 0, width: 0 };
 
 export const createBoxShadowValue = (
-  style /*: Object */
-) /*: void | string */ => {
+  style: ShadowStyle
+): undefined | string => {
   const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style;
   const { height, width } = shadowOffset || defaultOffset;
   const offsetX = normalizeValueWithProperty(width);
@@ -39,8 +66,8 @@ export const createBoxShadowValue = (
 };
 
 export const createTextShadowValue = (
-  style /*: Object */
-) /*: void | string */ => {
+  style: TextShadowStyle
+): undefined | string => {
   const { textShadowColor, textShadowOffset, textShadowRadius } = style;
   const { height, width } = textShadowOffset || defaultOffset;
   const radius = textShadowRadius || 0;
@@ -62,7 +89,7 @@ export const createTextShadowValue = (
 
 // { offsetX: 1, offsetY: 2, blurRadius: 3, spreadDistance: 4, color: 'rgba(255, 0, 0)', inset: true }
 // => 'rgba(255, 0, 0) 1px 2px 3px 4px inset'
-const mapBoxShadow = (boxShadow /*: Object | string */) /*: string */ => {
+const mapBoxShadow = (boxShadow: BoxShadow | string): string => {
   if (typeof boxShadow === 'string') {
     return boxShadow;
   }
@@ -76,38 +103,37 @@ const mapBoxShadow = (boxShadow /*: Object | string */) /*: string */ => {
   return `${position}${offsetX} ${offsetY} ${blurRadius} ${spreadDistance} ${color}`;
 };
 export const createBoxShadowArrayValue = (
-  value /*: Array<Object> */
-) /*: string */ => {
+  value: Array<BoxShadow | string>
+): string => {
   return value.map(mapBoxShadow).join(', ');
 };
 
 // { scale: 2 } => 'scale(2)'
 // { translateX: 20 } => 'translateX(20px)'
 // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-const mapTransform = (transform /*: Object */) /*: string */ => {
-  const type = Object.keys(transform)[0];
+const mapTransform = (transform: Style): string => {
+  const type = Object.keys(transform)[0] ?? '';
   const value = transform[type];
   if (type === 'matrix' || type === 'matrix3d') {
-    return `${type}(${value.join(',')})`;
+    return `${type}(${(value as Array<number>).join(',')})`;
   } else {
     const normalizedValue = normalizeValueWithProperty(value, type);
-    return `${type}(${normalizedValue})`;
+    return `${type}(${normalizedValue as string})`;
   }
 };
-export const createTransformValue = (
-  value /*: Array<Object> */
-) /*: string */ => {
+
+export const createTransformValue = (value: Array<Style>): string => {
   return value.map(mapTransform).join(' ');
 };
 
 // [2, '30%', 10] => '2px 30% 10px'
 export const createTransformOriginValue = (
-  value /*: Array<number | string> */
-) /*: string */ => {
+  value: Array<number | string>
+): string => {
   return value.map((v) => normalizeValueWithProperty(v)).join(' ');
 };
 
-const PROPERTIES_STANDARD /*: { [key: string]: string } */ = {
+const PROPERTIES_STANDARD: Record<string, string> = {
   borderBottomEndRadius: 'borderEndEndRadius',
   borderBottomStartRadius: 'borderEndStartRadius',
   borderTopEndRadius: 'borderStartEndRadius',
@@ -130,7 +156,7 @@ const PROPERTIES_STANDARD /*: { [key: string]: string } */ = {
   start: 'insetInlineStart'
 };
 
-const ignoredProps = {
+const ignoredProps: Record<string, boolean> = {
   elevation: true,
   overlayColor: true,
   resizeMode: true,
@@ -140,12 +166,12 @@ const ignoredProps = {
 /**
  * Preprocess styles
  */
-export const preprocess = /*:: <T: {| [key: string]: any |}> */ (
-  originalStyle /*: T */,
-  options /*:: ?: { shadow?: boolean, textShadow?: boolean } */ = {}
-) /*: T */ => {
+export const preprocess = <T extends Record<string, unknown>>(
+  originalStyle: T,
+  options: { shadow?: boolean; textShadow?: boolean } = {}
+): T => {
   const style = originalStyle || emptyObject;
-  const nextStyle = {};
+  const nextStyle: Record<string, unknown> = {};
 
   // Convert shadow styles
   if (
@@ -180,7 +206,7 @@ export const preprocess = /*:: <T: {| [key: string]: any |}> */ (
     if (textShadowValue != null && nextStyle.textShadow == null) {
       const { textShadow } = style;
       const value = textShadow
-        ? `${textShadow}, ${textShadowValue}`
+        ? `${textShadow as string}, ${textShadowValue}`
         : textShadowValue;
       nextStyle.textShadow = value;
     }
@@ -203,7 +229,7 @@ export const preprocess = /*:: <T: {| [key: string]: any |}> */ (
 
     const originalValue = style[originalProp];
     const prop = PROPERTIES_STANDARD[originalProp] || originalProp;
-    let value = originalValue;
+    let value: unknown = originalValue;
 
     if (
       !Object.prototype.hasOwnProperty.call(style, originalProp) ||
@@ -219,7 +245,9 @@ export const preprocess = /*:: <T: {| [key: string]: any |}> */ (
         value = createBoxShadowArrayValue(value);
       }
       const { boxShadow } = nextStyle;
-      nextStyle.boxShadow = boxShadow ? `${value}, ${boxShadow}` : value;
+      nextStyle.boxShadow = boxShadow
+        ? `${value as string}, ${boxShadow as string}`
+        : value;
     } else if (prop === 'fontVariant') {
       if (Array.isArray(value) && value.length > 0) {
         value = value.join(' ');
@@ -244,8 +272,7 @@ export const preprocess = /*:: <T: {| [key: string]: any |}> */ (
     }
   }
 
-  // $FlowIgnore
-  return nextStyle;
+  return nextStyle as T;
 };
 
 export default preprocess;

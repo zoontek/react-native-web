@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,7 +7,7 @@
 
 import valueParser from 'postcss-value-parser';
 
-const invalidShortforms = {
+const invalidShortforms: Record<string, boolean> = {
   background: true,
   borderBottom: true,
   borderLeft: true,
@@ -21,7 +19,7 @@ const invalidShortforms = {
   textDecoration: true
 };
 
-const invalidMultiValueShortforms = {
+const invalidMultiValueShortforms: Record<string, boolean> = {
   flex: true,
   margin: true,
   padding: true,
@@ -45,11 +43,11 @@ const invalidMultiValueShortforms = {
   backgroundPosition: true
 };
 
-function error(message) {
+function error(message: string) {
   console.error(message);
 }
 
-export function validate(obj /*: Object */) {
+export function validate(obj: Record<string, unknown>) {
   for (const k in obj) {
     const prop = k.trim();
     const value = obj[prop];

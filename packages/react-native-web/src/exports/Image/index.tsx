@@ -77,7 +77,7 @@ function extractNonStandardStyleProps(
 
   // Add CSS filters
   // React Native exposes these features as props and proprietary styles
-  const filters = [];
+  const filters: Array<string> = [];
   let _filter = null;
 
   if (filter) {
