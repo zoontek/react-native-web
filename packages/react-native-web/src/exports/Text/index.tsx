@@ -156,7 +156,7 @@ const Text /*: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods>
       }
     }
 
-    const platformMethodsRef = usePlatformMethods(supportedProps);
+    const platformMethodsRef = usePlatformMethods();
     const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef);
 
     supportedProps.ref = setRef;
