@@ -6,21 +6,24 @@
  */
 
 // JSDOM doesn't implement ResizeObserver
-class ResizeObserver {
+window.ResizeObserver = class {
   disconnect() {}
   observe() {}
   unobserve() {}
-}
-window.ResizeObserver = ResizeObserver;
+};
 
-// JSDOM doesn't provide values for 'clientWidth' etc
+// JSDOM doesn't provide values for 'clientWidth' etc. 'configurable' allows
+// the environment to be shared by several test files
 Object.defineProperty(window.document.documentElement, 'clientHeight', {
-  get: function () {
+  configurable: true,
+  get: function (this: { _jsdomClientWidth?: number }) {
     return this._jsdomClientWidth || window.innerHeight;
   }
 });
+
 Object.defineProperty(window.document.documentElement, 'clientWidth', {
-  get: function () {
+  configurable: true,
+  get: function (this: { _jsdomClientWidth?: number }) {
     return this._jsdomClientWidth || window.innerWidth;
   }
 });

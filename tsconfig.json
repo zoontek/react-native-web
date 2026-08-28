@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // Modules
-    "types": ["jest", "node"],
+    "types": ["node", "vitest/globals"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,

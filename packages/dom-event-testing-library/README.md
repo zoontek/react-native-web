@@ -37,7 +37,7 @@ describeWithPointerEvent('useTap', (hasPointerEvent) => {
   // test all the pointer types supported by the environment
   testWithPointerType('pointer down', (pointerType) => {
     const ref = createRef(null);
-    const onTapStart = jest.fn();
+    const onTapStart = vi.fn();
 
     // component to test
     function Component() {
@@ -118,7 +118,7 @@ To create a new event target pass the DOM node to `createEventTarget(node)`. Thi
 
 The target also has `node` property equal to the node that was used to create the target, and a `setBoundClientRect({x,y,width,height})` method that can be used to mock the return value of `getBoundingClientRect`.
 
-### Jest helpers
+### Vitest helpers
 
 #### `describeWithPointerEvent`
 
