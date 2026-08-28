@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,21 +6,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable, PlatformMethods } from '../../types';
+
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-/*:: type Props = {
-  WrapperComponent?: ?React.ComponentType<*>,
-  // $FlowFixMe
-  children?: React.Children,
-  rootTag: any
-}; */
+type Props = {
+  WrapperComponent?: Nullable<
+    React.ComponentType<{ children?: React.ReactNode }>
+  >;
+  children?: React.ReactNode;
+  rootTag: unknown;
+};
 
-const RootTagContext /*: React.Context<any> */ = React.createContext(null);
+const RootTagContext = React.createContext<unknown>(null);
 
-const AppContainer /*: React.AbstractComponent<Props> */ = React.forwardRef(
-  (props /*: Props */, forwardedRef /*:: ?: React.Ref<any> */) => {
+const AppContainer = React.forwardRef<HTMLElement & PlatformMethods, Props>(
+  (props, forwardedRef) => {
     const { children, WrapperComponent } = props;
 
     let innerView = (
