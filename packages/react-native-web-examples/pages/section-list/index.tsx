@@ -1,11 +1,20 @@
-// @ts-nocheck
-
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-web';
 import Example from '../../shared/example';
 import { SectionList, Text, View } from 'react-native-web';
 
-function makeItems(length) {
+type Item = {
+  key: string;
+  title: string;
+};
+
+type Section = {
+  data: Item[];
+  title: string;
+  color: string;
+  key: string;
+};
+
+function makeItems(length: number): Item[] {
   return Array(length)
     .fill(0)
     .map((value, index) => ({
@@ -14,12 +23,13 @@ function makeItems(length) {
     }));
 }
 
-const sectionsData = [
+const sectionsData: Section[] = [
   { data: makeItems(9), title: 'Section A', color: 'red', key: 'a' },
   { data: makeItems(6), title: 'Section B', color: 'green', key: 'b' },
   { data: makeItems(3), title: 'Section C', color: 'yellow', key: 'c' }
 ];
 
+// @ts-expect-error use exported SectionListRenderItemInfo
 function renderItem({ item }) {
   return (
     <Text key={item.key} style={styles.itemTitleText}>
@@ -28,7 +38,7 @@ function renderItem({ item }) {
   );
 }
 
-function renderSectionHeader({ section }) {
+function renderSectionHeader({ section }: { section: Section }) {
   const extraStyle = { backgroundColor: section.color };
   return (
     <Text
@@ -40,7 +50,7 @@ function renderSectionHeader({ section }) {
   );
 }
 
-function renderSectionFooter({ section }) {
+function renderSectionFooter({ section }: { section: Section }) {
   const footerStyle = {
     height: 10,
     backgroundColor: section.color,

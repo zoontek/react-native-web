@@ -1,7 +1,5 @@
-// @ts-nocheck
-
 import React from 'react';
-import { Dimensions, Text } from 'react-native';
+import { Dimensions, Text } from 'react-native-web';
 import Example from '../../shared/example';
 
 export default function DimensionsPage() {
@@ -9,12 +7,14 @@ export default function DimensionsPage() {
   const [windowDims, setWindow] = React.useState(Dimensions.get('window'));
 
   React.useEffect(() => {
-    const handleChange = ({ screen, window: win }) => {
-      setScreen(screen);
-      setWindow(win);
-    };
+    const subscription = Dimensions.addEventListener(
+      'change',
+      ({ screen, window }) => {
+        setScreen(screen);
+        setWindow(window);
+      }
+    );
 
-    const subscription = Dimensions.addEventListener('change', handleChange);
     return () => {
       subscription.remove();
     };
@@ -22,10 +22,10 @@ export default function DimensionsPage() {
 
   return (
     <Example title="Dimensions">
-      <Text style={{ marginVertical: '1em' }} suppressHydrationWarnings={true}>
+      <Text style={{ marginVertical: '1em' }} suppressHydrationWarning={true}>
         window: {JSON.stringify(windowDims, null, 2)}
       </Text>
-      <Text suppressHydrationWarnings={true}>
+      <Text suppressHydrationWarning={true}>
         screen: {JSON.stringify(screenDims, null, 2)}
       </Text>
     </Example>

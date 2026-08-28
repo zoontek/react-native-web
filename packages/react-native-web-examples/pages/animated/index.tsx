@@ -1,7 +1,5 @@
-// @ts-nocheck
-
-import React, { useRef } from 'react';
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native-web';
 import Example from '../../shared/example';
 
 export default function AnimatedPage() {
@@ -23,7 +21,8 @@ export default function AnimatedPage() {
   return (
     <Example title="Animated">
       <View style={styles.container}>
-        <Animated.View style={[styles.animatedBox, { transform: transform }]} />
+        {/* @ts-expect-error correctly type Animated components */}
+        <Animated.View style={[styles.animatedBox, { transform }]} />
         <Pressable
           onPress={animateBox}
           style={({ pressed }) => [

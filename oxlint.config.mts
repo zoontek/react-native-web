@@ -2,7 +2,7 @@ import { defineConfig } from 'oxlint';
 
 export default defineConfig({
   plugins: ['promise', 'react'],
-  ignorePatterns: ['packages/**/vendor/*', 'types'],
+  ignorePatterns: ['packages/**/vendor/*', 'packages/**/types/*'],
   env: {
     browser: true,
     jest: true,
