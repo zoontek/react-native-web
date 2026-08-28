@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -9,10 +7,11 @@
 
 import * as React from 'react';
 import mergeRefs from '../mergeRefs';
+import type { Nullable } from '../../types';
 
-export default function useMergeRefs(
-  ...args /*: $ReadOnlyArray<React.ElementRef<any>> */
-) /*: (node: HTMLElement | null) => void */ {
+export default function useMergeRefs<T = HTMLElement>(
+  ...args: ReadonlyArray<Nullable<React.Ref<T>>>
+): (node: T | null) => void {
   return React.useMemo(
     () => mergeRefs(...args),
     // oxlint-disable-next-line react/exhaustive-deps

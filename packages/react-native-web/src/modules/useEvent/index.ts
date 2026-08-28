@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -10,12 +8,14 @@
 import { addEventListener } from '../addEventListener';
 import useLayoutEffect from '../useLayoutEffect';
 import useStable from '../useStable';
+import type { Nullable } from '../../types';
 
-/*:: type Callback = null | ((any) => void); */
-/*:: type AddListener = (
+type Callback = null | ((e: Event) => void);
+
+type AddListener = (
   target: EventTarget,
-  listener: null | ((any) => void)
-) => () => void; */
+  listener: null | ((e: Event) => void)
+) => () => void;
 
 /**
  * This can be used with any event type include custom events.
@@ -27,17 +27,13 @@ import useStable from '../useStable';
  * }).
  */
 export default function useEvent(
-  eventType /*: string */,
-  options /*:: ?: ?{
-    capture?: boolean,
-    passive?: boolean,
-    once?: boolean
-  } */
-) /*: AddListener */ {
-  const targetListeners = useStable(() => new Map());
+  eventType: string,
+  options?: Nullable<{ capture?: boolean; passive?: boolean; once?: boolean }>
+): AddListener {
+  const targetListeners = useStable(() => new Map<EventTarget, () => void>());
 
   const addListener = useStable(() => {
-    return (target /*: EventTarget */, callback /*: Callback */) => {
+    return (target: EventTarget, callback: Callback) => {
       const removeTargetListener = targetListeners.get(target);
       if (removeTargetListener != null) {
         removeTargetListener();

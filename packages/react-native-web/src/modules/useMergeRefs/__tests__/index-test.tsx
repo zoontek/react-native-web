@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,11 +6,17 @@
  */
 
 import * as React from 'react';
+import type { RenderResult } from '@testing-library/react';
 import { act, render } from '@testing-library/react';
 import useMergeRefs from '..';
 
 describe('modules/useMergeRefs', () => {
-  function TestComponent({ refs, ...rest }) {
+  function TestComponent({
+    refs,
+    ...rest
+  }: React.ComponentProps<'div'> & {
+    refs: ReadonlyArray<React.Ref<HTMLDivElement> | undefined>;
+  }) {
     const mergedRef = useMergeRefs(...refs);
     return <div ref={mergedRef} {...rest} />;
   }
@@ -26,8 +30,8 @@ describe('modules/useMergeRefs', () => {
   test('merges any number of varying refs', () => {
     const callbackRef1 = jest.fn();
     const callbackRef2 = jest.fn();
-    const objectRef1 = React.createRef();
-    const objectRef2 = React.createRef();
+    const objectRef1 = React.createRef<HTMLDivElement>();
+    const objectRef2 = React.createRef<HTMLDivElement>();
     const nullRef = null;
 
     act(() => {
@@ -47,7 +51,7 @@ describe('modules/useMergeRefs', () => {
   test('ref is called when ref changes', () => {
     const ref = jest.fn();
     const nextRef = jest.fn();
-    let rerender;
+    let rerender!: RenderResult['rerender'];
 
     act(() => {
       ({ rerender } = render(<TestComponent refs={[ref]} />));
@@ -61,7 +65,7 @@ describe('modules/useMergeRefs', () => {
 
   test('ref is not called for each rerender', () => {
     const ref = jest.fn();
-    let rerender;
+    let rerender!: RenderResult['rerender'];
 
     act(() => {
       ({ rerender } = render(<TestComponent refs={[ref]} />));
@@ -75,7 +79,7 @@ describe('modules/useMergeRefs', () => {
 
   test('ref is not called for props changes', () => {
     const ref = jest.fn();
-    let rerender;
+    let rerender!: RenderResult['rerender'];
 
     act(() => {
       ({ rerender } = render(<TestComponent id="foo" refs={[ref]} />));
