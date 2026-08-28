@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -10,10 +8,10 @@
  */
 
 import EventEmitter from '../vendor/emitter/EventEmitter';
-/*:: import type { IEventEmitter } from '../vendor/emitter/EventEmitter'; */
+import type { IEventEmitter } from '../vendor/emitter/EventEmitter';
 
 // FIXME: use typed events
-/*:: type RCTDeviceEventDefinitions = $FlowFixMe; */
+type RCTDeviceEventDefinitions = Record<string, unknown[]>;
 
 /**
  * Global EventEmitter used by the native platform to emit events to JavaScript.
@@ -21,4 +19,7 @@ import EventEmitter from '../vendor/emitter/EventEmitter';
  *
  * NativeModules that emit events should instead subclass `NativeEventEmitter`.
  */
-export default new EventEmitter() /*: IEventEmitter<RCTDeviceEventDefinitions> */;
+const RCTDeviceEventEmitter: IEventEmitter<RCTDeviceEventDefinitions> =
+  new EventEmitter<RCTDeviceEventDefinitions>();
+
+export default RCTDeviceEventEmitter;

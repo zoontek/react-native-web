@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -28,9 +26,9 @@
  */
 
 // eslint-disable-next-line no-unused-vars
-/*:: export interface RCTExport<T: void = void> {
-  +getConstants?: () => {};
-} */
+export interface RCTExport<T extends void = void> {
+  readonly getConstants?: () => object;
+}
 
 // eslint-disable-next-line lint/react-native-modules
-/*:: export interface TurboModule extends RCTExport<void> {} */
+export interface TurboModule extends RCTExport<void> {}
