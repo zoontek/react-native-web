@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,28 +6,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ColorValue } from '../../types'; */
-/*:: import type { ViewProps } from '../View'; */
-/*:: import type { Node } from 'React'; */
+import type { ColorValue } from '../../types';
+import type { ViewProps } from '../View';
+import type { ReactNode } from 'react';
 
 import View from '../View';
 import React from 'react';
 
-/*:: type RefreshControlProps = {
-  ...ViewProps,
-  colors?: Array<ColorValue>,
-  enabled?: boolean,
-  onRefresh?: () => void,
-  progressBackgroundColor?: ColorValue,
-  progressViewOffset?: number,
-  refreshing: boolean,
-  size?: 0 | 1,
-  tintColor?: ColorValue,
-  title?: string,
-  titleColor?: ColorValue
-}; */
+type RefreshControlProps = ViewProps & {
+  colors?: Array<ColorValue>;
+  enabled?: boolean;
+  onRefresh?: () => void;
+  progressBackgroundColor?: ColorValue;
+  progressViewOffset?: number;
+  refreshing: boolean;
+  size?: 0 | 1;
+  tintColor?: ColorValue;
+  title?: string;
+  titleColor?: ColorValue;
+};
 
-function RefreshControl(props /*: RefreshControlProps */) /*: Node */ {
+function RefreshControl(props: RefreshControlProps): ReactNode {
   const {
     /* oxlint-disable no-unused-vars */
     colors,
