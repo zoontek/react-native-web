@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,28 +5,30 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { Touch, TouchEvent } from './ResponderEventTypes'; */
+import type { Touch, TouchEvent } from './ResponderEventTypes';
 import { isStartish, isMoveish, isEndish } from './ResponderEventTypes';
 
-/*:: type TouchRecord = {|
-  currentPageX: number,
-  currentPageY: number,
-  currentTimeStamp: number,
-  previousPageX: number,
-  previousPageY: number,
-  previousTimeStamp: number,
-  startPageX: number,
-  startPageY: number,
-  startTimeStamp: number,
-  touchActive: boolean
-|}; */
+type TouchRecord = {
+  currentPageX: number;
+  currentPageY: number;
+  currentTimeStamp: number;
+  previousPageX: number;
+  previousPageY: number;
+  previousTimeStamp: number;
+  startPageX: number;
+  startPageY: number;
+  startTimeStamp: number;
+  touchActive: boolean;
+};
 
-/*:: export type TouchHistory = $ReadOnly<{|
-  indexOfSingleActiveTouch: number,
-  mostRecentTimeStamp: number,
-  numberActiveTouches: number,
-  touchBank: Array<TouchRecord>
-|}>; */
+type TouchHistoryRecord = {
+  indexOfSingleActiveTouch: number;
+  mostRecentTimeStamp: number;
+  numberActiveTouches: number;
+  touchBank: Array<TouchRecord>;
+};
+
+export type TouchHistory = Readonly<TouchHistoryRecord>;
 
 /**
  * Tracks the position and time of each active touch by `touch.identifier`. We
@@ -39,17 +39,17 @@ import { isStartish, isMoveish, isEndish } from './ResponderEventTypes';
 const __DEV__ = process.env.NODE_ENV !== 'production';
 const MAX_TOUCH_BANK = 20;
 
-function timestampForTouch(touch /*: Touch */) /*: number */ {
+function timestampForTouch(touch: Touch & { timeStamp?: number }): number {
   // The legacy internal implementation provides "timeStamp", which has been
   // renamed to "timestamp".
-  return touch /*: any */.timeStamp || touch.timestamp;
+  return touch.timeStamp || touch.timestamp;
 }
 
 /**
  * TODO: Instead of making gestures recompute filtered velocity, we could
  * include a built in velocity computation that can be reused globally.
  */
-function createTouchRecord(touch /*: Touch */) /*: TouchRecord */ {
+function createTouchRecord(touch: Touch): TouchRecord {
   return {
     touchActive: true,
     startPageX: touch.pageX,
@@ -64,10 +64,7 @@ function createTouchRecord(touch /*: Touch */) /*: TouchRecord */ {
   };
 }
 
-function resetTouchRecord(
-  touchRecord /*: TouchRecord */,
-  touch /*: Touch */
-) /*: void */ {
+function resetTouchRecord(touchRecord: TouchRecord, touch: Touch): void {
   touchRecord.touchActive = true;
   touchRecord.startPageX = touch.pageX;
   touchRecord.startPageY = touch.pageY;
@@ -80,7 +77,7 @@ function resetTouchRecord(
   touchRecord.previousTimeStamp = timestampForTouch(touch);
 }
 
-function getTouchIdentifier({ identifier } /*: Touch */) /*: number */ {
+function getTouchIdentifier({ identifier }: Touch): number {
   if (identifier == null) {
     console.error('Touch object is missing identifier.');
   }
@@ -97,7 +94,10 @@ function getTouchIdentifier({ identifier } /*: Touch */) /*: number */ {
   return identifier;
 }
 
-function recordTouchStart(touch /*: Touch */, touchHistory) /*: void */ {
+function recordTouchStart(
+  touch: Touch,
+  touchHistory: TouchHistoryRecord
+): void {
   const identifier = getTouchIdentifier(touch);
   const touchRecord = touchHistory.touchBank[identifier];
   if (touchRecord) {
@@ -108,7 +108,7 @@ function recordTouchStart(touch /*: Touch */, touchHistory) /*: void */ {
   touchHistory.mostRecentTimeStamp = timestampForTouch(touch);
 }
 
-function recordTouchMove(touch /*: Touch */, touchHistory) /*: void */ {
+function recordTouchMove(touch: Touch, touchHistory: TouchHistoryRecord): void {
   const touchRecord = touchHistory.touchBank[getTouchIdentifier(touch)];
   if (touchRecord) {
     touchRecord.touchActive = true;
@@ -128,7 +128,7 @@ function recordTouchMove(touch /*: Touch */, touchHistory) /*: void */ {
   }
 }
 
-function recordTouchEnd(touch /*: Touch */, touchHistory) /*: void */ {
+function recordTouchEnd(touch: Touch, touchHistory: TouchHistoryRecord): void {
   const touchRecord = touchHistory.touchBank[getTouchIdentifier(touch)];
   if (touchRecord) {
     touchRecord.touchActive = false;
@@ -148,7 +148,7 @@ function recordTouchEnd(touch /*: Touch */, touchHistory) /*: void */ {
   }
 }
 
-function printTouch(touch /*: Touch */) /*: string */ {
+function printTouch(touch: Touch): string {
   return JSON.stringify({
     identifier: touch.identifier,
     pageX: touch.pageX,
@@ -157,7 +157,7 @@ function printTouch(touch /*: Touch */) /*: string */ {
   });
 }
 
-function printTouchBank(touchHistory) /*: string */ {
+function printTouchBank(touchHistory: TouchHistoryRecord): string {
   const { touchBank } = touchHistory;
   let printed = JSON.stringify(touchBank.slice(0, MAX_TOUCH_BANK));
   if (touchBank.length > MAX_TOUCH_BANK) {
@@ -167,7 +167,7 @@ function printTouchBank(touchHistory) /*: string */ {
 }
 
 export class ResponderTouchHistoryStore {
-  _touchHistory = {
+  _touchHistory: TouchHistoryRecord = {
     touchBank: [], //Array<TouchRecord>
     numberActiveTouches: 0,
     // If there is only one active touch, we remember its location. This prevents
@@ -177,10 +177,7 @@ export class ResponderTouchHistoryStore {
     mostRecentTimeStamp: 0
   };
 
-  recordTouchTrack(
-    topLevelType /*: string */,
-    nativeEvent /*: TouchEvent */
-  ) /*: void */ {
+  recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void {
     const touchHistory = this._touchHistory;
     if (isMoveish(topLevelType)) {
       nativeEvent.changedTouches.forEach((touch) =>
@@ -192,8 +189,10 @@ export class ResponderTouchHistoryStore {
       );
       touchHistory.numberActiveTouches = nativeEvent.touches.length;
       if (touchHistory.numberActiveTouches === 1) {
-        touchHistory.indexOfSingleActiveTouch =
-          nativeEvent.touches[0].identifier;
+        const singleActiveTouch = nativeEvent.touches[0];
+        if (singleActiveTouch != null) {
+          touchHistory.indexOfSingleActiveTouch = singleActiveTouch.identifier;
+        }
       }
     } else if (isEndish(topLevelType)) {
       nativeEvent.changedTouches.forEach((touch) =>
@@ -219,7 +218,7 @@ export class ResponderTouchHistoryStore {
     }
   }
 
-  get touchHistory() /*: TouchHistory */ {
+  get touchHistory(): TouchHistory {
     return this._touchHistory;
   }
 }

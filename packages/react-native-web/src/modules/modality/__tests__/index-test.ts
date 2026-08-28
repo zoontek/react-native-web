@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -8,20 +6,24 @@
  */
 
 import {
-  getModality,
+  clearPointers,
+  createEventTarget as createEventTargetImpl,
+  describeWithPointerEvent,
+  setPointerEvent,
+  testWithPointerType
+} from 'dom-event-testing-library';
+import {
   getActiveModality,
+  getModality,
   testOnly_resetActiveModality
 } from '..';
-import {
-  describeWithPointerEvent,
-  testWithPointerType,
-  clearPointers,
-  createEventTarget,
-  setPointerEvent
-} from 'dom-event-testing-library';
+import type { Nullable } from '../../../types';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  createEventTargetImpl(node as Node);
 
 describeWithPointerEvent('modules/modality', (hasPointerEvent) => {
-  let rootNode;
+  let rootNode: Nullable<HTMLDivElement>;
 
   beforeEach(() => {
     setPointerEvent(hasPointerEvent);
@@ -30,7 +32,9 @@ describeWithPointerEvent('modules/modality', (hasPointerEvent) => {
   });
 
   afterEach(() => {
-    document.body.removeChild(rootNode);
+    if (rootNode != null) {
+      document.body.removeChild(rootNode);
+    }
     rootNode = null;
     clearPointers();
     testOnly_resetActiveModality();

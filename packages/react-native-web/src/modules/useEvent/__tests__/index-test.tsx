@@ -12,7 +12,7 @@ import useEvent from '..';
 import type { Nullable } from '../../../types';
 
 const createEventTarget = (node: Nullable<Node>) =>
-  node != null ? createEventTargetImpl(node) : { click: () => {} };
+  createEventTargetImpl(node as Node);
 
 describe('use-event', () => {
   describe('setListener()', () => {

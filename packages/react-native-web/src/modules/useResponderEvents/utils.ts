@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher
  *
@@ -7,30 +5,36 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../types';
+import type { ResponderDOMEvent } from './ResponderEventTypes';
 import isSelectionValid from '../../modules/isSelectionValid';
 
 const keyName = '__reactResponderId';
 
-function getEventPath(domEvent /*: any */) /*: Array<any> */ {
+export type ResponderNode = HTMLElement & { [keyName]?: number };
+
+function getEventPath(
+  domEvent: Partial<ResponderDOMEvent>
+): Array<ResponderNode> {
   // The 'selectionchange' event always has the 'document' as the target.
   // Use the anchor node as the initial target to reconstruct a path.
   // (We actually only need the first "responder" node in practice.)
   if (domEvent.type === 'selectionchange') {
-    const target = window.getSelection().anchorNode;
+    const target = window.getSelection()?.anchorNode;
     return composedPathFallback(target);
   } else {
     const path =
       domEvent.composedPath != null
-        ? domEvent.composedPath()
-        : composedPathFallback(domEvent.target);
+        ? (domEvent.composedPath() as Array<ResponderNode>)
+        : composedPathFallback(domEvent.target as Nullable<Node>);
     return path;
   }
 }
 
-function composedPathFallback(target /*: any */) /*: Array<any> */ {
-  const path = [];
+function composedPathFallback(target: Nullable<Node>): Array<ResponderNode> {
+  const path: Array<ResponderNode> = [];
   while (target != null && target !== document.body) {
-    path.push(target);
+    path.push(target as ResponderNode);
     target = target.parentNode;
   }
   return path;
@@ -39,7 +43,7 @@ function composedPathFallback(target /*: any */) /*: Array<any> */ {
 /**
  * Retrieve the responderId from a host node
  */
-function getResponderId(node /*: any */) /*: ?number */ {
+function getResponderId(node: Nullable<ResponderNode>): Nullable<number> {
   if (node != null) {
     return node[keyName];
   }
@@ -49,7 +53,7 @@ function getResponderId(node /*: any */) /*: ?number */ {
 /**
  * Store the responderId on a host node
  */
-export function setResponderId(node /*: any */, id /*: number */) {
+export function setResponderId(node: Nullable<ResponderNode>, id: number) {
   if (node != null) {
     node[keyName] = id;
   }
@@ -58,17 +62,17 @@ export function setResponderId(node /*: any */, id /*: number */) {
 /**
  * Filter the event path to contain only the nodes attached to the responder system
  */
-export function getResponderPaths(domEvent /*: any */) /*: {|
-  idPath: Array<number>,
-  nodePath: Array<any>
-|} */ {
-  const idPath = [];
-  const nodePath = [];
+export function getResponderPaths(domEvent: Partial<ResponderDOMEvent>): {
+  idPath: Array<number>;
+  nodePath: Array<ResponderNode>;
+} {
+  const idPath: Array<number> = [];
+  const nodePath: Array<ResponderNode> = [];
   const eventPath = getEventPath(domEvent);
   for (let i = 0; i < eventPath.length; i++) {
     const node = eventPath[i];
     const id = getResponderId(node);
-    if (id != null) {
+    if (id != null && node != null) {
       idPath.push(id);
       nodePath.push(node);
     }
@@ -80,9 +84,9 @@ export function getResponderPaths(domEvent /*: any */) /*: {|
  * Walk the paths and find the first common ancestor
  */
 export function getLowestCommonAncestor(
-  pathA /*: Array<any> */,
-  pathB /*: Array<any> */
-) /*: any */ {
+  pathA: Array<number>,
+  pathB: Array<number>
+): Nullable<number> {
   let pathALength = pathA.length;
   let pathBLength = pathB.length;
   if (
@@ -132,14 +136,14 @@ export function getLowestCommonAncestor(
  * This cannot rely on W3C `targetTouches`, as Safari doesn't implement it.
  */
 export function hasTargetTouches(
-  target /*: any */,
-  touches /*: any */
-) /*: boolean */ {
+  target: ResponderNode,
+  touches: Nullable<TouchList>
+): boolean {
   if (!touches || touches.length === 0) {
     return false;
   }
   for (let i = 0; i < touches.length; i++) {
-    const node = touches[i].target;
+    const node = touches[i]?.target as Nullable<Node>;
     if (node != null) {
       if (target.contains(node)) {
         return true;
@@ -153,7 +157,9 @@ export function hasTargetTouches(
  * Ignore 'selectionchange' events that don't correspond with a person's intent to
  * select text.
  */
-export function hasValidSelection(domEvent /*: any */) /*: boolean */ {
+export function hasValidSelection(
+  domEvent: Partial<ResponderDOMEvent>
+): boolean {
   if (domEvent.type === 'selectionchange') {
     return isSelectionValid();
   }
@@ -163,7 +169,9 @@ export function hasValidSelection(domEvent /*: any */) /*: boolean */ {
 /**
  * Events are only valid if the primary button was used without specific modifier keys.
  */
-export function isPrimaryPointerDown(domEvent /*: any */) /*: boolean */ {
+export function isPrimaryPointerDown(
+  domEvent: Partial<ResponderDOMEvent>
+): boolean {
   const { altKey, button, buttons, ctrlKey, type } = domEvent;
   const isTouch = type === 'touchstart' || type === 'touchmove';
   const isPrimaryMouseDown =
