@@ -70,8 +70,7 @@ type Registry<TEventToArgsMap extends Record<string, unknown[]>> = {
  */
 export default class EventEmitter<
   TEventToArgsMap extends Record<string, unknown[]>
-> implements IEventEmitter<TEventToArgsMap>
-{
+> implements IEventEmitter<TEventToArgsMap> {
   _registry: Registry<TEventToArgsMap> = {};
 
   /**

@@ -8,9 +8,9 @@
  */
 
 import invariant from 'fbjs/lib/invariant';
+import { PureComponent } from 'react';
 
 import type { Nullable } from '../../../types';
-import { PureComponent } from 'react';
 
 /**
  * `setState` is called asynchronously, and should not rely on the value of

@@ -1,7 +1,8 @@
-import type { BoxProps } from '../../impl';
-
 import classnames from 'classnames';
+
+import type { BoxProps } from '../../impl';
 import View from './View';
+
 import styles from './box-styles.module.css';
 
 const Box = ({

@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Nullable, PlatformMethods } from '../../types';
-
 import UIManager from '../../exports/UIManager';
+import type { Nullable, PlatformMethods } from '../../types';
 import useStable from '../useStable';
 
 type PlatformMethodsNode = HTMLElement & PlatformMethods;

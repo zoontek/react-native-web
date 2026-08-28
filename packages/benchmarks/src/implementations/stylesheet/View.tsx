@@ -1,5 +1,4 @@
 import type { ComponentProps, CSSProperties } from 'react';
-
 import { StyleSheet } from 'react-native-web';
 
 type Props = Omit<ComponentProps<'div'>, 'style'> & {

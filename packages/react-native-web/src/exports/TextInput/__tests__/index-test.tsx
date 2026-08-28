@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import TextInput from '..';
-import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
-import type { Nullable } from '../../../types';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { createRef, type ComponentRef, type SyntheticEvent } from 'react';
+
+import TextInput from '..';
+import type { Nullable } from '../../../types';
 
 const createEventTarget = <T extends Node>(node: Nullable<T>) =>
   createEventTargetImpl(node as T);

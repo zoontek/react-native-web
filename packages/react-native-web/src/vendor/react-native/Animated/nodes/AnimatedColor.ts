@@ -9,13 +9,13 @@
 
 'use strict';
 
+import normalizeColor from '@react-native/normalize-colors';
+
+import type { Nullable } from '../../../../types';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import NativeAnimatedHelper from '../NativeAnimatedHelper';
 import AnimatedValue from './AnimatedValue';
 import AnimatedWithChildren from './AnimatedWithChildren';
-import normalizeColor from '@react-native/normalize-colors';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
-
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
-import type { Nullable } from '../../../../types';
 
 type ColorValue = string | number;
 type NativeColorValue = ColorValue;

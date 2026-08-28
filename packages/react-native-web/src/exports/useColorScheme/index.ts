@@ -9,8 +9,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { AppearancePreferences, ColorSchemeName } from '../Appearance';
-import Appearance from '../Appearance';
+
+import Appearance, {
+  type AppearancePreferences,
+  type ColorSchemeName
+} from '../Appearance';
 
 export default function useColorScheme(): ColorSchemeName {
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());

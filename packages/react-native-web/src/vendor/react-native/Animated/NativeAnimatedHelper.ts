@@ -7,23 +7,23 @@
  * @format
  */
 
-import NativeAnimatedNonTurboModule from './NativeAnimatedModule';
-import NativeAnimatedTurboModule from './NativeAnimatedTurboModule';
-import NativeEventEmitter from '../EventEmitter/NativeEventEmitter';
-import Platform from '../Utilities/Platform';
-import type { EventConfig } from './AnimatedEvent';
-import type {
-  EventMapping,
-  AnimatedNodeConfig,
-  AnimatingNodeConfig
-} from './NativeAnimatedModule';
-import type { AnimationConfig, EndCallback } from './animations/Animation';
-import type { InterpolationConfigType } from './nodes/AnimatedInterpolation';
-import ReactNativeFeatureFlags from '../ReactNative/ReactNativeFeatureFlags';
 import invariant from 'fbjs/lib/invariant';
-import RCTDeviceEventEmitter from '../EventEmitter/RCTDeviceEventEmitter';
-import type { EventSubscription } from '../vendor/emitter/EventEmitter';
+
 import type { Nullable } from '../../../types';
+import NativeEventEmitter from '../EventEmitter/NativeEventEmitter';
+import RCTDeviceEventEmitter from '../EventEmitter/RCTDeviceEventEmitter';
+import ReactNativeFeatureFlags from '../ReactNative/ReactNativeFeatureFlags';
+import Platform from '../Utilities/Platform';
+import type { EventSubscription } from '../vendor/emitter/EventEmitter';
+import type { EventConfig } from './AnimatedEvent';
+import type { AnimationConfig, EndCallback } from './animations/Animation';
+import NativeAnimatedNonTurboModule, {
+  type AnimatedNodeConfig,
+  type AnimatingNodeConfig,
+  type EventMapping
+} from './NativeAnimatedModule';
+import NativeAnimatedTurboModule from './NativeAnimatedTurboModule';
+import type { InterpolationConfigType } from './nodes/AnimatedInterpolation';
 
 // TODO T69437152 @petetheheat - Delete this fork when Fabric ships to 100%.
 const NativeAnimatedModule =
@@ -81,11 +81,14 @@ const nativeOps: Nullable<typeof NativeAnimatedModule> = useSingleOpBatching
         'addListener', // 20
         'removeListener' // 21
       ];
-      return apis.reduce((acc, functionName, i) => {
-        // These indices need to be kept in sync with the indices in native (see NativeAnimatedModule in Java, or the equivalent for any other native platform).
-        acc[functionName] = i + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      return apis.reduce(
+        (acc, functionName, i) => {
+          // These indices need to be kept in sync with the indices in native (see NativeAnimatedModule in Java, or the equivalent for any other native platform).
+          acc[functionName] = i + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
     })() as unknown as typeof NativeAnimatedModule)
   : NativeAnimatedModule;
 
@@ -562,22 +565,22 @@ function transformDataType(value: number | string): number | string {
 }
 
 export {
-  API,
-  isSupportedColorStyleProp,
-  isSupportedStyleProp,
-  isSupportedTransformProp,
-  isSupportedInterpolationParam,
+  addWhitelistedInterpolationParam,
   addWhitelistedStyleProp,
   addWhitelistedTransformProp,
-  addWhitelistedInterpolationParam,
-  validateStyles,
-  validateTransform,
-  validateInterpolation,
-  generateNewNodeTag,
-  generateNewAnimationId,
+  API,
   assertNativeAnimatedModule,
+  generateNewAnimationId,
+  generateNewNodeTag,
+  isSupportedColorStyleProp,
+  isSupportedInterpolationParam,
+  isSupportedStyleProp,
+  isSupportedTransformProp,
   shouldUseNativeDriver,
-  transformDataType
+  transformDataType,
+  validateInterpolation,
+  validateStyles,
+  validateTransform
 };
 
 export default {

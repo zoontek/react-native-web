@@ -1,21 +1,25 @@
-import type { ChangeEvent, ComponentRef } from 'react';
-import type { BenchResultsType } from './Benchmark/types';
-import type { TestSetupType, TestsType } from '../index';
-
-import Benchmark from './Benchmark';
 import {
-  StyleSheet,
-  ScrollView,
+  Component,
+  Fragment,
+  type ChangeEvent,
+  type ComponentRef
+} from 'react';
+import {
   Pressable,
+  ScrollView,
+  StyleSheet,
   View,
   unstable_createElement as createElement
 } from 'react-native-web';
-import { Component, Fragment } from 'react';
+
+import type { TestSetupType, TestsType } from '../index';
+import Benchmark from './Benchmark';
+import type { BenchResultsType } from './Benchmark/types';
 import Button from './Button';
 import { IconClear, IconEye } from './Icons';
+import Layout from './Layout';
 import ReportCard from './ReportCard';
 import Text from './Text';
-import Layout from './Layout';
 import { colors } from './theme';
 
 const Overlay = () => <View style={[StyleSheet.absoluteFill, { zIndex: 2 }]} />;

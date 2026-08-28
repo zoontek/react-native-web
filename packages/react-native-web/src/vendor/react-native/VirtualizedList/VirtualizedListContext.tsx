@@ -7,10 +7,10 @@
  * @format
  */
 
-import type VirtualizedList from '../VirtualizedList';
-import type { Nullable } from '../../../types';
-
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
+
+import type { Nullable } from '../../../types';
+import type VirtualizedList from '../VirtualizedList';
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 

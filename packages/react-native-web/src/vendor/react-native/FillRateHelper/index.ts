@@ -9,8 +9,8 @@
 
 'use strict';
 
-import type { FrameMetricProps } from '../VirtualizedList/VirtualizedListProps';
 import type { Nullable } from '../../../types';
+import type { FrameMetricProps } from '../VirtualizedList/VirtualizedListProps';
 
 export type FillRateInfo = Info;
 

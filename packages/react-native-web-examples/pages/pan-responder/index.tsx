@@ -1,6 +1,7 @@
-import { PanResponder, StyleSheet, View } from 'react-native-web';
-import Example from '../../shared/example';
 import { Component, PureComponent, type ComponentRef } from 'react';
+import { PanResponder, StyleSheet, View } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 const CIRCLE_SIZE = 80;
 

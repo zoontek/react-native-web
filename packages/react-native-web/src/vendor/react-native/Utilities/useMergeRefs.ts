@@ -8,6 +8,7 @@
  */
 
 import { useCallback } from 'react';
+
 import type { Nullable } from '../../../types';
 
 type CallbackRef<T> = (value: T) => unknown;

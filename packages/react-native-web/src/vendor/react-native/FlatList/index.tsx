@@ -7,26 +7,7 @@
  * @format
  */
 
-import View from '../../../exports/View';
-import type { ViewProps } from '../../../exports/View';
-import StyleSheet from '../../../exports/StyleSheet';
-import deepDiffer from '../deepDiffer';
-import Platform from '../../../exports/Platform';
 import invariant from 'fbjs/lib/invariant';
-
-import type { Nullable } from '../../../types';
-
-type ScrollResponderType = unknown;
-type ViewStyleProp = ViewProps['style'];
-import type {
-  ViewToken,
-  ViewabilityConfig,
-  ViewabilityConfigCallbackPair
-} from '../ViewabilityHelper';
-import type { RenderItemType, RenderItemProps } from '../VirtualizedList';
-import VirtualizedList from '../VirtualizedList';
-import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
-
 import memoizeOne from 'memoize-one';
 import {
   Fragment,
@@ -36,6 +17,26 @@ import {
   type ReactElement,
   type ReactNode
 } from 'react';
+
+import Platform from '../../../exports/Platform';
+import StyleSheet from '../../../exports/StyleSheet';
+import View, { type ViewProps } from '../../../exports/View';
+import type { Nullable } from '../../../types';
+import deepDiffer from '../deepDiffer';
+
+type ScrollResponderType = unknown;
+type ViewStyleProp = ViewProps['style'];
+
+import type {
+  ViewToken,
+  ViewabilityConfig,
+  ViewabilityConfigCallbackPair
+} from '../ViewabilityHelper';
+import VirtualizedList, {
+  type RenderItemProps,
+  type RenderItemType
+} from '../VirtualizedList';
+import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
 
 type RequiredProps<ItemT> = {
   /**

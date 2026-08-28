@@ -7,42 +7,6 @@
  * @format
  */
 
-import type { LayoutEvent, Nullable } from '../../../types';
-import type { ScrollEvent } from '../Types/CoreEventTypes';
-import type { ViewToken } from '../ViewabilityHelper';
-import type {
-  FrameMetricProps,
-  Item,
-  Props,
-  RenderItemProps,
-  RenderItemType,
-  Separators
-} from './VirtualizedListProps';
-
-import RefreshControl from '../../../exports/RefreshControl';
-import ScrollView from '../../../exports/ScrollView';
-import View from '../../../exports/View';
-import type { ViewProps } from '../../../exports/View';
-import StyleSheet from '../../../exports/StyleSheet';
-
-import Batchinator from '../Batchinator';
-import clamp from '../Utilities/clamp';
-import infoLog from '../infoLog';
-import { CellRenderMask } from './CellRenderMask';
-import ChildListCollection from './ChildListCollection';
-import FillRateHelper from '../FillRateHelper';
-import StateSafePureComponent from './StateSafePureComponent';
-import ViewabilityHelper from '../ViewabilityHelper';
-import CellRenderer from './VirtualizedListCellRenderer';
-import {
-  VirtualizedListCellContextProvider,
-  VirtualizedListContext,
-  VirtualizedListContextProvider
-} from './VirtualizedListContext';
-import {
-  computeWindowedRenderLimits,
-  keyExtractor as defaultKeyExtractor
-} from '../VirtualizeUtils';
 import invariant from 'fbjs/lib/invariant';
 import nullthrows from 'nullthrows';
 import {
@@ -53,6 +17,39 @@ import {
   type ReactElement,
   type ReactNode
 } from 'react';
+
+import RefreshControl from '../../../exports/RefreshControl';
+import ScrollView from '../../../exports/ScrollView';
+import StyleSheet from '../../../exports/StyleSheet';
+import View, { type ViewProps } from '../../../exports/View';
+import type { LayoutEvent, Nullable } from '../../../types';
+import Batchinator from '../Batchinator';
+import FillRateHelper from '../FillRateHelper';
+import infoLog from '../infoLog';
+import type { ScrollEvent } from '../Types/CoreEventTypes';
+import clamp from '../Utilities/clamp';
+import ViewabilityHelper, { type ViewToken } from '../ViewabilityHelper';
+import {
+  computeWindowedRenderLimits,
+  keyExtractor as defaultKeyExtractor
+} from '../VirtualizeUtils';
+import { CellRenderMask } from './CellRenderMask';
+import ChildListCollection from './ChildListCollection';
+import StateSafePureComponent from './StateSafePureComponent';
+import CellRenderer from './VirtualizedListCellRenderer';
+import {
+  VirtualizedListCellContextProvider,
+  VirtualizedListContext,
+  VirtualizedListContextProvider
+} from './VirtualizedListContext';
+import type {
+  FrameMetricProps,
+  Item,
+  Props,
+  RenderItemProps,
+  RenderItemType,
+  Separators
+} from './VirtualizedListProps';
 
 export type { RenderItemProps, RenderItemType, Separators };
 

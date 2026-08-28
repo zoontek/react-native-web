@@ -1,8 +1,7 @@
-import type { ComponentProps, ReactNode } from 'react';
+import { Component, type ComponentProps, type ReactNode } from 'react';
+import { StyleSheet, View } from 'react-native-web';
 
 import { colors } from './theme';
-import { Component } from 'react';
-import { StyleSheet, View } from 'react-native-web';
 
 type Props = {
   actionPanel: ReactNode;

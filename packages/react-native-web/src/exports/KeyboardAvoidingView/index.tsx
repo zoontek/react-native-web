@@ -8,11 +8,10 @@
 
 'use client';
 
-import type { LayoutEvent, LayoutValue, Nullable } from '../../types';
-import type { ViewProps } from '../View';
 import { Component, type ReactNode } from 'react';
 
-import View from '../View';
+import type { LayoutEvent, LayoutValue, Nullable } from '../../types';
+import View, { type ViewProps } from '../View';
 
 type KeyboardAvoidingViewProps = ViewProps & {
   behavior?: 'height' | 'padding' | 'position';

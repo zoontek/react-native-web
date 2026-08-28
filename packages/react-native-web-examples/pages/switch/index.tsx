@@ -1,6 +1,7 @@
-import { StyleSheet, Switch, View } from 'react-native-web';
-import Example from '../../shared/example';
 import { useEffect, useState } from 'react';
+import { StyleSheet, Switch, View } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 function Divider() {
   return <View style={styles.divider} />;

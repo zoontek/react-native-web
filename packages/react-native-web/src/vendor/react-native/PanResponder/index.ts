@@ -9,11 +9,11 @@
 
 'use strict';
 
-import InteractionManager from '../../../exports/InteractionManager';
-import TouchHistoryMath from '../TouchHistoryMath';
-
 import type { MouseEvent } from 'react';
+
+import InteractionManager from '../../../exports/InteractionManager';
 import type { Nullable } from '../../../types';
+import TouchHistoryMath from '../TouchHistoryMath';
 import type { PressEvent } from '../Types/CoreEventTypes';
 
 const currentCentroidXOfTouchesChangedAfter =

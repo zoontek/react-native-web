@@ -9,10 +9,10 @@
 
 'use strict';
 
-import type { FrameMetricProps } from '../VirtualizedList/VirtualizedListProps';
-import type { Nullable } from '../../../types';
-
 import invariant from 'fbjs/lib/invariant';
+
+import type { Nullable } from '../../../types';
+import type { FrameMetricProps } from '../VirtualizedList/VirtualizedListProps';
 
 export type ViewToken = {
   item: unknown;

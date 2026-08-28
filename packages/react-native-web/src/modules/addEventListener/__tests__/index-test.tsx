@@ -7,9 +7,10 @@
 
 import { act, render } from '@testing-library/react';
 import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
+import { createRef, useEffect } from 'react';
+
 import { addEventListener } from '..';
 import type { Nullable } from '../../../types';
-import { createRef, useEffect } from 'react';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);

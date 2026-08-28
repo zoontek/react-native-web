@@ -9,24 +9,24 @@
 
 'use client';
 
-import type { ForwardedRef, ReactNode } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
-import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
-import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback';
-import type { ViewProps } from '../View';
-
 import {
+  forwardRef,
+  memo,
   useCallback,
   useMemo,
-  useState,
   useRef,
-  forwardRef,
-  memo
+  useState,
+  type ForwardedRef,
+  type ReactNode
 } from 'react';
+
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePressEvents from '../../modules/usePressEvents';
+import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
+import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
-import View from '../View';
+import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback';
+import View, { type ViewProps } from '../View';
 
 type ViewStyle = ViewProps['style'];
 

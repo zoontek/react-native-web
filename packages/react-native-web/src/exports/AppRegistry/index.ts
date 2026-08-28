@@ -8,19 +8,19 @@
 
 'use client';
 
-import type {
-  AppProps,
-  Application,
-  ApplicationElement,
-  WrapperComponentType
-} from './renderApplication';
+import invariant from 'fbjs/lib/invariant';
 import type { ComponentType } from 'react';
 import type { Root } from 'react-dom/client';
-import type { Nullable } from '../../types';
 
-import invariant from 'fbjs/lib/invariant';
+import type { Nullable } from '../../types';
 import unmountComponentAtNode from '../unmountComponentAtNode';
-import renderApplication, { getApplication } from './renderApplication';
+import renderApplication, {
+  getApplication,
+  type AppProps,
+  type Application,
+  type ApplicationElement,
+  type WrapperComponentType
+} from './renderApplication';
 
 type AppParams = {
   callback?: () => void;

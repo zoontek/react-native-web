@@ -1,6 +1,7 @@
-import { Dimensions, Text } from 'react-native-web';
-import Example from '../../shared/example';
 import { useEffect, useState } from 'react';
+import { Dimensions, Text } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 export default function DimensionsPage() {
   const [screenDims, setScreen] = useState(Dimensions.get('screen'));

@@ -8,13 +8,12 @@
 'use client';
 
 import { forwardRef, useRef, type ChangeEvent, type FocusEvent } from 'react';
-import type { ColorValue, DimensionValue, PlatformMethods } from '../../types';
-import type { ViewProps } from '../View';
 
-import createElement from '../createElement';
 import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
+import type { ColorValue, DimensionValue, PlatformMethods } from '../../types';
+import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
-import View from '../View';
+import View, { type ViewProps } from '../View';
 
 type SwitchProps = ViewProps & {
   activeThumbColor?: ColorValue;
@@ -100,8 +99,8 @@ const Switch = forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
     })();
 
     const thumbCurrentColor = value
-      ? activeThumbColor ?? defaultActiveThumbColor
-      : thumbColor ?? defaultThumbColor;
+      ? (activeThumbColor ?? defaultActiveThumbColor)
+      : (thumbColor ?? defaultThumbColor);
 
     const thumbHeight = height;
     const thumbWidth = thumbHeight;

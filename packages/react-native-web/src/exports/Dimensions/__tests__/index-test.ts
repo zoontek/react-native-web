@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Dimensions from '..';
-import type { DimensionsValue } from '..';
+import Dimensions, { type DimensionsValue } from '..';
 
 describe('apis/Dimensions', () => {
   test('get', () => {
