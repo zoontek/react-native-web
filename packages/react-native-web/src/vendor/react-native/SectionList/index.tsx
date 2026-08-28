@@ -172,10 +172,13 @@ import VirtualizedSectionList from '../VirtualizedSectionList';
  *   Alternatively, you can provide a custom `keyExtractor` prop.
  *
  */
-export default class SectionList/*:: <
+export default class SectionList /*:: <
   SectionT: SectionBase<any>,
-> */ extends React.PureComponent/*:: <Props<SectionT>, void> */ {
-  props/*: Props<SectionT> */;
+> */
+  extends React.PureComponent
+{
+  /*:: <Props<SectionT>, void> */
+  props /*: Props<SectionT> */;
 
   /**
    * Scrolls to the item at the specified `sectionIndex` and `itemIndex` (within the section)
@@ -187,7 +190,7 @@ export default class SectionList/*:: <
    * Note: cannot scroll to locations outside the render window without specifying the
    * `getItemLayout` prop.
    */
-  scrollToLocation(params/*: ScrollToLocationParamsType */) {
+  scrollToLocation(params /*: ScrollToLocationParamsType */) {
     if (this._wrapperListRef != null) {
       this._wrapperListRef.scrollToLocation(params);
     }
@@ -216,21 +219,21 @@ export default class SectionList/*:: <
   /**
    * Provides a handle to the underlying scroll responder.
    */
-  getScrollResponder()/*: ?ScrollResponderType */ {
+  getScrollResponder() /*: ?ScrollResponderType */ {
     const listRef = this._wrapperListRef && this._wrapperListRef.getListRef();
     if (listRef) {
       return listRef.getScrollResponder();
     }
   }
 
-  getScrollableNode()/*: any */ {
+  getScrollableNode() /*: any */ {
     const listRef = this._wrapperListRef && this._wrapperListRef.getListRef();
     if (listRef) {
       return listRef.getScrollableNode();
     }
   }
 
-  render()/*: React.Node */ {
+  render() /*: React.Node */ {
     const {
       stickySectionHeadersEnabled: _stickySectionHeadersEnabled,
       ...restProps
@@ -242,14 +245,14 @@ export default class SectionList/*:: <
         {...restProps}
         stickySectionHeadersEnabled={stickySectionHeadersEnabled}
         ref={this._captureRef}
-        getItemCount={items => items.length}
+        getItemCount={(items) => items.length}
         getItem={(items, index) => items[index]}
       />
     );
   }
 
-  _wrapperListRef/*: ?React.ElementRef<typeof VirtualizedSectionList> */;
-  _captureRef = ref => {
+  _wrapperListRef /*: ?React.ElementRef<typeof VirtualizedSectionList> */;
+  _captureRef = (ref) => {
     this._wrapperListRef = ref;
   };
 }

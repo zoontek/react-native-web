@@ -13,7 +13,7 @@
 
 import invariant from 'fbjs/lib/invariant';
 
-var twoArgumentPooler = function(a1, a2) {
+var twoArgumentPooler = function (a1, a2) {
   var Klass = this;
   if (Klass.instancePool.length) {
     var instance = Klass.instancePool.pop();
@@ -24,7 +24,7 @@ var twoArgumentPooler = function(a1, a2) {
   }
 };
 
-var standardReleaser = function(instance) {
+var standardReleaser = function (instance) {
   var Klass = this;
   instance.destructor();
   if (Klass.instancePool.length < Klass.poolSize) {
@@ -44,7 +44,7 @@ var DEFAULT_POOLER = twoArgumentPooler;
  * @param {Function} CopyConstructor Constructor that can be used to reset.
  * @param {Function} pooler Customizable pooler.
  */
-var addPoolingTo = function(CopyConstructor, pooler) {
+var addPoolingTo = function (CopyConstructor, pooler) {
   // Casting as any so that flow ignores the actual implementation and trusts
   // it to match the type we declared
   var NewKlass = CopyConstructor;

@@ -20,46 +20,46 @@ import AnimatedWithChildren from './AnimatedWithChildren';
 /*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
 
 class AnimatedModulo extends AnimatedWithChildren {
-  _a/*: AnimatedNode */;
-  _modulus/*: number */;
+  _a /*: AnimatedNode */;
+  _modulus /*: number */;
 
-  constructor(a/*: AnimatedNode */, modulus/*: number */) {
+  constructor(a /*: AnimatedNode */, modulus /*: number */) {
     super();
     this._a = a;
     this._modulus = modulus;
   }
 
-  __makeNative(platformConfig/*: ?PlatformConfig */) {
+  __makeNative(platformConfig /*: ?PlatformConfig */) {
     this._a.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
 
-  __getValue()/*: number */ {
+  __getValue() /*: number */ {
     return (
       ((this._a.__getValue() % this._modulus) + this._modulus) % this._modulus
     );
   }
 
-  interpolate/*:: <OutputT: number | string> */(
-    config/*: InterpolationConfigType<OutputT> */,
-  )/*: AnimatedInterpolation<OutputT> */ {
+  interpolate /*:: <OutputT: number | string> */(
+    config /*: InterpolationConfigType<OutputT> */
+  ) /*: AnimatedInterpolation<OutputT> */ {
     return new AnimatedInterpolation(this, config);
   }
 
-  __attach()/*: void */ {
+  __attach() /*: void */ {
     this._a.__addChild(this);
   }
 
-  __detach()/*: void */ {
+  __detach() /*: void */ {
     this._a.__removeChild(this);
     super.__detach();
   }
 
-  __getNativeConfig()/*: any */ {
+  __getNativeConfig() /*: any */ {
     return {
       type: 'modulus',
       input: this._a.__getNativeTag(),
-      modulus: this._modulus,
+      modulus: this._modulus
     };
   }
 }
