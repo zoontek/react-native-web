@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,8 +9,11 @@
 
 'use client';
 
-/*:: import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback'; */
-/*:: import type { ViewProps } from '../View'; */
+import type { ForwardedRef, ReactNode } from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
+import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import { useCallback, useMemo, useState, useRef } from 'react';
@@ -21,19 +22,27 @@ import usePressEvents from '../../modules/usePressEvents';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-/*:: type ViewStyle = $PropertyType<ViewProps, 'style'>; */
+type ViewStyle = ViewProps['style'];
 
-/*:: type Props = $ReadOnly<{|
-  ...TouchableWithoutFeedbackProps,
-  activeOpacity?: ?number,
-  style?: ?ViewStyle
-|}>; */
+type PressEvent = Parameters<
+  NonNullable<PressResponderConfig['onPressStart']>
+>[0] & { type?: string };
+
+type Props = Readonly<
+  TouchableWithoutFeedbackProps & {
+    activeOpacity?: Nullable<number>;
+    style?: Nullable<ViewStyle>;
+  }
+>;
 
 /**
  * A wrapper for making views respond properly to touches.
  * On press down, the opacity of the wrapped view is decreased, dimming it.
  */
-function TouchableOpacity(props /*: Props */, forwardedRef) /*: React.Node */ {
+function TouchableOpacity(
+  props: Props,
+  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
+): ReactNode {
   const {
     activeOpacity,
     delayPressIn,
@@ -50,14 +59,15 @@ function TouchableOpacity(props /*: Props */, forwardedRef) /*: React.Node */ {
     ...rest
   } = props;
 
-  const hostRef = useRef(null);
+  const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
   const setRef = useMergeRefs(forwardedRef, hostRef);
 
   const [duration, setDuration] = useState('0s');
-  const [opacityOverride, setOpacityOverride] = useState(null);
+  const [opacityOverride, setOpacityOverride] =
+    useState<Nullable<number>>(null);
 
   const setOpacityTo = useCallback(
-    (value /*: ?number */, duration /*: number */) => {
+    (value: Nullable<number>, duration: number) => {
       setOpacityOverride(value);
       setDuration(duration ? `${duration / 1000}s` : '0s');
     },
@@ -65,14 +75,14 @@ function TouchableOpacity(props /*: Props */, forwardedRef) /*: React.Node */ {
   );
 
   const setOpacityActive = useCallback(
-    (duration /*: number */) => {
+    (duration: number) => {
       setOpacityTo(activeOpacity ?? 0.2, duration);
     },
     [activeOpacity, setOpacityTo]
   );
 
   const setOpacityInactive = useCallback(
-    (duration /*: number */) => {
+    (duration: number) => {
       setOpacityTo(null, duration);
     },
     [setOpacityTo]
@@ -87,7 +97,7 @@ function TouchableOpacity(props /*: Props */, forwardedRef) /*: React.Node */ {
       delayPressEnd: delayPressOut,
       onLongPress,
       onPress,
-      onPressStart(event) {
+      onPressStart(event: PressEvent) {
         const isGrant =
           event.dispatchConfig != null
             ? event.dispatchConfig.registrationName === 'onResponderGrant'
@@ -97,7 +107,7 @@ function TouchableOpacity(props /*: Props */, forwardedRef) /*: React.Node */ {
           onPressIn(event);
         }
       },
-      onPressEnd(event) {
+      onPressEnd(event: PressEvent) {
         setOpacityInactive(250);
         if (onPressOut != null) {
           onPressOut(event);
@@ -124,7 +134,7 @@ function TouchableOpacity(props /*: Props */, forwardedRef) /*: React.Node */ {
   return (
     <View
       {...rest}
-      {...pressEventHandlers}
+      {...(pressEventHandlers as unknown as Partial<ViewProps>)}
       accessibilityDisabled={disabled}
       focusable={!disabled && focusable !== false}
       pointerEvents={disabled ? 'box-none' : undefined}
@@ -155,7 +165,4 @@ const styles = StyleSheet.create({
 const MemoedTouchableOpacity = React.memo(React.forwardRef(TouchableOpacity));
 MemoedTouchableOpacity.displayName = 'TouchableOpacity';
 
-export default MemoedTouchableOpacity /*: React.AbstractComponent<
-  Props,
-  React.ElementRef<typeof View>
-> */;
+export default MemoedTouchableOpacity;
