@@ -56,7 +56,7 @@ const UIManager = {
   blur(node) {
     try {
       node.blur();
-    } catch (err) {}
+    } catch {}
   },
 
   focus(node) {
@@ -73,7 +73,7 @@ const UIManager = {
         node.setAttribute('tabIndex', '-1');
       }
       node.focus();
-    } catch (err) {}
+    } catch {}
   },
 
   measure(node, callback) {

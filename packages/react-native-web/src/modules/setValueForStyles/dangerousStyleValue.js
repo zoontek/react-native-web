@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* oxlint-disable */
 
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.

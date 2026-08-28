@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/* eslint-disable react/jsx-no-bind */
-
 import * as AssetRegistry from '../../../modules/AssetRegistry';
 import Image from '../';
 import ImageLoader, { ImageUriCache } from '../../../modules/ImageLoader';
@@ -321,6 +319,7 @@ describe('components/Image', () => {
     });
 
     test('it correctly selects the source scale', () => {
+      // oxlint-disable-next-line no-import-assign
       AssetRegistry.getAssetByID = jest.fn(() => ({
         httpServerLocation: 'static',
         name: 'img',
