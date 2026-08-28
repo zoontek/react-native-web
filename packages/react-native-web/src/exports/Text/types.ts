@@ -38,8 +38,13 @@ export type TextStyle = ViewStyle & {
     | 'tabular-nums'
     | 'proportional-nums'
   >;
+  hyphenateCharacter?: Nullable<string>;
+  hyphens?: Nullable<'auto' | 'manual' | 'none'>;
+  initialLetter?: Nullable<NumberOrString>;
   letterSpacing?: Nullable<NumberOrString>;
+  lineClamp?: Nullable<number>;
   lineHeight?: Nullable<NumberOrString>;
+  rubyPosition?: Nullable<'alternate' | 'over' | 'under'>;
   textAlign?:
     | 'center'
     | 'end'
@@ -56,6 +61,10 @@ export type TextStyle = ViewStyle & {
     | 'line-through'
     | 'underline line-through';
   textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed';
+  textEmphasis?: Nullable<string>;
+  textEmphasisColor?: Nullable<ColorValue>;
+  textEmphasisPosition?: Nullable<string>;
+  textEmphasisStyle?: Nullable<string>;
   textIndent?: Nullable<NumberOrString>;
   textOverflow?: Nullable<string>;
   textRendering?:
@@ -67,6 +76,7 @@ export type TextStyle = ViewStyle & {
   textShadowColor?: Nullable<ColorValue>;
   textShadowOffset?: { width?: number; height?: number };
   textShadowRadius?: Nullable<number>;
+  textSizeAdjust?: Nullable<NumberOrString>;
   textTransform?: 'capitalize' | 'lowercase' | 'none' | 'uppercase';
   unicodeBidi?:
     | 'normal'

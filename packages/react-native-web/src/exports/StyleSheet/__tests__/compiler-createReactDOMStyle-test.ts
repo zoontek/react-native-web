@@ -184,4 +184,13 @@ describe('compiler/createReactDOMStyle', () => {
       `);
     });
   });
+
+  test('lineClamp', () => {
+    expect(createReactDOMStyle({ lineClamp: 3 })).toMatchInlineSnapshot(`
+      {
+        "WebkitLineClamp": 3,
+        "lineClamp": 3,
+      }
+    `);
+  });
 });
