@@ -28,11 +28,8 @@
   },
   "scripts": {
     "clean": "del-cli ./dist",
-    "build": "pnpm clean && pnpm build:types && pnpm build:es && pnpm build:commonjs",
-    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --config-file ../../configs/babel.config.js --extensions \".ts,.tsx,.js,.jsx\" --out-dir dist/cjs --ignore \"**/__tests__\"",
-    "build:es": "babel src --config-file ../../configs/babel.config.js --extensions \".ts,.tsx,.js,.jsx\" --out-dir dist --ignore \"**/__tests__\"",
-    "build:types": "tsc --project tsconfig.build.json",
-    "dev": "npm-run-all clean -p \"build:* {@} --watch\""
+    "dev": "npm-run-all clean -p \"build:* {@} --watch\"",
+    "build": "tsdown && tsc --project tsconfig.build.json"
   },
   "dependencies": {
     "@react-native/normalize-colors": "^0.74.1",
@@ -43,7 +40,8 @@
     "styleq": "^0.1.3"
   },
   "devDependencies": {
-    "dom-event-testing-library": "workspace:*"
+    "dom-event-testing-library": "workspace:*",
+    "tsdown": "^0.22.14"
   },
   "peerDependencies": {
     "react": "^19.0.0",
