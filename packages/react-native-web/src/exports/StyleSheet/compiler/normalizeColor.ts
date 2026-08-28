@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,11 +7,12 @@
 
 import isWebColor from '../../../modules/isWebColor';
 import processColor from '../../../exports/processColor';
+import type { Nullable } from '../../../types';
 
 const normalizeColor = (
-  color /*:: ?: number | string */,
-  opacity /*:: ?: number */ = 1
-) /*: void | string */ => {
+  color?: Nullable<number | string>,
+  opacity: number = 1
+): string | undefined => {
   if (color == null) return;
 
   if (typeof color === 'string' && isWebColor(color)) {

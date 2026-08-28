@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -11,25 +9,34 @@ import createReactDOMStyle from './createReactDOMStyle';
 import hash from './hash';
 import hyphenateStyleName from './hyphenateStyleName';
 import normalizeValueWithProperty from './normalizeValueWithProperty';
+import type { Style } from './createReactDOMStyle';
+import type { StyleValue } from './normalizeValueWithProperty';
+import type { Nullable } from '../../../types';
 
-/*:: type Value = Object | Array<any> | string | number; */
-/*:: type Style = { [key: string]: Value }; */
-/*:: type Rule = string; */
-/*:: type Rules = Array<Rule>; */
-/*:: type RulesData = [Rules, number]; */
-/*:: type CompiledStyle = {
-  $$css: boolean,
-  $$css$localize?: boolean,
-  [key: string]: string | Array<string>
-}; */
-/*:: type CompilerOutput = [CompiledStyle, Array<RulesData>]; */
+type Rule = string;
+type Rules = Array<Rule>;
+type RulesData = [Rules, number];
 
-const cache = new Map();
-const emptyObject = {};
+type CompiledStyle = {
+  $$css: boolean;
+  $$css$localize?: boolean;
+  [key: string]: string | Array<string> | boolean | undefined;
+};
+
+type CompilerOutput = [CompiledStyle, Array<RulesData>];
+
+const isStyleObject = (value: StyleValue | null | undefined): value is Style =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const stringifyStyleValue = (value: StyleValue | null | undefined): string =>
+  typeof value === 'string' || typeof value === 'number' ? `${value}` : '';
+
+const cache = new Map<string, [string, RulesData]>();
+const emptyObject: Style = {};
 
 const classicGroup = 1;
 const atomicGroup = 3;
-const customGroup /*: { [key: string]: number } */ = {
+const customGroup: Record<string, number> = {
   borderColor: 2,
   borderRadius: 2,
   borderStyle: 2,
@@ -95,7 +102,7 @@ const paddingRight = 'paddingRight';
 const left = 'left';
 
 // Map of LTR property names to their BiDi equivalent.
-const PROPERTIES_FLIP /*: { [key: string]: string } */ = {
+const PROPERTIES_FLIP: Record<string, string> = {
   [borderTopLeftRadius]: borderTopRightRadius,
   [borderTopRightRadius]: borderTopLeftRadius,
   [borderBottomLeftRadius]: borderBottomRightRadius,
@@ -115,7 +122,7 @@ const PROPERTIES_FLIP /*: { [key: string]: string } */ = {
 };
 
 // Map of I18N property names to their LTR equivalent.
-const PROPERTIES_I18N /*: { [key: string]: string } */ = {
+const PROPERTIES_I18N: Record<string, string> = {
   borderStartStartRadius: borderTopLeftRadius,
   borderStartEndRadius: borderTopRightRadius,
   borderEndStartRadius: borderBottomLeftRadius,
@@ -136,15 +143,19 @@ const PROPERTIES_I18N /*: { [key: string]: string } */ = {
 
 const PROPERTIES_VALUE = ['clear', 'float', 'textAlign'];
 
-export function atomic(style /*: Style */) /*: CompilerOutput */ {
-  const compiledStyle /*: CompiledStyle */ = { $$css: true };
-  const compiledRules = [];
+export function atomic(style: Style): CompilerOutput {
+  const compiledStyle: CompiledStyle = { $$css: true };
+  const compiledRules: Array<RulesData> = [];
 
-  function atomicCompile(srcProp, prop, value) {
+  function atomicCompile(
+    srcProp: string,
+    prop: string,
+    value: StyleValue
+  ): string {
     const valueString = stringifyValueWithProperty(value, prop);
     const cacheKey = prop + valueString;
     const cachedResult = cache.get(cacheKey);
-    let identifier;
+    let identifier: string;
     if (cachedResult != null) {
       identifier = cachedResult[0];
       compiledRules.push(cachedResult[1]);
@@ -153,7 +164,7 @@ export function atomic(style /*: Style */) /*: CompilerOutput */ {
       identifier = createIdentifier('r', srcProp, v);
       const order = customGroup[srcProp] || atomicGroup;
       const rules = createAtomicRules(identifier, prop, value);
-      const orderedRules = [rules, order];
+      const orderedRules: RulesData = [rules, order];
       compiledRules.push(orderedRules);
       cache.set(cacheKey, [identifier, orderedRules]);
     }
@@ -165,7 +176,7 @@ export function atomic(style /*: Style */) /*: CompilerOutput */ {
     .forEach((srcProp) => {
       const value = style[srcProp];
       if (value != null) {
-        let localizeableValue;
+        let localizeableValue: string | [string, string] | undefined;
         // BiDi flip values
         if (PROPERTIES_VALUE.indexOf(srcProp) > -1) {
           const left = atomicCompile(srcProp, srcProp, 'left');
@@ -182,7 +193,7 @@ export function atomic(style /*: Style */) /*: CompilerOutput */ {
           const ltr = atomicCompile(srcProp, propPolyfill, value);
           const rtl = atomicCompile(
             srcProp,
-            PROPERTIES_FLIP[propPolyfill],
+            PROPERTIES_FLIP[propPolyfill] ?? propPolyfill,
             value
           );
           localizeableValue = [ltr, rtl];
@@ -205,8 +216,8 @@ export function atomic(style /*: Style */) /*: CompilerOutput */ {
             polyfillIndices.forEach((i) => {
               const ltrVal = ltrPolyfillValues[i];
               if (typeof ltrVal === 'string') {
-                const ltrPolyfill = PROPERTIES_I18N[ltrVal];
-                const rtlPolyfill = PROPERTIES_FLIP[ltrPolyfill];
+                const ltrPolyfill = PROPERTIES_I18N[ltrVal] ?? ltrVal;
+                const rtlPolyfill = PROPERTIES_FLIP[ltrPolyfill] ?? ltrPolyfill;
                 ltrPolyfillValues[i] = ltrPolyfill;
                 rtlPolyfillValues[i] = rtlPolyfill;
                 const ltr = atomicCompile(srcProp, srcProp, ltrPolyfillValues);
@@ -234,17 +245,14 @@ export function atomic(style /*: Style */) /*: CompilerOutput */ {
  * Compile simple style object to classic CSS rules.
  * No support for 'placeholderTextColor', 'scrollbarWidth', or 'pointerEvents'.
  */
-export function classic(
-  style /*: Style */,
-  name /*: string */
-) /*: CompilerOutput */ {
-  const compiledStyle = { $$css: true };
-  const compiledRules = [];
+export function classic(style: Style, name: string): CompilerOutput {
+  const compiledStyle: CompiledStyle = { $$css: true };
+  const compiledRules: Rules = [];
 
   const { animationKeyframes, ...rest } = style;
   const identifier = createIdentifier('css', name, JSON.stringify(style));
   const selector = `.${identifier}`;
-  let animationName;
+  let animationName: string | undefined;
   if (animationKeyframes != null) {
     const [animationNames, keyframesRules] =
       processKeyframesValue(animationKeyframes);
@@ -262,13 +270,10 @@ export function classic(
  * Compile simple style object to inline DOM styles.
  * No support for 'animationKeyframes', 'placeholderTextColor', 'scrollbarWidth', or 'pointerEvents'.
  */
-export function inline(
-  originalStyle /*: Style */,
-  isRTL /*:: ?: boolean */
-) /*: { [key: string]: mixed } */ {
+export function inline(originalStyle: Nullable<Style>, isRTL?: boolean): Style {
   const style = originalStyle || emptyObject;
-  const frozenProps = {};
-  const nextStyle = {};
+  const frozenProps: Record<string, boolean> = {};
+  const nextStyle: Style = {};
 
   for (const originalProp in style) {
     const originalValue = style[originalProp];
@@ -293,11 +298,12 @@ export function inline(
     // BiDi flip properties
     const propPolyfill = PROPERTIES_I18N[originalProp];
     if (propPolyfill != null) {
-      prop = isRTL ? PROPERTIES_FLIP[propPolyfill] : propPolyfill;
+      prop = isRTL
+        ? PROPERTIES_FLIP[propPolyfill] ?? propPolyfill
+        : propPolyfill;
     }
     // BiDi flip transitionProperty value
     if (originalProp === 'transitionProperty') {
-      // $FlowFixMe
       const originalValues = Array.isArray(originalValue)
         ? originalValue
         : [originalValue];
@@ -306,10 +312,10 @@ export function inline(
           const valuePolyfill = PROPERTIES_I18N[val];
           if (valuePolyfill != null) {
             originalValues[i] = isRTL
-              ? PROPERTIES_FLIP[valuePolyfill]
+              ? PROPERTIES_FLIP[valuePolyfill] ?? valuePolyfill
               : valuePolyfill;
 
-            value = originalValues.join(' ');
+            value = originalValues.map(stringifyStyleValue).join(' ');
           }
         }
       });
@@ -333,9 +339,9 @@ export function inline(
  * output.
  */
 function stringifyValueWithProperty(
-  value /*: Value */,
-  property /*: ?string */
-) /*: string */ {
+  value: StyleValue,
+  property?: Nullable<string>
+): string {
   // e.g., 0 => '0px', 'black' => 'rgba(0,0,0,1)'
   const normalizedValue = normalizeValueWithProperty(value, property);
   return typeof normalizedValue !== 'string'
@@ -348,11 +354,11 @@ function stringifyValueWithProperty(
  * Translates StyleSheet declarations to CSS.
  */
 function createAtomicRules(
-  identifier /*: string */,
-  property,
-  value
-) /*: Rules */ {
-  const rules = [];
+  identifier: string,
+  property: string,
+  value: StyleValue
+): Rules {
+  const rules: Rules = [];
   const selector = `.${identifier}`;
 
   // Handle non-standard properties and object values that require multiple
@@ -378,7 +384,7 @@ function createAtomicRules(
     // See d13f78622b233a0afc0c7a200c0a0792c8ca9e58
     // See https://reactnative.dev/docs/view#pointerevents
     case 'pointerEvents': {
-      let finalValue = value;
+      let finalValue: StyleValue = value;
       if (value === 'auto') {
         finalValue = 'auto!important';
       } else if (value === 'none') {
@@ -423,7 +429,7 @@ function createAtomicRules(
 /**
  * Creates a CSS declaration block from a StyleSheet object.
  */
-function createDeclarationBlock(style /*: Style */) /*: string */ {
+function createDeclarationBlock(style: Style): string {
   const domStyle = createReactDOMStyle(style);
   const declarationsString = Object.keys(domStyle)
     .map((property) => {
@@ -434,9 +440,9 @@ function createDeclarationBlock(style /*: Style */) /*: string */ {
       // to represent "fallback" declarations
       // { display: -webkit-flex; display: flex; }
       if (Array.isArray(value)) {
-        return value.map((v) => `${prop}:${v}`).join(';');
+        return value.map((v) => `${prop}:${stringifyStyleValue(v)}`).join(';');
       } else {
-        return `${prop}:${value}`;
+        return `${prop}:${stringifyStyleValue(value)}`;
       }
     })
     // Once properties are hyphenated, this will put the vendor
@@ -450,11 +456,7 @@ function createDeclarationBlock(style /*: Style */) /*: string */ {
 /**
  * An identifier is associated with a unique set of styles.
  */
-function createIdentifier(
-  prefix /*: string */,
-  name /*: string */,
-  key /*: string */
-) /*: string */ {
+function createIdentifier(prefix: string, name: string, key: string): string {
   const hashedString = hash(name + key);
   return process.env.NODE_ENV !== 'production'
     ? `${prefix}-${name}-${hashedString}`
@@ -464,7 +466,7 @@ function createIdentifier(
 /**
  * Create individual CSS keyframes rules.
  */
-function createKeyframes(keyframes /*: Object */) /*: [string, Rules] */ {
+function createKeyframes(keyframes: Style): [string, Rules] {
   const identifier = createIdentifier(
     'r',
     'animation',
@@ -476,6 +478,11 @@ function createKeyframes(keyframes /*: Object */) /*: [string, Rules] */ {
     Object.keys(keyframes)
       .map((stepName) => {
         const rule = keyframes[stepName];
+
+        if (!isStyleObject(rule)) {
+          return '';
+        }
+
         const block = createDeclarationBlock(rule);
         return `${stepName}${block}`;
       })
@@ -489,13 +496,15 @@ function createKeyframes(keyframes /*: Object */) /*: [string, Rules] */ {
 /**
  * Create CSS keyframes rules and names from a StyleSheet keyframes object.
  */
-function processKeyframesValue(keyframesValue) {
+function processKeyframesValue(
+  keyframesValue: StyleValue
+): [Array<string>, Rules] {
   if (typeof keyframesValue === 'number') {
     throw new Error(`Invalid CSS keyframes type: ${typeof keyframesValue}`);
   }
 
-  const animationNames = [];
-  const rules = [];
+  const animationNames: Array<string> = [];
+  const rules: Rules = [];
   const value = Array.isArray(keyframesValue)
     ? keyframesValue
     : [keyframesValue];
@@ -504,7 +513,7 @@ function processKeyframesValue(keyframesValue) {
     if (typeof keyframes === 'string') {
       // Support external animation libraries (identifiers only)
       animationNames.push(keyframes);
-    } else {
+    } else if (isStyleObject(keyframes)) {
       // Create rules for each of the keyframes
       const [identifier, keyframesRules] = createKeyframes(keyframes);
       animationNames.push(identifier);

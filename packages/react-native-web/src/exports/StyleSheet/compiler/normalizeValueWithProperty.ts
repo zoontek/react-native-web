@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,8 +7,15 @@
 
 import unitlessNumbers from '../../../modules/unitlessNumbers';
 import normalizeColor from './normalizeColor';
+import type { Nullable } from '../../../types';
 
-const colorProps = {
+export type StyleValue =
+  | number
+  | string
+  | Array<StyleValue>
+  | { [key: string]: StyleValue | null | undefined };
+
+const colorProps: Record<string, boolean> = {
   backgroundColor: true,
   borderColor: true,
   borderTopColor: true,
@@ -23,18 +28,17 @@ const colorProps = {
   textShadowColor: true
 };
 
-export default function normalizeValueWithProperty(
-  value /*: any */,
-  property /*:: ?: ?string */
-) /*: any */ {
-  let returnValue = value;
+export default function normalizeValueWithProperty<
+  T extends StyleValue | null | undefined
+>(value: T, property?: Nullable<string>): T | string | undefined {
   if (
     (property == null || !unitlessNumbers[property]) &&
     typeof value === 'number'
   ) {
-    returnValue = `${value}px`;
-  } else if (property != null && colorProps[property]) {
-    returnValue = normalizeColor(value);
+    return `${value}px`;
   }
-  return returnValue;
+  if (property != null && colorProps[property]) {
+    return typeof value === 'object' ? undefined : normalizeColor(value);
+  }
+  return value;
 }
