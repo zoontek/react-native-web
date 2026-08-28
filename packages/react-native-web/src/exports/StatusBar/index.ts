@@ -5,16 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const emptyFunction = () => {};
+function noop() {}
 
 function StatusBar(): null {
   return null;
 }
 
-StatusBar.setBackgroundColor = emptyFunction;
-StatusBar.setBarStyle = emptyFunction;
-StatusBar.setHidden = emptyFunction;
-StatusBar.setNetworkActivityIndicatorVisible = emptyFunction;
-StatusBar.setTranslucent = emptyFunction;
+StatusBar.setBackgroundColor = noop;
+StatusBar.setBarStyle = noop;
+StatusBar.setHidden = noop;
+StatusBar.setNetworkActivityIndicatorVisible = noop;
+StatusBar.setTranslucent = noop;
 
 export default StatusBar;

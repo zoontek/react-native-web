@@ -22,7 +22,7 @@ export type EventOptions = {
   once?: boolean;
 };
 
-const emptyFunction = () => {};
+function noop() {}
 
 /**
  * Shim generic API compatibility with ReactDOM's synthetic events, without needing the
@@ -38,7 +38,7 @@ function isDefaultPrevented(this: Event) {
 function normalizeEvent(event: Event): NormalizedEvent {
   const normalized = event as NormalizedEvent;
   normalized.nativeEvent = event;
-  normalized.persist = emptyFunction;
+  normalized.persist = noop;
   normalized.isDefaultPrevented = isDefaultPrevented;
   normalized.isPropagationStopped = isPropagationStopped;
   return normalized;

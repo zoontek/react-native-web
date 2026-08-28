@@ -14,10 +14,9 @@ import type {
   ReactNode
 } from 'react';
 
-import type { Nullable } from '../../types';
-import { hydrate, render } from '../render';
 import StyleSheet from '../StyleSheet';
 import AppContainer from './AppContainer';
+import { hydrate, render } from './render';
 
 export type Application = {
   unmount: () => void;
@@ -36,12 +35,12 @@ export type WrapperComponentType = ComponentType<{ children?: ReactNode }>;
 
 export function renderApplication<Props extends AppProps>(
   RootComponent: ComponentType<Props>,
-  WrapperComponent: Nullable<WrapperComponentType>,
-  callback: Nullable<() => void>,
+  WrapperComponent: WrapperComponentType | undefined,
+  callback: (() => void) | undefined,
   options: {
     hydrate: boolean;
     initialProps: Props;
-    mode?: string;
+    mode: string;
     rootTag: HTMLElement;
   }
 ): Application {
@@ -64,8 +63,8 @@ export function renderApplication<Props extends AppProps>(
 
 export function getApplication(
   RootComponent: ComponentType<AppProps>,
-  initialProps: Nullable<AppProps>,
-  WrapperComponent: Nullable<WrapperComponentType>
+  initialProps: AppProps,
+  WrapperComponent: WrapperComponentType | undefined
 ): ApplicationElement {
   const element = (
     <AppContainer WrapperComponent={WrapperComponent} rootTag={{}}>

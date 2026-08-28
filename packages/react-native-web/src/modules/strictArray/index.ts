@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Root } from 'react-dom/client';
-
-export default function unmountComponentAtNode(rootTag: Root) {
-  rootTag.unmount();
-  return true;
+export default function strictArray<T extends string>(
+  object: Record<T, null>
+): Array<T> {
+  return Object.keys(object) as Array<T>;
 }

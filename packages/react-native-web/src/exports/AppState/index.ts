@@ -9,54 +9,55 @@
 'use client';
 
 import invariant from 'fbjs/lib/invariant';
+import type * as RN from 'react-native';
 
 import canUseDOM from '../../modules/canUseDom';
+import strictArray from '../../modules/strictArray';
 import type { Nullable } from '../../types';
-import EventEmitter, {
-  type EventSubscription
-} from '../../vendor/react-native/vendor/emitter/EventEmitter';
+import EventEmitter from '../../vendor/react-native/vendor/emitter/EventEmitter';
 
-type AppStateEvent = 'change' | 'memoryWarning';
-type AppStateStatus = 'active' | 'background';
-
-type AppStateEventToArgsMap = {
-  change: [AppStateStatus];
+type AppStateEventDefinitions = {
+  change: [RN.AppStateStatus];
+  memoryWarning: [];
+  blur: [];
+  focus: [];
 };
 
-const EVENT_TYPES = ['change', 'memoryWarning'];
+const EVENT_TYPES = strictArray<RN.AppStateEvent>({
+  change: null,
+  memoryWarning: null,
+  blur: null,
+  focus: null
+});
 
-const AppStates = {
-  BACKGROUND: 'background',
-  ACTIVE: 'active'
-} satisfies Record<string, AppStateStatus>;
+const isAvailable = canUseDOM && !!document.visibilityState;
+let changeEmitter: Nullable<EventEmitter<AppStateEventDefinitions>> = null;
 
-let changeEmitter: Nullable<EventEmitter<AppStateEventToArgsMap>> = null;
+const getCurrentState = (): RN.AppStateStatus =>
+  !isAvailable || document.visibilityState === 'visible'
+    ? 'active'
+    : 'background';
 
-export default class AppState {
-  static isAvailable = canUseDOM && !!document.visibilityState;
+const AppState: typeof RN.AppState = class {
+  static isAvailable = isAvailable;
 
-  static get currentState(): AppStateStatus {
-    return !AppState.isAvailable || document.visibilityState === 'visible'
-      ? AppStates.ACTIVE
-      : AppStates.BACKGROUND;
+  static get currentState() {
+    return getCurrentState();
   }
 
-  static addEventListener(
-    type: AppStateEvent,
-    handler: (state: AppStateStatus) => void
-  ): EventSubscription {
-    if (!AppState.isAvailable) {
-      return { remove: () => {} };
+  static addEventListener = (type, handler) => {
+    if (!isAvailable) {
+      return { remove() {} };
     }
 
     invariant(
-      EVENT_TYPES.indexOf(type) !== -1,
+      EVENT_TYPES.includes(type),
       'Trying to subscribe to unknown event: "%s"',
       type
     );
 
     if (type !== 'change') {
-      return { remove: () => {} };
+      return { remove() {} };
     }
 
     if (!changeEmitter) {
@@ -65,14 +66,14 @@ export default class AppState {
       document.addEventListener(
         'visibilitychange',
         () => {
-          if (changeEmitter) {
-            changeEmitter.emit('change', AppState.currentState);
-          }
+          changeEmitter?.emit('change', getCurrentState());
         },
         false
       );
     }
 
     return changeEmitter.addListener(type, handler);
-  }
-}
+  };
+};
+
+export default AppState;

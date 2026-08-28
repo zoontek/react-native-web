@@ -4,11 +4,11 @@ describe('apis/Linking', () => {
   describe('openURL', () => {
     test('calls open with a url and target', async () => {
       const open = vi.spyOn(window, 'open').mockImplementationOnce(() => null);
-      await Linking.openURL('http://foo.com', 'target_name');
+      await Linking.openURL('http://foo.com', '_blank');
 
       expect(open).toHaveBeenCalledWith(
         'http://foo.com/',
-        'target_name',
+        '_blank',
         'noopener'
       );
     });
