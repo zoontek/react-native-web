@@ -2,7 +2,6 @@
   "private": true,
   "name": "react-native-web-examples",
   "version": "0.21.2",
-  "type": "module",
   "scripts": {
     "build": "vite build",
     "dev": "vite",
