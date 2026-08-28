@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,24 +6,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: type I18nManagerStatus = {
-  allowRTL: (allowRTL: boolean) => void,
-  forceRTL: (forceRTL: boolean) => void,
-  getConstants: () => Constants
-}; */
+type I18nManagerStatus = {
+  allowRTL: (allowRTL: boolean) => void;
+  forceRTL: (forceRTL: boolean) => void;
+  getConstants: () => Constants;
+};
 
-/*:: type Constants = {
-  isRTL: boolean
-}; */
+type Constants = {
+  isRTL: boolean;
+};
 
-const I18nManager /*: I18nManagerStatus */ = {
+const I18nManager: I18nManagerStatus = {
   allowRTL() {
     return;
   },
   forceRTL() {
     return;
   },
-  getConstants() /*: Constants */ {
+  getConstants(): Constants {
     return { isRTL: false };
   }
 };
