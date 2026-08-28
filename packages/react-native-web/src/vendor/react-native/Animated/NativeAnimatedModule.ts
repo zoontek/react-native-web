@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -9,66 +7,86 @@
  * @format
  */
 
-/*:: import type {TurboModule} from '../TurboModule/RCTExport'; */
+import type { TurboModule } from '../TurboModule/RCTExport';
+import type { Nullable } from '../../../types';
 import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry';
 
-/*:: type EndResult = {finished: boolean, ...}; */
-/*:: type EndCallback = (result: EndResult) => void; */
-/*:: type SaveValueCallback = (value: number) => void; */
+type EndResult = { finished: boolean };
+type EndCallback = (result: EndResult) => void;
+type SaveValueCallback = (value: number) => void;
 
-/*:: export type EventMapping = {|
-  nativeEventPath: Array<string>,
-  animatedValueTag: ?number,
-|}; */
+export type EventMapping = {
+  nativeEventPath: Array<string>;
+  animatedValueTag: Nullable<number>;
+};
 
 // The config has different keys depending on the type of the Node
 // TODO(T54896888): Make these types strict
-/*:: export type AnimatedNodeConfig = Object; */
-/*:: export type AnimatingNodeConfig = Object; */
+export type AnimatedNodeConfig = Record<string, unknown>;
+export type AnimatingNodeConfig = Record<string, unknown>;
 
-/*:: export interface Spec extends TurboModule {
-  +startOperationBatch: () => void;
-  +finishOperationBatch: () => void;
-  +createAnimatedNode: (tag: number, config: AnimatedNodeConfig) => void;
-  +updateAnimatedNodeConfig?: (tag: number, config: AnimatedNodeConfig) => void;
-  +getValue: (tag: number, saveValueCallback: SaveValueCallback) => void;
-  +startListeningToAnimatedNodeValue: (tag: number) => void;
-  +stopListeningToAnimatedNodeValue: (tag: number) => void;
-  +connectAnimatedNodes: (parentTag: number, childTag: number) => void;
-  +disconnectAnimatedNodes: (parentTag: number, childTag: number) => void;
-  +startAnimatingNode: (
+export interface Spec extends TurboModule {
+  readonly startOperationBatch: () => void;
+  readonly finishOperationBatch: () => void;
+  readonly createAnimatedNode: (
+    tag: number,
+    config: AnimatedNodeConfig
+  ) => void;
+  readonly updateAnimatedNodeConfig?: (
+    tag: number,
+    config: AnimatedNodeConfig
+  ) => void;
+  readonly getValue: (
+    tag: number,
+    saveValueCallback: SaveValueCallback
+  ) => void;
+  readonly startListeningToAnimatedNodeValue: (tag: number) => void;
+  readonly stopListeningToAnimatedNodeValue: (tag: number) => void;
+  readonly connectAnimatedNodes: (parentTag: number, childTag: number) => void;
+  readonly disconnectAnimatedNodes: (
+    parentTag: number,
+    childTag: number
+  ) => void;
+  readonly startAnimatingNode: (
     animationId: number,
     nodeTag: number,
     config: AnimatingNodeConfig,
-    endCallback: EndCallback,
+    endCallback: EndCallback
   ) => void;
-  +stopAnimation: (animationId: number) => void;
-  +setAnimatedNodeValue: (nodeTag: number, value: number) => void;
-  +setAnimatedNodeOffset: (nodeTag: number, offset: number) => void;
-  +flattenAnimatedNodeOffset: (nodeTag: number) => void;
-  +extractAnimatedNodeOffset: (nodeTag: number) => void;
-  +connectAnimatedNodeToView: (nodeTag: number, viewTag: number) => void;
-  +disconnectAnimatedNodeFromView: (nodeTag: number, viewTag: number) => void;
-  +restoreDefaultValues: (nodeTag: number) => void;
-  +dropAnimatedNode: (tag: number) => void;
-  +addAnimatedEventToView: (
+  readonly stopAnimation: (animationId: number) => void;
+  readonly setAnimatedNodeValue: (nodeTag: number, value: number) => void;
+  readonly setAnimatedNodeOffset: (nodeTag: number, offset: number) => void;
+  readonly flattenAnimatedNodeOffset: (nodeTag: number) => void;
+  readonly extractAnimatedNodeOffset: (nodeTag: number) => void;
+  readonly connectAnimatedNodeToView: (
+    nodeTag: number,
+    viewTag: number
+  ) => void;
+  readonly disconnectAnimatedNodeFromView: (
+    nodeTag: number,
+    viewTag: number
+  ) => void;
+  readonly restoreDefaultValues: (nodeTag: number) => void;
+  readonly dropAnimatedNode: (tag: number) => void;
+  readonly addAnimatedEventToView: (
     viewTag: number,
     eventName: string,
-    eventMapping: EventMapping,
+    eventMapping: EventMapping
   ) => void;
-  +removeAnimatedEventFromView: (
+  readonly removeAnimatedEventFromView: (
     viewTag: number,
     eventName: string,
-    animatedNodeTag: number,
+    animatedNodeTag: number
   ) => void;
 
   // Events
-  +addListener: (eventName: string) => void;
-  +removeListeners: (count: number) => void;
+  readonly addListener: (eventName: string) => void;
+  readonly removeListeners: (count: number) => void;
 
   // All of the above in a batched mode
-  +queueAndExecuteBatchedOperations?: (operationsAndArgs: Array<any>) => void;
-} */
+  readonly queueAndExecuteBatchedOperations?: (
+    operationsAndArgs: Array<unknown>
+  ) => void;
+}
 
-// prettier-ignore
-export default (TurboModuleRegistry.get/*:: <Spec> */('NativeAnimatedModule')/*: ?Spec */);
+export default TurboModuleRegistry.get<Spec>('NativeAnimatedModule');

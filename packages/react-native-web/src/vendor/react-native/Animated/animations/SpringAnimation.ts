@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,9 +9,9 @@
 
 'use strict';
 
-/*:: import type AnimatedValue from '../nodes/AnimatedValue'; */
-/*:: import type AnimatedValueXY from '../nodes/AnimatedValueXY'; */
-/*:: import type AnimatedInterpolation from '../nodes/AnimatedInterpolation'; */
+import type AnimatedValue from '../nodes/AnimatedValue';
+import type AnimatedValueXY from '../nodes/AnimatedValueXY';
+import type AnimatedInterpolation from '../nodes/AnimatedInterpolation';
 
 import Animation from './Animation';
 import SpringConfig from '../SpringConfig';
@@ -22,92 +20,88 @@ import invariant from 'fbjs/lib/invariant';
 
 import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
 
-/*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
-/*:: import type {AnimationConfig, EndCallback} from './Animation'; */
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import type { AnimationConfig, EndCallback } from './Animation';
+import type { Nullable } from '../../../../types';
 
 import AnimatedColor from '../nodes/AnimatedColor';
 
-/*:: export type SpringAnimationConfig = {
-  ...AnimationConfig,
+export type SpringAnimationConfig = AnimationConfig & {
   toValue:
     | number
     | AnimatedValue
     | {
-        x: number,
-        y: number,
-        ...
+        x: number;
+        y: number;
       }
     | AnimatedValueXY
     | {
-        r: number,
-        g: number,
-        b: number,
-        a: number,
-        ...
+        r: number;
+        g: number;
+        b: number;
+        a: number;
       }
     | AnimatedColor
-    | AnimatedInterpolation<number>,
-  overshootClamping?: boolean,
-  restDisplacementThreshold?: number,
-  restSpeedThreshold?: number,
+    | AnimatedInterpolation<number>;
+  overshootClamping?: boolean;
+  restDisplacementThreshold?: number;
+  restSpeedThreshold?: number;
   velocity?:
     | number
     | {
-        x: number,
-        y: number,
-        ...
-      },
-  bounciness?: number,
-  speed?: number,
-  tension?: number,
-  friction?: number,
-  stiffness?: number,
-  damping?: number,
-  mass?: number,
-  delay?: number,
-}; */
+        x: number;
+        y: number;
+      };
+  bounciness?: number;
+  speed?: number;
+  tension?: number;
+  friction?: number;
+  stiffness?: number;
+  damping?: number;
+  mass?: number;
+  delay?: number;
+};
 
-/*:: export type SpringAnimationConfigSingle = {
-  ...AnimationConfig,
-  toValue: number,
-  overshootClamping?: boolean,
-  restDisplacementThreshold?: number,
-  restSpeedThreshold?: number,
-  velocity?: number,
-  bounciness?: number,
-  speed?: number,
-  tension?: number,
-  friction?: number,
-  stiffness?: number,
-  damping?: number,
-  mass?: number,
-  delay?: number,
-}; */
+export type SpringAnimationConfigSingle = AnimationConfig & {
+  toValue: number;
+  overshootClamping?: boolean;
+  restDisplacementThreshold?: number;
+  restSpeedThreshold?: number;
+  velocity?: number;
+  bounciness?: number;
+  speed?: number;
+  tension?: number;
+  friction?: number;
+  stiffness?: number;
+  damping?: number;
+  mass?: number;
+  delay?: number;
+};
 
 class SpringAnimation extends Animation {
-  _overshootClamping /*: boolean */;
-  _restDisplacementThreshold /*: number */;
-  _restSpeedThreshold /*: number */;
-  _lastVelocity /*: number */;
-  _startPosition /*: number */;
-  _lastPosition /*: number */;
-  _fromValue /*: number */;
-  _toValue /*: number */;
-  _stiffness /*: number */;
-  _damping /*: number */;
-  _mass /*: number */;
-  _initialVelocity /*: number */;
-  _delay /*: number */;
-  _timeout /*: any */;
-  _startTime /*: number */;
-  _lastTime /*: number */;
-  _frameTime /*: number */;
-  _onUpdate /*: (value: number) => void */;
-  _animationFrame /*: any */;
-  _useNativeDriver /*: boolean */;
-  _platformConfig /*: ?PlatformConfig */;
+  _overshootClamping: boolean;
+  _restDisplacementThreshold: number;
+  _restSpeedThreshold: number;
+  _lastVelocity: number;
+  _startPosition!: number;
+  _lastPosition!: number;
+  _fromValue!: number;
+  _toValue: number;
+  _stiffness!: number;
+  _damping!: number;
+  _mass!: number;
+  _initialVelocity: number;
+  _delay: number;
+  _timeout!: ReturnType<typeof setTimeout>;
+  _startTime!: number;
+  _lastTime!: number;
+  _frameTime!: number;
+  _onUpdate!: (value: number) => void;
+  _animationFrame!: number;
+  _useNativeDriver: boolean;
+  _platformConfig: Nullable<PlatformConfig>;
 
-  constructor(config /*: SpringAnimationConfigSingle */) {
+  constructor(config: SpringAnimationConfigSingle) {
     super();
 
     this._overshootClamping = config.overshootClamping ?? false;
@@ -172,19 +166,19 @@ class SpringAnimation extends Animation {
     invariant(this._mass > 0, 'Mass value must be greater than 0');
   }
 
-  __getNativeAnimationConfig() /*: {|
-    damping: number,
-    initialVelocity: number,
-    iterations: number,
-    mass: number,
-    platformConfig: ?PlatformConfig,
-    overshootClamping: boolean,
-    restDisplacementThreshold: number,
-    restSpeedThreshold: number,
-    stiffness: number,
-    toValue: any,
-    type: $TEMPORARY$string<'spring'>,
-  |} */ {
+  __getNativeAnimationConfig(): {
+    damping: number;
+    initialVelocity: number;
+    iterations: number;
+    mass: number;
+    platformConfig: Nullable<PlatformConfig>;
+    overshootClamping: boolean;
+    restDisplacementThreshold: number;
+    restSpeedThreshold: number;
+    stiffness: number;
+    toValue: number;
+    type: 'spring';
+  } {
     return {
       type: 'spring',
       overshootClamping: this._overshootClamping,
@@ -201,12 +195,12 @@ class SpringAnimation extends Animation {
   }
 
   start(
-    fromValue /*: number */,
-    onUpdate /*: (value: number) => void */,
-    onEnd /*: ?EndCallback */,
-    previousAnimation /*: ?Animation */,
-    animatedValue /*: AnimatedValue */
-  ) /*: void */ {
+    fromValue: number,
+    onUpdate: (value: number) => void,
+    onEnd: Nullable<EndCallback>,
+    previousAnimation: Nullable<Animation>,
+    animatedValue: AnimatedValue
+  ): void {
     this.__active = true;
     this._startPosition = fromValue;
     this._lastPosition = this._startPosition;
@@ -241,7 +235,11 @@ class SpringAnimation extends Animation {
     }
   }
 
-  getInternalState() /*: Object */ {
+  getInternalState(): {
+    lastPosition: number;
+    lastVelocity: number;
+    lastTime: number;
+  } {
     return {
       lastPosition: this._lastPosition,
       lastVelocity: this._lastVelocity,
@@ -270,7 +268,7 @@ class SpringAnimation extends Animation {
    * This algorithm happens to match the algorithm used by CASpringAnimation,
    * a QuartzCore (iOS) API that creates spring animations.
    */
-  onUpdate() /*: void */ {
+  onUpdate(): void {
     // If for some reason we lost a lot of frames (e.g. process large payload or
     // stopped in the debugger), we only advance by 4 frames worth of
     // computation and will continue on the next frame. It's better to have it
@@ -284,10 +282,10 @@ class SpringAnimation extends Animation {
     const deltaTime = (now - this._lastTime) / 1000;
     this._frameTime += deltaTime;
 
-    const c /*: number */ = this._damping;
-    const m /*: number */ = this._mass;
-    const k /*: number */ = this._stiffness;
-    const v0 /*: number */ = -this._initialVelocity;
+    const c: number = this._damping;
+    const m: number = this._mass;
+    const k: number = this._stiffness;
+    const v0: number = -this._initialVelocity;
 
     const zeta = c / (2 * Math.sqrt(k * m)); // damping ratio
     const omega0 = Math.sqrt(k / m); // undamped angular frequency of the oscillator (rad/ms)
@@ -361,11 +359,10 @@ class SpringAnimation extends Animation {
       this.__debouncedOnEnd({ finished: true });
       return;
     }
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
   }
 
-  stop() /*: void */ {
+  stop(): void {
     super.stop();
     this.__active = false;
     clearTimeout(this._timeout);
