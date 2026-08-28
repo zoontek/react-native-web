@@ -126,7 +126,7 @@ class AnimatedProps extends AnimatedNode {
     );
     NativeAnimatedHelper.API.connectAnimatedNodeToView(
       this.__getNativeTag(),
-      nativeViewTag as number
+      nativeViewTag
     );
   }
 
@@ -139,7 +139,7 @@ class AnimatedProps extends AnimatedNode {
     );
     NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(
       this.__getNativeTag(),
-      nativeViewTag as number
+      nativeViewTag
     );
   }
 
