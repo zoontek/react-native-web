@@ -12,7 +12,7 @@ import { isLocaleRTL } from './isLocaleRTL';
 import type { Nullable } from '../../types';
 
 type Locale = string;
-type WritingDirection = 'ltr' | 'rtl';
+export type WritingDirection = 'ltr' | 'rtl';
 
 type LocaleValue = {
   // Locale writing direction.
