@@ -67,19 +67,18 @@ export default defineConfig({
     'promise/param-names': 'error',
 
     // react
+    'react/globals': 'off',
     'react/iframe-missing-sandbox': 'off',
+    'react/immutability': 'off',
     'react/jsx-pascal-case': 'error',
     'react/no-children-prop': 'off',
     'react/no-this-in-sfc': 'off',
     'react/no-unknown-property': 'error',
     'react/prefer-es6-class': 'error',
     'react/react-in-jsx-scope': 'off',
-    'react/set-state-in-effect': 'off',
-    // 'react/purity': 'off',
     'react/refs': 'off',
-    'react/globals': 'off',
-    'react/immutability': 'off',
     'react/self-closing-comp': 'error',
+    'react/set-state-in-effect': 'off',
 
     // react-hooks
     'react/rules-of-hooks': 'error',
