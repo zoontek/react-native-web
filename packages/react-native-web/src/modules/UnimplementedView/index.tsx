@@ -8,7 +8,6 @@ import type { ReactNode } from 'react';
 import type { ViewProps, ViewStyle } from '../../exports/View/types';
 
 import View from '../../exports/View';
-import React from 'react';
 
 /**
  * Common implementation for a simple stubbed view.

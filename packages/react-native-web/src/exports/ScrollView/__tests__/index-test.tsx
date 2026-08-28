@@ -1,9 +1,9 @@
-import React from 'react';
 import ScrollView from '../';
 import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
 import type { RenderResult } from '@testing-library/react';
 import type { Nullable } from '../../../types';
+import { createRef, type ComponentRef } from 'react';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);
@@ -28,7 +28,7 @@ describe('components/ScrollView', () => {
   describe('prop "onScroll"', () => {
     test('is called when element scrolls', () => {
       const onScroll = jest.fn();
-      const ref = React.createRef<React.ComponentRef<typeof ScrollView>>();
+      const ref = createRef<ComponentRef<typeof ScrollView>>();
       act(() => {
         render(
           <ScrollView onScroll={onScroll} ref={ref} scrollEventThrottle={16} />
@@ -44,7 +44,7 @@ describe('components/ScrollView', () => {
 
     test('is not called when descendant scrolls', () => {
       const onScroll = jest.fn();
-      const ref = React.createRef<HTMLDivElement>();
+      const ref = createRef<HTMLDivElement>();
       act(() => {
         render(
           <ScrollView onScroll={onScroll} scrollEventThrottle={16}>
@@ -83,7 +83,7 @@ describe('components/ScrollView', () => {
     });
 
     test('node has imperative methods', () => {
-      const ref = React.createRef<React.ComponentRef<typeof ScrollView>>();
+      const ref = createRef<ComponentRef<typeof ScrollView>>();
       act(() => {
         render(<ScrollView ref={ref} />);
       });

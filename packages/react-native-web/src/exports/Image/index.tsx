@@ -8,6 +8,8 @@
 
 'use client';
 
+import { forwardRef, useContext, useEffect, useRef, useState } from 'react';
+
 import type {
   ColorValue,
   GenericStyleProp,
@@ -18,7 +20,6 @@ import type {
 } from '../../types';
 import type { ImageProps, ImageStyle, ResizeMode, Source } from './types';
 
-import * as React from 'react';
 import createElement from '../createElement';
 import { getAssetByID } from '../../modules/AssetRegistry';
 import { createBoxShadowValue } from '../StyleSheet/preprocess';
@@ -187,7 +188,7 @@ interface ImageStatics {
   queryCache: (uris: Array<string>) => Promise<Record<string, 'disk/memory'>>;
 }
 
-const Image = React.forwardRef<HTMLElement & PlatformMethods, ImageProps>(
+const Image = forwardRef<HTMLElement & PlatformMethods, ImageProps>(
   (props, ref) => {
     const {
       'aria-label': _ariaLabel,
@@ -215,7 +216,7 @@ const Image = React.forwardRef<HTMLElement & PlatformMethods, ImageProps>(
       }
     }
 
-    const [state, updateState] = React.useState<Status>(() => {
+    const [state, updateState] = useState<Status>(() => {
       const uri = resolveAssetUri(source);
       if (uri != null) {
         const isLoaded = ImageLoader.has(uri);
@@ -226,11 +227,11 @@ const Image = React.forwardRef<HTMLElement & PlatformMethods, ImageProps>(
       return IDLE;
     });
 
-    const [layout, updateLayout] = React.useState<Partial<LayoutValue>>({});
-    const hasTextAncestor = React.useContext(TextAncestorContext);
-    const hiddenImageRef = React.useRef<HTMLImageElement | null>(null);
-    const filterRef = React.useRef(_filterId++);
-    const requestRef = React.useRef<Nullable<number>>(null);
+    const [layout, updateLayout] = useState<Partial<LayoutValue>>({});
+    const hasTextAncestor = useContext(TextAncestorContext);
+    const hiddenImageRef = useRef<HTMLImageElement | null>(null);
+    const filterRef = useRef(_filterId++);
+    const requestRef = useRef<Nullable<number>>(null);
     const shouldDisplaySource =
       state === LOADED || (state === LOADING && defaultSource == null);
     const [_resizeMode, filter, _tintColor] = extractNonStandardStyleProps(
@@ -290,7 +291,7 @@ const Image = React.forwardRef<HTMLElement & PlatformMethods, ImageProps>(
 
     // Image loading
     const uri = resolveAssetUri(source);
-    React.useEffect(() => {
+    useEffect(() => {
       abortPendingRequest();
 
       if (uri != null) {

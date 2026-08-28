@@ -1,6 +1,6 @@
 import Text from './Text';
 import { StyleSheet, View } from 'react-native-web';
-import React, { Fragment } from 'react';
+import { Fragment, PureComponent } from 'react';
 
 const fmt = (time: number) => {
   const i = Number(Math.round(Number(time + 'e2')) + 'e-2').toFixed(2);
@@ -18,7 +18,7 @@ type Props = {
   stdDev?: number;
 };
 
-class ReportCard extends React.PureComponent<Props> {
+class ReportCard extends PureComponent<Props> {
   render() {
     const {
       benchmarkName,

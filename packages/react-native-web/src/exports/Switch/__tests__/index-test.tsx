@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import { render } from '@testing-library/react';
 import Switch from '..';
 

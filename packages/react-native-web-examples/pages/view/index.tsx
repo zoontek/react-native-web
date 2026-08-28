@@ -1,6 +1,6 @@
-import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native-web';
 import Example from '../../shared/example';
+import { useEffect, useState } from 'react';
 
 const log = (
   // @ts-expect-error use exported PressableProps
@@ -37,10 +37,10 @@ function Box({
 }
 
 export default function ViewPage() {
-  const [layoutInfo, setLayoutInfo] = React.useState({});
-  const [layoutStyle, setLayoutStyle] = React.useState(l1);
+  const [layoutInfo, setLayoutInfo] = useState({});
+  const [layoutStyle, setLayoutStyle] = useState(l1);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setLayoutStyle((l) => (l.width === '100%' ? l2 : l1));
     }, 2500);

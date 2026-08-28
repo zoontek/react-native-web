@@ -1,15 +1,15 @@
-import React from 'react';
 import { StyleSheet, Switch, View } from 'react-native-web';
 import Example from '../../shared/example';
+import { useEffect, useState } from 'react';
 
 function Divider() {
   return <View style={styles.divider} />;
 }
 
 export default function SwitchPage() {
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setChecked(!checked);
     }, 2500);

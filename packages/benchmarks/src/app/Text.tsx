@@ -1,12 +1,11 @@
-import type { ComponentProps } from 'react';
+import { Component, type ComponentProps } from 'react';
 
-import React from 'react';
 import { StyleSheet, Text } from 'react-native-web';
 import { colors } from './theme';
 
 type Props = ComponentProps<typeof Text>;
 
-class AppText extends React.Component<Props> {
+class AppText extends Component<Props> {
   static displayName = '@app/Text';
 
   render() {

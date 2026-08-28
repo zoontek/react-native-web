@@ -7,7 +7,6 @@
 import type { ComponentType, ReactNode } from 'react';
 import { Component } from 'react';
 import { getMean, getStdDev } from './math';
-import * as Timing from './timing';
 import type {
   BenchResultsType,
   FullSampleTimingType,
@@ -18,6 +17,17 @@ export const BenchmarkType = {
   MOUNT: 'mount',
   UPDATE: 'update'
 } as const;
+
+const Timing = {
+  // Returns a high resolution time (if possible) in milliseconds
+  now(): number {
+    if (window && window.performance) {
+      return window.performance.now();
+    } else {
+      return Date.now();
+    }
+  }
+};
 
 export type BenchmarkTypeValue =
   (typeof BenchmarkType)[keyof typeof BenchmarkType];

@@ -10,21 +10,26 @@
 import useAnimatedProps from './useAnimatedProps';
 import useMergeRefs from '../Utilities/useMergeRefs';
 import View from '../../../exports/View';
-import * as React from 'react';
+import {
+  forwardRef,
+  type ComponentProps,
+  type ComponentType,
+  type ForwardRefExoticComponent,
+  type PropsWithoutRef,
+  type RefAttributes
+} from 'react';
 
 export type AnimatedComponentType<
   Props extends object,
   Instance = unknown
-> = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<
+> = ForwardRefExoticComponent<
+  PropsWithoutRef<
     Props &
       Readonly<{
-        passthroughAnimatedPropExplicitValues?: React.ComponentProps<
-          typeof View
-        >;
+        passthroughAnimatedPropExplicitValues?: ComponentProps<typeof View>;
       }>
   > &
-    React.RefAttributes<Instance>
+    RefAttributes<Instance>
 >;
 
 /**
@@ -35,11 +40,11 @@ export default function createAnimatedComponent<
   TProps extends object,
   TInstance
 >(
-  Component: React.ComponentType<TProps>
-): React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<TProps> & React.RefAttributes<TInstance>
+  Component: ComponentType<TProps>
+): ForwardRefExoticComponent<
+  PropsWithoutRef<TProps> & RefAttributes<TInstance>
 > {
-  return React.forwardRef<TInstance, TProps>((props, forwardedRef) => {
+  return forwardRef<TInstance, TProps>((props, forwardedRef) => {
     const [reducedProps, callbackRef] = useAnimatedProps<TProps, TInstance>(
       props as TProps
     );

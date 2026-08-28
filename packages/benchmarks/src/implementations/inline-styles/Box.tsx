@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { BoxProps } from '../../impl';
 
-import React from 'react';
 import View from './View';
 
 const Box = ({

@@ -10,7 +10,6 @@ import type { PlatformMethods } from '../../types';
 import type { ImageProps } from '../Image/types';
 import type { ViewProps } from '../View/types';
 
-import * as React from 'react';
 import { forwardRef } from 'react';
 import Image from '../Image';
 import StyleSheet from '../StyleSheet';

@@ -8,9 +8,9 @@
  */
 
 import invariant from 'fbjs/lib/invariant';
-import * as React from 'react';
 
 import type { Nullable } from '../../../types';
+import { PureComponent } from 'react';
 
 /**
  * `setState` is called asynchronously, and should not rely on the value of
@@ -24,7 +24,7 @@ import type { Nullable } from '../../../types';
 export default class StateSafePureComponent<
   Props,
   State extends {}
-> extends React.PureComponent<Props, State> {
+> extends PureComponent<Props, State> {
   _inAsyncStateUpdate = false;
 
   constructor(props: Props) {

@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 
-import * as React from 'react';
 import { createPortal } from 'react-dom';
 import canUseDOM from '../../modules/canUseDom';
 
@@ -18,7 +17,7 @@ export type ModalPortalProps = {
 
 function ModalPortal(props: ModalPortalProps): ReactNode {
   const { children } = props;
-  const elementRef = React.useRef<HTMLDivElement | null>(null);
+  const elementRef = useRef<HTMLDivElement | null>(null);
 
   if (canUseDOM && !elementRef.current) {
     const element = document.createElement('div');
@@ -29,7 +28,7 @@ function ModalPortal(props: ModalPortalProps): ReactNode {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (canUseDOM) {
       return () => {
         if (document.body && elementRef.current) {

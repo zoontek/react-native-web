@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import Text from '../';
 import {
   createEventTarget as createEventTargetImpl,
@@ -14,6 +13,7 @@ import {
 import { act, render } from '@testing-library/react';
 import type { RenderResult } from '@testing-library/react';
 import type { Nullable, PlatformMethods } from '../../../types';
+import { createRef } from 'react';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);
@@ -179,7 +179,7 @@ describe('components/Text', () => {
   describe('prop "onBlur"', () => {
     test('is called', () => {
       const onBlur = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onBlur={onBlur} ref={ref} />);
       });
@@ -196,7 +196,7 @@ describe('components/Text', () => {
   describe('prop "onClick"', () => {
     test('is called', () => {
       const onClick = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onClick={onClick} ref={ref} />);
       });
@@ -209,7 +209,7 @@ describe('components/Text', () => {
 
     test('is still called if "onPress" is provided', () => {
       const onClick = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onClick={onClick} onPress={() => {}} ref={ref} />);
       });
@@ -224,7 +224,7 @@ describe('components/Text', () => {
   describe('prop "onFocus"', () => {
     test('is called', () => {
       const onFocus = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onFocus={onFocus} ref={ref} />);
       });
@@ -246,7 +246,7 @@ describe('components/Text', () => {
 
     test('is called', () => {
       const onPointerDown = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onPointerDown={onPointerDown} ref={ref} />);
       });
@@ -261,7 +261,7 @@ describe('components/Text', () => {
   describe('prop "onPress"', () => {
     test('is called', () => {
       const onPress = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onPress={onPress} ref={ref} />);
       });
@@ -275,7 +275,7 @@ describe('components/Text', () => {
 
     test('is not called if "onClick" is provided', () => {
       const onPress = jest.fn();
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text onClick={() => {}} onPress={onPress} ref={ref} />);
       });
@@ -310,7 +310,7 @@ describe('components/Text', () => {
     });
 
     test('node has imperative methods', () => {
-      const ref = React.createRef<HTMLElement & PlatformMethods>();
+      const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Text ref={ref} />);
       });

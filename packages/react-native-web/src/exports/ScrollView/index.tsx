@@ -8,7 +8,15 @@
 
 'use client';
 
-import type { ReactElement, Ref, TouchEvent } from 'react';
+import {
+  Children,
+  cloneElement,
+  Component,
+  forwardRef,
+  type ReactElement,
+  type Ref,
+  type TouchEvent
+} from 'react';
 import type { LayoutEvent, Nullable, PlatformMethods } from '../../types';
 import type { ResponderEvent } from '../../modules/useResponderEvents/createResponderEvent';
 import type { ViewProps, ViewStyle } from '../View/types';
@@ -23,7 +31,6 @@ import StyleSheet from '../StyleSheet';
 import TextInputState from '../../modules/TextInputState';
 import UIManager from '../UIManager';
 import View from '../View';
-import React from 'react';
 import warning from 'fbjs/lib/warning';
 
 type ScrollViewProps = Omit<ViewProps, 'onScroll'> & {
@@ -81,7 +88,7 @@ type ScrollViewNode = (HTMLElement & PlatformMethods) & {
 const emptyObject: { x?: number; y?: number; animated?: boolean } = {};
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16;
 
-class ScrollView extends React.Component<ScrollViewProps> {
+class ScrollView extends Component<ScrollViewProps> {
   _scrollNodeRef: ScrollViewNode | null = null;
   _innerViewRef: (HTMLElement & PlatformMethods) | null = null;
 
@@ -621,7 +628,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
       !horizontal && Array.isArray(stickyHeaderIndices);
     const children =
       hasStickyHeaderIndices || pagingEnabled
-        ? React.Children.map(this.props.children, (child, i) => {
+        ? Children.map(this.props.children, (child, i) => {
             const isSticky =
               hasStickyHeaderIndices && stickyHeaderIndices.indexOf(i) > -1;
             if (child != null && (isSticky || pagingEnabled)) {
@@ -699,11 +706,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
     );
 
     if (refreshControl) {
-      return React.cloneElement(
-        refreshControl,
-        { style: props.style },
-        scrollView
-      );
+      return cloneElement(refreshControl, { style: props.style }, scrollView);
     }
 
     return scrollView;
@@ -806,7 +809,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const ForwardedScrollView = React.forwardRef<ScrollViewNode, ScrollViewProps>(
+const ForwardedScrollView = forwardRef<ScrollViewNode, ScrollViewProps>(
   (props, forwardedRef) => {
     return <ScrollView {...props} forwardedRef={forwardedRef} />;
   }
