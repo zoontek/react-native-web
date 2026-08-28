@@ -17,11 +17,11 @@ export type StyleValue =
 
 const colorProps: Record<string, boolean> = {
   backgroundColor: true,
-  borderColor: true,
-  borderTopColor: true,
-  borderRightColor: true,
   borderBottomColor: true,
+  borderColor: true,
   borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
   color: true,
   shadowColor: true,
   textDecorationColor: true,
