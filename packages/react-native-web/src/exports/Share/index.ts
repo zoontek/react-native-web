@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,15 +8,12 @@
 
 import invariant from 'fbjs/lib/invariant';
 
-/*:: type Content =
-  | { title?: string, message?: string, url: string }
-  | { title?: string, message: string, url?: string }; */
+type Content =
+  | { title?: string; message?: string; url: string }
+  | { title?: string; message: string; url?: string };
 
 class Share {
-  static share(
-    content /*: Content */,
-    options /*: Object */ = {}
-  ) /*: Promise<Object> */ {
+  static share(content: Content, options: unknown = {}): Promise<void> {
     invariant(
       typeof content === 'object' && content !== null,
       'Content to share must be a valid object'
@@ -52,7 +47,7 @@ class Share {
   /**
    * The content was successfully shared.
    */
-  static get sharedAction() /*: string */ {
+  static get sharedAction(): string {
     return 'sharedAction';
   }
 
@@ -60,7 +55,7 @@ class Share {
    * The dialog has been dismissed.
    * @platform ios
    */
-  static get dismissedAction() /*: string */ {
+  static get dismissedAction(): string {
     return 'dismissedAction';
   }
 }
