@@ -25,6 +25,7 @@ const colorProps: Record<string, boolean> = {
   color: true,
   shadowColor: true,
   textDecorationColor: true,
+  textEmphasisColor: true,
   textShadowColor: true
 };
 
