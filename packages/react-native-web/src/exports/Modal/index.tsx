@@ -9,12 +9,12 @@
 'use client';
 
 import {
-  forwardRef,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  type ReactNode
+  type ReactNode,
+  type Ref
 } from 'react';
 
 import type { Nullable, PlatformMethods } from '../../types';
@@ -37,6 +37,7 @@ export type ModalProps = ViewProps & {
   presentationStyle?: Nullable<
     'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen'
   >;
+  ref?: Ref<HTMLElement & PlatformMethods>;
   statusBarTranslucent?: Nullable<boolean>;
   supportedOrientations?: Nullable<
     Array<
@@ -92,16 +93,14 @@ function addActiveModal(
   notifyActiveModalListeners();
 }
 
-// TODO: remove the alias after forwardRef removal
-type TNode = HTMLElement & PlatformMethods;
-
-const Modal = forwardRef<TNode, ModalProps>((props, forwardedRef) => {
+const Modal = (props: ModalProps) => {
   const {
     animationType,
     children,
     onDismiss,
     onRequestClose,
     onShow,
+    ref,
     transparent,
     visible = true,
     ...rest
@@ -144,7 +143,7 @@ const Modal = forwardRef<TNode, ModalProps>((props, forwardedRef) => {
             {...rest}
             active={isActive}
             onRequestClose={onRequestClose}
-            ref={forwardedRef}
+            ref={ref}
             transparent={transparent}
           >
             {children}
@@ -153,6 +152,6 @@ const Modal = forwardRef<TNode, ModalProps>((props, forwardedRef) => {
       </ModalAnimation>
     </ModalPortal>
   );
-});
+};
 
 export default Modal;

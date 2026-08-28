@@ -8,9 +8,9 @@
 
 import {
   createContext,
-  forwardRef,
   type ComponentType,
-  type ReactNode
+  type ReactNode,
+  type Ref
 } from 'react';
 
 import type { Nullable, PlatformMethods } from '../../types';
@@ -20,32 +20,31 @@ import View from '../View';
 type Props = {
   WrapperComponent?: Nullable<ComponentType<{ children?: ReactNode }>>;
   children?: ReactNode;
+  ref?: Ref<HTMLElement & PlatformMethods>;
   rootTag: unknown;
 };
 
 const RootTagContext = createContext<unknown>(null);
 
-const AppContainer = forwardRef<HTMLElement & PlatformMethods, Props>(
-  (props, forwardedRef) => {
-    const { children, WrapperComponent } = props;
+const AppContainer = (props: Props) => {
+  const { children, ref, WrapperComponent } = props;
 
-    let innerView = (
-      <View children={children} key={1} style={styles.appContainer} />
-    );
+  let innerView = (
+    <View children={children} key={1} style={styles.appContainer} />
+  );
 
-    if (WrapperComponent) {
-      innerView = <WrapperComponent>{innerView}</WrapperComponent>;
-    }
-
-    return (
-      <RootTagContext.Provider value={props.rootTag}>
-        <View ref={forwardedRef} style={styles.appContainer}>
-          {innerView}
-        </View>
-      </RootTagContext.Provider>
-    );
+  if (WrapperComponent) {
+    innerView = <WrapperComponent>{innerView}</WrapperComponent>;
   }
-);
+
+  return (
+    <RootTagContext.Provider value={props.rootTag}>
+      <View ref={ref} style={styles.appContainer}>
+        {innerView}
+      </View>
+    </RootTagContext.Provider>
+  );
+};
 
 AppContainer.displayName = 'AppContainer';
 

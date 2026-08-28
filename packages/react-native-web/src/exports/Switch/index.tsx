@@ -7,7 +7,7 @@
 
 'use client';
 
-import { forwardRef, useRef, type ChangeEvent, type FocusEvent } from 'react';
+import { useRef, type ChangeEvent, type FocusEvent, type Ref } from 'react';
 
 import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
 import type { ColorValue, DimensionValue, PlatformMethods } from '../../types';
@@ -20,6 +20,7 @@ type SwitchProps = ViewProps & {
   activeTrackColor?: ColorValue;
   disabled?: boolean;
   onValueChange?: (e: boolean) => void;
+  ref?: Ref<HTMLElement & PlatformMethods>;
   thumbColor?: ColorValue;
   trackColor?: ColorValue | { false: ColorValue; true: ColorValue };
   value?: boolean;
@@ -37,160 +38,157 @@ const defaultActiveThumbColor = '#009688';
 const defaultThumbColor = '#FAFAFA';
 const defaultDisabledThumbColor = '#BDBDBD';
 
-const Switch = forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
-  (props, forwardedRef) => {
-    const {
-      'aria-label': ariaLabel,
-      accessibilityLabel,
-      activeThumbColor,
-      activeTrackColor,
-      disabled = false,
-      onValueChange,
-      style = emptyObject,
-      thumbColor,
-      trackColor,
-      value = false,
-      ...other
-    } = props;
+const Switch = (props: SwitchProps) => {
+  const {
+    'aria-label': ariaLabel,
+    accessibilityLabel,
+    activeThumbColor,
+    activeTrackColor,
+    disabled = false,
+    onValueChange,
+    ref,
+    style = emptyObject,
+    thumbColor,
+    trackColor,
+    value = false,
+    ...other
+  } = props;
 
-    const thumbRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
+  const thumbRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
 
-    function handleChange(event: ChangeEvent<HTMLInputElement>) {
-      if (onValueChange != null) {
-        onValueChange((event.nativeEvent.target as HTMLInputElement).checked);
-      }
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    if (onValueChange != null) {
+      onValueChange((event.nativeEvent.target as HTMLInputElement).checked);
     }
-
-    function handleFocusState(event: FocusEvent<HTMLInputElement>) {
-      const isFocused = event.nativeEvent.type === 'focus';
-      const boxShadow = isFocused
-        ? thumbFocusedBoxShadow
-        : thumbDefaultBoxShadow;
-      if (thumbRef.current != null) {
-        thumbRef.current.style.boxShadow = boxShadow;
-      }
-    }
-
-    const { height: styleHeight, width: styleWidth } = StyleSheet.flatten(
-      style
-    ) as { height?: DimensionValue; width?: DimensionValue };
-    const height = styleHeight || '20px';
-    const minWidth = multiplyStyleLengthValue(height, 2);
-    const width =
-      styleWidth != null && minWidth != null && styleWidth > minWidth
-        ? styleWidth
-        : minWidth;
-    const trackBorderRadius = multiplyStyleLengthValue(height, 0.5);
-
-    const trackCurrentColor = (function () {
-      if (value) {
-        if (trackColor != null && typeof trackColor === 'object') {
-          return trackColor.true;
-        } else {
-          return activeTrackColor ?? defaultActiveTrackColor;
-        }
-      } else {
-        if (trackColor != null && typeof trackColor === 'object') {
-          return trackColor.false;
-        } else {
-          return trackColor ?? defaultTrackColor;
-        }
-      }
-    })();
-
-    const thumbCurrentColor = value
-      ? (activeThumbColor ?? defaultActiveThumbColor)
-      : (thumbColor ?? defaultThumbColor);
-
-    const thumbHeight = height;
-    const thumbWidth = thumbHeight;
-
-    const rootStyle = [
-      styles.root,
-      style,
-      disabled && styles.cursorDefault,
-      { height, width }
-    ];
-
-    const disabledTrackColor = (function () {
-      if (value) {
-        if (
-          (typeof activeTrackColor === 'string' && activeTrackColor != null) ||
-          (typeof trackColor === 'object' && trackColor?.true)
-        ) {
-          return trackCurrentColor;
-        } else {
-          return defaultDisabledTrackColor;
-        }
-      } else {
-        if (
-          (typeof trackColor === 'string' && trackColor != null) ||
-          (typeof trackColor === 'object' && trackColor?.false)
-        ) {
-          return trackCurrentColor;
-        } else {
-          return defaultDisabledTrackColor;
-        }
-      }
-    })();
-
-    const disabledThumbColor = (function () {
-      if (value) {
-        if (activeThumbColor == null) {
-          return defaultDisabledThumbColor;
-        } else {
-          return thumbCurrentColor;
-        }
-      } else {
-        if (thumbColor == null) {
-          return defaultDisabledThumbColor;
-        } else {
-          return thumbCurrentColor;
-        }
-      }
-    })();
-
-    const trackStyle = [
-      styles.track,
-      {
-        backgroundColor: disabled ? disabledTrackColor : trackCurrentColor,
-        borderRadius: trackBorderRadius
-      }
-    ];
-
-    const thumbStyle = [
-      styles.thumb,
-      value && styles.thumbActive,
-      {
-        backgroundColor: disabled ? disabledThumbColor : thumbCurrentColor,
-        height: thumbHeight,
-        marginStart: value ? multiplyStyleLengthValue(thumbWidth, -1) : 0,
-        width: thumbWidth
-      }
-    ];
-
-    const nativeControl = createElement('input', {
-      'aria-label': ariaLabel || accessibilityLabel,
-      checked: value,
-      disabled: disabled,
-      onBlur: handleFocusState,
-      onChange: handleChange,
-      onFocus: handleFocusState,
-      ref: forwardedRef,
-      style: [styles.nativeControl, styles.cursorInherit],
-      type: 'checkbox',
-      role: 'switch'
-    });
-
-    return (
-      <View {...other} style={rootStyle}>
-        <View style={trackStyle} />
-        <View ref={thumbRef} style={thumbStyle} />
-        {nativeControl}
-      </View>
-    );
   }
-);
+
+  function handleFocusState(event: FocusEvent<HTMLInputElement>) {
+    const isFocused = event.nativeEvent.type === 'focus';
+    const boxShadow = isFocused ? thumbFocusedBoxShadow : thumbDefaultBoxShadow;
+    if (thumbRef.current != null) {
+      thumbRef.current.style.boxShadow = boxShadow;
+    }
+  }
+
+  const { height: styleHeight, width: styleWidth } = StyleSheet.flatten(
+    style
+  ) as { height?: DimensionValue; width?: DimensionValue };
+  const height = styleHeight || '20px';
+  const minWidth = multiplyStyleLengthValue(height, 2);
+  const width =
+    styleWidth != null && minWidth != null && styleWidth > minWidth
+      ? styleWidth
+      : minWidth;
+  const trackBorderRadius = multiplyStyleLengthValue(height, 0.5);
+
+  const trackCurrentColor = (function () {
+    if (value) {
+      if (trackColor != null && typeof trackColor === 'object') {
+        return trackColor.true;
+      } else {
+        return activeTrackColor ?? defaultActiveTrackColor;
+      }
+    } else {
+      if (trackColor != null && typeof trackColor === 'object') {
+        return trackColor.false;
+      } else {
+        return trackColor ?? defaultTrackColor;
+      }
+    }
+  })();
+
+  const thumbCurrentColor = value
+    ? (activeThumbColor ?? defaultActiveThumbColor)
+    : (thumbColor ?? defaultThumbColor);
+
+  const thumbHeight = height;
+  const thumbWidth = thumbHeight;
+
+  const rootStyle = [
+    styles.root,
+    style,
+    disabled && styles.cursorDefault,
+    { height, width }
+  ];
+
+  const disabledTrackColor = (function () {
+    if (value) {
+      if (
+        (typeof activeTrackColor === 'string' && activeTrackColor != null) ||
+        (typeof trackColor === 'object' && trackColor?.true)
+      ) {
+        return trackCurrentColor;
+      } else {
+        return defaultDisabledTrackColor;
+      }
+    } else {
+      if (
+        (typeof trackColor === 'string' && trackColor != null) ||
+        (typeof trackColor === 'object' && trackColor?.false)
+      ) {
+        return trackCurrentColor;
+      } else {
+        return defaultDisabledTrackColor;
+      }
+    }
+  })();
+
+  const disabledThumbColor = (function () {
+    if (value) {
+      if (activeThumbColor == null) {
+        return defaultDisabledThumbColor;
+      } else {
+        return thumbCurrentColor;
+      }
+    } else {
+      if (thumbColor == null) {
+        return defaultDisabledThumbColor;
+      } else {
+        return thumbCurrentColor;
+      }
+    }
+  })();
+
+  const trackStyle = [
+    styles.track,
+    {
+      backgroundColor: disabled ? disabledTrackColor : trackCurrentColor,
+      borderRadius: trackBorderRadius
+    }
+  ];
+
+  const thumbStyle = [
+    styles.thumb,
+    value && styles.thumbActive,
+    {
+      backgroundColor: disabled ? disabledThumbColor : thumbCurrentColor,
+      height: thumbHeight,
+      marginStart: value ? multiplyStyleLengthValue(thumbWidth, -1) : 0,
+      width: thumbWidth
+    }
+  ];
+
+  const nativeControl = createElement('input', {
+    'aria-label': ariaLabel || accessibilityLabel,
+    checked: value,
+    disabled: disabled,
+    onBlur: handleFocusState,
+    onChange: handleChange,
+    onFocus: handleFocusState,
+    ref,
+    style: [styles.nativeControl, styles.cursorInherit],
+    type: 'checkbox',
+    role: 'switch'
+  });
+
+  return (
+    <View {...other} style={rootStyle}>
+      <View style={trackStyle} />
+      <View ref={thumbRef} style={thumbStyle} />
+      {nativeControl}
+    </View>
+  );
+};
 
 Switch.displayName = 'Switch';
 
