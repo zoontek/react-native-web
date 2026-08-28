@@ -420,7 +420,7 @@ class FlatList<ItemT> extends PureComponent<Props<ItemT>> {
     }
   }
 
-  componentDidUpdate(prevProps: Props<ItemT>) {
+  override componentDidUpdate(prevProps: Props<ItemT>) {
     invariant(
       prevProps.numColumns === this.props.numColumns,
       'Changing numColumns on the fly is not supported. Change the key prop on FlatList when ' +
@@ -629,7 +629,7 @@ class FlatList<ItemT> extends PureComponent<Props<ItemT>> {
 
   _memoizedRenderer = memoizeOne(this._renderer);
 
-  render(): ReactNode {
+  override render(): ReactNode {
     const {
       numColumns,
       columnWrapperStyle,

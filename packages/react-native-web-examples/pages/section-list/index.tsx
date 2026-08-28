@@ -17,7 +17,7 @@ type Section = {
 function makeItems(length: number): Item[] {
   return Array(length)
     .fill(0)
-    .map((value, index) => ({
+    .map((_, index) => ({
       key: `item_${index}`,
       title: `Item ${index}`
     }));

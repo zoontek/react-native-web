@@ -180,7 +180,7 @@ function TouchableHighlight(
     ]
   );
 
-  const pressEventHandlers = usePressEvents(hostRef, pressConfig);
+  const pressEventHandlers = usePressEvents(pressConfig);
 
   const child = Children.only(children) as ReactElement<{
     style?: ViewStyle;

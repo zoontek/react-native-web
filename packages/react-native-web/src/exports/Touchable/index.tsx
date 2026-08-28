@@ -472,13 +472,19 @@ const TouchableMixin = {
    * Clear all timeouts on unmount
    */
   componentWillUnmount: function (this: TouchableInstance) {
-    const touchableNode = this.getTouchableNode && this.getTouchableNode();
-    if (touchableNode && touchableNode.addEventListener != null) {
+    const touchableNode = this.getTouchableNode?.();
+    if (touchableNode?.addEventListener != null) {
       touchableNode.removeEventListener('blur', this._touchableBlurListener);
     }
-    this.touchableDelayTimeout && clearTimeout(this.touchableDelayTimeout);
-    this.longPressDelayTimeout && clearTimeout(this.longPressDelayTimeout);
-    this.pressOutDelayTimeout && clearTimeout(this.pressOutDelayTimeout);
+    if (this.touchableDelayTimeout) {
+      clearTimeout(this.touchableDelayTimeout);
+    }
+    if (this.longPressDelayTimeout) {
+      clearTimeout(this.longPressDelayTimeout);
+    }
+    if (this.pressOutDelayTimeout) {
+      clearTimeout(this.pressOutDelayTimeout);
+    }
     // Clear DOM nodes
     this.pressInLocation = null;
     this.state.touchable.responderID = null;
@@ -540,8 +546,10 @@ const TouchableMixin = {
     // event to make sure it doesn't get reused in the event object pool.
     e.persist();
 
-    this.pressOutDelayTimeout && clearTimeout(this.pressOutDelayTimeout);
-    this.pressOutDelayTimeout = null;
+    if (this.pressOutDelayTimeout != null) {
+      clearTimeout(this.pressOutDelayTimeout);
+      this.pressOutDelayTimeout = null;
+    }
 
     this.state.touchable.touchState = States.NOT_RESPONDER;
     this.state.touchable.responderID = dispatchID;
@@ -685,7 +693,7 @@ const TouchableMixin = {
    * using `Touchable.Mixin.withoutDefaultFocusAndBlur`.
    */
   touchableHandleFocus: function (this: TouchableInstance, e: Event) {
-    this.props.onFocus && this.props.onFocus(e);
+    this.props.onFocus?.(e);
   },
 
   /**
@@ -697,7 +705,7 @@ const TouchableMixin = {
    * `Touchable.Mixin.withoutDefaultFocusAndBlur`.
    */
   touchableHandleBlur: function (this: TouchableInstance, e: Event) {
-    this.props.onBlur && this.props.onBlur(e);
+    this.props.onBlur?.(e);
   },
 
   // ==== Abstract Application Callbacks ====
@@ -798,10 +806,12 @@ const TouchableMixin = {
     if (!l && !t && !w && !h && !globalX && !globalY) {
       return;
     }
-    this.state.touchable.positionOnActivate &&
+    if (this.state.touchable.positionOnActivate) {
       Position.release(this.state.touchable.positionOnActivate);
-    this.state.touchable.dimensionsOnActivate &&
+    }
+    if (this.state.touchable.dimensionsOnActivate) {
       BoundingDimensions.release(this.state.touchable.dimensionsOnActivate);
+    }
     this.state.touchable.positionOnActivate = Position.getPooled(
       globalX,
       globalY
@@ -887,8 +897,10 @@ const TouchableMixin = {
   },
 
   _cancelLongPressDelayTimeout: function (this: TouchableInstance) {
-    this.longPressDelayTimeout && clearTimeout(this.longPressDelayTimeout);
-    this.longPressDelayTimeout = null;
+    if (this.longPressDelayTimeout != null) {
+      clearTimeout(this.longPressDelayTimeout);
+      this.longPressDelayTimeout = null;
+    }
   },
 
   _isHighlight: function (state: State): boolean {
@@ -957,7 +969,7 @@ const TouchableMixin = {
     }
 
     if (IsPressingIn[curState] && signal === Signals.LONG_PRESS_DETECTED) {
-      this.touchableHandleLongPress && this.touchableHandleLongPress(e);
+      this.touchableHandleLongPress?.(e);
     }
 
     if (newIsHighlight && !curIsHighlight) {
@@ -984,8 +996,10 @@ const TouchableMixin = {
       }
     }
 
-    this.touchableDelayTimeout && clearTimeout(this.touchableDelayTimeout);
-    this.touchableDelayTimeout = null;
+    if (this.touchableDelayTimeout != null) {
+      clearTimeout(this.touchableDelayTimeout);
+      this.touchableDelayTimeout = null;
+    }
   },
 
   _playTouchSound: function () {
@@ -994,7 +1008,7 @@ const TouchableMixin = {
 
   _startHighlight: function (this: TouchableInstance, e: PressEvent) {
     this._savePressInLocation(e);
-    this.touchableHandleActivePressIn && this.touchableHandleActivePressIn(e);
+    this.touchableHandleActivePressIn?.(e);
   },
 
   _endHighlight: function (this: TouchableInstance, e: PressEvent) {

@@ -12,7 +12,7 @@ describe('apis/Linking', () => {
           done();
           return null;
         });
-      Linking.openURL('http://foo.com', 'target_name');
+      void Linking.openURL('http://foo.com', 'target_name');
     });
 
     test('defaults target to _blank if not provided', (done) => {
@@ -25,7 +25,7 @@ describe('apis/Linking', () => {
           done();
           return null;
         });
-      Linking.openURL('http://foo.com');
+      void Linking.openURL('http://foo.com');
     });
 
     test('accepts undefined as a target', (done) => {
@@ -38,7 +38,7 @@ describe('apis/Linking', () => {
           done();
           return null;
         });
-      Linking.openURL('http://foo.com', undefined);
+      void Linking.openURL('http://foo.com', undefined);
     });
   });
 });

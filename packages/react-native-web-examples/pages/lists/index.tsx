@@ -99,7 +99,7 @@ class ItemComponent extends PureComponent<ItemComponentProps> {
   _onPress = () => {
     this.props.onPress(this.props.item.key);
   };
-  render() {
+  override render() {
     const { fixedHeight, horizontal, item } = this.props;
     const itemHash = Math.abs(hashCode(item.title));
     const imgSource = THUMB_URLS[itemHash % THUMB_URLS.length];
@@ -131,7 +131,7 @@ class ItemComponent extends PureComponent<ItemComponentProps> {
 }
 
 class FooterComponent extends PureComponent {
-  render() {
+  override render() {
     return (
       <View style={styles.headerFooterContainer}>
         <SeparatorComponent />
@@ -144,7 +144,7 @@ class FooterComponent extends PureComponent {
 }
 
 class HeaderComponent extends PureComponent {
-  render() {
+  override render() {
     return (
       <View style={styles.headerFooterContainer}>
         <View style={styles.headerFooter}>
@@ -157,7 +157,7 @@ class HeaderComponent extends PureComponent {
 }
 
 class SeparatorComponent extends PureComponent {
-  render() {
+  override render() {
     return <View style={styles.separator} />;
   }
 }
@@ -166,7 +166,7 @@ class ItemSeparatorComponent extends PureComponent<{
   highlighted: boolean;
   leadingItem: unknown;
 }> {
-  render() {
+  override render() {
     const style = this.props.highlighted
       ? [
           styles.itemSeparator,
@@ -180,7 +180,7 @@ class ItemSeparatorComponent extends PureComponent<{
 class Spindicator extends PureComponent<{
   value: InstanceType<typeof Animated.Value>;
 }> {
-  render() {
+  override render() {
     return (
       <Animated.View
         style={[
@@ -209,7 +209,7 @@ function hashCode(str: string): number {
 }
 
 function getItemLayout(
-  data: unknown,
+  _data: unknown,
   index: number,
   horizontal?: boolean | null
 ) {
@@ -291,7 +291,7 @@ class SingleColumnExample extends PureComponent<object, State> {
 
   _listRef: FlatList<Item> | null = null;
 
-  state = {
+  override state = {
     data: genItemData(100),
     debug: false,
     horizontal: false,
@@ -324,12 +324,12 @@ class SingleColumnExample extends PureComponent<object, State> {
     }
   );
 
-  componentDidUpdate() {
+  override componentDidUpdate() {
     this._listRef?.recordInteraction(); // e.g. flipping logViewable switch
   }
 
-  render() {
-    const filterRegex = new RegExp(String(this.state.filterText), 'i');
+  override render() {
+    const filterRegex = new RegExp(this.state.filterText, 'i');
     const filter = (item: Item) =>
       filterRegex.test(item.text) || filterRegex.test(item.title);
     const filteredData = this.state.data.filter(filter);

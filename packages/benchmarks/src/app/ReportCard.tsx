@@ -20,7 +20,7 @@ type Props = {
 };
 
 class ReportCard extends PureComponent<Props> {
-  render() {
+  override render() {
     const {
       benchmarkName,
       libraryName,

@@ -101,7 +101,7 @@ class AnimatedValue extends AnimatedWithChildren {
     }
   }
 
-  __detach() {
+  override __detach() {
     if (this.__isNative) {
       NativeAnimatedAPI.getValue(this.__getNativeTag(), (value) => {
         this._value = value - this._offset;
@@ -111,7 +111,7 @@ class AnimatedValue extends AnimatedWithChildren {
     super.__detach();
   }
 
-  __getValue(): number {
+  override __getValue(): number {
     return this._value + this._offset;
   }
 
@@ -215,7 +215,7 @@ class AnimatedValue extends AnimatedWithChildren {
     }
   }
 
-  __onAnimatedValueUpdateReceived(value: number): void {
+  override __onAnimatedValueUpdateReceived(value: number): void {
     this._updateValue(value, false /*flush*/);
   }
 
@@ -291,7 +291,7 @@ class AnimatedValue extends AnimatedWithChildren {
     super.__callListeners(this.__getValue());
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     return {
       type: 'value',
       value: this._value,

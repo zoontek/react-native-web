@@ -35,20 +35,20 @@ class Linking {
    * said event is dispatched.
    */
   addEventListener(eventType: string, callback: Callback): { remove(): void } {
-    const _this = this;
+    const { _eventCallbacks } = this;
 
-    if (!_this._eventCallbacks[eventType]) {
-      _this._eventCallbacks[eventType] = [callback];
+    if (!_eventCallbacks[eventType]) {
+      _eventCallbacks[eventType] = [callback];
     }
-    _this._eventCallbacks[eventType]?.push(callback);
+    _eventCallbacks[eventType]?.push(callback);
 
     return {
       remove() {
-        const callbacks = _this._eventCallbacks[eventType] ?? [];
+        const callbacks = _eventCallbacks[eventType] ?? [];
         const filteredCallbacks = callbacks.filter(
           (c) => c.toString() !== callback.toString()
         );
-        _this._eventCallbacks[eventType] = filteredCallbacks;
+        _eventCallbacks[eventType] = filteredCallbacks;
       }
     };
   }

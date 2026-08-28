@@ -12,7 +12,7 @@ import canUseDOM from '../canUseDom';
 export type Modality = 'keyboard' | 'mouse' | 'touch' | 'pen';
 
 const supportsPointerEvent = () =>
-  !!(typeof window !== 'undefined' && window.PointerEvent != null);
+  typeof window !== 'undefined' && window.PointerEvent != null;
 
 let activeModality: Modality = 'keyboard';
 let modality: Modality = 'keyboard';

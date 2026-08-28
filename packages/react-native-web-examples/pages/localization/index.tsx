@@ -95,7 +95,7 @@ function withRTLState(RTLComponent: ComponentType<RTLProps>) {
       };
     }
 
-    render() {
+    override render() {
       const isRTL = this.state.isRTL;
       const setRTL = (isRTL: boolean) => this.setState({ isRTL: isRTL });
       return <RTLComponent isRTL={isRTL} setRTL={setRTL} />;
@@ -406,7 +406,7 @@ class LayoutRTLExample extends Component<object, LayoutRTLExampleState> {
     this._onDirectionChange = this._onDirectionChange.bind(this);
   }
 
-  render() {
+  override render() {
     return (
       <ScrollView
         dir={this.state.isRTL ? 'rtl' : 'ltr'}

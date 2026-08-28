@@ -65,7 +65,7 @@ export default class CellRenderer<ItemT> extends Component<
   Props<ItemT>,
   State<ItemT>
 > {
-  state: State<ItemT> = {
+  override state: State<ItemT> = {
     separatorProps: {
       highlighted: false,
       leadingItem: this.props.item
@@ -114,7 +114,7 @@ export default class CellRenderer<ItemT> extends Component<
     }));
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     this.props.onUnmount(this.props.cellKey);
   }
 
@@ -165,7 +165,7 @@ export default class CellRenderer<ItemT> extends Component<
     );
   }
 
-  render(): ReactNode {
+  override render(): ReactNode {
     const {
       CellRendererComponent,
       ItemSeparatorComponent,

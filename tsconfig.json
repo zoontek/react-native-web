@@ -30,13 +30,13 @@
 
     // Type Checking
     "strict": true,
-    // "allowUnreachableCode": false,
-    // "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     // "exactOptionalPropertyTypes": true,
-    // "noImplicitOverride": true,
+    "noImplicitOverride": true,
     // "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true
-    // "noUnusedLocals": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true
     // "noUnusedParameters": true,
   }
 }

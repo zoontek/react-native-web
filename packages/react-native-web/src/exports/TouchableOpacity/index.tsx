@@ -135,7 +135,7 @@ function TouchableOpacity(
     ]
   );
 
-  const pressEventHandlers = usePressEvents(hostRef, pressConfig);
+  const pressEventHandlers = usePressEvents(pressConfig);
 
   return (
     <View

@@ -208,7 +208,7 @@ export default class SectionList<
     }
   }
 
-  render(): ReactNode {
+  override render(): ReactNode {
     const {
       stickySectionHeadersEnabled: _stickySectionHeadersEnabled,
       ...restProps
