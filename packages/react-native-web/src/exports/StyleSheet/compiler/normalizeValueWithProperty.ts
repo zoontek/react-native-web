@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import unitlessNumbers from '../../../modules/unitlessNumbers';
+import isUnitlessNumber from '../../../modules/isUnitlessNumber';
 import type { Nullable } from '../../../types';
 import normalizeColor from './normalizeColor';
 
@@ -17,14 +17,15 @@ export type StyleValue =
 
 const colorProps: Record<string, boolean> = {
   backgroundColor: true,
-  borderColor: true,
-  borderTopColor: true,
-  borderRightColor: true,
   borderBottomColor: true,
+  borderColor: true,
   borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
   color: true,
   shadowColor: true,
   textDecorationColor: true,
+  textEmphasisColor: true,
   textShadowColor: true
 };
 
@@ -32,7 +33,7 @@ export default function normalizeValueWithProperty<
   T extends StyleValue | null | undefined
 >(value: T, property?: Nullable<string>): T | string | undefined {
   if (
-    (property == null || !unitlessNumbers[property]) &&
+    (property == null || !isUnitlessNumber(property)) &&
     typeof value === 'number'
   ) {
     return `${value}px`;
