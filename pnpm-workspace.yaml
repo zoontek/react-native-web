@@ -5,6 +5,3 @@ nodeLinker: hoisted
 
 packages:
   - 'packages/*'
-
-patchedDependencies:
-  gen-flow-files@0.4.11: patches/gen-flow-files@0.4.11.patch

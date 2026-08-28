@@ -4,7 +4,6 @@
 
 const execSync = require('child_process').execSync;
 const fs = require('fs');
-const glob = require('glob');
 const minimist = require('minimist');
 const path = require('path');
 
@@ -20,7 +19,7 @@ console.log(`Publishing react-native-web@${version}`);
 // Collect 'react-native-web' workspaces and package manifests
 const workspacePaths = require('../package.json').workspaces.reduce(
   (acc, w) => {
-    const resolvedPaths = glob.sync(w);
+    const resolvedPaths = fs.globSync(w);
     resolvedPaths.forEach((p) => {
       // Remove duplicates and unrelated packages
       if (p.includes('react-native-web') && acc.indexOf(p) === -1) {

@@ -7,8 +7,6 @@
  * @flow
  */
 
-'use strict';
-
 /*:: type Listener = (e: any) => void; */
 
 /*:: export type EventOptions = {

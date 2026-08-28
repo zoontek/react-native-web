@@ -71,7 +71,7 @@ pnpm lint
 Run the monorepo type checker:
 
 ```
-pnpm flow
+pnpm typecheck
 ```
 
 Run the monorepo unit tests:
