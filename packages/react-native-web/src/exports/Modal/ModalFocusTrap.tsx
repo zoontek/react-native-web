@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -7,6 +5,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
+import type { ReactNode } from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
 
 import * as React from 'react';
 import View from '../View';
@@ -31,13 +32,13 @@ const FocusBracket = () => {
   });
 };
 
-function attemptFocus(element /*: any */) {
+function attemptFocus(element: Node) {
   if (!canUseDOM) {
     return false;
   }
 
   try {
-    element.focus();
+    (element as HTMLElement).focus();
   } catch {
     // Do nothing
   }
@@ -45,46 +46,45 @@ function attemptFocus(element /*: any */) {
   return document.activeElement === element;
 }
 
-function focusFirstDescendant(element /*: any */) {
+function focusFirstDescendant(element: Node) {
   for (let i = 0; i < element.childNodes.length; i++) {
     const child = element.childNodes[i];
-    if (attemptFocus(child) || focusFirstDescendant(child)) {
+    if (child != null && (attemptFocus(child) || focusFirstDescendant(child))) {
       return true;
     }
   }
   return false;
 }
 
-function focusLastDescendant(element /*: any */) {
+function focusLastDescendant(element: Node) {
   for (let i = element.childNodes.length - 1; i >= 0; i--) {
     const child = element.childNodes[i];
-    if (attemptFocus(child) || focusLastDescendant(child)) {
+    if (child != null && (attemptFocus(child) || focusLastDescendant(child))) {
       return true;
     }
   }
   return false;
 }
 
-/*:: export type ModalFocusTrapProps = {|
-  active?: boolean | (() => boolean),
-  children?: any
-|}; */
+export type ModalFocusTrapProps = {
+  active?: boolean | (() => boolean);
+  children?: ReactNode;
+};
 
-const ModalFocusTrap = (
-  { active, children } /*: ModalFocusTrapProps */
-) /*: React.Node */ => {
-  // prettier-ignore
-  const trapElementRef = React.useRef/*:: <?HTMLElement> */();
-  /* oxlint-disable no-unexpected-multiline */
-  // prettier-ignore
-  const focusRef = React.useRef/*:: <{
-    trapFocusInProgress: boolean,
-    lastFocusedElement: ?HTMLElement
-  }> */({
+const ModalFocusTrap = ({
+  active,
+  children
+}: ModalFocusTrapProps): ReactNode => {
+  const trapElementRef = React.useRef<(HTMLElement & PlatformMethods) | null>(
+    null
+  );
+  const focusRef = React.useRef<{
+    trapFocusInProgress: boolean;
+    lastFocusedElement: Nullable<Element>;
+  }>({
     trapFocusInProgress: false,
     lastFocusedElement: null
   });
-  /* oxlint-enable no-unexpected-multiline */
 
   React.useEffect(() => {
     if (canUseDOM) {
@@ -152,7 +152,7 @@ const ModalFocusTrap = (
           lastFocusedElementOutsideTrap &&
           document.contains(lastFocusedElementOutsideTrap)
         ) {
-          UIManager.focus(lastFocusedElementOutsideTrap);
+          UIManager.focus(lastFocusedElementOutsideTrap as HTMLElement);
         }
       };
     }
