@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../../types';
+import type { StyleValue } from './normalizeValueWithProperty';
 import normalizeValueWithProperty from './normalizeValueWithProperty';
 
-/*:: type Style = { [key: string]: any }; */
+export type Style = { [key: string]: StyleValue | null | undefined };
 
 /**
  * The browser implements the CSS cascade, where the order of properties is a
@@ -22,14 +22,14 @@ import normalizeValueWithProperty from './normalizeValueWithProperty';
  * longfrom equivalents.
  */
 
-const emptyObject = {};
+const emptyObject: Style = {};
 
 const MONOSPACE_FONT_STACK = 'monospace,monospace';
 
 const SYSTEM_FONT_STACK =
   '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
 
-const STYLE_SHORT_FORM_EXPANSIONS = {
+const STYLE_SHORT_FORM_EXPANSIONS: Record<string, Array<string>> = {
   borderColor: [
     'borderTopColor',
     'borderRightColor',
@@ -103,14 +103,14 @@ const STYLE_SHORT_FORM_EXPANSIONS = {
  */
 
 const createReactDOMStyle = (
-  style /*: Style */,
-  isInline /*:: ?: boolean */
-) /*: Style */ => {
+  style: Nullable<Style>,
+  isInline?: boolean
+): Style => {
   if (!style) {
     return emptyObject;
   }
 
-  const resolvedStyle = {};
+  const resolvedStyle: Style = {};
 
   for (const prop in style) {
     const value = style[prop];
@@ -141,9 +141,12 @@ const createReactDOMStyle = (
         resolvedStyle.flex = value;
       }
     } else if (prop === 'font') {
-      resolvedStyle[prop] = value.replace('System', SYSTEM_FONT_STACK);
+      resolvedStyle[prop] =
+        typeof value === 'string'
+          ? value.replace('System', SYSTEM_FONT_STACK)
+          : value;
     } else if (prop === 'fontFamily') {
-      if (value.indexOf('System') > -1) {
+      if (typeof value === 'string' && value.indexOf('System') > -1) {
         const stack = value.split(/,\s*/);
         stack[stack.indexOf('System')] = SYSTEM_FONT_STACK;
         resolvedStyle[prop] = stack.join(',');

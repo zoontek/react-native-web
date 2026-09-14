@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -9,15 +7,16 @@
  */
 
 import normalizeColor from '@react-native/normalize-colors';
+import type { Nullable } from '../../types';
 
-const processColor = (color /*:: ?: string | number */) /*: ?number */ => {
-  if (color === undefined || color === null) {
+const processColor = (color?: Nullable<string | number>): Nullable<number> => {
+  if (color == null) {
     return color;
   }
 
   // convert number and hex
   let int32Color = normalizeColor(color);
-  if (int32Color === undefined || int32Color === null) {
+  if (int32Color == null) {
     return undefined;
   }
 
