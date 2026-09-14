@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 
 import type { PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
 import View, { type ViewProps } from '../View';
 
-const SafeAreaView = forwardRef<HTMLElement & PlatformMethods, ViewProps>(
-  (props, ref) => {
-    const { style, ...rest } = props;
-    return <View {...rest} ref={ref} style={[styles.root, style]} />;
-  }
-);
+const SafeAreaView = (
+  props: ViewProps & { ref?: Ref<HTMLElement & PlatformMethods> }
+) => {
+  const { ref, style, ...rest } = props;
+  return <View {...rest} ref={ref} style={[styles.root, style]} />;
+};
 
 SafeAreaView.displayName = 'SafeAreaView';
 

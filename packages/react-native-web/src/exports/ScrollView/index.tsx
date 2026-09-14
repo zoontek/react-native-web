@@ -14,7 +14,6 @@ import {
   Children,
   cloneElement,
   Component,
-  forwardRef,
   type ReactElement,
   type Ref,
   type TouchEvent
@@ -808,11 +807,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const ForwardedScrollView = forwardRef<ScrollViewNode, ScrollViewProps>(
-  (props, forwardedRef) => {
-    return <ScrollView {...props} forwardedRef={forwardedRef} />;
+const ForwardedScrollView = (
+  props: Omit<ScrollViewProps, 'forwardedRef'> & {
+    ref?: Ref<ScrollViewNode>;
   }
-);
+) => {
+  const { ref, ...rest } = props;
+  return <ScrollView {...rest} forwardedRef={ref} />;
+};
 
 ForwardedScrollView.displayName = 'ScrollView';
 

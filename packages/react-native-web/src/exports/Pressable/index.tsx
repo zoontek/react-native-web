@@ -8,17 +8,16 @@
 'use client';
 
 import {
-  forwardRef,
   memo,
   useCallback,
   useMemo,
   useRef,
   useState,
   type FocusEvent,
-  type ForwardedRef,
   type KeyboardEvent,
   type MouseEvent,
-  type ReactNode
+  type ReactNode,
+  type Ref
 } from 'react';
 
 import useHover, { type HoverEventsConfig } from '../../modules/useHover';
@@ -68,6 +67,7 @@ type Props = Omit<ViewProps, 'children' | 'style'> & {
   onPressMove?: PressResponderConfig['onPressMove'];
   // Called when a touch is released, before `onPress`.
   onPressOut?: PressResponderConfig['onPressEnd'];
+  ref?: Ref<HTMLElement & PlatformMethods>;
   style?: ViewStyleProp | ((state: StateCallbackType) => ViewStyleProp);
   /**
    * Used only for documentation or testing (e.g. snapshot testing).
@@ -80,10 +80,7 @@ type Props = Omit<ViewProps, 'children' | 'style'> & {
  * Component used to build display components that should respond to whether the
  * component is currently pressed or not.
  */
-function Pressable(
-  props: Props,
-  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
-): ReactNode {
+function Pressable(props: Props): ReactNode {
   const {
     children,
     delayLongPress,
@@ -101,6 +98,7 @@ function Pressable(
     onPressMove,
     onPressIn,
     onPressOut,
+    ref,
     style,
     tabIndex,
     testOnly_hovered,
@@ -113,7 +111,7 @@ function Pressable(
   const [pressed, setPressed] = useForceableState(testOnly_pressed === true);
 
   const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
-  const setRef = useMergeRefs(forwardedRef, hostRef);
+  const setRef = useMergeRefs(ref, hostRef);
 
   const pressConfig = useMemo(
     () => ({
@@ -250,7 +248,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const MemoedPressable = memo(forwardRef(Pressable));
+const MemoedPressable = memo(Pressable);
 MemoedPressable.displayName = 'Pressable';
 
 export default MemoedPressable;

@@ -7,7 +7,11 @@
  * @format
  */
 
-import { forwardRef, type ComponentProps, type ComponentRef } from 'react';
+import type {
+  ComponentProps,
+  ComponentPropsWithRef,
+  ComponentRef
+} from 'react';
 
 import SectionList from '../../../../exports/SectionList';
 import createAnimatedComponent, {
@@ -17,12 +21,9 @@ import createAnimatedComponent, {
 /**
  * @see https://github.com/facebook/react-native/commit/b8c8562
  */
-const SectionListWithEventThrottle = forwardRef<
-  ComponentRef<typeof SectionList>,
-  ComponentProps<typeof SectionList>
->((props, ref) => (
-  <SectionList scrollEventThrottle={0.0001} {...props} ref={ref} />
-));
+const SectionListWithEventThrottle = (
+  props: ComponentPropsWithRef<typeof SectionList>
+) => <SectionList scrollEventThrottle={0.0001} {...props} />;
 
 export default createAnimatedComponent(
   SectionListWithEventThrottle
