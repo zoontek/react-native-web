@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -13,16 +11,16 @@ import canUseDOM from '../../modules/canUseDom';
 
 const initialURL = canUseDOM ? window.location.href : '';
 
-/*:: type Callback = (...args: any) => void; */
+type Callback = (...args: unknown[]) => void;
 
 class Linking {
   /**
    * An object mapping of event name
    * and all the callbacks subscribing to it
    */
-  _eventCallbacks /*: { [key: string]: Array<Callback> } */ = {};
+  _eventCallbacks: { [key: string]: Array<Callback> } = {};
 
-  _dispatchEvent(event /*: string */, ...data /*: any */) {
+  _dispatchEvent(event: string, ...data: unknown[]) {
     const listeners = this._eventCallbacks[event];
     if (listeners != null && Array.isArray(listeners)) {
       listeners.map((listener) => {
@@ -35,20 +33,17 @@ class Linking {
    * Adds a event listener for the specified event. The callback will be called when the
    * said event is dispatched.
    */
-  addEventListener(
-    eventType /*: string */,
-    callback /*: Callback */
-  ) /*: {| remove(): void |} */ {
+  addEventListener(eventType: string, callback: Callback): { remove(): void } {
     const _this = this;
 
     if (!_this._eventCallbacks[eventType]) {
       _this._eventCallbacks[eventType] = [callback];
     }
-    _this._eventCallbacks[eventType].push(callback);
+    _this._eventCallbacks[eventType]?.push(callback);
 
     return {
       remove() {
-        const callbacks = _this._eventCallbacks[eventType];
+        const callbacks = _this._eventCallbacks[eventType] ?? [];
         const filteredCallbacks = callbacks.filter(
           (c) => c.toString() !== callback.toString()
         );
@@ -61,27 +56,24 @@ class Linking {
    * Removes a previously added event listener for the specified event. The callback must
    * be the same object as the one passed to `addEventListener`.
    */
-  removeEventListener(
-    eventType /*: string */,
-    callback /*: Callback */
-  ) /*: void */ {
+  removeEventListener(eventType: string, callback: Callback): void {
     console.error(
       `Linking.removeEventListener('${eventType}', ...): Method has been ` +
         'deprecated. Please instead use `remove()` on the subscription ' +
         'returned by `Linking.addEventListener`.'
     );
-    const callbacks = this._eventCallbacks[eventType];
+    const callbacks = this._eventCallbacks[eventType] ?? [];
     const filteredCallbacks = callbacks.filter(
       (c) => c.toString() !== callback.toString()
     );
     this._eventCallbacks[eventType] = filteredCallbacks;
   }
 
-  canOpenURL() /*: Promise<boolean> */ {
+  canOpenURL(): Promise<boolean> {
     return Promise.resolve(true);
   }
 
-  getInitialURL() /*: Promise<string> */ {
+  getInitialURL(): Promise<string> {
     return Promise.resolve(initialURL);
   }
 
@@ -91,10 +83,7 @@ class Linking {
    * If the url opens, the promise is resolved. If not, the promise is rejected.
    * Dispatches the `onOpen` event if `url` is opened successfully.
    */
-  openURL(
-    url /*: string */,
-    target /*:: ?: string */
-  ) /*: Promise<Object | void> */ {
+  openURL(url: string, target?: string): Promise<void> {
     if (arguments.length === 1) {
       target = '_blank';
     }
@@ -107,7 +96,7 @@ class Linking {
     }
   }
 
-  _validateURL(url /*: string */) {
+  _validateURL(url: string) {
     invariant(
       typeof url === 'string',
       'Invalid URL: should be a string. Was: ' + url
@@ -116,15 +105,15 @@ class Linking {
   }
 }
 
-const open = (url, target) => {
+const open = (url: string, target?: string) => {
   if (canUseDOM) {
-    const urlToOpen = new URL(url, window.location).toString();
+    const urlToOpen = new URL(url, window.location.href).toString();
     if (urlToOpen.indexOf('tel:') === 0) {
-      window.location = urlToOpen;
+      window.location.href = urlToOpen;
     } else {
       window.open(urlToOpen, target, 'noopener');
     }
   }
 };
 
-export default new Linking() /*: Linking */;
+export default new Linking();
