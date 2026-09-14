@@ -22,9 +22,7 @@ import canUseDOM from '../../modules/canUseDom';
 /*:: type DOMAppearanceListener = (ev: MediaQueryListEvent) => any; */
 
 function getQuery() /*: MediaQueryList | null */ {
-  return canUseDOM && window.matchMedia != null
-    ? window.matchMedia('(prefers-color-scheme: dark)')
-    : null;
+  return canUseDOM ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 }
 
 const query = getQuery();
@@ -50,13 +48,15 @@ const Appearance = {
       listenerMapping.set(listener, mappedListener);
     }
     if (query) {
-      query.addListener(mappedListener);
+      // $FlowFixMe
+      query.addEventListener('change', mappedListener);
     }
 
     function remove() /*: void */ {
       const mappedListener = listenerMapping.get(listener);
       if (query && mappedListener) {
-        query.removeListener(mappedListener);
+        // $FlowFixMe
+        query.removeEventListener('change', mappedListener);
       }
       listenerMapping.delete(listener);
     }
