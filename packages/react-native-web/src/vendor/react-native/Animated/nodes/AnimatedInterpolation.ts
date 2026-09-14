@@ -319,7 +319,7 @@ class AnimatedInterpolation<
   }
 
   __getValue(): number | string {
-    const parentValue = this._parent.__getValue() as number;
+    const parentValue = this._parent.__getValue();
     invariant(
       typeof parentValue === 'number',
       'Cannot interpolate an input which is not a number.'

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -12,6 +10,8 @@
 import invariant from 'fbjs/lib/invariant';
 import * as React from 'react';
 
+import type { Nullable } from '../../../types';
+
 /**
  * `setState` is called asynchronously, and should not rely on the value of
  * `this.props` or `this.state`:
@@ -21,30 +21,36 @@ import * as React from 'react';
  * variables are read in a state updater function, instead of the ones passed
  * in.
  */
-export default class StateSafePureComponent /*:: <
+export default class StateSafePureComponent<
   Props,
-  State: interface {},
-> */
-  extends React.PureComponent
-{
-  /*:: <Props, State> */
+  State extends {}
+> extends React.PureComponent<Props, State> {
   _inAsyncStateUpdate = false;
 
-  constructor(props /*: Props */) {
+  constructor(props: Props) {
     super(props);
     this._installSetStateHooks();
   }
 
-  setState(
-    partialState /*: ?($Shape<State> | ((State, Props) => ?$Shape<State>)) */,
-    callback /*:: ?: () => mixed */
-  ) /*: void */ {
+  setState<K extends keyof State>(
+    partialState: Nullable<
+      | Pick<State, K>
+      | State
+      | ((state: State, props: Props) => Pick<State, K> | State | null)
+    >,
+    callback?: () => unknown
+  ): void {
     if (typeof partialState === 'function') {
       super.setState((state, props) => {
         this._inAsyncStateUpdate = true;
         let ret;
         try {
-          ret = partialState(state, props);
+          ret = (
+            partialState as (
+              state: State,
+              props: Props
+            ) => Pick<State, K> | State | null
+          )(state, props);
         } catch (err) {
           throw err;
         } finally {
@@ -53,7 +59,7 @@ export default class StateSafePureComponent /*:: <
         return ret;
       }, callback);
     } else {
-      super.setState(partialState, callback);
+      super.setState(partialState as Pick<State, K> | State | null, callback);
     }
   }
 
@@ -69,7 +75,7 @@ export default class StateSafePureComponent /*:: <
         );
         return props;
       },
-      set(newProps /*: Props */) {
+      set(newProps: Props) {
         props = newProps;
       }
     });
@@ -81,7 +87,7 @@ export default class StateSafePureComponent /*:: <
         );
         return state;
       },
-      set(newState /*: State */) {
+      set(newState: State) {
         state = newState;
       }
     });

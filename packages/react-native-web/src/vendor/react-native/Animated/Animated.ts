@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -10,12 +8,6 @@
  */
 
 import Platform from '../../../exports/Platform';
-/*:: import typeof AnimatedFlatList from './components/AnimatedFlatList'; */
-/*:: import typeof AnimatedImage from './components/AnimatedImage'; */
-/*:: import typeof AnimatedScrollView from './components/AnimatedScrollView'; */
-/*:: import typeof AnimatedSectionList from './components/AnimatedSectionList'; */
-/*:: import typeof AnimatedText from './components/AnimatedText'; */
-/*:: import typeof AnimatedView from './components/AnimatedView'; */
 
 import FlatList from './components/AnimatedFlatList';
 import Image from './components/AnimatedImage';
@@ -27,9 +19,9 @@ import View from './components/AnimatedView';
 import AnimatedMock from './AnimatedMock';
 import AnimatedImplementation from './AnimatedImplementation';
 
-const Animated = Platform.isTesting
+const Animated: typeof AnimatedMock = Platform.isTesting
   ? AnimatedMock
-  : AnimatedImplementation; /*: typeof AnimatedMock */
+  : AnimatedImplementation;
 
 export default {
   FlatList,

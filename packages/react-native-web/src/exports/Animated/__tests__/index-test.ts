@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,8 +6,8 @@
  */
 
 import Animated from '..';
-import Easing from '../../Easing';
 import AnimatedImplementation from '../../../vendor/react-native/Animated/AnimatedImplementation';
+import Easing from '../../Easing';
 
 const AnimatedInterpolation = Animated.Interpolation;
 
@@ -24,7 +22,7 @@ describe('Animated', () => {
             outputRange
           };
           const animVal = new Animated.Value(0);
-          const result = animVal.interpolate(config);
+          const result = animVal.interpolate<string | number>(config);
           expect(result).toBeInstanceOf(Animated.Interpolation);
         }
       );
@@ -160,7 +158,7 @@ describe('Animated', () => {
       const interpolation = AnimatedInterpolation.__createInterpolation({
         inputRange: [0, 10, 100, 1000],
         outputRange: [0, 5, 50, 500],
-        extrapolate: true
+        extrapolate: 'extend'
       });
 
       expect(interpolation(-5)).toBe(-2.5);
@@ -295,7 +293,7 @@ describe('Animated', () => {
         outputRange: [0, 1]
       });
       expect(() => {
-        interpolation('45rad');
+        (interpolation as unknown as (input: string) => number)('45rad');
       }).toThrow();
     });
 
@@ -332,9 +330,17 @@ describe('Animated', () => {
   });
 
   describe('sequence and loop', () => {
+    const mockAnimation = () => ({
+      start: jest.fn(),
+      stop: jest.fn(),
+      reset: jest.fn(),
+      _isUsingNativeDriver: jest.fn(),
+      _startNativeLoop: jest.fn()
+    });
+
     it('supports restarting sequence after it was stopped during execution', () => {
-      const anim1 = { start: jest.fn(), stop: jest.fn() };
-      const anim2 = { start: jest.fn(), stop: jest.fn() };
+      const anim1 = mockAnimation();
+      const anim2 = mockAnimation();
       const cb = jest.fn();
 
       const seq = AnimatedImplementation.sequence([anim1, anim2]);
@@ -356,8 +362,8 @@ describe('Animated', () => {
     });
 
     it('supports restarting sequence after it was finished without a reset', () => {
-      const anim1 = { start: jest.fn(), stop: jest.fn() };
-      const anim2 = { start: jest.fn(), stop: jest.fn() };
+      const anim1 = mockAnimation();
+      const anim2 = mockAnimation();
       const cb = jest.fn();
 
       const seq = AnimatedImplementation.sequence([anim1, anim2]);
@@ -377,8 +383,9 @@ describe('Animated', () => {
     });
 
     it('restarts sequence normally in a loop if resetBeforeIteration is false', () => {
-      const anim1 = { start: jest.fn(), stop: jest.fn() };
-      const anim2 = { start: jest.fn(), stop: jest.fn() };
+      const anim1 = mockAnimation();
+      const anim2 = mockAnimation();
+
       const seq = AnimatedImplementation.sequence([anim1, anim2]);
 
       const loop = AnimatedImplementation.loop(seq, {
