@@ -14,13 +14,6 @@ export type ColorValue = null | string;
 
 export type DimensionValue = null | number | string;
 
-export type EdgeInsetsValue = {
-  top: number;
-  left: number;
-  right: number;
-  bottom: number;
-};
-
 export type GenericStyleProp<T> =
   | null
   | undefined
