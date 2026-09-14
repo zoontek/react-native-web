@@ -69,7 +69,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     return updatedStyle;
   }
 
-  __getValue(): Array<unknown> {
+  override __getValue(): Array<unknown> {
     return [this._inputStyle, this._walkStyleAndGetValues(this._style)];
   }
 
@@ -90,11 +90,11 @@ class AnimatedStyle extends AnimatedWithChildren {
     return updatedStyle;
   }
 
-  __getAnimatedValue(): Record<string, unknown> {
+  override __getAnimatedValue(): Record<string, unknown> {
     return this._walkStyleAndGetAnimatedValues(this._style);
   }
 
-  __attach(): void {
+  override __attach(): void {
     for (const key in this._style) {
       const value = this._style[key];
       if (value instanceof AnimatedNode) {
@@ -103,7 +103,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     }
   }
 
-  __detach(): void {
+  override __detach(): void {
     for (const key in this._style) {
       const value = this._style[key];
       if (value instanceof AnimatedNode) {
@@ -113,7 +113,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     super.__detach();
   }
 
-  __makeNative() {
+  override __makeNative() {
     for (const key in this._style) {
       const value = this._style[key];
       if (value instanceof AnimatedNode) {
@@ -123,7 +123,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     super.__makeNative();
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     const styleConfig: Record<string, Nullable<number>> = {};
     for (const styleKey in this._style) {
       if (this._style[styleKey] instanceof AnimatedNode) {

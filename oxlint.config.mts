@@ -73,10 +73,7 @@ export default defineConfig({
 
     // react-hooks
     'react/rules-of-hooks': 'error',
-    'react/exhaustive-deps': 'warn',
-
-    // temporarily disabled
-    'no-unused-expressions': 'off'
+    'react/exhaustive-deps': 'warn'
 
     // 'no-unused-vars': [
     //   'error',
@@ -89,44 +86,47 @@ export default defineConfig({
       plugins: ['typescript'],
       rules: {
         'typescript/no-empty-object-type': 'error',
+        'typescript/no-explicit-any': 'error',
+        'typescript/no-floating-promises': 'error',
         'typescript/no-import-type-side-effects': 'error',
         'typescript/no-invalid-void-type': 'error',
+        'typescript/no-misused-spread': 'error',
         'typescript/no-non-null-assertion': 'error',
+        'typescript/no-wrapper-object-types': 'error',
 
         // temporarily disabled
         'typescript/consistent-return': 'off',
-        'typescript/explicit-function-return-type': 'off',
-        'typescript/explicit-module-boundary-types': 'off',
-        'typescript/no-dynamic-delete': 'off',
-        'typescript/no-explicit-any': 'off',
         'typescript/no-extraneous-class': 'off',
-        'typescript/no-floating-promises': 'off',
-        'typescript/no-misused-spread': 'off',
-        'typescript/no-this-alias': 'off',
         'typescript/no-unnecessary-boolean-literal-compare': 'off',
-        'typescript/no-unnecessary-type-conversion': 'off',
         'typescript/no-unsafe-type-assertion': 'off',
-        'typescript/no-wrapper-object-types': 'off',
-        'typescript/unbound-method': 'off'
+        'typescript/unbound-method': 'off',
+        // 'typescript/explicit-function-return-type': 'error',
+        // 'typescript/explicit-module-boundary-types': 'error',
+        // 'typescript/no-dynamic-delete': 'error',
 
-        // 'typescript/restrict-template-expressions': [
-        //   'error',
-        //   {
-        //     allow: [],
-        //     allowNullish: false,
-        //     allowAny: false,
-        //     allowRegExp: false
-        //   }
-        // ]
+        'typescript/restrict-template-expressions': [
+          'error',
+          {
+            allow: [],
+            allowNullish: false,
+            allowAny: false,
+            allowRegExp: false
+          }
+        ]
 
         // 'typescript/strict-boolean-expressions': [
         //   'error',
         //   {
-        //     allowNullableObject: false,
-        //     allowNumber: false,
-        //     allowString: false
+        //     allowAny: true,
+        //     allowNullableBoolean: true,
+        //     allowNullableEnum: true,
+        //     allowNullableNumber: true,
+        //     allowNullableObject: true,
+        //     allowNullableString: true,
+        //     allowNumber: true,
+        //     allowString: true
         //   }
-        // ],
+        // ]
       }
     }
   ]

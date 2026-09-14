@@ -10,7 +10,7 @@ type Props = {
 export default class Button extends Component<Props> {
   static displayName = '@app/Button';
 
-  render() {
+  override render() {
     const { onPress, style, title } = this.props;
 
     return (

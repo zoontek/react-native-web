@@ -33,7 +33,7 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
     this._value = this._lastValue = this._a.__getValue() as number;
   }
 
-  __makeNative(platformConfig?: Nullable<PlatformConfig>) {
+  override __makeNative(platformConfig?: Nullable<PlatformConfig>) {
     this._a.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
@@ -44,7 +44,7 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
     return new AnimatedInterpolation(this, config);
   }
 
-  __getValue(): number {
+  override __getValue(): number {
     const value = this._a.__getValue() as number;
     const diff = value - this._lastValue;
     this._lastValue = value;
@@ -52,16 +52,16 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
     return this._value;
   }
 
-  __attach(): void {
+  override __attach(): void {
     this._a.__addChild(this);
   }
 
-  __detach(): void {
+  override __detach(): void {
     this._a.__removeChild(this);
     super.__detach();
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     return {
       type: 'diffclamp',
       input: this._a.__getNativeTag(),

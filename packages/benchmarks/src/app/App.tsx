@@ -87,7 +87,7 @@ export default class App extends Component<Props, State> {
     };
   }
 
-  render() {
+  override render() {
     const { tests } = this.props;
     const { currentBenchmarkName, status, currentLibraryName, results } =
       this.state;
@@ -158,7 +158,7 @@ export default class App extends Component<Props, State> {
                 </View>
               </View>
               <ScrollView ref={this._setScrollRef} style={styles.grow}>
-                {results.map((r, i) => (
+                {results.map((r) => (
                   <ReportCard
                     benchmarkName={r.benchmarkName}
                     key={r.id}

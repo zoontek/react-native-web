@@ -28,13 +28,13 @@ class AnimatedMultiplication extends AnimatedWithChildren {
     this._b = typeof b === 'number' ? new AnimatedValue(b) : b;
   }
 
-  __makeNative(platformConfig?: Nullable<PlatformConfig>) {
+  override __makeNative(platformConfig?: Nullable<PlatformConfig>) {
     this._a.__makeNative(platformConfig);
     this._b.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
 
-  __getValue(): number {
+  override __getValue(): number {
     return (this._a.__getValue() as number) * (this._b.__getValue() as number);
   }
 
@@ -43,18 +43,18 @@ class AnimatedMultiplication extends AnimatedWithChildren {
   ): AnimatedInterpolation<OutputT> {
     return new AnimatedInterpolation(this, config);
   }
-  __attach(): void {
+  override __attach(): void {
     this._a.__addChild(this);
     this._b.__addChild(this);
   }
 
-  __detach(): void {
+  override __detach(): void {
     this._a.__removeChild(this);
     this._b.__removeChild(this);
     super.__detach();
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     return {
       type: 'multiplication',
       input: [this._a.__getNativeTag(), this._b.__getNativeTag()]

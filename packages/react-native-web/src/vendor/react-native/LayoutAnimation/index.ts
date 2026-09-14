@@ -12,8 +12,6 @@
 import Platform from '../../../exports/Platform';
 import UIManager from '../../../exports/UIManager';
 
-const __DEV__ = process.env.NODE_ENV !== 'production';
-
 type Type =
   | 'spring'
   | 'linear'

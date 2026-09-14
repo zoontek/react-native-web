@@ -102,7 +102,7 @@ describe('components/Image', () => {
   describe('prop "onLoad"', () => {
     test('is called after image is loaded from network', () => {
       jest.useFakeTimers();
-      ImageLoader.load = jest.fn().mockImplementation((_, onLoad, onError) => {
+      ImageLoader.load = jest.fn().mockImplementation((_, onLoad) => {
         onLoad();
       });
       const onLoadStartStub = jest.fn();
@@ -122,7 +122,7 @@ describe('components/Image', () => {
 
     test('is called after image is loaded from cache', () => {
       jest.useFakeTimers();
-      ImageLoader.load = jest.fn().mockImplementation((_, onLoad, onError) => {
+      ImageLoader.load = jest.fn().mockImplementation((_, onLoad) => {
         onLoad();
       });
       const onLoadStartStub = jest.fn();
@@ -233,7 +233,7 @@ describe('components/Image', () => {
     ];
 
     resizeModes.forEach((resizeMode) => {
-      test(`value "${resizeMode}"`, () => {
+      test(`value "${String(resizeMode)}"`, () => {
         const { container } = render(<Image resizeMode={resizeMode} />);
         expect(container.firstChild).toMatchSnapshot();
       });
@@ -263,11 +263,9 @@ describe('components/Image', () => {
 
     test('is set immediately if the image was preloaded', () => {
       const uri = 'https://yahoo.com/favicon.ico';
-      ImageLoader.load = jest
-        .fn()
-        .mockImplementationOnce((_, onLoad, onError) => {
-          onLoad();
-        });
+      ImageLoader.load = jest.fn().mockImplementationOnce((_, onLoad) => {
+        onLoad();
+      });
       return Image.prefetch(uri).then(() => {
         const source = { uri };
         const { container } = render(<Image source={source} />);
@@ -309,11 +307,9 @@ describe('components/Image', () => {
       const defaultUri = 'https://testing.com/preview.jpg';
       const uri = 'https://testing.com/fullSize.jpg';
       let loadCallback!: () => void;
-      ImageLoader.load = jest
-        .fn()
-        .mockImplementationOnce((_, onLoad, onError) => {
-          loadCallback = onLoad;
-        });
+      ImageLoader.load = jest.fn().mockImplementationOnce((_, onLoad) => {
+        loadCallback = onLoad;
+      });
       const { container } = render(
         <Image defaultSource={{ uri: defaultUri }} source={{ uri }} />
       );

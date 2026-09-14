@@ -6,7 +6,7 @@ import styles from './view-styles.module.css';
 type Props = ComponentProps<'div'>;
 
 class View extends Component<Props> {
-  render() {
+  override render() {
     const props = this.props;
     return (
       <div {...props} className={classnames(styles.initial, props.className)} />
