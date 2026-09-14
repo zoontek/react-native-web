@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,19 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../types';
+
+type ImageUriCacheEntry = {
+  lastUsedTimestamp: number;
+  refCount: number;
+};
+
 const dataUriPattern = /^data:/;
 
 export class ImageUriCache {
-  static _maximumEntries /*: number */ = 256;
-  static _entries = {};
+  static _maximumEntries: number = 256;
+  static _entries: Record<string, ImageUriCacheEntry> = {};
 
-  static has(uri /*: string */) /*: boolean */ {
+  static has(uri: string): boolean {
     const entries = ImageUriCache._entries;
     const isDataUri = dataUriPattern.test(uri);
     return isDataUri || Boolean(entries[uri]);
   }
 
-  static add(uri /*: string */) {
+  static add(uri: string) {
     const entries = ImageUriCache._entries;
     const lastUsedTimestamp = Date.now();
     if (entries[uri]) {
@@ -33,7 +38,7 @@ export class ImageUriCache {
     }
   }
 
-  static remove(uri /*: string */) {
+  static remove(uri: string) {
     const entries = ImageUriCache._entries;
     if (entries[uri]) {
       entries[uri].refCount -= 1;
@@ -47,12 +52,13 @@ export class ImageUriCache {
     const imageUris = Object.keys(entries);
 
     if (imageUris.length + 1 > ImageUriCache._maximumEntries) {
-      let leastRecentlyUsedKey;
-      let leastRecentlyUsedEntry;
+      let leastRecentlyUsedKey: Nullable<string>;
+      let leastRecentlyUsedEntry: Nullable<ImageUriCacheEntry>;
 
       imageUris.forEach((uri) => {
         const entry = entries[uri];
         if (
+          entry != null &&
           (!leastRecentlyUsedEntry ||
             entry.lastUsedTimestamp <
               leastRecentlyUsedEntry.lastUsedTimestamp) &&
@@ -71,11 +77,11 @@ export class ImageUriCache {
 }
 
 let id = 0;
-const requests = {};
+const requests: Record<string, HTMLImageElement> = {};
 
 const ImageLoader = {
-  abort(requestId /*: number */) {
-    let image = requests[`${requestId}`];
+  abort(requestId: number) {
+    let image: Nullable<HTMLImageElement> = requests[`${requestId}`];
     if (image) {
       image.onerror = null;
       image.onload = null;
@@ -84,9 +90,9 @@ const ImageLoader = {
     }
   },
   getSize(
-    uri /*: string */,
-    success /*: (width: number, height: number) => void */,
-    failure /*: () => void */
+    uri: string,
+    success: (width: number, height: number) => void,
+    failure: () => void
   ) {
     let complete = false;
     const interval = setInterval(callback, 16);
@@ -115,14 +121,14 @@ const ImageLoader = {
       clearInterval(interval);
     }
   },
-  has(uri /*: string */) /*: boolean */ {
+  has(uri: string): boolean {
     return ImageUriCache.has(uri);
   },
   load(
-    uri /*: string */,
-    onLoad /*: Function */,
-    onError /*: Function */
-  ) /*: number */ {
+    uri: string,
+    onLoad: (e: { nativeEvent: Event }) => void,
+    onError: () => void
+  ): number {
     id += 1;
     const image = new window.Image();
     image.onerror = onError;
@@ -138,7 +144,7 @@ const ImageLoader = {
     requests[`${id}`] = image;
     return id;
   },
-  prefetch(uri /*: string */) /*: Promise<void> */ {
+  prefetch(uri: string): Promise<void> {
     return new Promise((resolve, reject) => {
       ImageLoader.load(
         uri,
@@ -153,10 +159,8 @@ const ImageLoader = {
       );
     });
   },
-  queryCache(
-    uris /*: Array<string> */
-  ) /*: Promise<{| [uri: string]: 'disk/memory' |}> */ {
-    const result = {};
+  queryCache(uris: Array<string>): Promise<Record<string, 'disk/memory'>> {
+    const result: Record<string, 'disk/memory'> = {};
     uris.forEach((u) => {
       if (ImageUriCache.has(u)) {
         result[u] = 'disk/memory';

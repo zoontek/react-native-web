@@ -86,7 +86,9 @@ const absoluteFill = create({ x: { ...absoluteFillObject } }).x;
 /**
  * create
  */
-function create<T extends Record<string, StyleObject>>(styles: T): Readonly<T> {
+function create<const T extends Record<string, StyleObject>>(
+  styles: T
+): Readonly<T> {
   Object.keys(styles).forEach((key) => {
     const styleObj = styles[key];
     // Only compile at runtime if the style is not already compiled
@@ -164,7 +166,7 @@ type StyleProps = [string, Style | null];
 export type Options = {
   shadow?: boolean;
   textShadow?: boolean;
-  writingDirection?: 'ltr' | 'rtl';
+  writingDirection?: 'auto' | 'ltr' | 'rtl';
 };
 
 function StyleSheet(

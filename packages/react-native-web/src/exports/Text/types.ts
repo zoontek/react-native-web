@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,10 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ColorValue, GenericStyleProp } from '../../types'; */
-/*:: import type { ViewProps, ViewStyle } from '../View/types'; */
+import type { ColorValue, GenericStyleProp, Nullable } from '../../types';
+import type { ViewProps, ViewStyle } from '../View/types';
 
-/*:: type FontWeightValue =
+type FontWeightValue =
   | 'normal'
   | 'bold'
   | '100'
@@ -22,27 +20,26 @@
   | '600'
   | '700'
   | '800'
-  | '900'; */
+  | '900';
 
-/*:: type NumberOrString = number | string; */
+type NumberOrString = number | string;
 
-/*:: export type TextStyle = {
-  ...ViewStyle,
-  color?: ?ColorValue,
-  fontFamily?: ?string,
-  fontFeatureSettings?: ?string,
-  fontSize?: ?NumberOrString,
-  fontStyle?: 'italic' | 'normal',
-  fontWeight?: ?FontWeightValue,
-  fontVariant?: $ReadOnlyArray<
+export type TextStyle = ViewStyle & {
+  color?: Nullable<ColorValue>;
+  fontFamily?: Nullable<string>;
+  fontFeatureSettings?: Nullable<string>;
+  fontSize?: Nullable<NumberOrString>;
+  fontStyle?: 'italic' | 'normal';
+  fontWeight?: Nullable<FontWeightValue>;
+  fontVariant?: Array<
     | 'small-caps'
     | 'oldstyle-nums'
     | 'lining-nums'
     | 'tabular-nums'
     | 'proportional-nums'
-  >,
-  letterSpacing?: ?NumberOrString,
-  lineHeight?: ?NumberOrString,
+  >;
+  letterSpacing?: Nullable<NumberOrString>;
+  lineHeight?: Nullable<NumberOrString>;
   textAlign?:
     | 'center'
     | 'end'
@@ -51,71 +48,51 @@
     | 'justify-all'
     | 'left'
     | 'right'
-    | 'start',
-  textDecorationColor?: ?ColorValue,
+    | 'start';
+  textDecorationColor?: Nullable<ColorValue>;
   textDecorationLine?:
     | 'none'
     | 'underline'
     | 'line-through'
-    | 'underline line-through',
-  textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed',
-  textIndent?: ?NumberOrString,
-  textOverflow?: ?string,
+    | 'underline line-through';
+  textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed';
+  textIndent?: Nullable<NumberOrString>;
+  textOverflow?: Nullable<string>;
   textRendering?:
     | 'auto'
     | 'geometricPrecision'
     | 'optimizeLegibility'
-    | 'optimizeSpeed',
-  textShadow?: ?string,
-  textShadowColor?: ?ColorValue,
-  textShadowOffset?: {| width?: number, height?: number |},
-  textShadowRadius?: ?number,
-  textTransform?: 'capitalize' | 'lowercase' | 'none' | 'uppercase',
+    | 'optimizeSpeed';
+  textShadow?: Nullable<string>;
+  textShadowColor?: Nullable<ColorValue>;
+  textShadowOffset?: { width?: number; height?: number };
+  textShadowRadius?: Nullable<number>;
+  textTransform?: 'capitalize' | 'lowercase' | 'none' | 'uppercase';
   unicodeBidi?:
     | 'normal'
     | 'bidi-override'
     | 'embed'
     | 'isolate'
     | 'isolate-override'
-    | 'plaintext',
-  userSelect?: 'none' | 'text',
-  verticalAlign?: ?string,
-  whiteSpace?: ?string,
-  wordBreak?: 'normal' | 'break-all' | 'break-word' | 'keep-all',
-  wordWrap?: ?string,
-  writingDirection?: 'auto' | 'ltr' | 'rtl',
-  /* @platform web *-/
-  MozOsxFontSmoothing?: ?string,
-  WebkitFontSmoothing?: ?string,
+    | 'plaintext';
+  userSelect?: 'none' | 'text';
+  verticalAlign?: Nullable<string>;
+  whiteSpace?: Nullable<string>;
+  wordBreak?: 'normal' | 'break-all' | 'break-word' | 'keep-all';
+  wordWrap?: Nullable<string>;
+  writingDirection?: 'auto' | 'ltr' | 'rtl';
+  /* @platform web */
+  MozOsxFontSmoothing?: Nullable<string>;
+  WebkitFontSmoothing?: Nullable<string>;
   // deprecated
-  textAlignVertical?: ?string
-}; */
+  textAlignVertical?: Nullable<string>;
+};
 
-/*:: export type TextProps = {
-  ...ViewProps,
-  dir?: 'auto' | 'ltr' | 'rtl',
-  numberOfLines?: ?number,
-  role?:
-    | 'button'
-    | 'header'
-    | 'heading'
-    | 'label'
-    | 'link'
-    | 'listitem'
-    | 'none'
-    | 'text',
-  style?: GenericStyleProp<TextStyle>,
-  testID?: ?string,
-  // @deprecated
-  accessibilityRole?:
-    | 'button'
-    | 'header'
-    | 'heading'
-    | 'label'
-    | 'link'
-    | 'listitem'
-    | 'none'
-    | 'text',
-  onPress?: (e: any) => void,
-  selectable?: boolean
-}; */
+export type TextProps = Omit<ViewProps, 'dir' | 'style'> & {
+  dir?: 'auto' | 'ltr' | 'rtl';
+  numberOfLines?: Nullable<number>;
+  style?: GenericStyleProp<TextStyle>;
+  testID?: Nullable<string>;
+  onPress?: (e: unknown) => void;
+  selectable?: boolean;
+};

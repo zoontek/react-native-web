@@ -16,7 +16,7 @@ export type WritingDirection = 'ltr' | 'rtl';
 
 type LocaleValue = {
   // Locale writing direction.
-  direction: WritingDirection;
+  direction: 'auto' | WritingDirection;
   // Locale BCP47 language code: https://www.ietf.org/rfc/bcp/bcp47.txt
   locale: Nullable<Locale>;
 };
