@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,67 +8,81 @@
 
 'use client';
 
-/*:: import type { Application } from './renderApplication'; */
-/*:: import type { ComponentType, Node } from 'react'; */
+import type {
+  AppProps,
+  Application,
+  ApplicationElement,
+  WrapperComponentType
+} from './renderApplication';
+import type { ComponentType } from 'react';
+import type { Root } from 'react-dom/client';
+import type { Nullable } from '../../types';
 
 import invariant from 'fbjs/lib/invariant';
 import unmountComponentAtNode from '../unmountComponentAtNode';
 import renderApplication, { getApplication } from './renderApplication';
 
-/*:: type AppParams = Object; */
-/*:: type Runnable = {|
-  getApplication?: (AppParams) => {|
-    element: Node,
-    getStyleElement: (any) => Node
-  |},
-  run: (AppParams) => any
-|}; */
+type AppParams = {
+  callback?: () => void;
+  hydrate?: boolean;
+  initialProps?: AppProps;
+  mode?: string;
+  rootTag: HTMLElement;
+};
+type Runnable = {
+  getApplication?: (appParams?: Partial<AppParams>) => ApplicationElement;
+  run: (appParams: AppParams) => Application;
+};
 
-/*:: export type ComponentProvider = () => ComponentType<any>; */
-/*:: export type ComponentProviderInstrumentationHook = (
+export type ComponentProvider = () => ComponentType<AppProps>;
+export type ComponentProviderInstrumentationHook = (
   component: ComponentProvider
-) => ComponentType<any>; */
-/*:: export type WrapperComponentProvider = (any) => ComponentType<*>; */
+) => ComponentType<AppProps>;
+export type WrapperComponentProvider = (
+  appParams?: Partial<AppParams>
+) => WrapperComponentType;
 
-/*:: export type AppConfig = {
-  appKey: string,
-  component?: ComponentProvider,
-  run?: Function,
-  section?: boolean
-}; */
+export type AppConfig = {
+  appKey: string;
+  component?: ComponentProvider;
+  run?: (appParams: AppParams) => Application;
+  section?: boolean;
+};
 
 const emptyObject = {};
-const runnables /*: {| [appKey: string]: Runnable |} */ = {};
+const runnables: { [appKey: string]: Runnable } = {};
 
-let componentProviderInstrumentationHook /*: ComponentProviderInstrumentationHook */ =
-  (component /*: ComponentProvider */) => component();
-let wrapperComponentProvider /*: ?WrapperComponentProvider */;
+let componentProviderInstrumentationHook: ComponentProviderInstrumentationHook =
+  (component: ComponentProvider) => component();
+let wrapperComponentProvider: Nullable<WrapperComponentProvider>;
 
 /**
  * `AppRegistry` is the JS entry point to running all React Native apps.
  */
 export default class AppRegistry {
-  static getAppKeys() /*: Array<string> */ {
+  static getAppKeys(): Array<string> {
     return Object.keys(runnables);
   }
 
   static getApplication(
-    appKey /*: string */,
-    appParameters /*:: ?: AppParams */
-  ) /*: {| element: Node, getStyleElement: (any) => Node |} */ {
+    appKey: string,
+    appParameters?: Partial<AppParams>
+  ): ApplicationElement {
     invariant(
       runnables[appKey] && runnables[appKey].getApplication,
       `Application ${appKey} has not been registered. ` +
         'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.'
     );
 
-    return runnables[appKey].getApplication(appParameters);
+    return (runnables[appKey] as Required<Runnable>).getApplication(
+      appParameters
+    );
   }
 
   static registerComponent(
-    appKey /*: string */,
-    componentProvider /*: ComponentProvider */
-  ) /*: string */ {
+    appKey: string,
+    componentProvider: ComponentProvider
+  ): string {
     runnables[appKey] = {
       getApplication: (appParameters) =>
         getApplication(
@@ -78,7 +90,7 @@ export default class AppRegistry {
           appParameters ? appParameters.initialProps : emptyObject,
           wrapperComponentProvider && wrapperComponentProvider(appParameters)
         ),
-      run: (appParameters) /*: Application */ =>
+      run: (appParameters) =>
         renderApplication(
           componentProviderInstrumentationHook(componentProvider),
           wrapperComponentProvider && wrapperComponentProvider(appParameters),
@@ -94,35 +106,32 @@ export default class AppRegistry {
     return appKey;
   }
 
-  static registerConfig(config /*: Array<AppConfig> */) {
+  static registerConfig(config: Array<AppConfig>) {
     config.forEach(({ appKey, component, run }) => {
       if (run) {
         AppRegistry.registerRunnable(appKey, run);
       } else {
         invariant(component, 'No component provider passed in');
-        AppRegistry.registerComponent(appKey, component);
+        AppRegistry.registerComponent(appKey, component as ComponentProvider);
       }
     });
   }
 
   // TODO: fix style sheet creation when using this method
   static registerRunnable(
-    appKey /*: string */,
-    run /*: Function */
-  ) /*: string */ {
+    appKey: string,
+    run: (appParams: AppParams) => Application
+  ): string {
     runnables[appKey] = { run };
     return appKey;
   }
 
-  static runApplication(
-    appKey /*: string */,
-    appParameters /*: Object */
-  ) /*: Application */ {
+  static runApplication(appKey: string, appParameters: AppParams): Application {
     const isDevelopment =
       process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test';
     if (isDevelopment) {
-      const params = { ...appParameters };
-      params.rootTag = `#${params.rootTag.id}`;
+      const params: Record<string, unknown> = { ...appParameters };
+      params.rootTag = `#${appParameters.rootTag.id}`;
 
       console.log(
         `Running application "${appKey}" with appParams:\n`,
@@ -138,20 +147,20 @@ export default class AppRegistry {
         'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.'
     );
 
-    return runnables[appKey].run(appParameters);
+    return (runnables[appKey] as Runnable).run(appParameters);
   }
 
   static setComponentProviderInstrumentationHook(
-    hook /*: ComponentProviderInstrumentationHook */
+    hook: ComponentProviderInstrumentationHook
   ) {
     componentProviderInstrumentationHook = hook;
   }
 
-  static setWrapperComponentProvider(provider /*: WrapperComponentProvider */) {
+  static setWrapperComponentProvider(provider: WrapperComponentProvider) {
     wrapperComponentProvider = provider;
   }
 
-  static unmountApplicationComponentAtRootTag(rootTag /*: Object */) {
+  static unmountApplicationComponentAtRootTag(rootTag: Root) {
     unmountComponentAtNode(rootTag);
   }
 }
