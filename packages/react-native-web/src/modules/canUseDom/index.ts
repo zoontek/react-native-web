@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const canUseDOM /*: boolean */ = !!(
+const canUseDOM: boolean = !!(
   typeof window !== 'undefined' &&
   window.document &&
   window.document.createElement
