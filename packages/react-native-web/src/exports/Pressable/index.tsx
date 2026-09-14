@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -9,9 +7,20 @@
 
 'use client';
 
-/*:: import type { HoverEventsConfig } from '../../modules/useHover'; */
-/*:: import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder'; */
-/*:: import type { ViewProps } from '../View'; */
+import type {
+  FocusEvent,
+  ForwardedRef,
+  KeyboardEvent,
+  MouseEvent,
+  ReactNode
+} from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { HoverEventsConfig } from '../../modules/useHover';
+import type {
+  EventHandlers,
+  PressResponderConfig
+} from '../../modules/usePressEvents/PressResponder';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import { forwardRef, memo, useMemo, useState, useRef } from 'react';
@@ -21,54 +30,58 @@ import usePressEvents from '../../modules/usePressEvents';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-/*:: export type StateCallbackType = $ReadOnly<{|
-  focused: boolean,
-  hovered: boolean,
-  pressed: boolean
-|}>; */
+export type StateCallbackType = Readonly<{
+  focused: boolean;
+  hovered: boolean;
+  pressed: boolean;
+}>;
 
-/*:: type ViewStyleProp = $PropertyType<ViewProps, 'style'>; */
+type ViewStyleProp = ViewProps['style'];
 
-/*:: type Props = {
-  ...ViewProps,
-  children: React.Node | ((state: StateCallbackType) => React.Node),
+type PressKeyboardEvent = Parameters<EventHandlers['onKeyDown']>[0];
+
+type Props = Omit<ViewProps, 'children' | 'style'> & {
+  children?: ReactNode | ((state: StateCallbackType) => ReactNode);
   // Duration (in milliseconds) from `onPressIn` before `onLongPress` is called.
-  delayLongPress?: ?number,
+  delayLongPress?: Nullable<number>;
   // Duration (in milliseconds) from `onPressStart` is called after pointerdown
-  delayPressIn?: ?number,
+  delayPressIn?: Nullable<number>;
   // Duration (in milliseconds) from `onPressEnd` is called after pointerup.
-  delayPressOut?: ?number,
+  delayPressOut?: Nullable<number>;
   // Whether the press behavior is disabled.
-  disabled?: ?boolean,
+  disabled?: Nullable<boolean>;
   // Called when the view is hovered
-  onHoverIn?: $PropertyType<HoverEventsConfig, 'onHoverStart'>,
+  onHoverIn?: HoverEventsConfig['onHoverStart'];
   // Called when the view is no longer hovered
-  onHoverOut?: $PropertyType<HoverEventsConfig, 'onHoverEnd'>,
+  onHoverOut?: HoverEventsConfig['onHoverEnd'];
   // Called when this view's layout changes
-  onLayout?: $PropertyType<ViewProps, 'onLayout'>,
+  onLayout?: ViewProps['onLayout'];
   // Called when a long-tap gesture is detected.
-  onLongPress?: $PropertyType<PressResponderConfig, 'onLongPress'>,
+  onLongPress?: PressResponderConfig['onLongPress'];
   // Called when a single tap gesture is detected.
-  onPress?: $PropertyType<PressResponderConfig, 'onPress'>,
+  onPress?: PressResponderConfig['onPress'];
   // Called when a touch is engaged, before `onPress`.
-  onPressIn?: $PropertyType<PressResponderConfig, 'onPressStart'>,
+  onPressIn?: PressResponderConfig['onPressStart'];
   // Called when a touch is moving, after `onPressIn`.
-  onPressMove?: $PropertyType<PressResponderConfig, 'onPressMove'>,
+  onPressMove?: PressResponderConfig['onPressMove'];
   // Called when a touch is released, before `onPress`.
-  onPressOut?: $PropertyType<PressResponderConfig, 'onPressEnd'>,
-  style?: ViewStyleProp | ((state: StateCallbackType) => ViewStyleProp),
+  onPressOut?: PressResponderConfig['onPressEnd'];
+  style?: ViewStyleProp | ((state: StateCallbackType) => ViewStyleProp);
   /**
    * Used only for documentation or testing (e.g. snapshot testing).
-   *-/
-  testOnly_hovered?: ?boolean,
-  testOnly_pressed?: ?boolean
-}; */
+   */
+  testOnly_hovered?: Nullable<boolean>;
+  testOnly_pressed?: Nullable<boolean>;
+};
 
 /**
  * Component used to build display components that should respond to whether the
  * component is currently pressed or not.
  */
-function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
+function Pressable(
+  props: Props,
+  forwardedRef: ForwardedRef<HTMLElement & PlatformMethods>
+): ReactNode {
   const {
     children,
     delayLongPress,
@@ -97,7 +110,7 @@ function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
   const [focused, setFocused] = useForceableState(false);
   const [pressed, setPressed] = useForceableState(testOnly_pressed === true);
 
-  const hostRef = useRef(null);
+  const hostRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
   const setRef = useMergeRefs(forwardedRef, hostRef);
 
   const pressConfig = useMemo(
@@ -143,7 +156,7 @@ function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
   const interactionState = { hovered, focused, pressed };
 
   const blurHandler = React.useCallback(
-    (e) => {
+    (e: FocusEvent<HTMLElement>) => {
       if (e.nativeEvent.target === hostRef.current) {
         setFocused(false);
         if (onBlur != null) {
@@ -155,7 +168,7 @@ function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
   );
 
   const focusHandler = React.useCallback(
-    (e) => {
+    (e: FocusEvent<HTMLElement>) => {
       if (e.nativeEvent.target === hostRef.current) {
         setFocused(true);
         if (onFocus != null) {
@@ -167,7 +180,7 @@ function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
   );
 
   const contextMenuHandler = React.useCallback(
-    (e) => {
+    (e: MouseEvent<HTMLElement>) => {
       if (onContextMenuPress != null) {
         onContextMenuPress(e);
       }
@@ -179,9 +192,9 @@ function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
   );
 
   const keyDownHandler = React.useCallback(
-    (e) => {
+    (e: KeyboardEvent<HTMLElement>) => {
       if (onKeyDownPress != null) {
-        onKeyDownPress(e);
+        onKeyDownPress(e as unknown as PressKeyboardEvent);
       }
       if (onKeyDown != null) {
         onKeyDown(e);
@@ -190,7 +203,7 @@ function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
     [onKeyDown, onKeyDownPress]
   );
 
-  let _tabIndex;
+  let _tabIndex: ViewProps['tabIndex'];
   if (tabIndex !== undefined) {
     _tabIndex = tabIndex;
   } else {
@@ -219,8 +232,8 @@ function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
 }
 
 function useForceableState(
-  forced /*: boolean */
-) /*: [boolean, (boolean) => void] */ {
+  forced: boolean
+): [boolean, (value: boolean) => void] {
   const [bool, setBool] = useState(false);
   return [bool || forced, setBool];
 }
@@ -238,7 +251,4 @@ const styles = StyleSheet.create({
 const MemoedPressable = memo(forwardRef(Pressable));
 MemoedPressable.displayName = 'Pressable';
 
-export default MemoedPressable /*: React.AbstractComponent<
-  Props,
-  React.ElementRef<typeof View>
-> */;
+export default MemoedPressable;

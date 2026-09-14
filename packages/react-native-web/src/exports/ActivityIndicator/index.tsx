@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,28 +8,29 @@
 
 'use client';
 
-/*:: import type { ViewProps } from '../View'; */
+import type { CSSProperties } from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-const createSvgCircle = (style) => (
+const createSvgCircle = (style: CSSProperties) => (
   <circle cx="16" cy="16" fill="none" r="14" strokeWidth="4" style={style} />
 );
 
-/*:: type ActivityIndicatorProps = {
-  ...ViewProps,
-  animating?: boolean,
-  color?: ?string,
-  hidesWhenStopped?: boolean,
-  size?: 'small' | 'large' | number
-}; */
+type ActivityIndicatorProps = ViewProps & {
+  animating?: boolean;
+  color?: Nullable<string>;
+  hidesWhenStopped?: boolean;
+  size?: 'small' | 'large' | number;
+};
 
-const ActivityIndicator /*: React.AbstractComponent<
-  ActivityIndicatorProps,
-  React.ElementRef<typeof View>
-> */ = React.forwardRef((props, forwardedRef) => {
+const ActivityIndicator = React.forwardRef<
+  HTMLElement & PlatformMethods,
+  ActivityIndicatorProps
+>((props, forwardedRef) => {
   const {
     animating = true,
     color = '#1976D2',
@@ -44,11 +43,11 @@ const ActivityIndicator /*: React.AbstractComponent<
   const svg = (
     <svg height="100%" viewBox="0 0 32 32" width="100%">
       {createSvgCircle({
-        stroke: color,
+        stroke: color ?? undefined,
         opacity: 0.2
       })}
       {createSvgCircle({
-        stroke: color,
+        stroke: color ?? undefined,
         strokeDasharray: 80,
         strokeDashoffset: 60
       })}
