@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -12,9 +10,13 @@ import { render } from '@testing-library/react';
 import useStable from '..';
 
 describe('useStable', () => {
-  let spy = {};
+  let spy: { value?: unknown } = {};
 
-  const TestComponent = ({ initialValueCallback }) /*: React.Node */ => {
+  const TestComponent = ({
+    initialValueCallback
+  }: {
+    initialValueCallback: () => unknown;
+  }): React.ReactNode => {
     const value = useStable(initialValueCallback);
     spy.value = value;
     return null;

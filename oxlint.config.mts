@@ -109,6 +109,16 @@ export default defineConfig({
         'typescript/no-wrapper-object-types': 'off',
         'typescript/unbound-method': 'off'
 
+        // 'typescript/restrict-template-expressions': [
+        //   'error',
+        //   {
+        //     allow: [],
+        //     allowNullish: false,
+        //     allowAny: false,
+        //     allowRegExp: false
+        //   }
+        // ]
+
         // 'typescript/strict-boolean-expressions': [
         //   'error',
         //   {

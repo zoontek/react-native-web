@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -46,12 +44,12 @@ const rtlLangs = new Set([
   'yi' // Yiddish
 ]);
 
-const cache = new Map();
+const cache = new Map<string, boolean>();
 
 /**
  * Determine the writing direction of a locale
  */
-export function isLocaleRTL(locale /*: string */) /*: boolean */ {
+export function isLocaleRTL(locale: string): boolean {
   const cachedRTL = cache.get(locale);
   if (cachedRTL) {
     return cachedRTL;
@@ -60,14 +58,13 @@ export function isLocaleRTL(locale /*: string */) /*: boolean */ {
   let isRTL = false;
 
   try {
-    // $FlowFixMe
     const script = new Intl.Locale(locale).maximize().script;
-    isRTL = rtlScripts.has(script);
+    isRTL = script != null && rtlScripts.has(script);
   } catch {
     // RangeError: Incorrect locale information provided
     // Fallback to inferring from language
     const lang = locale.split('-')[0];
-    isRTL = rtlLangs.has(lang);
+    isRTL = lang != null && rtlLangs.has(lang);
   }
 
   cache.set(locale, isRTL);
