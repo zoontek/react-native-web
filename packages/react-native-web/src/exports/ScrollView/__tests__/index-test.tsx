@@ -27,7 +27,7 @@ describe('components/ScrollView', () => {
 
   describe('prop "onScroll"', () => {
     test('is called when element scrolls', () => {
-      const onScroll = jest.fn();
+      const onScroll = vi.fn();
       const ref = createRef<ComponentRef<typeof ScrollView>>();
       act(() => {
         render(
@@ -43,7 +43,7 @@ describe('components/ScrollView', () => {
     });
 
     test('is not called when descendant scrolls', () => {
-      const onScroll = jest.fn();
+      const onScroll = vi.fn();
       const ref = createRef<HTMLDivElement>();
       act(() => {
         render(
@@ -62,13 +62,13 @@ describe('components/ScrollView', () => {
 
   describe('prop "ref"', () => {
     test('value is set', () => {
-      const ref = jest.fn();
+      const ref = vi.fn();
       render(<ScrollView ref={ref} />);
       expect(ref).toHaveBeenCalled();
     });
 
     test('is not called for prop changes', () => {
-      const ref = jest.fn();
+      const ref = vi.fn();
       let rerender!: RenderResult['rerender'];
       act(() => {
         ({ rerender } = render(

@@ -18,7 +18,7 @@ const createEventTarget = (node: Nullable<Node>) =>
 describe('addEventListener', () => {
   describe('addEventListener()', () => {
     test('event dispatched on target', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
 
       function Component() {
@@ -42,8 +42,8 @@ describe('addEventListener', () => {
     });
 
     test('event dispatched on parent', () => {
-      const listener = jest.fn();
-      const listenerCapture = jest.fn();
+      const listener = vi.fn();
+      const listenerCapture = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
       const parentRef = createRef<HTMLDivElement>();
 
@@ -88,10 +88,10 @@ describe('addEventListener', () => {
 
     test('event dispatched on child', () => {
       const log: string[] = [];
-      const listener = jest.fn(() => {
+      const listener = vi.fn(() => {
         log.push('bubble');
       });
-      const listenerCapture = jest.fn(() => {
+      const listenerCapture = vi.fn(() => {
         log.push('capture');
       });
       const targetRef = createRef<HTMLDivElement>();
@@ -138,7 +138,7 @@ describe('addEventListener', () => {
     });
 
     test('event dispatched on text node', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
       const childRef = createRef<HTMLDivElement>();
 
@@ -167,7 +167,7 @@ describe('addEventListener', () => {
     });
 
     test('listener can be attached to document', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
 
       function Component({ target }: { target: EventTarget }) {
@@ -189,7 +189,7 @@ describe('addEventListener', () => {
     });
 
     test('listener can be attached to window ', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
 
       function Component({ target }: { target: EventTarget }) {
@@ -211,7 +211,7 @@ describe('addEventListener', () => {
     });
 
     test('custom event dispatched on target', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
 
       function Component() {
@@ -239,10 +239,10 @@ describe('addEventListener', () => {
       const parentRef = createRef<HTMLDivElement>();
       const childRef = createRef<HTMLDivElement>();
 
-      const listener = jest.fn((e: Event) => {
+      const listener = vi.fn((e: Event) => {
         log.push(['bubble', (e.currentTarget as HTMLElement).id]);
       });
-      const listenerCapture = jest.fn((e: Event) => {
+      const listenerCapture = vi.fn((e: Event) => {
         log.push(['capture', (e.currentTarget as HTMLElement).id]);
       });
 
@@ -291,16 +291,16 @@ describe('addEventListener', () => {
       const log: string[][] = [];
       const targetRef = createRef<HTMLDivElement>();
       const childRef = createRef<HTMLDivElement>();
-      const listener = jest.fn(() => {
+      const listener = vi.fn(() => {
         log.push(['bubble', 'target']);
       });
-      const listenerAlt = jest.fn(() => {
+      const listenerAlt = vi.fn(() => {
         log.push(['bubble', 'target-alt']);
       });
-      const listenerCapture = jest.fn(() => {
+      const listenerCapture = vi.fn(() => {
         log.push(['capture', 'target']);
       });
-      const listenerCaptureAlt = jest.fn(() => {
+      const listenerCaptureAlt = vi.fn(() => {
         log.push(['capture', 'target-alt']);
       });
 
@@ -347,10 +347,10 @@ describe('addEventListener', () => {
 
   describe('stopPropagation and stopImmediatePropagation', () => {
     test('stopPropagation works as expected', () => {
-      const childListener = jest.fn((e: Event) => {
+      const childListener = vi.fn((e: Event) => {
         e.stopPropagation();
       });
-      const targetListener = jest.fn();
+      const targetListener = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
       const childRef = createRef<HTMLDivElement>();
 
@@ -381,10 +381,10 @@ describe('addEventListener', () => {
     });
 
     test('stopImmediatePropagation works as expected', () => {
-      const firstListener = jest.fn((e: Event) => {
+      const firstListener = vi.fn((e: Event) => {
         e.stopImmediatePropagation();
       });
-      const secondListener = jest.fn();
+      const secondListener = vi.fn();
       const targetRef = createRef<HTMLDivElement>();
 
       function Component() {
