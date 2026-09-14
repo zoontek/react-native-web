@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../types';
 import propsToAriaRole from './propsToAriaRole';
 
 const roleComponents: Record<string, string> = {
@@ -29,15 +30,17 @@ const roleComponents: Record<string, string> = {
   strong: 'strong'
 };
 
-const emptyObject = {};
+type Props = {
+  'aria-level'?: Nullable<number>;
+  accessibilityLevel?: Nullable<number>;
+  accessibilityRole?: Nullable<string>;
+  role?: Nullable<string>;
+};
+
+const emptyObject: Props = {};
 
 const propsToAccessibilityComponent = (
-  props: {
-    accessibilityLevel?: number;
-    accessibilityRole?: string;
-    'aria-level'?: number;
-    role?: string;
-  } = emptyObject
+  props: Props = emptyObject
 ): string | undefined => {
   const roleProp = props.role || props.accessibilityRole;
   // special-case for "label" role which doesn't map to an ARIA role
