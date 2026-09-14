@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -9,9 +7,9 @@
 
 'use client';
 
-/*:: import type { Context } from 'react'; */
+import type { Context } from 'react';
 
 import { createContext } from 'react';
 
-const TextAncestorContext = createContext(false);
-export default TextAncestorContext /*: Context<boolean> */;
+const TextAncestorContext: Context<boolean> = createContext(false);
+export default TextAncestorContext;
