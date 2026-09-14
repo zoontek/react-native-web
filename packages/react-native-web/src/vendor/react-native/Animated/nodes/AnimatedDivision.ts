@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -16,15 +14,16 @@ import AnimatedNode from './AnimatedNode';
 import AnimatedValue from './AnimatedValue';
 import AnimatedWithChildren from './AnimatedWithChildren';
 
-/*:: import type {InterpolationConfigType} from './AnimatedInterpolation'; */
-/*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
+import type { InterpolationConfigType } from './AnimatedInterpolation';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import type { Nullable } from '../../../../types';
 
 class AnimatedDivision extends AnimatedWithChildren {
-  _a /*: AnimatedNode */;
-  _b /*: AnimatedNode */;
-  _warnedAboutDivideByZero /*: boolean */ = false;
+  _a: AnimatedNode;
+  _b: AnimatedNode;
+  _warnedAboutDivideByZero: boolean = false;
 
-  constructor(a /*: AnimatedNode | number */, b /*: AnimatedNode | number */) {
+  constructor(a: AnimatedNode | number, b: AnimatedNode | number) {
     super();
     if (b === 0 || (b instanceof AnimatedNode && b.__getValue() === 0)) {
       console.error('Detected potential division by zero in AnimatedDivision');
@@ -33,15 +32,15 @@ class AnimatedDivision extends AnimatedWithChildren {
     this._b = typeof b === 'number' ? new AnimatedValue(b) : b;
   }
 
-  __makeNative(platformConfig /*: ?PlatformConfig */) {
+  __makeNative(platformConfig?: Nullable<PlatformConfig>) {
     this._a.__makeNative(platformConfig);
     this._b.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
 
-  __getValue() /*: number */ {
-    const a = this._a.__getValue();
-    const b = this._b.__getValue();
+  __getValue(): number {
+    const a = this._a.__getValue() as number;
+    const b = this._b.__getValue() as number;
     if (b === 0) {
       // Prevent spamming the console/LogBox
       if (!this._warnedAboutDivideByZero) {
@@ -55,24 +54,24 @@ class AnimatedDivision extends AnimatedWithChildren {
     return a / b;
   }
 
-  interpolate /*:: <OutputT: number | string> */(
-    config /*: InterpolationConfigType<OutputT> */
-  ) /*: AnimatedInterpolation<OutputT> */ {
+  interpolate<OutputT extends number | string>(
+    config: InterpolationConfigType<OutputT>
+  ): AnimatedInterpolation<OutputT> {
     return new AnimatedInterpolation(this, config);
   }
 
-  __attach() /*: void */ {
+  __attach(): void {
     this._a.__addChild(this);
     this._b.__addChild(this);
   }
 
-  __detach() /*: void */ {
+  __detach(): void {
     this._a.__removeChild(this);
     this._b.__removeChild(this);
     super.__detach();
   }
 
-  __getNativeConfig() /*: any */ {
+  __getNativeConfig(): Record<string, unknown> {
     return {
       type: 'division',
       input: [this._a.__getNativeTag(), this._b.__getNativeTag()]

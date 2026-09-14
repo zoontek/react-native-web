@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,7 +9,8 @@
 
 'use strict';
 
-/*:: import type {EndResult} from './animations/Animation'; */
+import type { EndResult } from './animations/Animation';
+import type { Nullable } from '../../../types';
 
 import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent';
 import AnimatedImplementation from './AnimatedImplementation';
@@ -22,11 +21,11 @@ import AnimatedValueXY from './nodes/AnimatedValueXY';
 
 import createAnimatedComponent from './createAnimatedComponent';
 
-/*:: import type {EndCallback} from './animations/Animation'; */
-/*:: import type {TimingAnimationConfig} from './animations/TimingAnimation'; */
-/*:: import type {DecayAnimationConfig} from './animations/DecayAnimation'; */
-/*:: import type {SpringAnimationConfig} from './animations/SpringAnimation'; */
-/*:: import type {Numeric as AnimatedNumeric} from './AnimatedImplementation'; */
+import type { EndCallback } from './animations/Animation';
+import type { TimingAnimationConfig } from './animations/TimingAnimation';
+import type { DecayAnimationConfig } from './animations/DecayAnimation';
+import type { SpringAnimationConfig } from './animations/SpringAnimation';
+import type { Numeric as AnimatedNumeric } from './AnimatedImplementation';
 import AnimatedColor from './nodes/AnimatedColor';
 
 /**
@@ -40,13 +39,13 @@ import AnimatedColor from './nodes/AnimatedColor';
 // callback, which may trigger another animation
 let inAnimationCallback = false;
 function mockAnimationStart(
-  start /*: (callback?: ?EndCallback) => void */
-) /*: (callback?: ?EndCallback) => void */ {
+  start: (callback?: Nullable<EndCallback>) => void
+): (callback?: Nullable<EndCallback>) => void {
   return (callback) => {
     const guardedCallback =
       callback == null
         ? callback
-        : (...args /*: Array<EndResult> */) => {
+        : (...args: [EndResult]) => {
             if (inAnimationCallback) {
               console.warn(
                 'Ignoring recursive animation callback when running mock animations'
@@ -64,14 +63,13 @@ function mockAnimationStart(
   };
 }
 
-/*:: export type CompositeAnimation = {
-  start: (callback?: ?EndCallback) => void,
-  stop: () => void,
-  reset: () => void,
-  _startNativeLoop: (iterations?: number) => void,
-  _isUsingNativeDriver: () => boolean,
-  ...
-}; */
+export type CompositeAnimation = {
+  start: (callback?: Nullable<EndCallback>) => void;
+  stop: () => void;
+  reset: () => void;
+  _startNativeLoop: (iterations?: number) => void;
+  _isUsingNativeDriver: () => boolean;
+};
 
 const emptyAnimation = {
   start: () => {},
@@ -84,94 +82,88 @@ const emptyAnimation = {
 };
 
 const mockCompositeAnimation = (
-  animations /*: Array<CompositeAnimation> */
-) /*: CompositeAnimation */ => ({
+  animations: Array<CompositeAnimation>
+): CompositeAnimation => ({
   ...emptyAnimation,
-  start: mockAnimationStart((callback /*:: ?: ?EndCallback */) /*: void */ => {
+  start: mockAnimationStart((callback?: Nullable<EndCallback>): void => {
     animations.forEach((animation) => animation.start());
     callback?.({ finished: true });
   })
 });
 
 const spring = function (
-  value /*: AnimatedValue | AnimatedValueXY | AnimatedColor */,
-  config /*: SpringAnimationConfig */
-) /*: CompositeAnimation */ {
-  const anyValue /*: any */ = value;
+  value: AnimatedValue | AnimatedValueXY | AnimatedColor,
+  config: SpringAnimationConfig
+): CompositeAnimation {
+  const anyValue = value as AnimatedValue;
   return {
     ...emptyAnimation,
-    start: mockAnimationStart(
-      (callback /*:: ?: ?EndCallback */) /*: void */ => {
-        anyValue.setValue(config.toValue);
-        callback?.({ finished: true });
-      }
-    )
+    start: mockAnimationStart((callback?: Nullable<EndCallback>): void => {
+      anyValue.setValue(config.toValue as number);
+      callback?.({ finished: true });
+    })
   };
 };
 
 const timing = function (
-  value /*: AnimatedValue | AnimatedValueXY | AnimatedColor */,
-  config /*: TimingAnimationConfig */
-) /*: CompositeAnimation */ {
-  const anyValue /*: any */ = value;
+  value: AnimatedValue | AnimatedValueXY | AnimatedColor,
+  config: TimingAnimationConfig
+): CompositeAnimation {
+  const anyValue = value as AnimatedValue;
   return {
     ...emptyAnimation,
-    start: mockAnimationStart(
-      (callback /*:: ?: ?EndCallback */) /*: void */ => {
-        anyValue.setValue(config.toValue);
-        callback?.({ finished: true });
-      }
-    )
+    start: mockAnimationStart((callback?: Nullable<EndCallback>): void => {
+      anyValue.setValue(config.toValue as number);
+      callback?.({ finished: true });
+    })
   };
 };
 
 const decay = function (
-  value /*: AnimatedValue | AnimatedValueXY | AnimatedColor */,
-  config /*: DecayAnimationConfig */
-) /*: CompositeAnimation */ {
+  value: AnimatedValue | AnimatedValueXY | AnimatedColor,
+  config: DecayAnimationConfig
+): CompositeAnimation {
   return emptyAnimation;
 };
 
 const sequence = function (
-  animations /*: Array<CompositeAnimation> */
-) /*: CompositeAnimation */ {
+  animations: Array<CompositeAnimation>
+): CompositeAnimation {
   return mockCompositeAnimation(animations);
 };
 
-/*:: type ParallelConfig = {stopTogether?: boolean, ...}; */
+type ParallelConfig = { stopTogether?: boolean };
 const parallel = function (
-  animations /*: Array<CompositeAnimation> */,
-  config /*:: ?: ?ParallelConfig */
-) /*: CompositeAnimation */ {
+  animations: Array<CompositeAnimation>,
+  config?: Nullable<ParallelConfig>
+): CompositeAnimation {
   return mockCompositeAnimation(animations);
 };
 
-const delay = function (time /*: number */) /*: CompositeAnimation */ {
+const delay = function (time: number): CompositeAnimation {
   return emptyAnimation;
 };
 
 const stagger = function (
-  time /*: number */,
-  animations /*: Array<CompositeAnimation> */
-) /*: CompositeAnimation */ {
+  time: number,
+  animations: Array<CompositeAnimation>
+): CompositeAnimation {
   return mockCompositeAnimation(animations);
 };
 
-/*:: type LoopAnimationConfig = {
-  iterations: number,
-  resetBeforeIteration?: boolean,
-  ...
-}; */
+type LoopAnimationConfig = {
+  iterations: number;
+  resetBeforeIteration?: boolean;
+};
 
 const loop = function (
-  animation /*: CompositeAnimation */,
-  // $FlowFixMe[prop-missing]
-  { iterations = -1 } /*: LoopAnimationConfig */ = {}
-) /*: CompositeAnimation */ {
+  animation: CompositeAnimation,
+  { iterations = -1 }: LoopAnimationConfig = {} as LoopAnimationConfig
+): CompositeAnimation {
   return emptyAnimation;
 };
 
-/*:: export type {AnimatedNumeric as Numeric}; */
+export type { AnimatedNumeric as Numeric };
 
 export default {
   Value: AnimatedValue,
