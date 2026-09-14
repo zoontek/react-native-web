@@ -1,11 +1,21 @@
-// @ts-nocheck
+import type { ComponentProps, CSSProperties } from 'react';
 
 import React from 'react';
 import { StyleSheet } from 'react-native-web';
 
-function View(props) {
+type Props = Omit<ComponentProps<'div'>, 'style'> & {
+  style?: Parameters<typeof StyleSheet>[0];
+};
+
+function View(props: Props) {
   const [className, inlineStyle] = StyleSheet([styles.root$raw, props.style]);
-  return <div {...props} className={className} style={inlineStyle} />;
+  return (
+    <div
+      {...props}
+      className={className}
+      style={inlineStyle as CSSProperties}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

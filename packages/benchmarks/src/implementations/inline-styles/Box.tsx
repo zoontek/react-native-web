@@ -1,4 +1,5 @@
-// @ts-nocheck
+import type { CSSProperties } from 'react';
+import type { BoxProps } from '../../impl';
 
 import React from 'react';
 import View from './View';
@@ -9,11 +10,11 @@ const Box = ({
   layout = 'column',
   outer = false,
   ...other
-}) => (
+}: BoxProps) => (
   <View
     {...other}
     style={{
-      ...styles[`color${color}`],
+      ...styles[`color${color}` as keyof typeof styles],
       ...(fixed && styles.fixed),
       ...(layout === 'row' && styles.row),
       ...(outer && styles.outer)
@@ -51,6 +52,6 @@ const styles = {
     width: 6,
     height: 6
   }
-};
+} satisfies Record<string, CSSProperties>;
 
 export default Box;

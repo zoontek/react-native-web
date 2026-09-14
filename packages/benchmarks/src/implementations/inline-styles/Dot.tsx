@@ -1,8 +1,9 @@
-// @ts-nocheck
+import type { CSSProperties } from 'react';
+import type { DotProps } from '../../impl';
 
 import React from 'react';
 
-const Dot = ({ size, x, y, children, color }) => (
+const Dot = ({ size, x, y, children, color }: DotProps) => (
   <div
     style={Object.assign({}, styles.root, {
       borderBottomColor: color,
@@ -28,6 +29,6 @@ const styles = {
     borderTopWidth: 0,
     transform: 'translate(50%, 50%)'
   }
-};
+} satisfies Record<string, CSSProperties>;
 
 export default Dot;

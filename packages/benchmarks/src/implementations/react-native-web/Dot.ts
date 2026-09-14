@@ -1,11 +1,11 @@
-// @ts-nocheck
+import type { DotProps } from '../../impl';
 
 import {
   unstable_createElement as createElement,
   StyleSheet
-} from 'react-native';
+} from 'react-native-web';
 
-const Dot = ({ size, x, y, children, color }) =>
+const Dot = ({ size, x, y, children, color }: DotProps) =>
   createElement('div', {
     children,
     style: [
