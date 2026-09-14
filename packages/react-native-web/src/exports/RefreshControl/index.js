@@ -31,7 +31,7 @@ import React from 'react';
 
 function RefreshControl(props /*: RefreshControlProps */) /*: Node */ {
   const {
-    /* eslint-disable */
+    /* oxlint-disable no-unused-vars */
     colors,
     enabled,
     onRefresh,
@@ -42,7 +42,7 @@ function RefreshControl(props /*: RefreshControlProps */) /*: Node */ {
     tintColor,
     title,
     titleColor,
-    /* eslint-enable */
+    /* oxlint-enable no-unused-vars */
     ...rest
   } = props;
 

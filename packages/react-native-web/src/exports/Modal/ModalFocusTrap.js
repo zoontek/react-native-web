@@ -38,7 +38,7 @@ function attemptFocus(element /*: any */) {
 
   try {
     element.focus();
-  } catch (e) {
+  } catch {
     // Do nothing
   }
 
@@ -75,7 +75,7 @@ const ModalFocusTrap = (
 ) /*: React.Node */ => {
   // prettier-ignore
   const trapElementRef = React.useRef/*:: <?HTMLElement> */();
-  /* eslint-disable no-unexpected-multiline */
+  /* oxlint-disable no-unexpected-multiline */
   // prettier-ignore
   const focusRef = React.useRef/*:: <{
     trapFocusInProgress: boolean,
@@ -84,7 +84,7 @@ const ModalFocusTrap = (
     trapFocusInProgress: false,
     lastFocusedElement: null
   });
-  /* eslint-enable no-unexpected-multiline */
+  /* oxlint-enable no-unexpected-multiline */
 
   React.useEffect(() => {
     if (canUseDOM) {

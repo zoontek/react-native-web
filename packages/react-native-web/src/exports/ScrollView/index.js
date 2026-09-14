@@ -548,12 +548,12 @@ class ScrollView extends React.Component /*:: <ScrollViewProps> */ {
       refreshControl,
       stickyHeaderIndices,
       pagingEnabled,
-      /* eslint-disable */
+      /* oxlint-disable no-unused-vars */
       forwardedRef,
       keyboardDismissMode,
       onScroll,
       centerContent,
-      /* eslint-enable */
+      /* oxlint-enable no-unused-vars */
       ...other
     } = this.props;
 

@@ -51,7 +51,7 @@ export default class Clipboard {
       try {
         document.execCommand('copy');
         success = true;
-      } catch (e) {}
+      } catch {}
 
       // remove selection and node
       selection.removeAllRanges();
