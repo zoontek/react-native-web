@@ -15,7 +15,7 @@ import type {
 } from 'react';
 
 import type { Nullable } from '../../types';
-import render, { hydrate } from '../render';
+import { hydrate, render } from '../render';
 import StyleSheet from '../StyleSheet';
 import AppContainer from './AppContainer';
 
@@ -34,7 +34,7 @@ export type AppProps = Record<string, unknown>;
 
 export type WrapperComponentType = ComponentType<{ children?: ReactNode }>;
 
-export default function renderApplication<Props extends AppProps>(
+export function renderApplication<Props extends AppProps>(
   RootComponent: ComponentType<Props>,
   WrapperComponent: Nullable<WrapperComponentType>,
   callback: Nullable<() => void>,
