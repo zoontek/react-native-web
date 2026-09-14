@@ -14,7 +14,7 @@ import StyleSheet from '../../../exports/StyleSheet';
 import View from '../../../exports/View';
 import * as React from 'react';
 
-export type AnimatedComponentType<
+/*:: export type AnimatedComponentType<
   -Props: {+[string]: mixed, ...},
   +Instance = mixed,
 > = React.AbstractComponent<
@@ -28,20 +28,20 @@ export type AnimatedComponentType<
     () => any,
   >,
   Instance,
->;
+>; */
 
 /**
  * Experimental implementation of `createAnimatedComponent` that is intended to
  * be compatible with concurrent rendering.
  */
-export default function createAnimatedComponent<TProps: {...}, TInstance>(
-  Component: React.AbstractComponent<TProps, TInstance>,
-): React.AbstractComponent<TProps, TInstance> {
+export default function createAnimatedComponent/*:: <TProps: {...}, TInstance> */(
+  Component/*: React.AbstractComponent<TProps, TInstance> */,
+)/*: React.AbstractComponent<TProps, TInstance> */ {
   return React.forwardRef((props, forwardedRef) => {
-    const [reducedProps, callbackRef] = useAnimatedProps<TProps, TInstance>(
+    const [reducedProps, callbackRef] = useAnimatedProps/*:: <TProps, TInstance> */(
       props,
     );
-    const ref = useMergeRefs<TInstance | null>(callbackRef, forwardedRef);
+    const ref = useMergeRefs/*:: <TInstance | null> */(callbackRef, forwardedRef);
 
     // Some components require explicit passthrough values for animation
     // to work properly. For example, if an animated component is

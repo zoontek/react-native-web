@@ -10,7 +10,7 @@
 
 'use client';
 
-import type { ViewProps, ViewStyle } from '../View/types';
+/*:: import type { ViewProps, ViewStyle } from '../View/types'; */
 
 import Dimensions from '../Dimensions';
 import dismissKeyboard from '../../modules/dismissKeyboard';
@@ -25,7 +25,7 @@ import View from '../View';
 import React from 'react';
 import warning from 'fbjs/lib/warning';
 
-type ScrollViewProps = {
+/*:: type ScrollViewProps = {
   ...ViewProps,
   centerContent?: boolean,
   contentContainerStyle?: ViewStyle,
@@ -38,37 +38,37 @@ type ScrollViewProps = {
   scrollEnabled?: boolean,
   scrollEventThrottle?: number,
   stickyHeaderIndices?: Array<number>
-};
+}; */
 
-type Event = Object;
+/*:: type Event = Object; */
 
 const emptyObject = {};
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16;
 
-class ScrollView extends React.Component<ScrollViewProps> {
-  _scrollNodeRef: any = null;
-  _innerViewRef: any = null;
+class ScrollView extends React.Component /*:: <ScrollViewProps> */ {
+  _scrollNodeRef /*: any */ = null;
+  _innerViewRef /*: any */ = null;
 
   /**
    * ------------------------------------------------------
    * START SCROLLRESPONDER
    * ------------------------------------------------------
    */
-  isTouching: boolean = false;
-  lastMomentumScrollBeginTime: number = 0;
-  lastMomentumScrollEndTime: number = 0;
+  isTouching /*: boolean */ = false;
+  lastMomentumScrollBeginTime /*: number */ = 0;
+  lastMomentumScrollEndTime /*: number */ = 0;
   // Reset to false every time becomes responder. This is used to:
   // - Determine if the scroll view has been scrolled and therefore should
   // refuse to give up its responder lock.
   // - Determine if releasing should dismiss the keyboard when we are in
   // tap-to-dismiss mode (!this.props.keyboardShouldPersistTaps).
-  observedScrollSinceBecomingResponder: boolean = false;
-  becameResponderWhileAnimating: boolean = false;
+  observedScrollSinceBecomingResponder /*: boolean */ = false;
+  becameResponderWhileAnimating /*: boolean */ = false;
 
   /**
    * Invoke this from an `onScroll` event.
    */
-  scrollResponderHandleScrollShouldSetResponder: boolean = () => {
+  scrollResponderHandleScrollShouldSetResponder /*: boolean */ = () => {
     return this.isTouching;
   };
 
@@ -97,7 +97,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *   true.
    *
    */
-  scrollResponderHandleStartShouldSetResponder(): boolean {
+  scrollResponderHandleStartShouldSetResponder() /*: boolean */ {
     return false;
   }
 
@@ -112,7 +112,9 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *
    * Invoke this from an `onStartShouldSetResponderCapture` event.
    */
-  scrollResponderHandleStartShouldSetResponderCapture: boolean = (e: Event) => {
+  scrollResponderHandleStartShouldSetResponderCapture /*: boolean */ = (
+    e /*: Event */
+  ) => {
     // First see if we want to eat taps while the keyboard is up
     // var currentlyFocusedTextInput = TextInputState.currentlyFocusedField();
     // if (!this.props.keyboardShouldPersistTaps &&
@@ -152,7 +154,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *   navigation of a swipe gesture higher in the view hierarchy, should be
    *   rejected.
    */
-  scrollResponderHandleTerminationRequest: boolean = () => {
+  scrollResponderHandleTerminationRequest /*: boolean */ = () => {
     return !this.observedScrollSinceBecomingResponder;
   };
 
@@ -161,7 +163,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *
    * @param {SyntheticEvent} e Event.
    */
-  scrollResponderHandleTouchEnd = (e: Event) => {
+  scrollResponderHandleTouchEnd = (e /*: Event */) => {
     const nativeEvent = e.nativeEvent;
     this.isTouching = nativeEvent.touches.length !== 0;
     this.props.onTouchEnd && this.props.onTouchEnd(e);
@@ -170,7 +172,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
   /**
    * Invoke this from an `onResponderRelease` event.
    */
-  scrollResponderHandleResponderRelease = (e: Event) => {
+  scrollResponderHandleResponderRelease = (e /*: Event */) => {
     this.props.onResponderRelease && this.props.onResponderRelease(e);
 
     // By default scroll views will unfocus a textField
@@ -189,7 +191,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
     }
   };
 
-  scrollResponderHandleScroll = (e: Event) => {
+  scrollResponderHandleScroll = (e /*: Event */) => {
     this.observedScrollSinceBecomingResponder = true;
     this.props.onScroll && this.props.onScroll(e);
   };
@@ -197,7 +199,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
   /**
    * Invoke this from an `onResponderGrant` event.
    */
-  scrollResponderHandleResponderGrant = (e: Event) => {
+  scrollResponderHandleResponderGrant = (e /*: Event */) => {
     this.observedScrollSinceBecomingResponder = false;
     this.props.onResponderGrant && this.props.onResponderGrant(e);
     this.becameResponderWhileAnimating = this.scrollResponderIsAnimating();
@@ -210,21 +212,21 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *
    * Invoke this from an `onScrollBeginDrag` event.
    */
-  scrollResponderHandleScrollBeginDrag = (e: Event) => {
+  scrollResponderHandleScrollBeginDrag = (e /*: Event */) => {
     this.props.onScrollBeginDrag && this.props.onScrollBeginDrag(e);
   };
 
   /**
    * Invoke this from an `onScrollEndDrag` event.
    */
-  scrollResponderHandleScrollEndDrag = (e: Event) => {
+  scrollResponderHandleScrollEndDrag = (e /*: Event */) => {
     this.props.onScrollEndDrag && this.props.onScrollEndDrag(e);
   };
 
   /**
    * Invoke this from an `onMomentumScrollBegin` event.
    */
-  scrollResponderHandleMomentumScrollBegin = (e: Event) => {
+  scrollResponderHandleMomentumScrollBegin = (e /*: Event */) => {
     this.lastMomentumScrollBeginTime = Date.now();
     this.props.onMomentumScrollBegin && this.props.onMomentumScrollBegin(e);
   };
@@ -232,7 +234,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
   /**
    * Invoke this from an `onMomentumScrollEnd` event.
    */
-  scrollResponderHandleMomentumScrollEnd = (e: Event) => {
+  scrollResponderHandleMomentumScrollEnd = (e /*: Event */) => {
     this.lastMomentumScrollEndTime = Date.now();
     this.props.onMomentumScrollEnd && this.props.onMomentumScrollEnd(e);
   };
@@ -248,7 +250,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *
    * @param {SyntheticEvent} e Touch Start event.
    */
-  scrollResponderHandleTouchStart = (e: Event) => {
+  scrollResponderHandleTouchStart = (e /*: Event */) => {
     this.isTouching = true;
     this.props.onTouchStart && this.props.onTouchStart(e);
   };
@@ -264,7 +266,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *
    * @param {SyntheticEvent} e Touch Start event.
    */
-  scrollResponderHandleTouchMove = (e: Event) => {
+  scrollResponderHandleTouchMove = (e /*: Event */) => {
     this.props.onTouchMove && this.props.onTouchMove(e);
   };
 
@@ -273,7 +275,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * view is currently animating. This is particularly useful to know when
    * a touch has just started or ended.
    */
-  scrollResponderIsAnimating: boolean = () => {
+  scrollResponderIsAnimating /*: boolean */ = () => {
     const now = Date.now();
     const timeSinceLastMomentumScrollEnd = now - this.lastMomentumScrollEndTime;
     const isAnimating =
@@ -294,9 +296,9 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * This is deprecated due to ambiguity (y before x), and SHOULD NOT BE USED.
    */
   scrollResponderScrollTo = (
-    x?: number | { x?: number, y?: number, animated?: boolean },
-    y?: number,
-    animated?: boolean
+    x /*:: ?: number | { x?: number, y?: number, animated?: boolean } */,
+    y /*:: ?: number */,
+    animated /*:: ?: boolean */
   ) => {
     if (typeof x === 'number') {
       console.warn(
@@ -325,14 +327,14 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * @platform ios
    */
   scrollResponderZoomTo = (
-    rect: {
+    rect /*: {
       x: number,
       y: number,
       width: number,
       height: number,
       animated?: boolean
-    },
-    animated?: boolean // deprecated, put this inside the rect argument instead
+    } */,
+    animated /*:: ?: boolean */ // deprecated, put this inside the rect argument instead
   ) => {
     if (Platform.OS !== 'ios') {
       invariant('zoomToRect is not implemented');
@@ -355,9 +357,9 @@ class ScrollView extends React.Component<ScrollViewProps> {
    *        down to make it meet the keyboard's top. Default is false.
    */
   scrollResponderScrollNativeHandleToKeyboard = (
-    nodeHandle: any,
-    additionalOffset?: number,
-    preventNegativeScrollOffset?: boolean
+    nodeHandle /*: any */,
+    additionalOffset /*:: ?: number */,
+    preventNegativeScrollOffset /*:: ?: boolean */
   ) => {
     this.additionalScrollOffset = additionalOffset || 0;
     this.preventNegativeScrollOffset = !!preventNegativeScrollOffset;
@@ -380,10 +382,10 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * @param {number} height Height of the text input.
    */
   scrollResponderInputMeasureAndScrollToKeyboard = (
-    left: number,
-    top: number,
-    width: number,
-    height: number
+    left /*: number */,
+    top /*: number */,
+    width /*: number */,
+    height /*: number */
   ) => {
     let keyboardScreenY = Dimensions.get('window').height;
     if (this.keyboardWillOpenTo) {
@@ -405,7 +407,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
     this.preventNegativeScrollOffset = false;
   };
 
-  scrollResponderTextInputFocusError(e: Event) {
+  scrollResponderTextInputFocusError(e /*: Event */) {
     console.error('Error measuring text field: ', e);
   }
 
@@ -437,17 +439,17 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * relevant to you. (For example, only if you receive these callbacks after
    * you had explicitly focused a node etc).
    */
-  scrollResponderKeyboardWillShow = (e: Event) => {
+  scrollResponderKeyboardWillShow = (e /*: Event */) => {
     this.keyboardWillOpenTo = e;
     this.props.onKeyboardWillShow && this.props.onKeyboardWillShow(e);
   };
 
-  scrollResponderKeyboardWillHide = (e: Event) => {
+  scrollResponderKeyboardWillHide = (e /*: Event */) => {
     this.keyboardWillOpenTo = null;
     this.props.onKeyboardWillHide && this.props.onKeyboardWillHide(e);
   };
 
-  scrollResponderKeyboardDidShow = (e: Event) => {
+  scrollResponderKeyboardDidShow = (e /*: Event */) => {
     // TODO(7693961): The event for DidShow is not available on iOS yet.
     // Use the one from WillShow and do not assign.
     if (e) {
@@ -456,7 +458,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
     this.props.onKeyboardDidShow && this.props.onKeyboardDidShow(e);
   };
 
-  scrollResponderKeyboardDidHide = (e: Event) => {
+  scrollResponderKeyboardDidHide = (e /*: Event */) => {
     this.keyboardWillOpenTo = null;
     this.props.onKeyboardDidHide && this.props.onKeyboardDidHide(e);
   };
@@ -477,7 +479,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * implement this method so that they can be composed while providing access
    * to the underlying scroll responder's methods.
    */
-  getScrollResponder: ScrollView = () => {
+  getScrollResponder /*: ScrollView */ = () => {
     return this;
   };
 
@@ -508,9 +510,9 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * This is deprecated due to ambiguity (y before x), and SHOULD NOT BE USED.
    */
   scrollTo = (
-    y?: number | { x?: number, y?: number, animated?: boolean },
-    x?: number,
-    animated?: boolean
+    y /*:: ?: number | { x?: number, y?: number, animated?: boolean } */,
+    x /*:: ?: number */,
+    animated /*:: ?: boolean */
   ) => {
     if (typeof y === 'number') {
       console.warn(
@@ -535,7 +537,7 @@ class ScrollView extends React.Component<ScrollViewProps> {
    * `scrollToEnd({ animated: false })` for immediate scrolling.
    * If no options are passed, `animated` defaults to true.
    */
-  scrollToEnd = (options?: { animated?: boolean }) => {
+  scrollToEnd = (options /*:: ?: { animated?: boolean } */) => {
     // Default to true
     const animated = (options && options.animated) !== false;
     const { horizontal } = this.props;
@@ -673,12 +675,12 @@ class ScrollView extends React.Component<ScrollViewProps> {
     return scrollView;
   }
 
-  _handleContentOnLayout = (e: Object) => {
+  _handleContentOnLayout = (e /*: Object */) => {
     const { width, height } = e.nativeEvent.layout;
     this.props.onContentSizeChange(width, height);
   };
 
-  _handleScroll = (e: Object) => {
+  _handleScroll = (e /*: Object */) => {
     if (process.env.NODE_ENV !== 'production') {
       if (this.props.onScroll && this.props.scrollEventThrottle == null) {
         console.log(
@@ -772,10 +774,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const ForwardedScrollView: React.AbstractComponent<
+const ForwardedScrollView /*: React.AbstractComponent<
   React.ElementConfig<typeof ScrollView>,
   React.ElementRef<typeof ScrollView>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   return <ScrollView {...props} forwardedRef={forwardedRef} />;
 });
 

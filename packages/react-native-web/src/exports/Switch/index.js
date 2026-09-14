@@ -9,8 +9,8 @@
 
 'use client';
 
-import type { ColorValue } from '../../types';
-import type { ViewProps } from '../View';
+/*:: import type { ColorValue } from '../../types'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -18,7 +18,7 @@ import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-type SwitchProps = {
+/*:: type SwitchProps = {
   ...ViewProps,
   activeThumbColor?: ColorValue,
   activeTrackColor?: ColorValue,
@@ -27,7 +27,7 @@ type SwitchProps = {
   thumbColor?: ColorValue,
   trackColor?: ColorValue | {| false: ColorValue, true: ColorValue |},
   value?: boolean
-};
+}; */
 
 const emptyObject = {};
 const thumbDefaultBoxShadow = '0px 1px 3px rgba(0,0,0,0.5)';
@@ -41,10 +41,10 @@ const defaultActiveThumbColor = '#009688';
 const defaultThumbColor = '#FAFAFA';
 const defaultDisabledThumbColor = '#BDBDBD';
 
-const Switch: React.AbstractComponent<
+const Switch /*: React.AbstractComponent<
   SwitchProps,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const {
     'aria-label': ariaLabel,
     accessibilityLabel,
@@ -61,13 +61,13 @@ const Switch: React.AbstractComponent<
 
   const thumbRef = React.useRef(null);
 
-  function handleChange(event: Object) {
+  function handleChange(event /*: Object */) {
     if (onValueChange != null) {
       onValueChange(event.nativeEvent.target.checked);
     }
   }
 
-  function handleFocusState(event: Object) {
+  function handleFocusState(event /*: Object */) {
     const isFocused = event.nativeEvent.type === 'focus';
     const boxShadow = isFocused ? thumbFocusedBoxShadow : thumbDefaultBoxShadow;
     if (thumbRef.current != null) {

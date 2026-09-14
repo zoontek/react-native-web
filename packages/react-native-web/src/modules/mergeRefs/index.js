@@ -7,13 +7,14 @@
  * @flow strict
  */
 
+// eslint-disable-next-line no-unused-vars
 import * as React from 'react';
 
 export default function mergeRefs(
-  ...args: $ReadOnlyArray<React.ElementRef<any>>
-): (node: HTMLElement | null) => void {
-  return function forwardRef(node: HTMLElement | null) {
-    args.forEach((ref: React.ElementRef<any>) => {
+  ...args /*: $ReadOnlyArray<React.ElementRef<any>> */
+) /*: (node: HTMLElement | null) => void */ {
+  return function forwardRef(node /*: HTMLElement | null */) {
+    args.forEach((ref /*: React.ElementRef<any> */) => {
       if (ref == null) {
         return;
       }

@@ -7,8 +7,8 @@
  * @flow
  */
 
-import type { ElementRef } from 'react';
-import type { LayoutEvent } from '../../types';
+/*:: import type { ElementRef } from 'react'; */
+/*:: import type { LayoutEvent } from '../../types'; */
 
 import useLayoutEffect from '../useLayoutEffect';
 import UIManager from '../../exports/UIManager';
@@ -19,7 +19,7 @@ const DOM_LAYOUT_HANDLER_NAME = '__reactLayoutHandler';
 let didWarn = !canUseDOM;
 let resizeObserver = null;
 
-function getResizeObserver(): ?ResizeObserver {
+function getResizeObserver() /*: ?ResizeObserver */ {
   if (canUseDOM && typeof window.ResizeObserver !== 'undefined') {
     if (resizeObserver == null) {
       resizeObserver = new window.ResizeObserver(function (entries) {
@@ -30,7 +30,7 @@ function getResizeObserver(): ?ResizeObserver {
             // We still need to measure the view because browsers don't yet provide
             // border-box dimensions in the entry
             UIManager.measure(node, (x, y, width, height, left, top) => {
-              const event: LayoutEvent = {
+              const event /*: LayoutEvent */ = {
                 // $FlowFixMe
                 nativeEvent: {
                   layout: { x, y, width, height, left, top }
@@ -63,8 +63,8 @@ function getResizeObserver(): ?ResizeObserver {
 }
 
 export default function useElementLayout(
-  ref: ElementRef<any>,
-  onLayout?: ?(e: LayoutEvent) => void
+  ref /*: ElementRef<any> */,
+  onLayout /*:: ?: ?(e: LayoutEvent) => void */
 ) {
   const observer = getResizeObserver();
 

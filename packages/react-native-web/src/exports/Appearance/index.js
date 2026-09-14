@@ -12,36 +12,39 @@
 
 import canUseDOM from '../../modules/canUseDom';
 
-export type ColorSchemeName = 'light' | 'dark';
+/*:: export type ColorSchemeName = 'light' | 'dark'; */
 
-export type AppearancePreferences = {|
+/*:: export type AppearancePreferences = {|
   colorScheme: ColorSchemeName
-|};
+|}; */
 
-type AppearanceListener = (preferences: AppearancePreferences) => void;
-type DOMAppearanceListener = (ev: MediaQueryListEvent) => any;
+/*:: type AppearanceListener = (preferences: AppearancePreferences) => void; */
+/*:: type DOMAppearanceListener = (ev: MediaQueryListEvent) => any; */
 
-function getQuery(): MediaQueryList | null {
+function getQuery() /*: MediaQueryList | null */ {
   return canUseDOM && window.matchMedia != null
     ? window.matchMedia('(prefers-color-scheme: dark)')
     : null;
 }
 
 const query = getQuery();
-const listenerMapping = new WeakMap<
+// prettier-ignore
+const listenerMapping = new WeakMap /*:: <
   AppearanceListener,
   DOMAppearanceListener
->();
+> */();
 
 const Appearance = {
-  getColorScheme(): ColorSchemeName {
+  getColorScheme() /*: ColorSchemeName */ {
     return query && query.matches ? 'dark' : 'light';
   },
 
-  addChangeListener(listener: AppearanceListener): { remove: () => void } {
+  addChangeListener(
+    listener /*: AppearanceListener */
+  ) /*: { remove: () => void } */ {
     let mappedListener = listenerMapping.get(listener);
     if (!mappedListener) {
-      mappedListener = ({ matches }: MediaQueryListEvent) => {
+      mappedListener = ({ matches } /*: MediaQueryListEvent */) => {
         listener({ colorScheme: matches ? 'dark' : 'light' });
       };
       listenerMapping.set(listener, mappedListener);
@@ -50,7 +53,7 @@ const Appearance = {
       query.addListener(mappedListener);
     }
 
-    function remove(): void {
+    function remove() /*: void */ {
       const mappedListener = listenerMapping.get(listener);
       if (query && mappedListener) {
         query.removeListener(mappedListener);

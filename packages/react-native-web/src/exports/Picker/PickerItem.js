@@ -8,18 +8,18 @@
  * @noflow
  */
 
-import type { ColorValue } from '../../types';
+/*:: import type { ColorValue } from '../../types'; */
 
 import createElement from '../createElement';
 
-type Props = {
+/*:: type Props = {
   color?: ColorValue,
   label: string,
   testID?: string,
   value?: number | string
-};
+}; */
 
-export default function PickerItem(props: Props) {
+export default function PickerItem(props /*: Props */) {
   const { color, label, testID, value } = props;
   const style = { color };
   return createElement('option', { children: label, style, testID, value });

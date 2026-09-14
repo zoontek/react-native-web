@@ -7,7 +7,7 @@
  * @flow
  */
 
-export type Touch = {
+/*:: export type Touch = {
   force: number,
   identifier: number,
   // The locationX and locationY properties are non-standard additions
@@ -18,9 +18,9 @@ export type Touch = {
   target: any,
   // Touches in a list have a timestamp property
   timestamp: number
-};
+}; */
 
-export type TouchEvent = {
+/*:: export type TouchEvent = {
   altKey: boolean,
   ctrlKey: boolean,
   metaKey: boolean,
@@ -39,7 +39,7 @@ export type TouchEvent = {
   timestamp: number,
   // TouchList is an array in the Responder system
   touches: Array<Touch>
-};
+}; */
 
 export const BLUR = 'blur';
 export const CONTEXT_MENU = 'contextmenu';
@@ -56,28 +56,28 @@ export const SCROLL = 'scroll';
 export const SELECT = 'select';
 export const SELECTION_CHANGE = 'selectionchange';
 
-export function isStartish(eventType: mixed): boolean {
+export function isStartish(eventType /*: mixed */) /*: boolean */ {
   return eventType === TOUCH_START || eventType === MOUSE_DOWN;
 }
 
-export function isMoveish(eventType: mixed): boolean {
+export function isMoveish(eventType /*: mixed */) /*: boolean */ {
   return eventType === TOUCH_MOVE || eventType === MOUSE_MOVE;
 }
 
-export function isEndish(eventType: mixed): boolean {
+export function isEndish(eventType /*: mixed */) /*: boolean */ {
   return (
     eventType === TOUCH_END || eventType === MOUSE_UP || isCancelish(eventType)
   );
 }
 
-export function isCancelish(eventType: mixed): boolean {
+export function isCancelish(eventType /*: mixed */) /*: boolean */ {
   return eventType === TOUCH_CANCEL || eventType === MOUSE_CANCEL;
 }
 
-export function isScroll(eventType: mixed): boolean {
+export function isScroll(eventType /*: mixed */) /*: boolean */ {
   return eventType === SCROLL;
 }
 
-export function isSelectionChange(eventType: mixed): boolean {
+export function isSelectionChange(eventType /*: mixed */) /*: boolean */ {
   return eventType === SELECT || eventType === SELECTION_CHANGE;
 }

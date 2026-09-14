@@ -7,7 +7,7 @@
  * @flow strict
  */
 
-const warnedKeys: { [string]: boolean, ... } = {};
+const warnedKeys /*: { [string]: boolean, ... } */ = {};
 
 /**
  * A simple function that prints a warning message once per session.
@@ -16,7 +16,7 @@ const warnedKeys: { [string]: boolean, ... } = {};
  *                       This should be unique to the callsite.
  * @param {string} message - The message to print
  */
-export function warnOnce(key: string, message: string) {
+export function warnOnce(key /*: string */, message /*: string */) {
   if (process.env.NODE_ENV !== 'production') {
     if (warnedKeys[key]) {
       return;

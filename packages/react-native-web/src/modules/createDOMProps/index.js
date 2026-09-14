@@ -19,10 +19,12 @@ const uppercasePattern = /[A-Z]/g;
 function toHyphenLower(match) {
   return '-' + match.toLowerCase();
 }
-function hyphenateString(str: string): string {
+function hyphenateString(str /*: string */) /*: string */ {
   return str.replace(uppercasePattern, toHyphenLower);
 }
-function processIDRefList(idRefList: string | Array<string>): string {
+function processIDRefList(
+  idRefList /*: string | Array<string> */
+) /*: string */ {
   return isArray(idRefList) ? idRefList.join(' ') : idRefList;
 }
 

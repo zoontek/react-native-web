@@ -14,7 +14,7 @@ import useStable from '..';
 describe('useStable', () => {
   let spy = {};
 
-  const TestComponent = ({ initialValueCallback }): React.Node => {
+  const TestComponent = ({ initialValueCallback }) /*: React.Node */ => {
     const value = useStable(initialValueCallback);
     spy.value = value;
     return null;

@@ -27,9 +27,9 @@
  */
 
 // eslint-disable-next-line no-unused-vars
-export interface RCTExport<T: void = void> {
+/*:: export interface RCTExport<T: void = void> {
   +getConstants?: () => {};
-}
+} */
 
 // eslint-disable-next-line lint/react-native-modules
-export interface TurboModule extends RCTExport<void> {}
+/*:: export interface TurboModule extends RCTExport<void> {} */

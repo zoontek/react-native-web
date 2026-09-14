@@ -7,13 +7,13 @@
  * @flow strict-local
  */
 
-type Groups = { [key: number]: { start: ?number, rules: Array<string> } };
-type Selectors = { [key: string]: boolean };
+/*:: type Groups = { [key: number]: { start: ?number, rules: Array<string> } }; */
+/*:: type Selectors = { [key: string]: boolean }; */
 
-export type OrderedCSSStyleSheet = {|
+/*:: export type OrderedCSSStyleSheet = {|
   getTextContent: () => string,
   insert: (cssText: string, groupValue: number) => void
-|};
+|}; */
 
 const slice = Array.prototype.slice;
 
@@ -33,10 +33,10 @@ const slice = Array.prototype.slice;
  * https://gist.github.com/necolas/aa0c37846ad6bd3b05b727b959e82674
  */
 export default function createOrderedCSSStyleSheet(
-  sheet: ?CSSStyleSheet
-): OrderedCSSStyleSheet {
-  const groups: Groups = {};
-  const selectors: Selectors = {};
+  sheet /*: ?CSSStyleSheet */
+) /*: OrderedCSSStyleSheet */ {
+  const groups /*: Groups */ = {};
+  const selectors /*: Selectors */ = {};
 
   /**
    * Hydrate approximate record from any existing rules in the sheet.
@@ -91,7 +91,7 @@ export default function createOrderedCSSStyleSheet(
     /**
      * The textContent of the style sheet.
      */
-    getTextContent(): string {
+    getTextContent() /*: string */ {
       return getOrderedGroups(groups)
         .map((group) => {
           const rules = groups[group].rules;
@@ -108,7 +108,7 @@ export default function createOrderedCSSStyleSheet(
     /**
      * Insert a rule into the style sheet
      */
-    insert(cssText: string, groupValue: number) {
+    insert(cssText /*: string */, groupValue /*: number */) {
       const group = Number(groupValue);
 
       // Create a new group.
@@ -159,7 +159,7 @@ function decodeGroupRule(cssRule) {
   return Number(cssRule.selectorText.split(groupPattern)[1]);
 }
 
-function getOrderedGroups(obj: { [key: number]: any }) {
+function getOrderedGroups(obj /*: { [key: number]: any } */) {
   return Object.keys(obj)
     .map(Number)
     .sort((a, b) => (a > b ? 1 : -1));
@@ -171,7 +171,11 @@ function getSelectorText(cssText) {
   return selector !== '' ? selector.replace(selectorPattern, '$1') : null;
 }
 
-function insertRuleAt(root, cssText: string, position: number): boolean {
+function insertRuleAt(
+  root,
+  cssText /*: string */,
+  position /*: number */
+) /*: boolean */ {
   try {
     // $FlowFixMe: Flow is missing CSSOM types needed to type 'root'.
     root.insertRule(cssText, position);

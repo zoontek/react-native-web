@@ -7,17 +7,17 @@
  * @flow
  */
 
-import type { ColorValue, GenericStyleProp } from '../../types';
-import type { TextStyle } from '../Text/types';
-import type { ViewProps } from '../View/types';
+/*:: import type { ColorValue, GenericStyleProp } from '../../types'; */
+/*:: import type { TextStyle } from '../Text/types'; */
+/*:: import type { ViewProps } from '../View/types'; */
 
-export type TextInputStyle = {
+/*:: export type TextInputStyle = {
   ...TextStyle,
   caretColor?: ColorValue,
   resize?: 'none' | 'vertical' | 'horizontal' | 'both'
-};
+}; */
 
-export type TextInputProps = {
+/*:: export type TextInputProps = {
   ...ViewProps,
   autoCapitalize?: 'characters' | 'none' | 'sentences' | 'words',
   autoComplete?: ?string,
@@ -94,4 +94,4 @@ export type TextInputProps = {
     | 'previous'
     | 'search'
     | 'send'
-};
+}; */

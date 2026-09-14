@@ -9,9 +9,9 @@
 
 'use client';
 
-import type { Context } from 'react';
+/*:: import type { Context } from 'react'; */
 
 import { createContext } from 'react';
 
 const TextAncestorContext = createContext(false);
-export default (TextAncestorContext: Context<boolean>);
+export default (TextAncestorContext /*: Context<boolean> */);

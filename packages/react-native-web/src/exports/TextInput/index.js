@@ -10,8 +10,8 @@
 
 'use client';
 
-import type { PlatformMethods } from '../../types';
-import type { TextInputProps } from './types';
+/*:: import type { PlatformMethods } from '../../types'; */
+/*:: import type { TextInputProps } from './types'; */
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -89,12 +89,12 @@ function isEventComposing(nativeEvent) {
   return nativeEvent.isComposing || nativeEvent.keyCode === 229;
 }
 
-let focusTimeout: ?TimeoutID = null;
+let focusTimeout /*: ?TimeoutID */ = null;
 
-const TextInput: React.AbstractComponent<
+const TextInput /*: React.AbstractComponent<
   TextInputProps,
   HTMLElement & PlatformMethods
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const {
     autoCapitalize = 'sentences',
     autoComplete,

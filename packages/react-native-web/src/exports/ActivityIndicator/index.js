@@ -10,7 +10,7 @@
 
 'use client';
 
-import type { ViewProps } from '../View';
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
@@ -20,18 +20,18 @@ const createSvgCircle = (style) => (
   <circle cx="16" cy="16" fill="none" r="14" strokeWidth="4" style={style} />
 );
 
-type ActivityIndicatorProps = {
+/*:: type ActivityIndicatorProps = {
   ...ViewProps,
   animating?: boolean,
   color?: ?string,
   hidesWhenStopped?: boolean,
   size?: 'small' | 'large' | number
-};
+}; */
 
-const ActivityIndicator: React.AbstractComponent<
+const ActivityIndicator /*: React.AbstractComponent<
   ActivityIndicatorProps,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const {
     animating = true,
     color = '#1976D2',

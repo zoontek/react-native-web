@@ -15,7 +15,7 @@ const isNumeric = (n) => {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-const multiplyStyleLengthValue = (value: string | number, multiple) => {
+const multiplyStyleLengthValue = (value /*: string | number */, multiple) => {
   if (typeof value === 'string') {
     const number = parseFloat(value) * multiple;
     const unit = getUnit(value);

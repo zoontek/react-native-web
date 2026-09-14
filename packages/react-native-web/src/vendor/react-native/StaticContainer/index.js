@@ -28,22 +28,22 @@ import * as React from 'react';
  * React reconciliation.
  */
 
-type Props = $ReadOnly<{|
+/*:: type Props = $ReadOnly<{|
   /**
    * Whether or not this component should update.
-   */
+   *-/
   shouldUpdate: ?boolean,
   /**
    * Content short-circuited by React reconciliation process.
-   */
+   *-/
   children: React.Node,
-|}>;
-class StaticContainer extends React.Component<Props> {
-  shouldComponentUpdate(nextProps: Props): boolean {
+|}>; */
+class StaticContainer extends React.Component/*:: <Props> */ {
+  shouldComponentUpdate(nextProps/*: Props */)/*: boolean */ {
     return !!nextProps.shouldUpdate;
   }
 
-  render(): null | React.Node {
+  render()/*: null | React.Node */ {
     const child = this.props.children;
     return child === null || child === false
       ? null

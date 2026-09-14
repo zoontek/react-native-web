@@ -14,7 +14,9 @@ const UNINITIALIZED =
     ? Symbol()
     : Object.freeze({});
 
-export default function useStable<T>(getInitialValue: () => T): T {
+export default function useStable /*:: <T> */(
+  getInitialValue /*: () => T */
+) /*: T */ {
   const ref = React.useRef(UNINITIALIZED);
   if (ref.current === UNINITIALIZED) {
     ref.current = getInitialValue();
