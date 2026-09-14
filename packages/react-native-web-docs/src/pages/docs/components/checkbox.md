@@ -57,4 +57,4 @@ Set the value of the checkbox.
 
 Note that the size of the checkbox can be controlled by changing the `height` and `width` style properties.
 
-{{ macro.codesandbox('checkbox') }}
+{{ macro.example('checkbox') }}
