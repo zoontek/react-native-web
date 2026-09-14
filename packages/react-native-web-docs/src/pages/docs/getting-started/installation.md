@@ -18,12 +18,6 @@ React Native for Web can be used for multi-platform and web-only applications. I
 npm install react-dom {{ site.packageName }}
 ```
 
-The Babel plugin is recommended for build-time optimizations.
-
-```shell
-npm install --save-dev babel-plugin-react-native-web
-```
-
 ---
 
 ## Quickstart

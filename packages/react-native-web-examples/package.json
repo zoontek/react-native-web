@@ -8,7 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "babel-plugin-react-native-web": "0.21.2",
     "next": "^12.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
