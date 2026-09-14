@@ -1,7 +1,5 @@
-// @ts-nocheck
-
 import React from 'react';
-import { AppRegistry, Text, StyleSheet } from 'react-native';
+import { AppRegistry, Text, StyleSheet } from 'react-native-web';
 import Example from '../../shared/example';
 
 function App() {
@@ -18,22 +16,22 @@ const styles = StyleSheet.create({
 AppRegistry.registerComponent('App', () => App);
 
 export default function AppStatePage() {
-  const iframeRef = React.useRef(null);
-  const shadowRef = React.useRef(null);
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const shadowRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const iframeElement = iframeRef.current;
-    const iframeBody = iframeElement.contentWindow.document.body;
+    const iframeBody = iframeElement?.contentWindow?.document.body;
     const iframeRootTag = document.createElement('div');
     iframeRootTag.id = 'iframe-root';
-    iframeBody.appendChild(iframeRootTag);
+    iframeBody?.appendChild(iframeRootTag);
     const app1 = AppRegistry.runApplication('App', { rootTag: iframeRootTag });
 
     const shadowElement = shadowRef.current;
-    const shadowRoot = shadowElement.attachShadow({ mode: 'open' });
+    const shadowRoot = shadowElement?.attachShadow({ mode: 'open' });
     const shadowRootTag = document.createElement('div');
     shadowRootTag.id = 'shadow-root';
-    shadowRoot.appendChild(shadowRootTag);
+    shadowRoot?.appendChild(shadowRootTag);
     const app2 = AppRegistry.runApplication('App', { rootTag: shadowRootTag });
 
     return () => {

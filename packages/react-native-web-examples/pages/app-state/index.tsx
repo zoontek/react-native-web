@@ -1,26 +1,23 @@
-// @ts-nocheck
-
 import React from 'react';
-import { AppState, Text } from 'react-native';
+import { AppState, Text } from 'react-native-web';
 import Example from '../../shared/example';
 
 export default function AppStatePage() {
-  const appState = React.useRef(AppState.currentState);
-  const [state, setState] = React.useState({
+  const [state, setState] = React.useState(() => ({
+    currentState: AppState.currentState,
     active: 0,
-    background: 0,
-    currentState: appState.current
-  });
+    background: 0
+  }));
 
   React.useEffect(() => {
-    const handleChange = (nextState) => {
+    const subscription = AppState.addEventListener('change', (nextState) => {
       setState((previousState) => ({
         ...previousState,
+        currentState: nextState,
         [nextState]: previousState[nextState] + 1
       }));
-    };
+    });
 
-    const subscription = AppState.addEventListener('change', handleChange);
     return () => {
       subscription.remove();
     };

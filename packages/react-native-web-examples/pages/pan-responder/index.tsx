@@ -1,20 +1,32 @@
-// @ts-nocheck
-
 import React from 'react';
-import { PanResponder, StyleSheet, View } from 'react-native';
+import { PanResponder, StyleSheet, View } from 'react-native-web';
 import Example from '../../shared/example';
 
 const CIRCLE_SIZE = 80;
 
+// TODO: use PanResponder* types
+type PanResponderConfig = Parameters<typeof PanResponder.create>[0];
+type PassiveCallback = NonNullable<PanResponderConfig['onPanResponderMove']>;
+
+type ActiveCallback = NonNullable<
+  PanResponderConfig['onStartShouldSetPanResponder']
+>;
+
+type CircleStyles = {
+  left: number;
+  top: number;
+  backgroundColor: string;
+};
+
 class DraggableCircle extends React.PureComponent {
-  _panResponder = {};
+  _panResponder: ReturnType<typeof PanResponder.create>;
   _previousLeft = 0;
   _previousTop = 0;
-  _circleStyles = {};
-  circle = null;
+  _circleStyles: CircleStyles;
+  circle: React.ComponentRef<typeof View> | null = null;
 
-  constructor() {
-    super();
+  constructor(props: object) {
+    super(props);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
@@ -39,6 +51,7 @@ class DraggableCircle extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
+        {/* @ts-expect-error */}
         <View
           ref={this._setCircleRef}
           style={[styles.circle, this._circleStyles]}
@@ -48,7 +61,7 @@ class DraggableCircle extends React.PureComponent {
     );
   }
 
-  _setCircleRef = (circle) => {
+  _setCircleRef = (circle: React.ComponentRef<typeof View> | null) => {
     this.circle = circle;
   };
 
@@ -66,42 +79,42 @@ class DraggableCircle extends React.PureComponent {
     this.forceUpdate();
   }
 
-  _handleStartShouldSetPanResponder = (
-    e /*: Object */,
-    gestureState /*: Object */
-  ) /*: boolean */ => {
+  _handleStartShouldSetPanResponder: ActiveCallback = (e, gestureState) => {
     // Should we become active when the user presses down on the circle?
     return true;
   };
 
-  _handleMoveShouldSetPanResponder = (
-    e /*: Object */,
-    gestureState /*: Object */
-  ) /*: boolean */ => {
+  _handleMoveShouldSetPanResponder: ActiveCallback = (e, gestureState) => {
     // Should we become active when the user moves a touch over the circle?
     return true;
   };
 
-  _handlePanResponderGrant = (e /*: Object */, gestureState /*: Object */) => {
+  _handlePanResponderGrant: PassiveCallback = (e, gestureState) => {
     this._highlight();
   };
 
-  _handlePanResponderMove = (e /*: Object */, gestureState /*: Object */) => {
+  _handlePanResponderMove: PassiveCallback = (e, gestureState) => {
     this._circleStyles.left = this._previousLeft + gestureState.dx;
     this._circleStyles.top = this._previousTop + gestureState.dy;
     this._updateNativeStyles();
   };
 
-  _handlePanResponderEnd = (e /*: Object */, gestureState /*: Object */) => {
+  _handlePanResponderEnd: PassiveCallback = (e, gestureState) => {
     this._unHighlight();
     this._previousLeft += gestureState.dx;
     this._previousTop += gestureState.dy;
   };
 }
 
-class LocationXY extends React.Component {
-  constructor() {
-    super();
+type LocationXYState = {
+  translateX: number;
+};
+
+class LocationXY extends React.Component<object, LocationXYState> {
+  panResponder: ReturnType<typeof PanResponder.create>;
+
+  constructor(props: object) {
+    super(props);
     this.state = { translateX: 0 };
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -111,7 +124,7 @@ class LocationXY extends React.Component {
     });
   }
 
-  _handlePanResponderMove = (e, gestureState) => {
+  _handlePanResponderMove: PassiveCallback = (e, gestureState) => {
     console.log(e.nativeEvent.locationX, e.nativeEvent.locationY);
     this.setState((state) => ({
       ...state,
@@ -123,6 +136,7 @@ class LocationXY extends React.Component {
     const transform = { transform: `translateX(${this.state.translateX}px)` };
     return (
       <View style={styles.box}>
+        {/* @ts-expect-error */}
         <View style={styles.outer} {...this.panResponder.panHandlers}>
           <View style={[styles.inner, transform]} />
         </View>
