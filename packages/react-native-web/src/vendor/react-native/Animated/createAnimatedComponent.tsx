@@ -7,9 +7,6 @@
  * @format
  */
 
-import useAnimatedProps from './useAnimatedProps';
-import useMergeRefs from '../Utilities/useMergeRefs';
-import View from '../../../exports/View';
 import {
   forwardRef,
   type ComponentProps,
@@ -18,6 +15,10 @@ import {
   type PropsWithoutRef,
   type RefAttributes
 } from 'react';
+
+import View from '../../../exports/View';
+import useMergeRefs from '../Utilities/useMergeRefs';
+import useAnimatedProps from './useAnimatedProps';
 
 export type AnimatedComponentType<
   Props extends object,

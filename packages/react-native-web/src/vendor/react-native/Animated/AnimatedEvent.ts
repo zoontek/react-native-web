@@ -9,15 +9,14 @@
 
 'use strict';
 
-import AnimatedValue from './nodes/AnimatedValue';
-import NativeAnimatedHelper from './NativeAnimatedHelper';
-
 import invariant from 'fbjs/lib/invariant';
 
-import { shouldUseNativeDriver } from './NativeAnimatedHelper';
-
-import type { EventMapping } from './NativeAnimatedModule';
 import type { Nullable } from '../../../types';
+import NativeAnimatedHelper, {
+  shouldUseNativeDriver
+} from './NativeAnimatedHelper';
+import type { EventMapping } from './NativeAnimatedModule';
+import AnimatedValue from './nodes/AnimatedValue';
 
 export type Mapping = { [key: string]: Mapping } | AnimatedValue;
 export type EventConfig = {

@@ -1,4 +1,5 @@
 import { useEffect, useState, type ComponentType } from 'react';
+
 import HomePage from './pages/index';
 
 const modules = import.meta.glob<{ default: ComponentType }>(

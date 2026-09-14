@@ -1,6 +1,6 @@
-import type { BoxProps } from '../../impl';
-
 import { StyleSheet, View } from 'react-native-web';
+
+import type { BoxProps } from '../../impl';
 
 const Box = ({
   color,

@@ -21,21 +21,21 @@ import {
   type RefAttributes,
   type SyntheticEvent
 } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
-import type { ElementProps } from '../../modules/createDOMProps';
-import type { TextInputProps as Props } from './types';
 
-import createElement from '../createElement';
+import type { ElementProps } from '../../modules/createDOMProps';
 import * as forwardedProps from '../../modules/forwardedProps';
 import pick from '../../modules/pick';
+import TextInputState from '../../modules/TextInputState';
 import useElementLayout from '../../modules/useElementLayout';
 import useLayoutEffect from '../../modules/useLayoutEffect';
+import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale';
 import useMergeRefs from '../../modules/useMergeRefs';
 import usePlatformMethods from '../../modules/usePlatformMethods';
 import useResponderEvents from '../../modules/useResponderEvents';
-import { getLocaleDirection, useLocaleContext } from '../../modules/useLocale';
+import type { Nullable, PlatformMethods } from '../../types';
+import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
-import TextInputState from '../../modules/TextInputState';
+import type { TextInputProps as Props } from './types';
 
 type TextInputNode = (HTMLInputElement | HTMLTextAreaElement) &
   PlatformMethods & {

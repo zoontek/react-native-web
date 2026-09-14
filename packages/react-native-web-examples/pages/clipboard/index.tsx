@@ -1,4 +1,5 @@
 import { Clipboard, StyleSheet, TextInput, View } from 'react-native-web';
+
 import Button from '../../shared/button';
 import Example from '../../shared/example';
 

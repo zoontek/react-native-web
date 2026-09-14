@@ -9,21 +9,15 @@
 
 'use strict';
 
+import Easing from '../../../../exports/Easing';
+import type { Nullable } from '../../../../types';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
+import AnimatedColor, { type RgbaValue } from '../nodes/AnimatedColor';
+import AnimatedInterpolation from '../nodes/AnimatedInterpolation';
 import AnimatedValue from '../nodes/AnimatedValue';
 import AnimatedValueXY from '../nodes/AnimatedValueXY';
-import AnimatedInterpolation from '../nodes/AnimatedInterpolation';
-import Easing from '../../../../exports/Easing';
-
-import Animation from './Animation';
-
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
-
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
-import type { AnimationConfig, EndCallback } from './Animation';
-import type { Nullable } from '../../../../types';
-import type { RgbaValue } from '../nodes/AnimatedColor';
-
-import AnimatedColor from '../nodes/AnimatedColor';
+import Animation, { type AnimationConfig, type EndCallback } from './Animation';
 
 export type TimingAnimationConfig = Readonly<
   AnimationConfig & {

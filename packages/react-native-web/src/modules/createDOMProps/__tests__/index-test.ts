@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import createDOMProps from '..';
-import type { ElementProps } from '..';
+import createDOMProps, { type ElementProps } from '..';
 
 const createProps = (props: ElementProps) => createDOMProps(null, props);
 

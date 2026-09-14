@@ -1,13 +1,11 @@
 import type { ComponentType } from 'react';
-import type { ComponentsType } from './impl';
-import type { BenchmarkTypeValue, ComponentPropsType } from './app/Benchmark';
+import { createRoot } from 'react-dom/client';
 
 import App from './app/App';
-import impl from './impl';
-import Tree from './cases/Tree';
+import type { BenchmarkTypeValue, ComponentPropsType } from './app/Benchmark';
 import SierpinskiTriangle from './cases/SierpinskiTriangle';
-
-import { createRoot } from 'react-dom/client';
+import Tree from './cases/Tree';
+import impl, { type ComponentsType } from './impl';
 
 export type TestSetupType = {
   Component: ComponentType<ComponentPropsType>;

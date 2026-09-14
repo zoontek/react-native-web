@@ -10,6 +10,9 @@
 
 import { forwardRef, useContext, useEffect, useRef, useState } from 'react';
 
+import { getAssetByID } from '../../modules/AssetRegistry';
+import ImageLoader from '../../modules/ImageLoader';
+import { warnOnce } from '../../modules/warnOnce';
 import type {
   ColorValue,
   GenericStyleProp,
@@ -18,17 +21,13 @@ import type {
   Nullable,
   PlatformMethods
 } from '../../types';
-import type { ImageProps, ImageStyle, ResizeMode, Source } from './types';
-
 import createElement from '../createElement';
-import { getAssetByID } from '../../modules/AssetRegistry';
-import { createBoxShadowValue } from '../StyleSheet/preprocess';
-import ImageLoader from '../../modules/ImageLoader';
 import PixelRatio from '../PixelRatio';
 import StyleSheet from '../StyleSheet';
+import { createBoxShadowValue } from '../StyleSheet/preprocess';
 import TextAncestorContext from '../Text/TextAncestorContext';
 import View from '../View';
-import { warnOnce } from '../../modules/warnOnce';
+import type { ImageProps, ImageStyle, ResizeMode, Source } from './types';
 
 export type { ImageProps };
 

@@ -5,18 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { atomic, classic, inline } from './compiler';
-import { createSheet } from './dom';
-import { localizeStyle } from 'styleq/transform-localize-style';
-import { preprocess } from './preprocess';
-import { styleq } from 'styleq';
-import { validate } from './validate';
+import { styleq, type StyleqResult, type Styles } from 'styleq';
+import {
+  localizeStyle,
+  type LocalizedStyle
+} from 'styleq/transform-localize-style';
+
 import canUseDOM from '../../modules/canUseDom';
 import type { GenericStyleProp } from '../../types';
+import { atomic, classic, inline } from './compiler';
 import type { Style } from './compiler/createReactDOMStyle';
 import type { StyleValue } from './compiler/normalizeValueWithProperty';
-import type { Styles, StyleqResult } from 'styleq';
-import type { LocalizedStyle } from 'styleq/transform-localize-style';
+import { createSheet } from './dom';
+import { preprocess } from './preprocess';
+import { validate } from './validate';
 
 export type StyleObject = {
   [key: string]: StyleValue | boolean | null | undefined;

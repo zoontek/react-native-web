@@ -7,7 +7,6 @@
  */
 
 import type { Nullable } from '../../types';
-
 import PooledClass from '../../vendor/react-native/PooledClass';
 
 const twoArgumentPooler = PooledClass.twoArgumentPooler;

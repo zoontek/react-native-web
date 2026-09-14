@@ -9,16 +9,15 @@
 
 'use strict';
 
-import AnimatedValue from './AnimatedValue';
-import AnimatedNode from './AnimatedNode';
+import type { Nullable } from '../../../../types';
+import type Animation from '../animations/Animation';
+import type { AnimationConfig, EndCallback } from '../animations/Animation';
 import {
   generateNewAnimationId,
   shouldUseNativeDriver
 } from '../NativeAnimatedHelper';
-
-import type Animation from '../animations/Animation';
-import type { AnimationConfig, EndCallback } from '../animations/Animation';
-import type { Nullable } from '../../../../types';
+import AnimatedNode from './AnimatedNode';
+import AnimatedValue from './AnimatedValue';
 
 class AnimatedTracking extends AnimatedNode {
   _value: AnimatedValue;

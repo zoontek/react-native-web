@@ -1,6 +1,7 @@
-import { AppState, Text } from 'react-native-web';
-import Example from '../../shared/example';
 import { useEffect, useState } from 'react';
+import { AppState, Text } from 'react-native-web';
+
+import Example from '../../shared/example';
 
 export default function AppStatePage() {
   const [state, setState] = useState(() => ({

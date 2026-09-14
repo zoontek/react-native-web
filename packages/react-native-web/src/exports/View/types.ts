@@ -17,13 +17,13 @@ import type {
   WheelEvent
 } from 'react';
 
+import type { ResponderEvent } from '../../modules/useResponderEvents/createResponderEvent';
 import type {
   ColorValue,
   GenericStyleProp,
   LayoutEvent,
   Nullable
 } from '../../types';
-
 import type {
   AnimationStyles,
   BorderStyles,
@@ -32,8 +32,6 @@ import type {
   ShadowStyles,
   TransformStyles
 } from '../../types/styles';
-
-import type { ResponderEvent } from '../../modules/useResponderEvents/createResponderEvent';
 
 type NumberOrString = number | string;
 type OverscrollBehaviorValue = 'auto' | 'contain' | 'none';

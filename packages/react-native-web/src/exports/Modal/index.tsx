@@ -16,13 +16,13 @@ import {
   useState,
   type ReactNode
 } from 'react';
+
 import type { Nullable, PlatformMethods } from '../../types';
 import type { ViewProps } from '../View';
-
-import ModalPortal from './ModalPortal';
 import ModalAnimation from './ModalAnimation';
 import ModalContent from './ModalContent';
 import ModalFocusTrap from './ModalFocusTrap';
+import ModalPortal from './ModalPortal';
 
 export type ModalProps = ViewProps & {
   animationType?: 'none' | 'slide' | 'fade';

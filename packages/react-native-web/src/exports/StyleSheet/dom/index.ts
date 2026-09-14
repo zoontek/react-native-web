@@ -5,10 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet';
 import canUseDOM from '../../../modules/canUseDom';
 import createCSSStyleSheet from './createCSSStyleSheet';
-import createOrderedCSSStyleSheet from './createOrderedCSSStyleSheet';
+import createOrderedCSSStyleSheet, {
+  type OrderedCSSStyleSheet
+} from './createOrderedCSSStyleSheet';
 
 type Sheet = OrderedCSSStyleSheet & {
   id: string;

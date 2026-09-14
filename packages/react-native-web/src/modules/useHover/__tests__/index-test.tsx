@@ -7,15 +7,16 @@
 
 import { act, render } from '@testing-library/react';
 import {
-  describeWithPointerEvent,
   clearPointers,
   createEventTarget as createEventTargetImpl,
+  describeWithPointerEvent,
   setPointerEvent
 } from 'dom-event-testing-library';
-import useHover from '..';
-import { testOnly_resetActiveModality } from '../../modality';
-import type { Nullable } from '../../../types';
 import { createRef, type RefObject } from 'react';
+
+import useHover from '..';
+import type { Nullable } from '../../../types';
+import { testOnly_resetActiveModality } from '../../modality';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);

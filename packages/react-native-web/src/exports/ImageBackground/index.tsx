@@ -6,14 +6,14 @@
  */
 
 import type { Ref } from 'react';
-import type { PlatformMethods } from '../../types';
-import type { ImageProps } from '../Image/types';
-import type { ViewProps } from '../View/types';
-
 import { forwardRef } from 'react';
+
+import type { PlatformMethods } from '../../types';
 import Image from '../Image';
+import type { ImageProps } from '../Image/types';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
+import type { ViewProps } from '../View/types';
 
 type ImageBackgroundProps = Omit<ImageProps, 'style'> & {
   imageRef?: Ref<HTMLElement & PlatformMethods>;
