@@ -1,5 +1,3 @@
-/* oxlint-disable */
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -35,6 +33,7 @@ function dangerousStyleValue(
   // which has lead to a greater discussion about how we're going to
   // trust URLs moving forward. See #2115901
 
+  // oxlint-disable-next-line no-var
   var isEmpty = value == null || typeof value === 'boolean' || value === '';
   if (isEmpty) {
     return '';

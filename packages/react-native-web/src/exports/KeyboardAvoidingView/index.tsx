@@ -41,14 +41,9 @@ class KeyboardAvoidingView extends React.Component<KeyboardAvoidingViewProps> {
   };
 
   render(): ReactNode {
-    const {
-      /* oxlint-disable no-unused-vars */
-      behavior,
-      contentContainerStyle,
-      keyboardVerticalOffset,
-      /* oxlint-enable no-unused-vars */
-      ...rest
-    } = this.props;
+    // oxlint-disable-next-line no-unused-vars
+    const { behavior, contentContainerStyle, keyboardVerticalOffset, ...rest } =
+      this.props;
 
     return <View onLayout={this.onLayout} {...rest} />;
   }

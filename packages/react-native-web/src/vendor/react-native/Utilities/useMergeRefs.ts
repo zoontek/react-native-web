@@ -39,6 +39,6 @@ export default function useMergeRefs<T>(
         }
       }
     },
-    [...refs] // eslint-disable-line react-hooks/exhaustive-deps
+    [...refs]
   );
 }
