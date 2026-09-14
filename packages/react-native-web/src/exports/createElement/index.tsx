@@ -27,13 +27,14 @@ const createElement = (
 ): ReactNode => {
   // Use equivalent platform elements where possible.
   let accessibilityComponent: string | undefined;
+
   if (component && component.constructor === String) {
     accessibilityComponent =
       AccessibilityUtil.propsToAccessibilityComponent(props);
   }
+
   const Component = accessibilityComponent || component;
   const domProps = createDOMProps(Component, props, options);
-
   const element = reactCreateElement(Component, domProps);
 
   // Update locale context if element's writing direction prop changes

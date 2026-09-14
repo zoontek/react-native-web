@@ -6,16 +6,37 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const Platform = {
+import type * as RN from 'react-native';
+
+const Platform: typeof RN.Platform = {
   OS: 'web',
-  select: <T>(obj: Record<string, T | undefined>): T | undefined =>
-    'web' in obj ? obj.web : obj.default,
-  get isTesting(): boolean {
+
+  get constants() {
+    return {
+      reactNativeVersion: {
+        major: 0,
+        minor: 0,
+        patch: 0,
+        prerelease: undefined
+      }
+    };
+  },
+  get isDisableAnimations() {
+    return false;
+  },
+  get isTV() {
+    return false;
+  },
+  get isTesting() {
     return process.env.NODE_ENV === 'test';
   },
-  get Version(): string {
+  get Version() {
     return '0.0.0';
-  }
+  },
+
+  select: <T>(spec: RN.PlatformSelectSpec<T>) =>
+    // TODO: Fix the incorrect typing upstream
+    'web' in spec ? (spec as { web: T }).web : (spec as { default: T }).default
 };
 
 export default Platform;
