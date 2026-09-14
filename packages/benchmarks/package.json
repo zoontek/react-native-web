@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "del-cli ./dist",
-    "build": "NODE_ENV=production npm run dev",
-    "dev": "npm run clean && mkdir -p dist && cp -f index.html dist/index.html && webpack --config ./webpack.config.js"
+    "build": "NODE_ENV=production pnpm dev",
+    "dev": "pnpm clean && mkdir -p dist && cp -f index.html dist/index.html && webpack --config ./webpack.config.js"
   },
   "dependencies": {
     "classnames": "^2.3.1",

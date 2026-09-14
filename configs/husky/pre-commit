@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx --no lint-staged
+for dir in "$HOME/Library/pnpm" "$HOME/.local/share/pnpm"; do
+  case ":$PATH:" in *":$dir:"*) ;; *) [ -d "$dir" ] && export PATH="$dir:$PATH" ;; esac
+done
+
+pnpm lint-staged
