@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,17 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Nullable } from '../../../types';
+import type { ResponderEvent } from '../createResponderEvent';
 import { act, render } from '@testing-library/react';
-import React, { createRef } from 'react';
+import React, { createRef, type RefObject } from 'react';
 import useResponderEvents from '..';
 import { getResponderNode, terminateResponder } from '../ResponderSystem';
 import {
   buttonType,
   buttonsType,
   clearPointers,
-  createEventTarget,
+  createEventTarget as createEventTargetImpl,
   testWithPointerType
 } from 'dom-event-testing-library';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  createEventTargetImpl(node as Node);
 
 describe('useResponderEvents', () => {
   afterEach(() => {
@@ -30,7 +33,7 @@ describe('useResponderEvents', () => {
   testWithPointerType(
     'does nothing when no elements want to respond',
     (pointerType) => {
-      const targetRef = createRef();
+      const targetRef = createRef<HTMLDivElement>();
       const Component = () => {
         useResponderEvents(targetRef, {
           onStartShouldSetResponder: jest.fn()
@@ -51,7 +54,7 @@ describe('useResponderEvents', () => {
   );
 
   test('does nothing for "mousedown" with non-primary buttons', () => {
-    const targetRef = createRef();
+    const targetRef = createRef<HTMLDivElement>();
     const Component = () => {
       useResponderEvents(targetRef, {
         onStartShouldSetResponderCapture: jest.fn(() => true),
@@ -78,7 +81,7 @@ describe('useResponderEvents', () => {
   });
 
   test('does nothing for "mousedown" with ignored modifier keys', () => {
-    const targetRef = createRef();
+    const targetRef = createRef<HTMLDivElement>();
     const Component = () => {
       useResponderEvents(targetRef, {
         onStartShouldSetResponderCapture: jest.fn(() => true),
@@ -109,7 +112,7 @@ describe('useResponderEvents', () => {
   });
 
   test('recognizes mouse interactions after touch interactions', () => {
-    const targetRef = createRef();
+    const targetRef = createRef<HTMLDivElement>();
     const targetCallbacks = {
       onStartShouldSetResponder: jest.fn(() => true),
       onResponderGrant: jest.fn()
@@ -152,12 +155,12 @@ describe('useResponderEvents', () => {
   // NOTE: this is only needed for performance reasons while the
   // `touchBank` is an array.
   test('normalizes touch identifiers', () => {
-    const targetRef = createRef();
-    let identifier;
+    const targetRef = createRef<HTMLDivElement>();
+    let identifier!: number;
     const Component = () => {
       useResponderEvents(targetRef, {
         onStartShouldSetResponder: () => true,
-        onResponderStart: jest.fn((e) => {
+        onResponderStart: jest.fn((e: ResponderEvent) => {
           identifier = e.nativeEvent.identifier;
         })
       });
@@ -179,14 +182,14 @@ describe('useResponderEvents', () => {
    */
 
   describe('onStartShouldSetResponderCapture', () => {
-    let grandParentRef;
-    let parentRef;
-    let targetRef;
+    let grandParentRef: RefObject<HTMLDivElement | null>;
+    let parentRef: RefObject<HTMLDivElement | null>;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      grandParentRef = createRef();
-      parentRef = createRef();
-      targetRef = createRef();
+      grandParentRef = createRef<HTMLDivElement>();
+      parentRef = createRef<HTMLDivElement>();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType(
@@ -194,10 +197,10 @@ describe('useResponderEvents', () => {
       (pointerType) => {
         let grantCurrentTarget;
         const grandParentCallbacks = {
-          onStartShouldSetResponderCapture: jest.fn((e) => {
+          onStartShouldSetResponderCapture: jest.fn((e: ResponderEvent) => {
             return true;
           }),
-          onResponderGrant: jest.fn((e) => {
+          onResponderGrant: jest.fn((e: ResponderEvent) => {
             grantCurrentTarget = e.currentTarget;
           })
         };
@@ -363,14 +366,14 @@ describe('useResponderEvents', () => {
    */
 
   describe('onStartShouldSetResponder', () => {
-    let targetRef;
-    let parentRef;
-    let grandParentRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
+    let parentRef: RefObject<HTMLDivElement | null>;
+    let grandParentRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
-      parentRef = createRef();
-      grandParentRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
+      parentRef = createRef<HTMLDivElement>();
+      grandParentRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType('start grants responder to child', (pointerType) => {
@@ -539,14 +542,14 @@ describe('useResponderEvents', () => {
    */
 
   describe('onMoveShouldSetResponderCapture', () => {
-    let grandParentRef;
-    let parentRef;
-    let targetRef;
+    let grandParentRef: RefObject<HTMLDivElement | null>;
+    let parentRef: RefObject<HTMLDivElement | null>;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      grandParentRef = createRef();
-      parentRef = createRef();
-      targetRef = createRef();
+      grandParentRef = createRef<HTMLDivElement>();
+      parentRef = createRef<HTMLDivElement>();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType(
@@ -720,14 +723,14 @@ describe('useResponderEvents', () => {
    */
 
   describe('onMoveShouldSetResponder', () => {
-    let targetRef;
-    let parentRef;
-    let grandParentRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
+    let parentRef: RefObject<HTMLDivElement | null>;
+    let grandParentRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
-      parentRef = createRef();
-      grandParentRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
+      parentRef = createRef<HTMLDivElement>();
+      grandParentRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType('move grants responder to child', (pointerType) => {
@@ -890,12 +893,12 @@ describe('useResponderEvents', () => {
    */
 
   describe('onScrollShouldSetResponderCapture', () => {
-    let targetRef;
-    let parentRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
+    let parentRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
-      parentRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
+      parentRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType(
@@ -988,12 +991,12 @@ describe('useResponderEvents', () => {
    */
 
   describe('onScrollShouldSetResponder', () => {
-    let targetRef;
-    let parentRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
+    let parentRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
-      parentRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
+      parentRef = createRef<HTMLDivElement>();
     });
 
     test('scroll does not bubble to parent', () => {
@@ -1087,10 +1090,10 @@ describe('useResponderEvents', () => {
    */
 
   describe('onResponderStart', () => {
-    let targetRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType(
@@ -1129,10 +1132,10 @@ describe('useResponderEvents', () => {
    */
 
   describe('onResponderMove', () => {
-    let targetRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     // Assert that 'onResponderMove' after a move event, is called however the responder became active
@@ -1177,10 +1180,10 @@ describe('useResponderEvents', () => {
    */
 
   describe('onResponderEnd', () => {
-    let targetRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType(
@@ -1220,10 +1223,10 @@ describe('useResponderEvents', () => {
    */
 
   describe('onResponderRelease', () => {
-    let targetRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType(
@@ -1265,10 +1268,10 @@ describe('useResponderEvents', () => {
    */
 
   describe('onResponderTerminate', () => {
-    let targetRef;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      targetRef = createRef();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     testWithPointerType('is called if pointer cancels', (pointerType) => {
@@ -1309,7 +1312,7 @@ describe('useResponderEvents', () => {
         onResponderTerminationRequest: jest.fn(() => false)
       };
 
-      const inputRef = createRef();
+      const inputRef = createRef<HTMLInputElement>();
 
       const Component = () => {
         useResponderEvents(targetRef, targetCallbacks);
@@ -1363,7 +1366,7 @@ describe('useResponderEvents', () => {
             toString() {
               return 'text';
             }
-          };
+          } as unknown as Selection;
         });
         act(() => {
           target.pointerdown({ pointerType });
@@ -1379,7 +1382,7 @@ describe('useResponderEvents', () => {
 
     test('is called if ancestor scrolls', () => {
       const pointerType = 'touch';
-      const parentRef = createRef();
+      const parentRef = createRef<HTMLDivElement>();
 
       const targetCallbacks = {
         onStartShouldSetResponder: jest.fn(() => true),
@@ -1413,7 +1416,7 @@ describe('useResponderEvents', () => {
 
     test('is called if document scrolls', () => {
       const pointerType = 'touch';
-      const parentRef = createRef();
+      const parentRef = createRef<HTMLDivElement>();
 
       const targetCallbacks = {
         onStartShouldSetResponder: jest.fn(() => true),
@@ -1447,7 +1450,7 @@ describe('useResponderEvents', () => {
 
     test('is not called if sibling scrolls', () => {
       const pointerType = 'touch';
-      const siblingRef = createRef();
+      const siblingRef = createRef<HTMLDivElement>();
 
       const targetCallbacks = {
         onStartShouldSetResponder: jest.fn(() => true),
@@ -1524,7 +1527,7 @@ describe('useResponderEvents', () => {
       // render
       render(<Component />);
       const target = createEventTarget(targetRef.current);
-      const win = createEventTarget(window);
+      const win = createEventTarget(window as unknown as Node);
       // gesture start & blur
       act(() => {
         target.pointerdown({ pointerType });
@@ -1538,7 +1541,7 @@ describe('useResponderEvents', () => {
 
     test('is not called if sibling blurs', () => {
       const pointerType = 'touch';
-      const siblingRef = createRef();
+      const siblingRef = createRef<HTMLDivElement>();
 
       const targetCallbacks = {
         onStartShouldSetResponder: jest.fn(() => true),
@@ -1648,16 +1651,16 @@ describe('useResponderEvents', () => {
    */
 
   describe('Negotiation', () => {
-    let grandParentRef;
-    let parentRef;
-    let siblingRef;
-    let targetRef;
+    let grandParentRef: RefObject<HTMLDivElement | null>;
+    let parentRef: RefObject<HTMLDivElement | null>;
+    let siblingRef: RefObject<HTMLDivElement | null>;
+    let targetRef: RefObject<HTMLDivElement | null>;
 
     beforeEach(() => {
-      grandParentRef = createRef();
-      parentRef = createRef();
-      siblingRef = createRef();
-      targetRef = createRef();
+      grandParentRef = createRef<HTMLDivElement>();
+      parentRef = createRef<HTMLDivElement>();
+      siblingRef = createRef<HTMLDivElement>();
+      targetRef = createRef<HTMLDivElement>();
     });
 
     /**
@@ -1667,7 +1670,7 @@ describe('useResponderEvents', () => {
      */
     test('negotiates single-touch from first registered ancestor of responder and transfers', () => {
       const pointerType = 'touch';
-      const eventLog = [];
+      const eventLog: Array<string> = [];
       const grandParentCallbacks = {
         onStartShouldSetResponderCapture() {
           eventLog.push('grandParent: onStartShouldSetResponderCapture');
@@ -1839,7 +1842,7 @@ describe('useResponderEvents', () => {
      */
     test('negotiates multi-touch from first registered ancestor of responder and transfers', () => {
       const pointerType = 'touch';
-      let eventLog = [];
+      let eventLog: Array<string> = [];
       const grandParentCallbacks = {
         onStartShouldSetResponderCapture() {
           eventLog.push('grandParent: onStartShouldSetResponderCapture');
@@ -2061,7 +2064,7 @@ describe('useResponderEvents', () => {
      */
     test('negotiates with deepest target on second touch if nothing is responder', () => {
       const pointerType = 'touch';
-      let eventLog = [];
+      let eventLog: Array<string> = [];
       const grandParentCallbacks = {
         onStartShouldSetResponderCapture() {
           eventLog.push('grandParent: onStartShouldSetResponderCapture');
@@ -2225,7 +2228,7 @@ describe('useResponderEvents', () => {
      */
     test('negotiate from first common ancestor when there are siblings', () => {
       const pointerType = 'touch';
-      let eventLog = [];
+      let eventLog: Array<string> = [];
       const grandParentCallbacks = {
         onStartShouldSetResponderCapture() {
           eventLog.push('grandParent: onStartShouldSetResponderCapture');
@@ -2394,59 +2397,59 @@ describe('useResponderEvents', () => {
      */
     test('no negotation between siblings with no responder ancestors', () => {
       const pointerType = 'mouse';
-      const eventLog = [];
+      const eventLog: Array<string> = [];
 
       const targetConfig = {
-        onStartShouldSetResponderCapture(e) {
+        onStartShouldSetResponderCapture(e: ResponderEvent) {
           eventLog.push('target: onStartShouldSetResponderCapture');
           return false;
         },
-        onStartShouldSetResponder(e) {
+        onStartShouldSetResponder(e: ResponderEvent) {
           eventLog.push('target: onStartShouldSetResponder');
           return true;
         },
-        onMoveShouldSetResponderCapture(e) {
+        onMoveShouldSetResponderCapture(e: ResponderEvent) {
           eventLog.push('target: onMoveShouldSetResponderCapture');
           return false;
         },
-        onMoveShouldSetResponder(e) {
+        onMoveShouldSetResponder(e: ResponderEvent) {
           eventLog.push('target: onMoveShouldSetResponder');
           return false;
         },
-        onResponderGrant(e) {
+        onResponderGrant(e: ResponderEvent) {
           eventLog.push('target: onResponderGrant');
         },
-        onResponderStart(e) {
+        onResponderStart(e: ResponderEvent) {
           eventLog.push('target: onResponderStart');
         },
-        onResponderMove(e) {
+        onResponderMove(e: ResponderEvent) {
           eventLog.push('target: onResponderMove');
         }
       };
       const siblingConfig = {
-        onStartShouldSetResponderCapture(e) {
+        onStartShouldSetResponderCapture(e: ResponderEvent) {
           eventLog.push('sibling: onStartShouldSetResponderCapture');
           return true;
         },
-        onStartShouldSetResponder(e) {
+        onStartShouldSetResponder(e: ResponderEvent) {
           eventLog.push('sibling: onStartShouldSetResponder');
           return true;
         },
-        onMoveShouldSetResponderCapture(e) {
+        onMoveShouldSetResponderCapture(e: ResponderEvent) {
           eventLog.push('sibling: onMoveShouldSetResponderCapture');
           return true;
         },
-        onMoveShouldSetResponder(e) {
+        onMoveShouldSetResponder(e: ResponderEvent) {
           eventLog.push('sibling: onMoveShouldSetResponder');
           return true;
         },
-        onResponderGrant(e) {
+        onResponderGrant(e: ResponderEvent) {
           eventLog.push('sibling: onResponderGrant');
         },
-        onResponderStart(e) {
+        onResponderStart(e: ResponderEvent) {
           eventLog.push('sibling: onResponderStart');
         },
-        onResponderMove(e) {
+        onResponderMove(e: ResponderEvent) {
           eventLog.push('sibling: onResponderMove');
         }
       };
@@ -2491,7 +2494,7 @@ describe('useResponderEvents', () => {
      */
     test('negotiation rejects and current responder receives events', () => {
       const pointerType = 'touch';
-      let eventLog = [];
+      let eventLog: Array<string> = [];
       const grandParentCallbacks = {
         onStartShouldSetResponderCapture() {
           eventLog.push('grandParent: onStartShouldSetResponderCapture');
@@ -2619,7 +2622,7 @@ describe('useResponderEvents', () => {
 
     test('negotiate scroll', () => {
       const pointerType = 'touch';
-      let eventLog = [];
+      let eventLog: Array<string> = [];
       const grandParentCallbacks = {
         onStartShouldSetResponderCapture() {
           eventLog.push('grandParent: onStartShouldSetResponderCapture');
@@ -2758,7 +2761,7 @@ describe('useResponderEvents', () => {
 
     test('event stopPropagation  ', () => {
       const pointerType = 'touch';
-      const eventLog = [];
+      const eventLog: Array<string> = [];
       const grandParentCallbacks = {
         onStartShouldSetResponderCapture() {
           eventLog.push('grandParent: onStartShouldSetResponderCapture');
@@ -2770,7 +2773,7 @@ describe('useResponderEvents', () => {
         }
       };
       const parentCallbacks = {
-        onStartShouldSetResponderCapture(e) {
+        onStartShouldSetResponderCapture(e: ResponderEvent) {
           eventLog.push('parent: onStartShouldSetResponderCapture');
           e.stopPropagation();
           return false;
