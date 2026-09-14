@@ -22,13 +22,11 @@ Visit the [React Native Directory](https://reactnative.directory/?web=true) to f
 | :----------------------- | :----- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ActivityIndicator        | ✓      |                                                                                                                                                                                               |
 | Button                   | ✓      |                                                                                                                                                                                               |
-| CheckBox                 | ✓      |                                                                                                                                                                                               |
 | FlatList                 | ✓      |                                                                                                                                                                                               |
 | Image                    | ✓      | Missing multiple sources ([#515](https://github.com/necolas/react-native-web/issues/515)) and HTTP headers ([#1019](https://github.com/necolas/react-native-web/issues/1019)).                |
 | ImageBackground          | ✓      |                                                                                                                                                                                               |
 | KeyboardAvoidingView     | (✓)    | Mock. No equivalent web APIs.                                                                                                                                                                 |
 | Modal                    | ✓      |                                                                                                                                                                                               |
-| Picker                   | ✓      |                                                                                                                                                                                               |
 | Pressable                | ✓      |                                                                                                                                                                                               |
 | RefreshControl           | ✘      | Not started ([#1027](https://github.com/necolas/react-native-web/issues/1027)).                                                                                                               |
 | SafeAreaView             | ✓      |                                                                                                                                                                                               |
@@ -45,7 +43,6 @@ Visit the [React Native Directory](https://reactnative.directory/?web=true) to f
 | TouchableWithoutFeedback | ✓      |                                                                                                                                                                                               |
 | View                     | ✓      |                                                                                                                                                                                               |
 | VirtualizedList          | ✓      |                                                                                                                                                                                               |
-| YellowBox                | (✓)    | Mock. No YellowBox functionality.                                                                                                                                                             |
 
 ## APIs
 
