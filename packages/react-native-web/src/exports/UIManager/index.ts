@@ -137,7 +137,11 @@ const UIManager = {
     }
   },
 
-  configureNextLayoutAnimation(config: unknown, onAnimationDidEnd: () => void) {
+  configureNextLayoutAnimation(
+    config: unknown,
+    onAnimationDidEnd: () => void,
+    onError?: () => void
+  ) {
     onAnimationDidEnd();
   },
 
