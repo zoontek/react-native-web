@@ -4,10 +4,11 @@
   "private": true,
   "description": "Documentation website for React Native for Web",
   "homepage": "https://github.com/necolas/react-native-web",
+  "type": "module",
   "scripts": {
-    "build:examples": "pnpm --filter react-native-web-examples build",
-    "dev": "pnpm run build:examples && eleventy --serve",
-    "build": "pnpm run build:examples && ELEVENTY_PRODUCTION=true eleventy",
+    "prebuild": "del-cli ./dist && pnpm --filter react-native-web-examples build",
+    "dev": "pnpm prebuild && eleventy --serve",
+    "build": "pnpm prebuild && ELEVENTY_PRODUCTION=true eleventy",
     "preview": "eleventy --serve"
   },
   "devDependencies": {
@@ -15,6 +16,7 @@
     "@11ty/eleventy-navigation": "^1.0.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "csso": "^5.0.5",
+    "del-cli": "^7.0.0",
     "eleventy-plugin-svg-contents": "^0.7.0",
     "html-minifier": "^4.0.0",
     "markdown-it": "^15.0.0",

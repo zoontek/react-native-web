@@ -47,14 +47,17 @@ export default function (eleventyConfig) {
     const options = { month: 'long', day: 'numeric', year: 'numeric' };
     return new Intl.DateTimeFormat('en-US', options).format(dateObj);
   });
+
   // Date formatting (machine readable)
   eleventyConfig.addFilter('machineDate', (dateObj) => {
     return dateObj.toISOString();
   });
+
   // Minify CSS
   eleventyConfig.addFilter('cssmin', function (code) {
     return cssoMinify(code).css;
   });
+
   // Minify JS
   eleventyConfig.addFilter('jsmin', function (code) {
     const minified = UglifyJS.minify(code);
