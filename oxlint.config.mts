@@ -1,13 +1,16 @@
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({
+  plugins: ['promise', 'react'],
+  ignorePatterns: ['packages/**/vendor/*', 'types'],
   env: {
     browser: true,
     jest: true,
     node: true
   },
-  ignorePatterns: ['packages/**/vendor/*'],
-  plugins: ['promise', 'react'],
+  options: {
+    typeAware: true
+  },
   categories: {
     correctness: 'error',
     perf: 'error',
@@ -79,5 +82,35 @@ export default defineConfig({
     //   'error',
     //   { argsIgnorePattern: '^_', ignoreRestSiblings: true }
     // ]
-  }
+  },
+  overrides: [
+    {
+      files: ['**/*.{ts,tsx}'],
+      plugins: ['typescript'],
+      rules: {
+        'typescript/explicit-function-return-type': 'error',
+        'typescript/explicit-module-boundary-types': 'error',
+        'typescript/no-empty-object-type': 'error',
+        'typescript/no-import-type-side-effects': 'error',
+        'typescript/no-invalid-void-type': 'error',
+        'typescript/no-non-null-assertion': 'error',
+
+        // temporarily disabled
+        'typescript/no-dynamic-delete': 'off',
+        'typescript/no-explicit-any': 'off',
+        'typescript/no-extraneous-class': 'off',
+        'typescript/no-unsafe-type-assertion': 'off',
+        'typescript/no-wrapper-object-types': 'off'
+
+        // 'typescript/strict-boolean-expressions': [
+        //   'error',
+        //   {
+        //     allowNullableObject: false,
+        //     allowNumber: false,
+        //     allowString: false
+        //   }
+        // ],
+      }
+    }
+  ]
 });

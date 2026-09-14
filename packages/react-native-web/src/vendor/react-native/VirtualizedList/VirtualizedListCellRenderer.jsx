@@ -17,7 +17,7 @@
 import View from '../../../exports/View';
 /*:: import type { ViewProps } from '../../../exports/View'; */
 import StyleSheet from '../../../exports/StyleSheet';
-import {VirtualizedListCellContextProvider} from './VirtualizedListContext.js';
+import {VirtualizedListCellContextProvider} from './VirtualizedListContext';
 import invariant from 'fbjs/lib/invariant';
 import * as React from 'react';
 

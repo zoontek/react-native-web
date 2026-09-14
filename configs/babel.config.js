@@ -1,12 +1,5 @@
 const createConfig = ({ modules }) => {
-  const plugins = [
-    ['@babel/plugin-transform-runtime', { version: '7.18.6' }]
-  ].concat(modules ? ['babel-plugin-add-module-exports'] : []);
-
   return {
-    assumptions: {
-      iterableIsArray: true
-    },
     comments: true,
     shouldPrintComment: (contents) => !/^:{1,2}/.test(contents.trim()),
     presets: [
@@ -15,21 +8,17 @@ const createConfig = ({ modules }) => {
         {
           loose: true,
           modules,
-          exclude: ['transform-typeof-symbol'],
           targets: {
-            browsers: [
-              'chrome 95',
-              'edge 95',
-              'firefox 93',
-              'safari 15.1',
-              'ios_saf 15.1'
-            ]
+            browsers: ['chrome 95', 'firefox 93', 'safari 15.1']
           }
         }
       ],
-      '@babel/preset-react'
+      '@babel/preset-react',
+      '@babel/preset-typescript'
     ],
-    plugins: plugins
+    plugins: ['@babel/plugin-transform-runtime'].concat(
+      modules ? ['babel-plugin-add-module-exports'] : []
+    )
   };
 };
 
