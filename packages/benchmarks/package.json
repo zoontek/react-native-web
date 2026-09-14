@@ -4,23 +4,19 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "del-cli ./dist",
-    "build": "NODE_ENV=production pnpm dev",
-    "dev": "pnpm clean && mkdir -p dist && cp -f index.html dist/index.html && webpack --config ./webpack.config.js"
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "classnames": "^2.3.1",
-    "d3-scale-chromatic": "^3.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "classnames": "^2.5.1",
+    "d3-scale-chromatic": "^3.1.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-native-web": "0.21.2"
   },
   "devDependencies": {
-    "babel-loader": "^8.2.5",
-    "css-loader": "^6.7.1",
-    "style-loader": "^3.3.1",
-    "url-loader": "^4.1.1",
-    "webpack": "^5.76.0",
-    "webpack-bundle-analyzer": "^4.5.0",
-    "webpack-cli": "^4.10.0"
+    "@vitejs/plugin-react": "^6.0.5",
+    "vite": "^8.2.0"
   }
 }

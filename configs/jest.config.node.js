@@ -3,10 +3,6 @@
 const babelConfig = require('./babel.config.js');
 
 module.exports = {
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '<rootDir>/packages/react-native-web/src/vendor/'
-  ],
   fakeTimers: {
     enableGlobally: true
   },
