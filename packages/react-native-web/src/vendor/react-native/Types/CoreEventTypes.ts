@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -11,282 +9,284 @@
 
 'use strict';
 
-/*:: export type SyntheticEvent<+T> = $ReadOnly<{|
-  bubbles: ?boolean,
-  cancelable: ?boolean,
-  currentTarget: HTMLElement,
-  defaultPrevented: ?boolean,
-  dispatchConfig: $ReadOnly<{|
-    registrationName: string,
-  |}>,
-  eventPhase: ?number,
-  preventDefault: () => void,
-  isDefaultPrevented: () => boolean,
-  stopPropagation: () => void,
-  isPropagationStopped: () => boolean,
-  isTrusted: ?boolean,
-  nativeEvent: T,
-  persist: () => void,
-  target: ?HTMLElement,
-  timeStamp: number,
-  type: ?string,
-|}>; */
+import type { Nullable } from '../../../types';
 
-/*:: export type ResponderSyntheticEvent<T> = $ReadOnly<{|
-  ...SyntheticEvent<T>,
-  touchHistory: $ReadOnly<{|
-    indexOfSingleActiveTouch: number,
-    mostRecentTimeStamp: number,
-    numberActiveTouches: number,
-    touchBank: $ReadOnlyArray<
-      $ReadOnly<{|
-        touchActive: boolean,
-        startPageX: number,
-        startPageY: number,
-        startTimeStamp: number,
-        currentPageX: number,
-        currentPageY: number,
-        currentTimeStamp: number,
-        previousPageX: number,
-        previousPageY: number,
-        previousTimeStamp: number,
-      |}>,
-    >,
-  |}>,
-|}>; */
+export type SyntheticEvent<T> = Readonly<{
+  bubbles: Nullable<boolean>;
+  cancelable: Nullable<boolean>;
+  currentTarget: HTMLElement;
+  defaultPrevented: Nullable<boolean>;
+  dispatchConfig: Readonly<{
+    registrationName: string;
+  }>;
+  eventPhase: Nullable<number>;
+  preventDefault: () => void;
+  isDefaultPrevented: () => boolean;
+  stopPropagation: () => void;
+  isPropagationStopped: () => boolean;
+  isTrusted: Nullable<boolean>;
+  nativeEvent: T;
+  persist: () => void;
+  target: Nullable<HTMLElement>;
+  timeStamp: number;
+  type: Nullable<string>;
+}>;
 
-/*:: export type Layout = $ReadOnly<{|
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-|}>; */
+export type ResponderSyntheticEvent<T> = SyntheticEvent<T> &
+  Readonly<{
+    touchHistory: Readonly<{
+      indexOfSingleActiveTouch: number;
+      mostRecentTimeStamp: number;
+      numberActiveTouches: number;
+      touchBank: ReadonlyArray<
+        Readonly<{
+          touchActive: boolean;
+          startPageX: number;
+          startPageY: number;
+          startTimeStamp: number;
+          currentPageX: number;
+          currentPageY: number;
+          currentTimeStamp: number;
+          previousPageX: number;
+          previousPageY: number;
+          previousTimeStamp: number;
+        }>
+      >;
+    }>;
+  }>;
 
-/*:: export type TextLayout = $ReadOnly<{|
-  ...Layout,
-  ascender: number,
-  capHeight: number,
-  descender: number,
-  text: string,
-  xHeight: number,
-|}>; */
+export type Layout = Readonly<{
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}>;
 
-/*:: export type LayoutEvent = SyntheticEvent<
-  $ReadOnly<{|
-    layout: Layout,
-  |}>,
->; */
+export type TextLayout = Layout &
+  Readonly<{
+    ascender: number;
+    capHeight: number;
+    descender: number;
+    text: string;
+    xHeight: number;
+  }>;
 
-/*:: export type TextLayoutEvent = SyntheticEvent<
-  $ReadOnly<{|
-    lines: Array<TextLayout>,
-  |}>,
->; */
+export type LayoutEvent = SyntheticEvent<
+  Readonly<{
+    layout: Layout;
+  }>
+>;
+
+export type TextLayoutEvent = SyntheticEvent<
+  Readonly<{
+    lines: Array<TextLayout>;
+  }>
+>;
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/UIEvent
  */
-/*:: export interface NativeUIEvent {
+export interface NativeUIEvent {
   /**
    * Returns a long with details about the event, depending on the event type.
-   *-/
-  +detail: number;
-} */
+   */
+  readonly detail: number;
+}
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
  */
-/*:: export interface NativeMouseEvent extends NativeUIEvent {
+export interface NativeMouseEvent extends NativeUIEvent {
   /**
    * The X coordinate of the mouse pointer in global (screen) coordinates.
-   *-/
-  +screenX: number;
+   */
+  readonly screenX: number;
   /**
    * The Y coordinate of the mouse pointer in global (screen) coordinates.
-   *-/
-  +screenY: number;
+   */
+  readonly screenY: number;
   /**
    * The X coordinate of the mouse pointer relative to the whole document.
-   *-/
-  +pageX: number;
+   */
+  readonly pageX: number;
   /**
    * The Y coordinate of the mouse pointer relative to the whole document.
-   *-/
-  +pageY: number;
+   */
+  readonly pageY: number;
   /**
    * The X coordinate of the mouse pointer in local (DOM content) coordinates.
-   *-/
-  +clientX: number;
+   */
+  readonly clientX: number;
   /**
    * The Y coordinate of the mouse pointer in local (DOM content) coordinates.
-   *-/
-  +clientY: number;
+   */
+  readonly clientY: number;
   /**
    * Alias for NativeMouseEvent.clientX
-   *-/
-  +x: number;
+   */
+  readonly x: number;
   /**
    * Alias for NativeMouseEvent.clientY
-   *-/
-  +y: number;
+   */
+  readonly y: number;
   /**
    * Returns true if the control key was down when the mouse event was fired.
-   *-/
-  +ctrlKey: boolean;
+   */
+  readonly ctrlKey: boolean;
   /**
    * Returns true if the shift key was down when the mouse event was fired.
-   *-/
-  +shiftKey: boolean;
+   */
+  readonly shiftKey: boolean;
   /**
    * Returns true if the alt key was down when the mouse event was fired.
-   *-/
-  +altKey: boolean;
+   */
+  readonly altKey: boolean;
   /**
    * Returns true if the meta key was down when the mouse event was fired.
-   *-/
-  +metaKey: boolean;
+   */
+  readonly metaKey: boolean;
   /**
    * The button number that was pressed (if applicable) when the mouse event was fired.
-   *-/
-  +button: number;
+   */
+  readonly button: number;
   /**
    * The buttons being depressed (if any) when the mouse event was fired.
-   *-/
-  +buttons: number;
+   */
+  readonly buttons: number;
   /**
    * The secondary target for the event, if there is one.
-   *-/
-  +relatedTarget: HTMLElement;
+   */
+  readonly relatedTarget: HTMLElement;
   // offset is proposed: https://drafts.csswg.org/cssom-view/#extensions-to-the-mouseevent-interface
   /**
    * The X coordinate of the mouse pointer between that event and the padding edge of the target node
-   *-/
-  +offsetX: number;
+   */
+  readonly offsetX: number;
   /**
    * The Y coordinate of the mouse pointer between that event and the padding edge of the target node
-   *-/
-  +offsetY: number;
-} */
+   */
+  readonly offsetY: number;
+}
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent
  */
-/*:: export interface NativePointerEvent extends NativeMouseEvent {
+export interface NativePointerEvent extends NativeMouseEvent {
   /**
    * A unique identifier for the pointer causing the event.
-   *-/
-  +pointerId: number;
+   */
+  readonly pointerId: number;
   /**
    * The width (magnitude on the X axis), in CSS pixels, of the contact geometry of the pointer
-   *-/
-  +width: number;
+   */
+  readonly width: number;
   /**
    * The height (magnitude on the Y axis), in CSS pixels, of the contact geometry of the pointer.
-   *-/
-  +height: number;
+   */
+  readonly height: number;
   /**
    * The normalized pressure of the pointer input in the range 0 to 1, where 0 and 1 represent
    * the minimum and maximum pressure the hardware is capable of detecting, respectively.
-   *-/
-  +pressure: number;
+   */
+  readonly pressure: number;
   /**
    * The normalized tangential pressure of the pointer input (also known as barrel pressure or
    * cylinder stress) in the range -1 to 1, where 0 is the neutral position of the control.
-   *-/
-  +tangentialPressure: number;
+   */
+  readonly tangentialPressure: number;
   /**
    * The plane angle (in degrees, in the range of -90 to 90) between the Y–Z plane and the plane
    * containing both the pointer (e.g. pen stylus) axis and the Y axis.
-   *-/
-  +tiltX: number;
+   */
+  readonly tiltX: number;
   /**
    * The plane angle (in degrees, in the range of -90 to 90) between the X–Z plane and the plane
    * containing both the pointer (e.g. pen stylus) axis and the X axis.
-   *-/
-  +tiltY: number;
+   */
+  readonly tiltY: number;
   /**
    * The clockwise rotation of the pointer (e.g. pen stylus) around its major axis in degrees,
    * with a value in the range 0 to 359.
-   *-/
-  +twist: number;
+   */
+  readonly twist: number;
   /**
    * Indicates the device type that caused the event (mouse, pen, touch, etc.)
-   *-/
-  +pointerType: string;
+   */
+  readonly pointerType: string;
   /**
    * Indicates if the pointer represents the primary pointer of this pointer type.
-   *-/
-  +isPrimary: boolean;
-} */
+   */
+  readonly isPrimary: boolean;
+}
 
-/*:: export type PointerEvent = SyntheticEvent<NativePointerEvent>; */
+export type PointerEvent = SyntheticEvent<NativePointerEvent>;
 
-/*:: export type PressEvent = ResponderSyntheticEvent<
-  $ReadOnly<{|
-    changedTouches: $ReadOnlyArray<$PropertyType<PressEvent, 'nativeEvent'>>,
-    force: number,
-    identifier: number,
-    locationX: number,
-    locationY: number,
-    pageX: number,
-    pageY: number,
-    target: ?HTMLElement,
-    timestamp: number,
-    touches: $ReadOnlyArray<$PropertyType<PressEvent, 'nativeEvent'>>,
-  |}>,
->; */
+export type PressEvent = ResponderSyntheticEvent<
+  Readonly<{
+    changedTouches: ReadonlyArray<PressEvent['nativeEvent']>;
+    force: number;
+    identifier: number;
+    locationX: number;
+    locationY: number;
+    pageX: number;
+    pageY: number;
+    target: Nullable<HTMLElement>;
+    timestamp: number;
+    touches: ReadonlyArray<PressEvent['nativeEvent']>;
+  }>
+>;
 
-/*:: export type ScrollEvent = SyntheticEvent<
-  $ReadOnly<{|
-    contentInset: $ReadOnly<{|
-      bottom: number,
-      left: number,
-      right: number,
-      top: number,
-    |}>,
-    contentOffset: $ReadOnly<{|
-      y: number,
-      x: number,
-    |}>,
-    contentSize: $ReadOnly<{|
-      height: number,
-      width: number,
-    |}>,
-    layoutMeasurement: $ReadOnly<{|
-      height: number,
-      width: number,
-    |}>,
-    targetContentOffset?: $ReadOnly<{|
-      y: number,
-      x: number,
-    |}>,
-    velocity?: $ReadOnly<{|
-      y: number,
-      x: number,
-    |}>,
-    zoomScale?: number,
-    responderIgnoreScroll?: boolean,
-  |}>,
->; */
+export type ScrollEvent = SyntheticEvent<
+  Readonly<{
+    contentInset: Readonly<{
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
+    }>;
+    contentOffset: Readonly<{
+      y: number;
+      x: number;
+    }>;
+    contentSize: Readonly<{
+      height: number;
+      width: number;
+    }>;
+    layoutMeasurement: Readonly<{
+      height: number;
+      width: number;
+    }>;
+    targetContentOffset?: Readonly<{
+      y: number;
+      x: number;
+    }>;
+    velocity?: Readonly<{
+      y: number;
+      x: number;
+    }>;
+    zoomScale?: number;
+    responderIgnoreScroll?: boolean;
+  }>
+>;
 
-/*:: export type BlurEvent = SyntheticEvent<
-  $ReadOnly<{|
-    target: number,
-  |}>,
->; */
+export type BlurEvent = SyntheticEvent<
+  Readonly<{
+    target: number;
+  }>
+>;
 
-/*:: export type FocusEvent = SyntheticEvent<
-  $ReadOnly<{|
-    target: number,
-  |}>,
->; */
+export type FocusEvent = SyntheticEvent<
+  Readonly<{
+    target: number;
+  }>
+>;
 
-/*:: export type MouseEvent = SyntheticEvent<
-  $ReadOnly<{|
-    clientX: number,
-    clientY: number,
-    pageX: number,
-    pageY: number,
-    timestamp: number,
-  |}>,
->; */
+export type MouseEvent = SyntheticEvent<
+  Readonly<{
+    clientX: number;
+    clientY: number;
+    pageX: number;
+    pageY: number;
+    timestamp: number;
+  }>
+>;

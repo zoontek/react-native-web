@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,15 +8,12 @@
 
 const Platform = {
   OS: 'web',
-  select: (obj /*: Object */) /*: any */ =>
+  select: <T>(obj: Record<string, T | undefined>): T | undefined =>
     'web' in obj ? obj.web : obj.default,
-  get isTesting() /*: boolean */ {
-    if (process.env.NODE_ENV === 'test') {
-      return true;
-    }
-    return false;
+  get isTesting(): boolean {
+    return process.env.NODE_ENV === 'test';
   },
-  get Version() /*: string */ {
+  get Version(): string {
     return '0.0.0';
   }
 };

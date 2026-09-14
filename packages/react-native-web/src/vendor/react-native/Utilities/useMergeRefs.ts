@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -10,11 +8,12 @@
  */
 
 import { useCallback } from 'react';
+import type { Nullable } from '../../../types';
 
-/*:: type CallbackRef<T> = T => mixed; */
-/*:: type ObjectRef<T> = {current: T, ...}; */
+type CallbackRef<T> = (value: T) => unknown;
+type ObjectRef<T> = { current: T };
 
-/*:: type Ref<T> = CallbackRef<T> | ObjectRef<T>; */
+type Ref<T> = CallbackRef<T> | ObjectRef<T>;
 
 /**
  * Constructs a new ref that forwards new values to each of the given refs. The
@@ -25,11 +24,11 @@ import { useCallback } from 'react';
  * the returned callback ref is supplied as a `ref` to a React element, this may
  * lead to problems with the given refs being invoked more times than desired.
  */
-export default function useMergeRefs /*:: <T> */(
-  ...refs /*: $ReadOnlyArray<?Ref<T>> */
-) /*: CallbackRef<T> */ {
+export default function useMergeRefs<T>(
+  ...refs: ReadonlyArray<Nullable<Ref<T>>>
+): CallbackRef<T> {
   return useCallback(
-    (current /*: T */) => {
+    (current: T) => {
       for (const ref of refs) {
         if (ref != null) {
           if (typeof ref === 'function') {
