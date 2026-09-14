@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -13,32 +11,50 @@
  * Keeps track of the active pointers and allows them to be reflected in touch events.
  */
 
-let isGesture = false;
-const activeTouches = new Map();
+export type Touch = {
+  clientX: number;
+  clientY: number;
+  force: number;
+  identifier: number;
+  pageX: number;
+  pageY: number;
+  radiusX: number;
+  radiusY: number;
+  rotationAngle: number;
+  screenX: number;
+  screenY: number;
+  target: Node;
+};
 
-export function addTouch(touch) {
+let isGesture = false;
+const activeTouches = new Map<Node, Map<number, Touch>>();
+
+export function addTouch(touch: Touch) {
   const identifier = touch.identifier;
   const target = touch.target;
-  if (!activeTouches.has(target)) {
-    activeTouches.set(target, new Map());
+  let targetTouches = activeTouches.get(target);
+  if (targetTouches == null) {
+    targetTouches = new Map();
+    activeTouches.set(target, targetTouches);
   }
-  if (activeTouches.get(target).get(identifier)) {
+  if (targetTouches.get(identifier)) {
     // Do not allow existing touches to be overwritten
     console.error(
       'Touch with identifier %s already exists. Did not record touch start.',
       identifier
     );
   } else {
-    activeTouches.get(target).set(identifier, touch);
+    targetTouches.set(identifier, touch);
   }
   isGesture = activeTouches.size > 1;
 }
 
-export function updateTouch(touch) {
+export function updateTouch(touch: Touch) {
   const identifier = touch.identifier;
   const target = touch.target;
-  if (activeTouches.get(target) != null) {
-    activeTouches.get(target).set(identifier, touch);
+  const targetTouches = activeTouches.get(target);
+  if (targetTouches != null) {
+    targetTouches.set(identifier, touch);
     isGesture = true;
   } else {
     console.error(
@@ -48,12 +64,13 @@ export function updateTouch(touch) {
   }
 }
 
-export function removeTouch(touch) {
+export function removeTouch(touch: Touch) {
   const identifier = touch.identifier;
   const target = touch.target;
-  if (activeTouches.get(target) != null) {
-    if (activeTouches.get(target).has(identifier)) {
-      activeTouches.get(target).delete(identifier);
+  const targetTouches = activeTouches.get(target);
+  if (targetTouches != null) {
+    if (targetTouches.has(identifier)) {
+      targetTouches.delete(identifier);
     } else {
       console.error(
         'Touch with identifier %s does not exist. Cannot record touch end without a touch start.',
@@ -65,16 +82,17 @@ export function removeTouch(touch) {
 }
 
 export function getTouches() {
-  const touches = [];
+  const touches: Touch[] = [];
   activeTouches.forEach((_, target) => {
     touches.push(...getTargetTouches(target));
   });
   return touches;
 }
 
-export function getTargetTouches(target) {
-  if (activeTouches.get(target) != null) {
-    return Array.from(activeTouches.get(target).values());
+export function getTargetTouches(target: Node) {
+  const targetTouches = activeTouches.get(target);
+  if (targetTouches != null) {
+    return Array.from(targetTouches.values());
   }
   return [];
 }

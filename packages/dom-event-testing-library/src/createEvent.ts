@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,12 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const defaultConfig = {
+export type EventPayload = {
+  bubbles?: boolean;
+  cancelable?: boolean;
+  composed?: boolean;
+  [key: string]: unknown;
+};
+
+type EventConfig = {
+  constructorType: string;
+  defaultInit: EventPayload;
+};
+
+const defaultConfig: EventConfig = {
   constructorType: 'Event',
   defaultInit: { bubbles: true, cancelable: true, composed: true }
 };
 
-const eventConfigs = {
+const eventConfigs: Record<string, EventConfig> = {
   blur: {
     constructorType: 'FocusEvent',
     defaultInit: { bubbles: false, cancelable: false, composed: true }
@@ -216,11 +226,11 @@ const eventConfigs = {
   }
 };
 
-function getEventConfig(type) {
+function getEventConfig(type: string) {
   return eventConfigs[type] || defaultConfig;
 }
 
-export default function createEvent(type, init) {
+export default function createEvent(type: string, init?: EventPayload) {
   const config = getEventConfig(type);
   const { constructorType, defaultInit } = config;
   const eventInit = { ...defaultInit, ...init };

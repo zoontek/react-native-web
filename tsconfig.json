@@ -36,8 +36,8 @@
     // "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
-    "noImplicitReturns": false
-    // "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": false,
+    "noUncheckedIndexedAccess": true
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
   }
