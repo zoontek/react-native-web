@@ -9,7 +9,7 @@
  * @format
  */
 
-import {useCallback} from 'react';
+import { useCallback } from 'react';
 
 /*:: type CallbackRef<T> = T => mixed; */
 /*:: type ObjectRef<T> = {current: T, ...}; */
@@ -25,11 +25,11 @@ import {useCallback} from 'react';
  * the returned callback ref is supplied as a `ref` to a React element, this may
  * lead to problems with the given refs being invoked more times than desired.
  */
-export default function useMergeRefs/*:: <T> */(
-  ...refs/*: $ReadOnlyArray<?Ref<T>> */
-)/*: CallbackRef<T> */ {
+export default function useMergeRefs /*:: <T> */(
+  ...refs /*: $ReadOnlyArray<?Ref<T>> */
+) /*: CallbackRef<T> */ {
   return useCallback(
-    (current/*: T */) => {
+    (current /*: T */) => {
       for (const ref of refs) {
         if (ref != null) {
           if (typeof ref === 'function') {
@@ -40,6 +40,6 @@ export default function useMergeRefs/*:: <T> */(
         }
       }
     },
-    [...refs], // eslint-disable-line react-hooks/exhaustive-deps
+    [...refs] // eslint-disable-line react-hooks/exhaustive-deps
   );
 }

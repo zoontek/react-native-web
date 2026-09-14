@@ -16,16 +16,16 @@
 /*:: export type FillRateInfo = Info; */
 
 class Info {
-  any_blank_count/*: number */ = 0;
-  any_blank_ms/*: number */ = 0;
-  any_blank_speed_sum/*: number */ = 0;
-  mostly_blank_count/*: number */ = 0;
-  mostly_blank_ms/*: number */ = 0;
-  pixels_blank/*: number */ = 0;
-  pixels_sampled/*: number */ = 0;
-  pixels_scrolled/*: number */ = 0;
-  total_time_spent/*: number */ = 0;
-  sample_count/*: number */ = 0;
+  any_blank_count /*: number */ = 0;
+  any_blank_ms /*: number */ = 0;
+  any_blank_speed_sum /*: number */ = 0;
+  mostly_blank_count /*: number */ = 0;
+  mostly_blank_ms /*: number */ = 0;
+  pixels_blank /*: number */ = 0;
+  pixels_sampled /*: number */ = 0;
+  pixels_scrolled /*: number */ = 0;
+  total_time_spent /*: number */ = 0;
+  sample_count /*: number */ = 0;
 }
 
 /*:: type FrameMetrics = {
@@ -37,7 +37,7 @@ class Info {
 
 const DEBUG = false;
 
-let _listeners/*: Array<(Info) => void> */ = [];
+let _listeners /*: Array<(Info) => void> */ = [];
 let _minSampleCount = 10;
 let _sampleRate = DEBUG ? 1 : null;
 
@@ -50,14 +50,14 @@ let _sampleRate = DEBUG ? 1 : null;
  * `SceneTracker.getActiveScene` to determine the context of the events.
  */
 class FillRateHelper {
-  _anyBlankStartTime/*: ?number */ = null;
+  _anyBlankStartTime /*: ?number */ = null;
   _enabled = false;
-  _getFrameMetrics/*: (index: number, props: FrameMetricProps) => ?FrameMetrics */;
-  _info/*: Info */ = new Info();
-  _mostlyBlankStartTime/*: ?number */ = null;
-  _samplesStartTime/*: ?number */ = null;
+  _getFrameMetrics /*: (index: number, props: FrameMetricProps) => ?FrameMetrics */;
+  _info /*: Info */ = new Info();
+  _mostlyBlankStartTime /*: ?number */ = null;
+  _samplesStartTime /*: ?number */ = null;
 
-  static addListener(callback/*: FillRateInfo => void */)/*: {
+  static addListener(callback /*: FillRateInfo => void */) /*: {
     remove: () => void,
     ...
   } */ {
@@ -67,21 +67,21 @@ class FillRateHelper {
     _listeners.push(callback);
     return {
       remove: () => {
-        _listeners = _listeners.filter(listener => callback !== listener);
-      },
+        _listeners = _listeners.filter((listener) => callback !== listener);
+      }
     };
   }
 
-  static setSampleRate(sampleRate/*: number */) {
+  static setSampleRate(sampleRate /*: number */) {
     _sampleRate = sampleRate;
   }
 
-  static setMinSampleCount(minSampleCount/*: number */) {
+  static setMinSampleCount(minSampleCount /*: number */) {
     _minSampleCount = minSampleCount;
   }
 
   constructor(
-    getFrameMetrics/*: (index: number, props: FrameMetricProps) => ?FrameMetrics */,
+    getFrameMetrics /*: (index: number, props: FrameMetricProps) => ?FrameMetrics */
   ) {
     this._getFrameMetrics = getFrameMetrics;
     this._enabled = (_sampleRate || 0) > Math.random();
@@ -111,9 +111,9 @@ class FillRateHelper {
       return;
     }
     const total_time_spent = global.performance.now() - start;
-    const info/*: any */ = {
+    const info /*: any */ = {
       ...this._info,
-      total_time_spent,
+      total_time_spent
     };
     if (DEBUG) {
       const derived = {
@@ -126,37 +126,37 @@ class FillRateHelper {
         any_blank_time_frac: this._info.any_blank_ms / total_time_spent,
         mostly_blank_per_min:
           this._info.mostly_blank_count / (total_time_spent / 1000 / 60),
-        mostly_blank_time_frac: this._info.mostly_blank_ms / total_time_spent,
+        mostly_blank_time_frac: this._info.mostly_blank_ms / total_time_spent
       };
       for (const key in derived) {
         // $FlowFixMe[prop-missing]
         derived[key] = Math.round(1000 * derived[key]) / 1000;
       }
-      console.debug('FillRateHelper deactivateAndFlush: ', {derived, info});
+      console.debug('FillRateHelper deactivateAndFlush: ', { derived, info });
     }
-    _listeners.forEach(listener => listener(info));
+    _listeners.forEach((listener) => listener(info));
     this._resetData();
   }
 
   computeBlankness(
-    props/*: {
+    props /*: {
       ...FrameMetricProps,
       initialNumToRender?: ?number,
       ...
     } */,
-    cellsAroundViewport/*: {
+    cellsAroundViewport /*: {
       first: number,
       last: number,
       ...
     } */,
-    scrollMetrics/*: {
+    scrollMetrics /*: {
       dOffset: number,
       offset: number,
       velocity: number,
       visibleLength: number,
       ...
-    } */,
-  )/*: number */ {
+    } */
+  ) /*: number */ {
     if (
       !this._enabled ||
       props.getItemCount(props.data) === 0 ||
@@ -165,7 +165,7 @@ class FillRateHelper {
     ) {
       return 0;
     }
-    const {dOffset, offset, velocity, visibleLength} = scrollMetrics;
+    const { dOffset, offset, velocity, visibleLength } = scrollMetrics;
 
     // Denominator metrics that we track for all events - most of the time there is no blankness and
     // we want to capture that.
@@ -200,7 +200,7 @@ class FillRateHelper {
     if (firstFrame && first > 0) {
       blankTop = Math.min(
         visibleLength,
-        Math.max(0, firstFrame.offset - offset),
+        Math.max(0, firstFrame.offset - offset)
       );
     }
     let blankBottom = 0;
@@ -219,7 +219,7 @@ class FillRateHelper {
       const bottomEdge = lastFrame.offset + lastFrame.length;
       blankBottom = Math.min(
         visibleLength,
-        Math.max(0, offset + visibleLength - bottomEdge),
+        Math.max(0, offset + visibleLength - bottomEdge)
       );
     }
     const pixels_blank = Math.round(blankTop + blankBottom);
@@ -239,7 +239,7 @@ class FillRateHelper {
     return blankness;
   }
 
-  enabled()/*: boolean */ {
+  enabled() /*: boolean */ {
     return this._enabled;
   }
 

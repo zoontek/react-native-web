@@ -20,11 +20,11 @@ import AnimatedWithChildren from './AnimatedWithChildren';
 /*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
 
 class AnimatedDivision extends AnimatedWithChildren {
-  _a/*: AnimatedNode */;
-  _b/*: AnimatedNode */;
-  _warnedAboutDivideByZero/*: boolean */ = false;
+  _a /*: AnimatedNode */;
+  _b /*: AnimatedNode */;
+  _warnedAboutDivideByZero /*: boolean */ = false;
 
-  constructor(a/*: AnimatedNode | number */, b/*: AnimatedNode | number */) {
+  constructor(a /*: AnimatedNode | number */, b /*: AnimatedNode | number */) {
     super();
     if (b === 0 || (b instanceof AnimatedNode && b.__getValue() === 0)) {
       console.error('Detected potential division by zero in AnimatedDivision');
@@ -33,13 +33,13 @@ class AnimatedDivision extends AnimatedWithChildren {
     this._b = typeof b === 'number' ? new AnimatedValue(b) : b;
   }
 
-  __makeNative(platformConfig/*: ?PlatformConfig */) {
+  __makeNative(platformConfig /*: ?PlatformConfig */) {
     this._a.__makeNative(platformConfig);
     this._b.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
 
-  __getValue()/*: number */ {
+  __getValue() /*: number */ {
     const a = this._a.__getValue();
     const b = this._b.__getValue();
     if (b === 0) {
@@ -55,27 +55,27 @@ class AnimatedDivision extends AnimatedWithChildren {
     return a / b;
   }
 
-  interpolate/*:: <OutputT: number | string> */(
-    config/*: InterpolationConfigType<OutputT> */,
-  )/*: AnimatedInterpolation<OutputT> */ {
+  interpolate /*:: <OutputT: number | string> */(
+    config /*: InterpolationConfigType<OutputT> */
+  ) /*: AnimatedInterpolation<OutputT> */ {
     return new AnimatedInterpolation(this, config);
   }
 
-  __attach()/*: void */ {
+  __attach() /*: void */ {
     this._a.__addChild(this);
     this._b.__addChild(this);
   }
 
-  __detach()/*: void */ {
+  __detach() /*: void */ {
     this._a.__removeChild(this);
     this._b.__removeChild(this);
     super.__detach();
   }
 
-  __getNativeConfig()/*: any */ {
+  __getNativeConfig() /*: any */ {
     return {
       type: 'division',
-      input: [this._a.__getNativeTag(), this._b.__getNativeTag()],
+      input: [this._a.__getNativeTag(), this._b.__getNativeTag()]
     };
   }
 }

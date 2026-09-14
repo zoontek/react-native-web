@@ -16,7 +16,7 @@ import createAnimatedComponent from '../createAnimatedComponent';
 
 /*:: import type {AnimatedComponentType} from '../createAnimatedComponent'; */
 
-export default (createAnimatedComponent(View)/*: AnimatedComponentType<
+export default createAnimatedComponent(View) /*: AnimatedComponentType<
   React.ElementConfig<typeof View>,
   React.ElementRef<typeof View>,
-> */);
+> */;

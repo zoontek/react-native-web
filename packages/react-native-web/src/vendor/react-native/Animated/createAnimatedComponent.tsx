@@ -34,13 +34,15 @@ import * as React from 'react';
  * Experimental implementation of `createAnimatedComponent` that is intended to
  * be compatible with concurrent rendering.
  */
-export default function createAnimatedComponent/*:: <TProps: {...}, TInstance> */(
-  Component/*: React.AbstractComponent<TProps, TInstance> */,
-)/*: React.AbstractComponent<TProps, TInstance> */ {
+export default function createAnimatedComponent /*:: <TProps: {...}, TInstance> */(
+  Component /*: React.AbstractComponent<TProps, TInstance> */
+) /*: React.AbstractComponent<TProps, TInstance> */ {
   return React.forwardRef((props, forwardedRef) => {
+    // prettier-ignore
     const [reducedProps, callbackRef] = useAnimatedProps/*:: <TProps, TInstance> */(
       props,
     );
+    // prettier-ignore
     const ref = useMergeRefs/*:: <TInstance | null> */(callbackRef, forwardedRef);
 
     // Some components require explicit passthrough values for animation
@@ -48,8 +50,8 @@ export default function createAnimatedComponent/*:: <TProps: {...}, TInstance> *
     // transformed and Pressable, onPress will not work after transform
     // without these passthrough values.
     // $FlowFixMe[prop-missing]
-    const {passthroughAnimatedPropExplicitValues, style} = reducedProps;
-    const {style: passthroughStyle, ...passthroughProps} =
+    const { passthroughAnimatedPropExplicitValues, style } = reducedProps;
+    const { style: passthroughStyle, ...passthroughProps } =
       passthroughAnimatedPropExplicitValues ?? {};
     const mergedStyle = [style, passthroughStyle];
 

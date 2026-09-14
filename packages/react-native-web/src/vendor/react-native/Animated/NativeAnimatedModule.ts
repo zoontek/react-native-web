@@ -70,4 +70,5 @@ import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry';
   +queueAndExecuteBatchedOperations?: (operationsAndArgs: Array<any>) => void;
 } */
 
+// prettier-ignore
 export default (TurboModuleRegistry.get/*:: <Spec> */('NativeAnimatedModule')/*: ?Spec */);
