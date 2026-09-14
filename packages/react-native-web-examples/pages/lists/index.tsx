@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
 import {
   Animated,
   FlatList,
@@ -30,6 +29,7 @@ import poke from '../../assets/lists/poke.png';
 import superlike from '../../assets/lists/superlike.png';
 import victory from '../../assets/lists/victory.png';
 import Example from '../../shared/example';
+import { PureComponent, type ComponentProps } from 'react';
 
 type Item = {
   title: string;
@@ -94,7 +94,7 @@ type ItemComponentProps = {
   onHideUnderlay?: () => void;
 };
 
-class ItemComponent extends React.PureComponent<ItemComponentProps> {
+class ItemComponent extends PureComponent<ItemComponentProps> {
   _onPress = () => {
     this.props.onPress(this.props.item.key);
   };
@@ -129,7 +129,7 @@ class ItemComponent extends React.PureComponent<ItemComponentProps> {
   }
 }
 
-class FooterComponent extends React.PureComponent {
+class FooterComponent extends PureComponent {
   render() {
     return (
       <View style={styles.headerFooterContainer}>
@@ -142,7 +142,7 @@ class FooterComponent extends React.PureComponent {
   }
 }
 
-class HeaderComponent extends React.PureComponent {
+class HeaderComponent extends PureComponent {
   render() {
     return (
       <View style={styles.headerFooterContainer}>
@@ -155,13 +155,13 @@ class HeaderComponent extends React.PureComponent {
   }
 }
 
-class SeparatorComponent extends React.PureComponent {
+class SeparatorComponent extends PureComponent {
   render() {
     return <View style={styles.separator} />;
   }
 }
 
-class ItemSeparatorComponent extends React.PureComponent<{
+class ItemSeparatorComponent extends PureComponent<{
   highlighted: boolean;
   leadingItem: unknown;
 }> {
@@ -176,7 +176,7 @@ class ItemSeparatorComponent extends React.PureComponent<{
   }
 }
 
-class Spindicator extends React.PureComponent<{
+class Spindicator extends PureComponent<{
   value: InstanceType<typeof Animated.Value>;
 }> {
   render() {
@@ -259,7 +259,7 @@ function renderSmallSwitchOption(
 }
 
 // TODO: use TextInputProps
-function PlainInput(props: React.ComponentProps<typeof TextInput>) {
+function PlainInput(props: ComponentProps<typeof TextInput>) {
   return (
     <TextInput
       autoCapitalize="none"
@@ -284,7 +284,7 @@ type State = {
   virtualized: boolean;
 };
 
-class SingleColumnExample extends React.PureComponent<object, State> {
+class SingleColumnExample extends PureComponent<object, State> {
   static title = '<FlatList>';
   static description = 'Performant, scrollable list of data.';
 

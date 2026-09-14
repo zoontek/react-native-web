@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
 import { render } from '@testing-library/react';
 import useStable from '..';
+import type { ReactNode } from 'react';
 
 describe('useStable', () => {
   let spy: { value?: unknown } = {};
@@ -16,7 +16,7 @@ describe('useStable', () => {
     initialValueCallback
   }: {
     initialValueCallback: () => unknown;
-  }): React.ReactNode => {
+  }): ReactNode => {
     const value = useStable(initialValueCallback);
     spy.value = value;
     return null;

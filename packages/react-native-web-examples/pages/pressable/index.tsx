@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,6 +7,7 @@ import {
 } from 'react-native-web';
 import Button from '../../shared/button';
 import Example from '../../shared/example';
+import { useRef, useState } from 'react';
 
 type Event = {
   id: number;
@@ -15,10 +15,10 @@ type Event = {
 };
 
 export default function PressablePage() {
-  const [eventLog, updateEventLog] = React.useState<Event[]>([]);
-  const [disabled, setDisabled] = React.useState(false);
-  const [delay, setDelay] = React.useState(0);
-  const nextEventId = React.useRef(0);
+  const [eventLog, updateEventLog] = useState<Event[]>([]);
+  const [disabled, setDisabled] = useState(false);
+  const [delay, setDelay] = useState(0);
+  const nextEventId = useRef(0);
 
   const handleEvent = (name: string) => {
     return () => {

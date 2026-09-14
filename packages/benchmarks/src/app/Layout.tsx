@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 
 import { colors } from './theme';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
 type Props = {

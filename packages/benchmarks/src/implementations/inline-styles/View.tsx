@@ -1,6 +1,4 @@
-import type { ComponentProps, CSSProperties } from 'react';
-
-import React from 'react';
+import { Component, type ComponentProps, type CSSProperties } from 'react';
 
 const compose = (s1?: CSSProperties, s2?: CSSProperties) => {
   if (s1 && s2) {
@@ -12,7 +10,7 @@ const compose = (s1?: CSSProperties, s2?: CSSProperties) => {
 
 type Props = ComponentProps<'div'>;
 
-class View extends React.Component<Props> {
+class View extends Component<Props> {
   render() {
     const { style, ...other } = this.props;
     return <div {...other} style={compose(viewStyle, style)} />;

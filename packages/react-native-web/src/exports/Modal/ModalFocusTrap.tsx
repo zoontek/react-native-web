@@ -6,10 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import type { Nullable, PlatformMethods } from '../../types';
 
-import * as React from 'react';
 import View from '../View';
 import createElement from '../createElement';
 import StyleSheet from '../StyleSheet';
@@ -75,10 +74,9 @@ const ModalFocusTrap = ({
   active,
   children
 }: ModalFocusTrapProps): ReactNode => {
-  const trapElementRef = React.useRef<(HTMLElement & PlatformMethods) | null>(
-    null
-  );
-  const focusRef = React.useRef<{
+  const trapElementRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
+
+  const focusRef = useRef<{
     trapFocusInProgress: boolean;
     lastFocusedElement: Nullable<Element>;
   }>({
@@ -86,7 +84,7 @@ const ModalFocusTrap = ({
     lastFocusedElement: null
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (canUseDOM) {
       const trapFocus = () => {
         // We should not trap focus if:
@@ -144,7 +142,7 @@ const ModalFocusTrap = ({
 
   // To be fully compliant with WCAG we need to refocus element that triggered opening modal
   // after closing it
-  React.useEffect(function () {
+  useEffect(function () {
     if (canUseDOM) {
       const lastFocusedElementOutsideTrap = document.activeElement;
       return function () {

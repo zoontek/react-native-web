@@ -7,8 +7,7 @@
  * @format
  */
 
-import * as React from 'react';
-
+import { forwardRef, type ComponentProps, type ComponentRef } from 'react';
 import ScrollView from '../../../../exports/ScrollView';
 import createAnimatedComponent from '../createAnimatedComponent';
 
@@ -17,9 +16,9 @@ import type { AnimatedComponentType } from '../createAnimatedComponent';
 /**
  * @see https://github.com/facebook/react-native/commit/b8c8562
  */
-const ScrollViewWithEventThrottle = React.forwardRef<
-  React.ElementRef<typeof ScrollView>,
-  React.ComponentProps<typeof ScrollView>
+const ScrollViewWithEventThrottle = forwardRef<
+  ComponentRef<typeof ScrollView>,
+  ComponentProps<typeof ScrollView>
 >((props, ref) => (
   <ScrollView scrollEventThrottle={0.0001} {...props} ref={ref} />
 ));
@@ -27,6 +26,6 @@ const ScrollViewWithEventThrottle = React.forwardRef<
 export default createAnimatedComponent(
   ScrollViewWithEventThrottle
 ) as AnimatedComponentType<
-  React.ComponentProps<typeof ScrollView>,
-  React.ElementRef<typeof ScrollView>
+  ComponentProps<typeof ScrollView>,
+  ComponentRef<typeof ScrollView>
 >;

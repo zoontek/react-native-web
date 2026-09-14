@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
-import * as ReactDOMServer from 'react-dom/server';
+import { createRef, useEffect } from 'react';
+import { renderToString } from 'react-dom/server';
 import { addEventListener } from '..';
 
 describe('addEventListener', () => {
   test('can render correctly using ReactDOMServer', () => {
     const listener = jest.fn();
-    const targetRef = React.createRef<HTMLDivElement>();
+    const targetRef = createRef<HTMLDivElement>();
 
     function Component() {
-      React.useEffect(() => {
+      useEffect(() => {
         if (targetRef.current != null) {
           return addEventListener(targetRef.current, 'click', listener);
         }
@@ -23,7 +23,7 @@ describe('addEventListener', () => {
       return <div ref={targetRef} />;
     }
 
-    const output = ReactDOMServer.renderToString(<Component />);
+    const output = renderToString(<Component />);
     expect(output).toBe('<div></div>');
   });
 });

@@ -10,7 +10,6 @@
 'use strict';
 
 import Platform from '../../../exports/Platform';
-import * as React from 'react';
 import VirtualizedSectionList from '../VirtualizedSectionList';
 
 import type { Nullable } from '../../../types';
@@ -21,6 +20,7 @@ import type {
   Props as VirtualizedSectionListProps,
   ScrollToLocationParamsType
 } from '../VirtualizedSectionList';
+import { PureComponent, type ReactElement, type ReactNode } from 'react';
 
 type Item = unknown;
 
@@ -34,7 +34,7 @@ type RequiredProps<SectionT extends SectionBase<unknown>> = {
    *
    *     sections: $ReadOnlyArray<{
    *       data: $ReadOnlyArray<SectionItem>,
-   *       renderItem?: ({item: SectionItem, ...}) => ?React.Element<*>,
+   *       renderItem?: ({item: SectionItem, ...}) => ReactElement | null,
    *       ItemSeparatorComponent?: ?ReactClass<{highlighted: boolean, ...}>,
    *     }>
    */
@@ -54,7 +54,7 @@ type OptionalProps<SectionT extends SectionBase<unknown>> = {
       unhighlight: () => void;
       updateProps: (select: 'leading' | 'trailing', newProps: unknown) => void;
     };
-  }) => null | React.ReactElement<unknown>;
+  }) => null | ReactElement<unknown>;
   /**
    * A marker property for telling the list to re-render (since it implements `PureComponent`). If
    * any of your `renderItem`, Header, Footer, etc. functions depend on anything outside of the
@@ -155,7 +155,7 @@ export type Props<SectionT extends SectionBase<unknown>> = Omit<
  */
 export default class SectionList<
   SectionT extends SectionBase<unknown>
-> extends React.PureComponent<Props<SectionT>> {
+> extends PureComponent<Props<SectionT>> {
   /**
    * Scrolls to the item at the specified `sectionIndex` and `itemIndex` (within the section)
    * positioned in the viewable area such that `viewPosition` 0 places it at the top (and may be
@@ -209,7 +209,7 @@ export default class SectionList<
     }
   }
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     const {
       stickySectionHeadersEnabled: _stickySectionHeadersEnabled,
       ...restProps

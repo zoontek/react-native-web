@@ -8,11 +8,10 @@
 
 'use client';
 
-import type { CSSProperties } from 'react';
+import { forwardRef, type CSSProperties } from 'react';
 import type { Nullable, PlatformMethods } from '../../types';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
@@ -27,7 +26,7 @@ type ActivityIndicatorProps = ViewProps & {
   size?: 'small' | 'large' | number;
 };
 
-const ActivityIndicator = React.forwardRef<
+const ActivityIndicator = forwardRef<
   HTMLElement & PlatformMethods,
   ActivityIndicatorProps
 >((props, forwardedRef) => {

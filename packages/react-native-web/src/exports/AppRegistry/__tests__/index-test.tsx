@@ -8,9 +8,10 @@
 import type { Application } from '../renderApplication';
 
 import AppRegistry from '..';
-import React from 'react';
 import { act } from '@testing-library/react';
-const NoopComponent = () => React.createElement('div');
+import { createElement, useEffect } from 'react';
+
+const NoopComponent = () => createElement('div');
 
 describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
   describe('runApplication', () => {
@@ -43,7 +44,7 @@ describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
     test('unmount ran application', () => {
       const setMountedState = jest.fn();
       const MountedStateComponent = () => {
-        React.useEffect(() => {
+        useEffect(() => {
           setMountedState(true);
           return () => {
             setMountedState(false);

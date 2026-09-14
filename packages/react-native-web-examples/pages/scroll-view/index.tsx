@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,6 +7,7 @@ import {
 } from 'react-native-web';
 import Button from '../../shared/button';
 import Example from '../../shared/example';
+import { useRef, useState, type ComponentRef } from 'react';
 
 const ITEMS = [...Array(12)].map((_, i) => `Item ${i}`);
 
@@ -24,9 +24,9 @@ function Divider() {
 }
 
 export default function ScrollViewPage() {
-  const [scrollEnabled, setEnabled] = React.useState(true);
-  const [throttle, setThrottle] = React.useState(16);
-  const scrollRef = React.useRef<React.ComponentRef<typeof ScrollView>>(null);
+  const [scrollEnabled, setEnabled] = useState(true);
+  const [throttle, setThrottle] = useState(16);
+  const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 
   return (
     <Example title="ScrollView">

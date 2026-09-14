@@ -1,11 +1,11 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native-web';
-import React from 'react';
 import Example from '../../shared/example';
+import { useEffect, useState } from 'react';
 
 export default function ActivityIndicatorPage() {
-  const [animating, setAnimating] = React.useState(true);
+  const [animating, setAnimating] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setAnimating(!animating);
     }, 2000);
