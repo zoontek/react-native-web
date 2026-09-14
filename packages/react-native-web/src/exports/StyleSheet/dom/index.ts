@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,20 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet'; */
+import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet';
 import canUseDOM from '../../../modules/canUseDom';
 import createCSSStyleSheet from './createCSSStyleSheet';
 import createOrderedCSSStyleSheet from './createOrderedCSSStyleSheet';
 
-/*:: type Sheet = {
-  ...OrderedCSSStyleSheet,
-  id: string
-}; */
+type Sheet = OrderedCSSStyleSheet & {
+  id: string;
+};
 
 const defaultId = 'react-native-stylesheet';
-// prettier-ignore
-const roots = new WeakMap /*:: <Node, number> */();
-const sheets = [];
+const roots = new WeakMap<Node, number>();
+const sheets: Array<OrderedCSSStyleSheet> = [];
 
 const initialRules = [
   // minimal top-level reset
@@ -31,19 +27,16 @@ const initialRules = [
   'input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-webkit-search-results-button,input::-webkit-search-results-decoration{display:none;}'
 ];
 
-export function createSheet(
-  root /*:: ?: HTMLElement */,
-  id /*:: ?: string */ = defaultId
-) /*: Sheet */ {
-  let sheet;
+export function createSheet(root?: HTMLElement, id: string = defaultId): Sheet {
+  let sheet: OrderedCSSStyleSheet | undefined;
 
   if (canUseDOM) {
-    const rootNode /*: Node */ = root != null ? root.getRootNode() : document;
+    const rootNode: Node = root != null ? root.getRootNode() : document;
     // Create the initial style sheet
     if (sheets.length === 0) {
       sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id));
       initialRules.forEach((rule) => {
-        sheet.insert(rule, 0);
+        sheet?.insert(rule, 0);
       });
       roots.set(rootNode, sheets.length);
       sheets.push(sheet);
@@ -54,9 +47,12 @@ export function createSheet(
         // If we're creating a new sheet, populate it with existing styles
         const textContent =
           initialSheet != null ? initialSheet.getTextContent() : '';
-        // Cast rootNode to 'any' because Flow types for getRootNode are wrong
         sheet = createOrderedCSSStyleSheet(
-          createCSSStyleSheet(id, rootNode /*: any */, textContent)
+          createCSSStyleSheet(
+            id,
+            rootNode as Document | ShadowRoot,
+            textContent
+          )
         );
         roots.set(rootNode, sheets.length);
         sheets.push(sheet);
@@ -69,7 +65,7 @@ export function createSheet(
     if (sheets.length === 0) {
       sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id));
       initialRules.forEach((rule) => {
-        sheet.insert(rule, 0);
+        sheet?.insert(rule, 0);
       });
       sheets.push(sheet);
     } else {
@@ -79,10 +75,10 @@ export function createSheet(
 
   return {
     getTextContent() {
-      return sheet.getTextContent();
+      return sheet?.getTextContent() ?? '';
     },
     id,
-    insert(cssText /*: string */, groupValue /*: number */) {
+    insert(cssText: string, groupValue: number) {
       sheets.forEach((s) => {
         s.insert(cssText, groupValue);
       });
