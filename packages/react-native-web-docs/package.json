@@ -16,7 +16,7 @@
     "@11ty/eleventy-navigation": "^1.0.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "csso": "^5.0.5",
-    "del-cli": "^7.0.0",
+    "del-cli": "catalog:",
     "eleventy-plugin-svg-contents": "^0.7.0",
     "html-minifier": "^4.0.0",
     "markdown-it": "^15.0.0",
