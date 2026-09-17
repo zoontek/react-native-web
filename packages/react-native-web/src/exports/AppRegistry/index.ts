@@ -87,7 +87,7 @@ const registerComponent: typeof RN.AppRegistry.registerComponent = (
     getApplication: (appParameters = {}) =>
       getApplication(
         componentProviderInstrumentationHook(componentProvider),
-        appParameters,
+        appParameters.initialProps ?? {},
         wrapperComponentProvider?.(appParameters)
       ),
 
