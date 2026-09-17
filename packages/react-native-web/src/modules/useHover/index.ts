@@ -25,10 +25,6 @@ export type HoverEventsConfig = {
 };
 
 type HoverEvent = Event & {
-  x?: number;
-  y?: number;
-  clientX?: number;
-  clientY?: number;
   pointerType?: string;
 };
 
@@ -114,13 +110,6 @@ export default function useHover(
       const moveListener = function (e: HoverEvent) {
         if (e.pointerType !== 'touch') {
           if (onHoverUpdate != null) {
-            // Not all browsers have these properties
-            if (e.x == null) {
-              e.x = e.clientX;
-            }
-            if (e.y == null) {
-              e.y = e.clientY;
-            }
             onHoverUpdate(e);
           }
         }
