@@ -135,14 +135,12 @@ describe('createOrderedCSSStyleSheet', () => {
       element.appendChild(document.createTextNode(textContent));
       const clientSheet = createOrderedCSSStyleSheet(element.sheet);
       expect(clientSheet.getTextContent()).toMatchInlineSnapshot(`
-        "[stylesheet-group="1"] {}
-        .one {width: 10px;}
-        [stylesheet-group="2"] {}
-        .two-1 {height: 20px;}
-        .two-2 {color: red;}
-        @keyframes anim { 
-          0% {opacity: 1;} 
-        }"
+        "[stylesheet-group="1"] { }
+        .one { width: 10px; }
+        [stylesheet-group="2"] { }
+        .two-1 { height: 20px; }
+        .two-2 { color: red; }
+        @keyframes anim { 0% { opacity: 1; } }"
       `);
     });
 
@@ -158,11 +156,11 @@ describe('createOrderedCSSStyleSheet', () => {
       const clientSheet = createOrderedCSSStyleSheet(element.sheet);
       clientSheet.insert('.c { color: red }', 0);
       expect(clientSheet.getTextContent()).toMatchInlineSnapshot(`
-        "[stylesheet-group='0'] {}
-        .a {color: red;}
+        "[stylesheet-group='0'] { }
+        .a { color: red; }
         .c { color: red }
-        [stylesheet-group='1'] {}
-        .b {color: red;}"
+        [stylesheet-group='1'] { }
+        .b { color: red; }"
       `);
     });
   });

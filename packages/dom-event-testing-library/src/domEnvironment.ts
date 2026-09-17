@@ -6,43 +6,10 @@
  */
 
 /**
- * Change environment support for PointerEvent.
+ * Change environment host platform.
  */
 
 export type Platform = 'mac' | 'windows';
-
-function noop() {}
-
-export function hasPointerEvent() {
-  return global != null && global.PointerEvent != null;
-}
-
-export function setPointerEvent(bool: boolean) {
-  const pointerCaptureFn = (name: string) => (id: unknown) => {
-    if (typeof id !== 'number') {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('A pointerId must be passed to "%s"', name);
-      }
-    }
-  };
-  // The DOM lib types these as always defined, so assigning 'undefined' to
-  // them does not typecheck. 'Reflect.set' writes them without a type cast.
-  Reflect.set(global, 'PointerEvent', bool ? noop : undefined);
-  Reflect.set(
-    global.HTMLElement.prototype,
-    'setPointerCapture',
-    bool ? pointerCaptureFn('setPointerCapture') : undefined
-  );
-  Reflect.set(
-    global.HTMLElement.prototype,
-    'releasePointerCapture',
-    bool ? pointerCaptureFn('releasePointerCapture') : undefined
-  );
-}
-
-/**
- * Change environment host platform.
- */
 
 const platformGetter = vi.spyOn(global.navigator, 'platform', 'get');
 

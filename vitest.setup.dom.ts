@@ -5,6 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// JSDOM doesn't implement AnimationEvent
+window.AnimationEvent =
+  class extends Event {} as unknown as typeof AnimationEvent;
+
 // JSDOM doesn't implement ResizeObserver
 window.ResizeObserver = class {
   disconnect() {}

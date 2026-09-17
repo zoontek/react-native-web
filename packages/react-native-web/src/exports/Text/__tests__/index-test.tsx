@@ -6,10 +6,7 @@
  */
 
 import { act, render, type RenderResult } from '@testing-library/react';
-import {
-  createEventTarget as createEventTargetImpl,
-  setPointerEvent
-} from 'dom-event-testing-library';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { createRef } from 'react';
 
 import Text from '../';
@@ -237,13 +234,6 @@ describe('components/Text', () => {
   });
 
   describe('prop "onPointerDown"', () => {
-    beforeEach(() => {
-      setPointerEvent(true);
-    });
-    afterEach(() => {
-      setPointerEvent(false);
-    });
-
     test('is called', () => {
       const onPointerDown = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
