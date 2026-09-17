@@ -52,9 +52,8 @@ function dispatchCustomEvent(
   type: string,
   payload?: CustomEventPayload
 ) {
-  const event = document.createEvent('CustomEvent');
   const { bubbles = true, cancelable = true, detail } = payload || emptyObject;
-  event.initCustomEvent(type, bubbles, cancelable, detail);
+  const event = new CustomEvent(type, { bubbles, cancelable, detail });
   target.dispatchEvent(event);
 }
 
