@@ -1,5 +1,4 @@
-import type { DimensionsPayload } from 'react-native';
-import { Dimensions, Platform } from 'react-native-web';
+import { Dimensions, Platform, type DimensionsPayload } from 'react-native-web';
 
 const canUseDOM = !!(
   typeof window !== 'undefined' &&

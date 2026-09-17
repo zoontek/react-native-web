@@ -2,7 +2,5 @@ allowBuilds:
   '@parcel/watcher': true
   unrs-resolver: true
 
-nodeLinker: hoisted
-
 packages:
   - 'packages/*'
