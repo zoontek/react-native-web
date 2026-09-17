@@ -29,8 +29,8 @@
   },
   "scripts": {
     "clean": "del-cli ./dist",
-    "dev": "pnpm dev:run",
-    "dev:run": "tsdown --watch --no-clean",
+    "watch": "tsdown --no-clean --watch",
+    "dev": "pnpm clean && pnpm watch",
     "build": "tsdown"
   },
   "dependencies": {

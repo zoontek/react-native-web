@@ -6,9 +6,9 @@
   "scripts": {
     "clean": "del-cli ./dist",
     "build": "vite build",
+    "watch": "vite",
     "predev": "pnpm --filter react-native-web build",
-    "dev": "pnpm --parallel --filter react-native-web --filter benchmarks dev:run",
-    "dev:run": "vite",
+    "dev": "pnpm --parallel --filter react-native-web --filter benchmarks watch",
     "preview": "vite preview"
   },
   "dependencies": {
