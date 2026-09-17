@@ -29,7 +29,8 @@
   },
   "scripts": {
     "clean": "del-cli ./dist",
-    "dev": "tsdown --watch",
+    "dev": "pnpm dev:run",
+    "dev:run": "tsdown --watch --no-clean",
     "build": "tsdown"
   },
   "dependencies": {
@@ -41,6 +42,7 @@
     "styleq": "^0.1.3"
   },
   "devDependencies": {
+    "del-cli": "^7.0.0",
     "dom-event-testing-library": "workspace:*",
     "react-native": "0.87.1",
     "tsdown": "^0.22.14"

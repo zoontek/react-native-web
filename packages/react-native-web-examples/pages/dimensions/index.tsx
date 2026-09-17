@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { DimensionsPayload } from 'react-native';
-import { Dimensions, Text } from 'react-native-web';
+import { Dimensions, Text, type DimensionsPayload } from 'react-native-web';
 
 import Example from '../../shared/example';
 

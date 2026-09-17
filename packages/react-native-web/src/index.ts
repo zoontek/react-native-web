@@ -63,5 +63,8 @@ export { default as useColorScheme } from './exports/useColorScheme';
 export { default as useLocaleContext } from './exports/useLocaleContext';
 export { default as useWindowDimensions } from './exports/useWindowDimensions';
 
+// types
+export type { DimensionsPayload } from 'react-native';
+
 /** @internal Runtime-only shim for react-native-svg; not part of the public API. */
 export { default as Touchable } from './exports/Touchable';
