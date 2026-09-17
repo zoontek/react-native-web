@@ -7,12 +7,7 @@
 
 import { buttonType, buttonsType } from './constants';
 import type { EventPayload } from './createEvent';
-import {
-  hasPointerEvent,
-  platform,
-  setPointerEvent,
-  type Platform
-} from './domEnvironment';
+import { platform, type Platform } from './domEnvironment';
 import type {
   FocusEventPayload,
   KeyboardEventPayload,
@@ -22,7 +17,7 @@ import type {
 } from './domEvents';
 import * as domEvents from './domEvents';
 import * as domEventSequences from './domEventSequences';
-import { describeWithPointerEvent, testWithPointerType } from './testHelpers';
+import { testWithPointerType } from './testHelpers';
 
 type BoundingClientRectPayload = {
   height: number;
@@ -141,10 +136,7 @@ export {
   buttonsType,
   clearPointers,
   createEventTarget,
-  describeWithPointerEvent,
-  hasPointerEvent,
   platform,
-  setPointerEvent,
   testWithPointerType
 };
 
