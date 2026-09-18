@@ -204,6 +204,7 @@ export type ViewStyle = AnimationStyles &
   LayoutStyles &
   ShadowStyles &
   TransformStyles & {
+    appearance?: Nullable<string>;
     backdropFilter?: Nullable<string>;
     backgroundAttachment?: Nullable<string>;
     backgroundBlendMode?: Nullable<string>;
@@ -214,9 +215,17 @@ export type ViewStyle = AnimationStyles &
     backgroundPosition?: Nullable<string>;
     backgroundRepeat?: Nullable<string>;
     backgroundSize?: Nullable<string>;
+    boxDecorationBreak?: Nullable<'clone' | 'slice'>;
     boxShadow?: Nullable<string>;
     clip?: Nullable<string>;
     filter?: Nullable<string>;
+    mask?: Nullable<string>;
+    maskClip?: Nullable<string>;
+    maskImage?: Nullable<string>;
+    maskOrigin?: Nullable<string>;
+    maskPosition?: Nullable<string>;
+    maskRepeat?: Nullable<string>;
+    maskSize?: Nullable<string>;
     opacity?: Nullable<number>;
     outlineColor?: Nullable<ColorValue>;
     outlineOffset?: Nullable<NumberOrString>;
@@ -226,6 +235,7 @@ export type ViewStyle = AnimationStyles &
     overscrollBehaviorX?: Nullable<OverscrollBehaviorValue>;
     overscrollBehaviorY?: Nullable<OverscrollBehaviorValue>;
     pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto';
+    printColorAdjust?: Nullable<'economy' | 'exact'>;
     scrollbarWidth?: 'auto' | 'none' | 'thin';
     scrollSnapAlign?: Nullable<string>;
     scrollSnapType?: Nullable<string>;
