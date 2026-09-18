@@ -162,6 +162,24 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@vitejs/plugin-react':
+      specifier: ^6.1.0
+      version: 6.1.0
+    del-cli:
+      specifier: ^7.0.0
+      version: 7.0.0
+    react:
+      specifier: ^19.2.8
+      version: 19.2.8
+    react-dom:
+      specifier: ^19.2.8
+      version: 19.2.8
+    vite:
+      specifier: ^8.2.2
+      version: 8.2.2
+
 importers:
 
   .:
@@ -178,6 +196,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.5
         version: 19.2.5(@types/react@19.2.18)
+      del-cli:
+        specifier: 'catalog:'
+        version: 7.0.0
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -212,10 +233,10 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       react:
-        specifier: ^19.2.8
+        specifier: 'catalog:'
         version: 19.2.8
       react-dom:
-        specifier: ^19.2.8
+        specifier: 'catalog:'
         version: 19.2.8(react@19.2.8)
       react-native-web:
         specifier: workspace:*
@@ -225,10 +246,13 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       '@vitejs/plugin-react':
-        specifier: ^6.1.0
+        specifier: 'catalog:'
         version: 6.1.0(vite@8.2.2(@types/node@22.20.1)(terser@5.49.0)(yaml@2.9.0))
+      del-cli:
+        specifier: 'catalog:'
+        version: 7.0.0
       vite:
-        specifier: ^8.2.2
+        specifier: 'catalog:'
         version: 8.2.2(@types/node@22.20.1)(terser@5.49.0)(yaml@2.9.0)
 
   packages/dom-event-testing-library: {}
@@ -260,6 +284,9 @@ importers:
         specifier: ^0.1.3
         version: 0.1.3
     devDependencies:
+      del-cli:
+        specifier: 'catalog:'
+        version: 7.0.0
       dom-event-testing-library:
         specifier: workspace:*
         version: link:../dom-event-testing-library
@@ -285,7 +312,7 @@ importers:
         specifier: ^5.0.5
         version: 5.0.5
       del-cli:
-        specifier: ^7.0.0
+        specifier: 'catalog:'
         version: 7.0.0
       eleventy-plugin-svg-contents:
         specifier: ^0.7.0
@@ -324,20 +351,20 @@ importers:
   packages/react-native-web-examples:
     dependencies:
       react:
-        specifier: ^19.2.8
+        specifier: 'catalog:'
         version: 19.2.8
       react-dom:
-        specifier: ^19.2.8
+        specifier: 'catalog:'
         version: 19.2.8(react@19.2.8)
       react-native-web:
         specifier: workspace:*
         version: link:../react-native-web
     devDependencies:
       '@vitejs/plugin-react':
-        specifier: ^6.1.0
+        specifier: 'catalog:'
         version: 6.1.0(vite@8.2.2(@types/node@22.20.1)(terser@5.49.0)(yaml@2.9.0))
       vite:
-        specifier: ^8.2.2
+        specifier: 'catalog:'
         version: 8.2.2(@types/node@22.20.1)(terser@5.49.0)(yaml@2.9.0)
 
 packages:
@@ -4964,7 +4991,7 @@ snapshots:
       '@babel/types': 7.29.8
       flow-enums-runtime: 0.0.6
       invariant: 2.2.4
-      metro-symbolicate: 0.87.0(supports-color@8.1.1)
+      metro-symbolicate: 0.87.0
       nullthrows: 1.1.1
       ob1: 0.87.0
       source-map: 0.5.7
@@ -4972,7 +4999,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  metro-symbolicate@0.87.0(supports-color@8.1.1):
+  metro-symbolicate@0.87.0:
     dependencies:
       flow-enums-runtime: 0.0.6
       invariant: 2.2.4
@@ -4980,8 +5007,6 @@ snapshots:
       nullthrows: 1.1.1
       source-map: 0.5.7
       vlq: 1.0.1
-    transitivePeerDependencies:
-      - supports-color
 
   metro-transform-plugins@0.87.0(supports-color@8.1.1):
     dependencies:
@@ -5045,7 +5070,7 @@ snapshots:
       metro-resolver: 0.87.0
       metro-runtime: 0.87.0
       metro-source-map: 0.87.0(supports-color@8.1.1)
-      metro-symbolicate: 0.87.0(supports-color@8.1.1)
+      metro-symbolicate: 0.87.0
       metro-transform-plugins: 0.87.0(supports-color@8.1.1)
       metro-transform-worker: 0.87.0(supports-color@8.1.1)
       mime-types: 3.0.2

@@ -6,16 +6,18 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
+    "watch": "vite",
+    "predev": "pnpm --filter react-native-web build",
+    "dev": "pnpm --parallel --filter react-native-web --filter react-native-web-examples watch",
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "react-native-web": "workspace:*"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^6.1.0",
-    "vite": "^8.2.2"
+    "@vitejs/plugin-react": "catalog:",
+    "vite": "catalog:"
   }
 }
