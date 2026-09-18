@@ -14,6 +14,7 @@ import type { Root } from 'react-dom/client';
 import type * as RN from 'react-native';
 
 import type { Except } from '../../types';
+import unmountComponentAtNode from '../unmountComponentAtNode';
 import {
   getApplication,
   renderApplication,
@@ -271,7 +272,7 @@ const AppRegistry: Except<
   },
 
   unmountApplicationComponentAtRootTag(rootTag) {
-    rootTag.unmount();
+    unmountComponentAtNode(rootTag);
   },
 
   // mocks
