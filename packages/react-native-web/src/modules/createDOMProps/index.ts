@@ -925,13 +925,11 @@ const createDOMProps = (
     );
   }
 
-  const [className, inlineStyle] = StyleSheet(
+  const [className, inlineStyle] = StyleSheet.resolve(
     [style, pointerEvents && pointerEventsStyles[pointerEvents]],
-    {
-      writingDirection: 'ltr',
-      ...options
-    }
+    { writingDirection: 'ltr', ...options }
   );
+
   if (className) {
     domProps.className = className;
   }

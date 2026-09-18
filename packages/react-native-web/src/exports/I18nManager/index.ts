@@ -6,26 +6,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-type I18nManagerStatus = {
-  allowRTL: (allowRTL: boolean) => void;
-  forceRTL: (forceRTL: boolean) => void;
-  getConstants: () => Constants;
-};
+import type * as RN from 'react-native';
 
-type Constants = {
-  isRTL: boolean;
-};
+const noop = () => {};
 
-const I18nManager: I18nManagerStatus = {
-  allowRTL() {
-    return;
-  },
-  forceRTL() {
-    return;
-  },
-  getConstants(): Constants {
-    return { isRTL: false };
-  }
+const I18nManager: RN.I18nManager = {
+  getConstants: () => ({
+    doLeftAndRightSwapInRTL: false,
+    isRTL: false
+  }),
+
+  allowRTL: noop,
+  forceRTL: noop,
+  swapLeftAndRightInRTL: noop,
+
+  isRTL: false,
+  doLeftAndRightSwapInRTL: false
 };
 
 export default I18nManager;

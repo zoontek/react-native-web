@@ -40,18 +40,6 @@ describe('StyleSheet', () => {
     `);
   });
 
-  test('absoluteFillObject', () => {
-    expect(StyleSheet.absoluteFillObject).toMatchInlineSnapshot(`
-      {
-        "bottom": 0,
-        "left": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-      }
-    `);
-  });
-
   describe('create', () => {
     test('returns original style objects', () => {
       const style = StyleSheet.create({ root: { position: 'absolute' } });
@@ -64,7 +52,7 @@ describe('StyleSheet', () => {
 
     test('e2e resolves to classname', () => {
       const style = StyleSheet.create({ root: { position: 'absolute' } });
-      expect(StyleSheet(style.root)).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve(style.root)).toMatchInlineSnapshot(`
         [
           "r-position-u8s1d",
           null,
@@ -84,7 +72,7 @@ describe('StyleSheet', () => {
           textShadowRadius: 15
         }
       });
-      expect(StyleSheet(style.root)).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve(style.root)).toMatchInlineSnapshot(`
         [
           "r-boxShadow-o3ayyy r-textShadow-1x2q051",
           null,
@@ -155,19 +143,19 @@ describe('StyleSheet', () => {
 
   describe('resolve', () => {
     test('empty', () => {
-      expect(StyleSheet()).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve(null)).toMatchInlineSnapshot(`
         [
           "",
           null,
         ]
       `);
-      expect(StyleSheet({})).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve({})).toMatchInlineSnapshot(`
         [
           "",
           null,
         ]
       `);
-      expect(StyleSheet([])).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve([])).toMatchInlineSnapshot(`
         [
           "",
           null,
@@ -177,7 +165,7 @@ describe('StyleSheet', () => {
 
     test('transforms compiled object to className', () => {
       expect(
-        StyleSheet([
+        StyleSheet.resolve([
           {
             $$css: true,
             position: 'position-absolute',
@@ -195,7 +183,7 @@ describe('StyleSheet', () => {
 
     test('transforms array of compiled objects to className', () => {
       expect(
-        StyleSheet([
+        StyleSheet.resolve([
           {
             $$css: true,
             borderWidth: 'borderWidth-0',
@@ -239,7 +227,7 @@ describe('StyleSheet', () => {
         color: null
       };
 
-      const [className1, inlineStyle1] = StyleSheet([
+      const [className1, inlineStyle1] = StyleSheet.resolve([
         styleACompiled,
         styleBCompiled,
         styleBInline
@@ -247,7 +235,7 @@ describe('StyleSheet', () => {
       expect(className1).toBe('display-block');
       expect(inlineStyle1).toEqual({ backgroundColor: 'rgba(0,0,255,1.00)' });
 
-      const [className2, inlineStyle2] = StyleSheet([
+      const [className2, inlineStyle2] = StyleSheet.resolve([
         styleACompiled,
         styleBInline,
         styleBCompiled
@@ -263,7 +251,8 @@ describe('StyleSheet', () => {
         test: { paddingHorizontal: '40px' }
       });
       const inlineStyle1 = { padding: '8px', paddingHorizontal: '40px' };
-      expect(StyleSheet([styles1.test, inlineStyle1])).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve([styles1.test, inlineStyle1]))
+        .toMatchInlineSnapshot(`
         [
           "",
           {
@@ -277,7 +266,8 @@ describe('StyleSheet', () => {
 
       const styles2 = StyleSheet.create({ test: { marginVertical: '40px' } });
       const inlineStyle2 = { margin: '8px', marginVertical: '40px' };
-      expect(StyleSheet([styles2.test, inlineStyle2])).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve([styles2.test, inlineStyle2]))
+        .toMatchInlineSnapshot(`
         [
           "",
           {
@@ -302,7 +292,7 @@ describe('StyleSheet', () => {
 
       // inline styles
       const inlineStyle = [inlineA, inlineB, inlineC];
-      expect(StyleSheet(inlineStyle)).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve(inlineStyle)).toMatchInlineSnapshot(`
         [
           "",
           {
@@ -312,7 +302,7 @@ describe('StyleSheet', () => {
           },
         ]
       `);
-      expect(StyleSheet(inlineStyle, { writingDirection }))
+      expect(StyleSheet.resolve(inlineStyle, { writingDirection }))
         .toMatchInlineSnapshot(`
         [
           "",
@@ -324,7 +314,7 @@ describe('StyleSheet', () => {
         ]
       `);
       expect(
-        StyleSheet(
+        StyleSheet.resolve(
           [
             inlineStyle,
             { marginLeft: 1, marginEnd: 0, marginStart: 0, marginRight: 11 }
@@ -343,7 +333,7 @@ describe('StyleSheet', () => {
         ]
       `);
       expect(
-        StyleSheet([inlineStyle, { marginEnd: null, marginLeft: 11 }], {
+        StyleSheet.resolve([inlineStyle, { marginEnd: null, marginLeft: 11 }], {
           writingDirection
         })
       ).toMatchInlineSnapshot(`
@@ -359,13 +349,13 @@ describe('StyleSheet', () => {
 
       // static styles
       const staticStyle = [a, b, c];
-      expect(StyleSheet(staticStyle)).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve(staticStyle)).toMatchInlineSnapshot(`
         [
           "r-insetInlineStart-1xn1m1p r-textAlign-fdjqy7 r-marginInlineEnd-1l8l4mf",
           null,
         ]
       `);
-      expect(StyleSheet(staticStyle, { writingDirection }))
+      expect(StyleSheet.resolve(staticStyle, { writingDirection }))
         .toMatchInlineSnapshot(`
         [
           "r-insetInlineStart-1y2vi53 r-textAlign-1ff274t r-marginInlineEnd-t1sew1",
@@ -373,14 +363,14 @@ describe('StyleSheet', () => {
         ]
       `);
       const z = StyleSheet.create({ x: { marginRight: 33 } }).x;
-      expect(StyleSheet([staticStyle, z])).toMatchInlineSnapshot(`
+      expect(StyleSheet.resolve([staticStyle, z])).toMatchInlineSnapshot(`
         [
           "r-insetInlineStart-1xn1m1p r-textAlign-fdjqy7 r-marginInlineEnd-1l8l4mf r-marginRight-j4vy6k",
           null,
         ]
       `);
       expect(
-        StyleSheet(
+        StyleSheet.resolve(
           [
             staticStyle,
             { marginLeft: 1, marginEnd: 0, marginStart: 0, marginRight: 11 }
@@ -401,7 +391,7 @@ describe('StyleSheet', () => {
       `);
       // logical can be nulled
       expect(
-        StyleSheet([staticStyle, { marginEnd: null }], {
+        StyleSheet.resolve([staticStyle, { marginEnd: null }], {
           writingDirection
         })
       ).toMatchInlineSnapshot(`

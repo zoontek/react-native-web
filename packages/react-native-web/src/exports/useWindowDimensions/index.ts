@@ -10,28 +10,30 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type * as RN from 'react-native';
 
-import Dimensions, {
-  type DimensionsValue,
-  type DisplayMetrics
-} from '../Dimensions';
+import Dimensions, { type DimensionsValue } from '../Dimensions';
 
-export default function useWindowDimensions(): DisplayMetrics {
+const useWindowDimensions: typeof RN.useWindowDimensions = () => {
   const [dims, setDims] = useState(() => Dimensions.get('window'));
+
   useEffect(() => {
-    function handleChange({ window }: DimensionsValue) {
-      if (window != null) {
-        setDims(window);
+    const { remove } = Dimensions.addEventListener(
+      'change',
+      ({ window }: DimensionsValue) => {
+        if (window != null) {
+          setDims(window);
+        }
       }
-    }
-    Dimensions.addEventListener('change', handleChange);
+    );
+
     // We might have missed an update between calling `get` in render and
     // `addEventListener` in this handler, so we set it here. If there was
     // no change, React will filter out this update as a no-op.
     setDims(Dimensions.get('window'));
-    return () => {
-      Dimensions.removeEventListener('change', handleChange);
-    };
+    return remove;
   }, []);
   return dims;
-}
+};
+
+export default useWindowDimensions;

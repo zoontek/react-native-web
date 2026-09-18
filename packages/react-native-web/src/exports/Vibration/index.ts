@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-type VibratePattern = number | Array<number>;
+import type * as RN from 'react-native';
 
 const vibrate = (pattern: VibratePattern) => {
   if ('vibrate' in window.navigator) {
@@ -14,12 +14,12 @@ const vibrate = (pattern: VibratePattern) => {
   }
 };
 
-const Vibration = {
+const Vibration: typeof RN.Vibration = {
+  vibrate(pattern = 400) {
+    vibrate(pattern);
+  },
   cancel() {
     vibrate(0);
-  },
-  vibrate(pattern: VibratePattern = 400) {
-    vibrate(pattern);
   }
 };
 

@@ -18,7 +18,7 @@ type RefreshControlProps = ViewProps & {
   progressBackgroundColor?: ColorValue;
   progressViewOffset?: number;
   refreshing: boolean;
-  size?: 0 | 1;
+  size?: 'default' | 'large';
   tintColor?: ColorValue;
   title?: string;
   titleColor?: ColorValue;

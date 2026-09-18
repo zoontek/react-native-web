@@ -9,22 +9,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type * as RN from 'react-native';
 
-import Appearance, {
-  type AppearancePreferences,
-  type ColorSchemeName
-} from '../Appearance';
+import Appearance from '../Appearance';
 
-export default function useColorScheme(): ColorSchemeName {
-  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+const useColorScheme: typeof RN.useColorScheme = () => {
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme);
 
   useEffect(() => {
-    function listener(appearance: AppearancePreferences) {
-      setColorScheme(appearance.colorScheme);
-    }
-    const { remove } = Appearance.addChangeListener(listener);
+    const { remove } = Appearance.addChangeListener(({ colorScheme }) => {
+      setColorScheme(colorScheme);
+    });
+
     return remove;
   });
 
   return colorScheme;
-}
+};
+
+export default useColorScheme;

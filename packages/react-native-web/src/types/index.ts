@@ -5,7 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type * as RN from 'react-native';
+
 import type { CompiledStyle } from '../exports/StyleSheet/compiler';
+
+export type Except<T, K extends keyof T> = Omit<T, K>;
 
 // A value that also accepts 'null' and 'undefined'
 export type Nullable<T> = T | null | undefined;
@@ -44,31 +48,15 @@ export type PointValue = {
   y: number;
 };
 
-export type LayoutCallback = (
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  left: number,
-  top: number
-) => void;
-
-export type MeasureInWindowCallback = (
-  left: number,
-  top: number,
-  width: number,
-  height: number
-) => void;
-
 // Mixin to HTMLElement that represents additions from the `usePlatformMethods` hook
 export interface PlatformMethods {
   blur: () => void;
   focus: () => void;
-  measure: (callback: LayoutCallback) => void;
-  measureInWindow: (callback: MeasureInWindowCallback) => void;
+  measure: (callback: RN.MeasureOnSuccessCallback) => void;
+  measureInWindow: (callback: RN.MeasureInWindowOnSuccessCallback) => void;
   measureLayout: (
     relativeToNativeNode: HTMLElement,
-    onSuccess: LayoutCallback,
+    onSuccess: RN.MeasureLayoutOnSuccessCallback,
     onFail: () => void
   ) => void;
 }

@@ -87,7 +87,7 @@ export type TouchEventPayload = ModifierStatePayload & {
   touches: Touch[];
 };
 
-function emptyFunction() {}
+function noop() {}
 
 function createGetModifierState(keyArg: string, data: ModifierStatePayload) {
   if (keyArg === 'Alt') {
@@ -116,7 +116,7 @@ function createKeyboardEvent(
     isComposing = false,
     key = '',
     metaKey = false,
-    preventDefault = emptyFunction,
+    preventDefault = noop,
     shiftKey = false
   }: KeyboardEventPayload = {}
 ) {
@@ -161,7 +161,7 @@ function createMouseEvent(
     offsetY = 0,
     pageX,
     pageY,
-    preventDefault = emptyFunction,
+    preventDefault = noop,
     relatedTarget,
     screenX,
     screenY,
@@ -222,7 +222,7 @@ function createPointerEvent(
     pageY,
     pointerId,
     pressure = 0,
-    preventDefault = emptyFunction,
+    preventDefault = noop,
     pointerType = 'mouse',
     relatedTarget,
     screenX,
@@ -265,10 +265,10 @@ function createPointerEvent(
     pressure,
     preventDefault,
     relatedTarget,
-    releasePointerCapture: emptyFunction,
+    releasePointerCapture: noop,
     screenX: screenX === 0 ? screenX : x,
     screenY: screenY === 0 ? screenY : y + defaultBrowserChromeSize,
-    setPointerCapture: emptyFunction,
+    setPointerCapture: noop,
     shiftKey,
     tangentialPressure,
     tiltX,

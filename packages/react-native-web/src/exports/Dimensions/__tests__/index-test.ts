@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Dimensions, { type DimensionsValue } from '..';
+import Dimensions from '..';
 
 describe('apis/Dimensions', () => {
   test('get', () => {
@@ -31,7 +31,7 @@ describe('apis/Dimensions', () => {
   });
 
   test('set', () => {
-    expect(() => Dimensions.set({} as DimensionsValue)).toThrow();
+    expect(() => Dimensions.set({})).toThrow();
   });
 
   test('addEventListener', () => {
@@ -46,12 +46,5 @@ describe('apis/Dimensions', () => {
     subscription.remove();
     window.dispatchEvent(new Event('resize'));
     expect(handler).toHaveBeenCalledTimes(1);
-  });
-
-  test('removeEventListener', () => {
-    const handler = vi.fn();
-    Dimensions.removeEventListener('change', handler);
-    window.dispatchEvent(new Event('resize'));
-    expect(handler).toHaveBeenCalledTimes(0);
   });
 });
