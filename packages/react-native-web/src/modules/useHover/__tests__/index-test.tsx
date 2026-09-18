@@ -8,27 +8,19 @@
 import { act, render } from '@testing-library/react';
 import {
   clearPointers,
-  createEventTarget as createEventTargetImpl,
-  describeWithPointerEvent,
-  setPointerEvent
+  createEventTarget as createEventTargetImpl
 } from 'dom-event-testing-library';
 import { createRef, type RefObject } from 'react';
 import type { Mock } from 'vitest';
 
 import useHover from '..';
 import type { Nullable } from '../../../types';
-import { testOnly_resetActiveModality } from '../../modality';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);
 
-describeWithPointerEvent('useHover', (hasPointerEvents) => {
-  beforeEach(() => {
-    setPointerEvent(hasPointerEvents);
-  });
-
+describe('useHover', () => {
   afterEach(() => {
-    testOnly_resetActiveModality();
     // make sure all tests reset state machine tracking pointers on the mock surface
     clearPointers();
   });

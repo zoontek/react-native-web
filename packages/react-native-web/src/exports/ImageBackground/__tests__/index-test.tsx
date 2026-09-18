@@ -43,7 +43,7 @@ describe('components/ImageBackground', () => {
       const style = { margin: 40 };
       const { container } = render(<ImageBackground style={style} />);
       expect(container.firstElementChild?.getAttribute('style')).toEqual(
-        'margin: 40px 40px 40px 40px;'
+        'margin: 40px;'
       );
     });
   });

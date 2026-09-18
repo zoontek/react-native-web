@@ -71,14 +71,14 @@ function update() {
   dimensions.window = {
     fontScale: 1,
     height,
-    scale: win.devicePixelRatio || 1,
+    scale: win.devicePixelRatio,
     width
   };
 
   dimensions.screen = {
     fontScale: 1,
     height: win.screen.height,
-    scale: win.devicePixelRatio || 1,
+    scale: win.devicePixelRatio,
     width: win.screen.width
   };
 }
