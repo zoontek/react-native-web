@@ -118,9 +118,9 @@ function create<const T extends Record<string, StyleObject>>(
  */
 function compose<T, U>(style1: T, style2: U): [T, U] {
   if (process.env.NODE_ENV !== 'production') {
-    /* oxlint-disable prefer-rest-params */
     const len = arguments.length;
     if (len > 2) {
+      // oxlint-disable-next-line prefer-rest-params
       const readableStyles = [...arguments].map((a) => flatten(a));
       throw new Error(
         `StyleSheet.compose() only accepts 2 arguments, received ${len}: ${JSON.stringify(
@@ -128,7 +128,6 @@ function compose<T, U>(style1: T, style2: U): [T, U] {
         )}`
       );
     }
-    /* oxlint-enable prefer-rest-params */
   }
   return [style1, style2];
 }
