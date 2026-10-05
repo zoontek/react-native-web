@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -8,6 +6,7 @@
  */
 
 import Dimensions from '..';
+import type { DimensionsValue } from '..';
 
 describe('apis/Dimensions', () => {
   test('get', () => {
@@ -33,7 +32,7 @@ describe('apis/Dimensions', () => {
   });
 
   test('set', () => {
-    expect(() => Dimensions.set({})).toThrow();
+    expect(() => Dimensions.set({} as DimensionsValue)).toThrow();
   });
 
   test('addEventListener', () => {
