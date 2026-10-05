@@ -63,7 +63,7 @@ class TaskQueue {
             'Expected Function, SimpleTask, or PromiseTask, but got:\n' +
               JSON.stringify(task, null, 2)
           );
-          task?.();
+          task();
         }
       } catch (e) {
         const error = e as Error;

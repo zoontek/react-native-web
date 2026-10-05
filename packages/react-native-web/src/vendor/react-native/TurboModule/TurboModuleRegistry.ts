@@ -24,5 +24,5 @@ export function getEnforcing<T extends TurboModule>(name: string): T {
     `TurboModuleRegistry.getEnforcing(...): '${name}' could not be found. ` +
       'Verify that a module by this name is registered in the native binary.'
   );
-  return module as T;
+  return module;
 }
