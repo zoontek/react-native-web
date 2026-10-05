@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -15,10 +13,12 @@ import AnimatedNode from './AnimatedNode';
 import AnimatedWithChildren from './AnimatedWithChildren';
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
 
-class AnimatedTransform extends AnimatedWithChildren {
-  _transforms /*: $ReadOnlyArray<Object> */;
+import type { Nullable } from '../../../../types';
 
-  constructor(transforms /*: $ReadOnlyArray<Object> */) {
+class AnimatedTransform extends AnimatedWithChildren {
+  _transforms: ReadonlyArray<Record<string, unknown>>;
+
+  constructor(transforms: ReadonlyArray<Record<string, unknown>>) {
     super();
     this._transforms = transforms;
   }
@@ -35,9 +35,9 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__makeNative();
   }
 
-  __getValue() /*: $ReadOnlyArray<Object> */ {
+  __getValue(): ReadonlyArray<Record<string, unknown>> {
     return this._transforms.map((transform) => {
-      const result = {};
+      const result: Record<string, unknown> = {};
       for (const key in transform) {
         const value = transform[key];
         if (value instanceof AnimatedNode) {
@@ -50,9 +50,9 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __getAnimatedValue() /*: $ReadOnlyArray<Object> */ {
+  __getAnimatedValue(): ReadonlyArray<Record<string, unknown>> {
     return this._transforms.map((transform) => {
-      const result = {};
+      const result: Record<string, unknown> = {};
       for (const key in transform) {
         const value = transform[key];
         if (value instanceof AnimatedNode) {
@@ -66,7 +66,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __attach() /*: void */ {
+  __attach(): void {
     this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
@@ -77,7 +77,7 @@ class AnimatedTransform extends AnimatedWithChildren {
     });
   }
 
-  __detach() /*: void */ {
+  __detach(): void {
     this._transforms.forEach((transform) => {
       for (const key in transform) {
         const value = transform[key];
@@ -89,8 +89,19 @@ class AnimatedTransform extends AnimatedWithChildren {
     super.__detach();
   }
 
-  __getNativeConfig() /*: any */ {
-    const transConfigs = [];
+  __getNativeConfig(): Record<string, unknown> {
+    const transConfigs: Array<
+      | {
+          type: 'animated';
+          property: string;
+          nodeTag: Nullable<number>;
+        }
+      | {
+          type: 'static';
+          property: string;
+          value: number | string;
+        }
+    > = [];
 
     this._transforms.forEach((transform) => {
       for (const key in transform) {
@@ -105,7 +116,9 @@ class AnimatedTransform extends AnimatedWithChildren {
           transConfigs.push({
             type: 'static',
             property: key,
-            value: NativeAnimatedHelper.transformDataType(value)
+            value: NativeAnimatedHelper.transformDataType(
+              value as number | string
+            )
           });
         }
       }

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -20,40 +18,42 @@ import Animation from './Animation';
 
 import { shouldUseNativeDriver } from '../NativeAnimatedHelper';
 
-/*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
-/*:: import type {AnimationConfig, EndCallback} from './Animation'; */
-/*:: import type {RgbaValue} from '../nodes/AnimatedColor'; */
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
+import type { AnimationConfig, EndCallback } from './Animation';
+import type { Nullable } from '../../../../types';
+import type { RgbaValue } from '../nodes/AnimatedColor';
 
 import AnimatedColor from '../nodes/AnimatedColor';
 
-/*:: export type TimingAnimationConfig = $ReadOnly<{
-  ...AnimationConfig,
-  toValue:
-    | number
-    | AnimatedValue
-    | {
-        x: number,
-        y: number,
-        ...
-      }
-    | AnimatedValueXY
-    | RgbaValue
-    | AnimatedColor
-    | AnimatedInterpolation<number>,
-  easing?: (value: number) => number,
-  duration?: number,
-  delay?: number,
-}>; */
+export type TimingAnimationConfig = Readonly<
+  AnimationConfig & {
+    toValue:
+      | number
+      | AnimatedValue
+      | {
+          x: number;
+          y: number;
+        }
+      | AnimatedValueXY
+      | RgbaValue
+      | AnimatedColor
+      | AnimatedInterpolation<number>;
+    easing?: (value: number) => number;
+    duration?: number;
+    delay?: number;
+  }
+>;
 
-/*:: export type TimingAnimationConfigSingle = $ReadOnly<{
-  ...AnimationConfig,
-  toValue: number,
-  easing?: (value: number) => number,
-  duration?: number,
-  delay?: number,
-}>; */
+export type TimingAnimationConfigSingle = Readonly<
+  AnimationConfig & {
+    toValue: number;
+    easing?: (value: number) => number;
+    duration?: number;
+    delay?: number;
+  }
+>;
 
-let _easeInOut;
+let _easeInOut: (value: number) => number;
 function easeInOut() {
   if (!_easeInOut) {
     _easeInOut = Easing.inOut(Easing.ease);
@@ -62,19 +62,19 @@ function easeInOut() {
 }
 
 class TimingAnimation extends Animation {
-  _startTime /*: number */;
-  _fromValue /*: number */;
-  _toValue /*: number */;
-  _duration /*: number */;
-  _delay /*: number */;
-  _easing /*: (value: number) => number */;
-  _onUpdate /*: (value: number) => void */;
-  _animationFrame /*: any */;
-  _timeout /*: any */;
-  _useNativeDriver /*: boolean */;
-  _platformConfig /*: ?PlatformConfig */;
+  _startTime!: number;
+  _fromValue!: number;
+  _toValue: number;
+  _duration: number;
+  _delay: number;
+  _easing: (value: number) => number;
+  _onUpdate!: (value: number) => void;
+  _animationFrame!: number;
+  _timeout!: ReturnType<typeof setTimeout>;
+  _useNativeDriver: boolean;
+  _platformConfig: Nullable<PlatformConfig>;
 
-  constructor(config /*: TimingAnimationConfigSingle */) {
+  constructor(config: TimingAnimationConfigSingle) {
     super();
     this._toValue = config.toValue;
     this._easing = config.easing ?? easeInOut();
@@ -86,9 +86,9 @@ class TimingAnimation extends Animation {
     this.__isInteraction = config.isInteraction ?? !this._useNativeDriver;
   }
 
-  __getNativeAnimationConfig() /*: any */ {
+  __getNativeAnimationConfig(): Record<string, unknown> {
     const frameDuration = 1000.0 / 60.0;
-    const frames = [];
+    const frames: Array<number> = [];
     const numFrames = Math.round(this._duration / frameDuration);
     for (let frame = 0; frame < numFrames; frame++) {
       frames.push(this._easing(frame / numFrames));
@@ -104,12 +104,12 @@ class TimingAnimation extends Animation {
   }
 
   start(
-    fromValue /*: number */,
-    onUpdate /*: (value: number) => void */,
-    onEnd /*: ?EndCallback */,
-    previousAnimation /*: ?Animation */,
-    animatedValue /*: AnimatedValue */
-  ) /*: void */ {
+    fromValue: number,
+    onUpdate: (value: number) => void,
+    onEnd: Nullable<EndCallback>,
+    previousAnimation: Nullable<Animation>,
+    animatedValue: AnimatedValue
+  ): void {
     this.__active = true;
     this._fromValue = fromValue;
     this._onUpdate = onUpdate;
@@ -128,7 +128,6 @@ class TimingAnimation extends Animation {
           this.__startNativeAnimation(animatedValue);
         } else {
           this._animationFrame = requestAnimationFrame(
-            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
             this.onUpdate.bind(this)
           );
         }
@@ -141,7 +140,7 @@ class TimingAnimation extends Animation {
     }
   }
 
-  onUpdate() /*: void */ {
+  onUpdate(): void {
     const now = Date.now();
     if (now >= this._startTime + this._duration) {
       if (this._duration === 0) {
@@ -161,12 +160,11 @@ class TimingAnimation extends Animation {
           (this._toValue - this._fromValue)
     );
     if (this.__active) {
-      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
     }
   }
 
-  stop() /*: void */ {
+  stop(): void {
     super.stop();
     this.__active = false;
     clearTimeout(this._timeout);

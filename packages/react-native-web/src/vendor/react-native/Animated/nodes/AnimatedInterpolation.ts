@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -13,7 +11,8 @@
 
 'use strict';
 
-/*:: import type AnimatedNode from './AnimatedNode'; */
+import type AnimatedNode from './AnimatedNode';
+import type { Nullable } from '../../../../types';
 
 import AnimatedWithChildren from './AnimatedWithChildren';
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
@@ -21,38 +20,39 @@ import NativeAnimatedHelper from '../NativeAnimatedHelper';
 import invariant from 'fbjs/lib/invariant';
 import normalizeColor from '@react-native/normalize-colors';
 
-/*:: import type {PlatformConfig} from '../AnimatedPlatformConfig'; */
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
-/*:: type ExtrapolateType = 'extend' | 'identity' | 'clamp'; */
+type ExtrapolateType = 'extend' | 'identity' | 'clamp';
 
-/*:: export type InterpolationConfigType<OutputT: number | string> = $ReadOnly<{
-  inputRange: $ReadOnlyArray<number>,
-  outputRange: $ReadOnlyArray<OutputT>,
-  easing?: (input: number) => number,
-  extrapolate?: ExtrapolateType,
-  extrapolateLeft?: ExtrapolateType,
-  extrapolateRight?: ExtrapolateType,
-}>; */
+export type InterpolationConfigType<OutputT extends number | string> =
+  Readonly<{
+    inputRange: ReadonlyArray<number>;
+    outputRange: ReadonlyArray<OutputT>;
+    easing?: (input: number) => number;
+    extrapolate?: ExtrapolateType;
+    extrapolateLeft?: ExtrapolateType;
+    extrapolateRight?: ExtrapolateType;
+  }>;
 
-const linear = (t /*: number */) => t;
+const linear = (t: number) => t;
 
 /**
  * Very handy helper to map input ranges to output ranges with an easing
  * function and custom behavior outside of the ranges.
  */
-function createInterpolation /*:: <OutputT: number | string> */(
-  config /*: InterpolationConfigType<OutputT> */
-) /*: (input: number) => OutputT */ {
+function createInterpolation<OutputT extends number | string>(
+  config: InterpolationConfigType<OutputT>
+): (input: number) => OutputT {
   if (config.outputRange && typeof config.outputRange[0] === 'string') {
     return createInterpolationFromStringOutputRange(
-      config /*: any */
-    ) /*: any */;
+      config as InterpolationConfigType<string>
+    ) as (input: number) => OutputT;
   }
 
-  const outputRange /*: $ReadOnlyArray<number> */ =
-    config.outputRange; /*: any */
+  const outputRange: ReadonlyArray<number> =
+    config.outputRange as ReadonlyArray<number>;
 
   const inputRange = config.inputRange;
 
@@ -73,14 +73,14 @@ function createInterpolation /*:: <OutputT: number | string> */(
 
   const easing = config.easing || linear;
 
-  let extrapolateLeft /*: ExtrapolateType */ = 'extend';
+  let extrapolateLeft: ExtrapolateType = 'extend';
   if (config.extrapolateLeft !== undefined) {
     extrapolateLeft = config.extrapolateLeft;
   } else if (config.extrapolate !== undefined) {
     extrapolateLeft = config.extrapolate;
   }
 
-  let extrapolateRight /*: ExtrapolateType */ = 'extend';
+  let extrapolateRight: ExtrapolateType = 'extend';
   if (config.extrapolateRight !== undefined) {
     extrapolateRight = config.extrapolateRight;
   } else if (config.extrapolate !== undefined) {
@@ -96,26 +96,26 @@ function createInterpolation /*:: <OutputT: number | string> */(
     const range = findRange(input, inputRange);
     return interpolate(
       input,
-      inputRange[range],
-      inputRange[range + 1],
-      outputRange[range],
-      outputRange[range + 1],
+      inputRange[range]!,
+      inputRange[range + 1]!,
+      outputRange[range]!,
+      outputRange[range + 1]!,
       easing,
       extrapolateLeft,
       extrapolateRight
-    ) /*: any */;
+    ) as OutputT;
   };
 }
 
 function interpolate(
-  input /*: number */,
-  inputMin /*: number */,
-  inputMax /*: number */,
-  outputMin /*: number */,
-  outputMax /*: number */,
-  easing /*: (input: number) => number */,
-  extrapolateLeft /*: ExtrapolateType */,
-  extrapolateRight /*: ExtrapolateType */
+  input: number,
+  inputMin: number,
+  inputMax: number,
+  outputMin: number,
+  outputMax: number,
+  easing: (input: number) => number,
+  extrapolateLeft: ExtrapolateType,
+  extrapolateRight: ExtrapolateType
 ) {
   let result = input;
 
@@ -175,7 +175,7 @@ function interpolate(
   return result;
 }
 
-function colorToRgba(input /*: string */) /*: string */ {
+function colorToRgba(input: string): string {
   let normalizedColor = normalizeColor(input);
   if (normalizedColor === null || typeof normalizedColor !== 'number') {
     return input;
@@ -202,9 +202,9 @@ const stringShapeRegex = /[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g;
  *   -45deg                  // values with units
  */
 function createInterpolationFromStringOutputRange(
-  config /*: InterpolationConfigType<string> */
-) /*: (input: number) => string */ {
-  let outputRange /*: Array<string> */ = config.outputRange; /*: any */
+  config: InterpolationConfigType<string>
+): (input: number) => string {
+  let outputRange: Array<string> = config.outputRange as Array<string>;
   invariant(outputRange.length >= 2, 'Bad output range');
   outputRange = outputRange.map(colorToRgba);
   checkPattern(outputRange);
@@ -217,41 +217,35 @@ function createInterpolationFromStringOutputRange(
   //   [200, 250],
   //   [0, 0.5],
   // ]
-  /* $FlowFixMe[incompatible-use] (>=0.18.0): `outputRange[0].match()` can
-   * return `null`. Need to guard against this possibility. */
-  const outputRanges = outputRange[0].match(stringShapeRegex).map(() => []);
+  const outputRanges: Array<Array<number>> = outputRange[0]!
+    .match(stringShapeRegex)!
+    .map(() => []);
   outputRange.forEach((value) => {
-    /* $FlowFixMe[incompatible-use] (>=0.18.0): `value.match()` can return
-     * `null`. Need to guard against this possibility. */
-    value.match(stringShapeRegex).forEach((number, i) => {
-      outputRanges[i].push(+number);
+    value.match(stringShapeRegex)!.forEach((number, i) => {
+      outputRanges[i]!.push(+number);
     });
   });
 
-  const interpolations = outputRange[0]
-    .match(stringShapeRegex)
-    /* $FlowFixMe[incompatible-use] (>=0.18.0): `outputRange[0].match()` can
-     * return `null`. Need to guard against this possibility. */
-    /* $FlowFixMe[incompatible-call] (>=0.18.0): `outputRange[0].match()` can
-     * return `null`. Need to guard against this possibility. */
+  const interpolations = outputRange[0]!
+    .match(stringShapeRegex)!
     .map((value, i) => {
       return createInterpolation({
         ...config,
-        outputRange: outputRanges[i]
+        outputRange: outputRanges[i]!
       });
     });
 
   // rgba requires that the r,g,b are integers.... so we want to round them, but we *dont* want to
   // round the opacity (4th column).
-  const shouldRound = isRgbOrRgba(outputRange[0]);
+  const shouldRound = isRgbOrRgba(outputRange[0]!);
 
   return (input) => {
     let i = 0;
     // 'rgba(0, 100, 200, 0)'
     // ->
     // 'rgba(${interpolations[0](input)}, ${interpolations[1](input)}, ...'
-    return outputRange[0].replace(stringShapeRegex, () => {
-      let val = +interpolations[i++](input);
+    return outputRange[0]!.replace(stringShapeRegex, () => {
+      let val = +interpolations[i++]!(input);
       if (shouldRound) {
         val = i < 4 ? Math.round(val) : Math.round(val * 1000) / 1000;
       }
@@ -260,89 +254,72 @@ function createInterpolationFromStringOutputRange(
   };
 }
 
-function isRgbOrRgba(range /*: string */) {
+function isRgbOrRgba(range: string) {
   return typeof range === 'string' && range.startsWith('rgb');
 }
 
-function checkPattern(arr /*: $ReadOnlyArray<string> */) {
-  const pattern = arr[0].replace(stringShapeRegex, '');
+function checkPattern(arr: ReadonlyArray<string>) {
+  const pattern = arr[0]!.replace(stringShapeRegex, '');
   for (let i = 1; i < arr.length; ++i) {
     invariant(
-      pattern === arr[i].replace(stringShapeRegex, ''),
+      pattern === arr[i]!.replace(stringShapeRegex, ''),
       'invalid pattern ' + arr[0] + ' and ' + arr[i]
     );
   }
 }
 
-function findRange(
-  input /*: number */,
-  inputRange /*: $ReadOnlyArray<number> */
-) {
+function findRange(input: number, inputRange: ReadonlyArray<number>) {
   let i;
   for (i = 1; i < inputRange.length - 1; ++i) {
-    if (inputRange[i] >= input) {
+    if (inputRange[i]! >= input) {
       break;
     }
   }
   return i - 1;
 }
 
-function checkValidInputRange(arr /*: $ReadOnlyArray<number> */) {
+function checkValidInputRange(arr: ReadonlyArray<number>) {
   invariant(arr.length >= 2, 'inputRange must have at least 2 elements');
   const message =
     'inputRange must be monotonically non-decreasing ' + String(arr);
   for (let i = 1; i < arr.length; ++i) {
-    invariant(arr[i] >= arr[i - 1], message);
+    invariant(arr[i]! >= arr[i - 1]!, message);
   }
 }
 
-function checkInfiniteRange(
-  name /*: string */,
-  arr /*: $ReadOnlyArray<number> */
-) {
+function checkInfiniteRange(name: string, arr: ReadonlyArray<number>) {
   invariant(arr.length >= 2, name + ' must have at least 2 elements');
   invariant(
     arr.length !== 2 || arr[0] !== -Infinity || arr[1] !== Infinity,
-    /* $FlowFixMe[incompatible-type] (>=0.13.0) - In the addition expression
-     * below this comment, one or both of the operands may be something that
-     * doesn't cleanly convert to a string, like undefined, null, and object,
-     * etc. If you really mean this implicit string conversion, you can do
-     * something like String(myThing) */
     name + 'cannot be ]-infinity;+infinity[ ' + arr
   );
 }
 
-class AnimatedInterpolation /*:: <
-  OutputT: number | string,
-> */
-  extends AnimatedWithChildren
-{
+class AnimatedInterpolation<
+  OutputT extends number | string
+> extends AnimatedWithChildren {
   // Export for testing.
-  static __createInterpolation /*: (
-    config: InterpolationConfigType<OutputT>,
-  ) => (input: number) => OutputT */ = createInterpolation;
+  static __createInterpolation: typeof createInterpolation =
+    createInterpolation;
 
-  _parent /*: AnimatedNode */;
-  _config /*: InterpolationConfigType<OutputT> */;
-  _interpolation /*: (input: number) => OutputT */;
+  _parent: AnimatedNode;
+  _config: InterpolationConfigType<OutputT>;
+  _interpolation: (input: number) => OutputT;
 
-  constructor(
-    parent /*: AnimatedNode */,
-    config /*: InterpolationConfigType<OutputT> */
-  ) {
+  constructor(parent: AnimatedNode, config: InterpolationConfigType<OutputT>) {
     super();
     this._parent = parent;
     this._config = config;
     this._interpolation = createInterpolation(config);
   }
 
-  __makeNative(platformConfig /*: ?PlatformConfig */) {
+  __makeNative(platformConfig?: Nullable<PlatformConfig>) {
     this._parent.__makeNative(platformConfig);
     super.__makeNative(platformConfig);
   }
 
-  __getValue() /*: number | string */ {
-    const parentValue /*: number */ = this._parent.__getValue();
+  __getValue(): number | string {
+    const parentValue = this._parent.__getValue() as number;
     invariant(
       typeof parentValue === 'number',
       'Cannot interpolate an input which is not a number.'
@@ -350,26 +327,26 @@ class AnimatedInterpolation /*:: <
     return this._interpolation(parentValue);
   }
 
-  interpolate /*:: <NewOutputT: number | string> */(
-    config /*: InterpolationConfigType<NewOutputT> */
-  ) /*: AnimatedInterpolation<NewOutputT> */ {
+  interpolate<NewOutputT extends number | string>(
+    config: InterpolationConfigType<NewOutputT>
+  ): AnimatedInterpolation<NewOutputT> {
     return new AnimatedInterpolation(this, config);
   }
 
-  __attach() /*: void */ {
+  __attach(): void {
     this._parent.__addChild(this);
   }
 
-  __detach() /*: void */ {
+  __detach(): void {
     this._parent.__removeChild(this);
     super.__detach();
   }
 
-  __transformDataType(range /*: $ReadOnlyArray<OutputT> */) /*: Array<any> */ {
+  __transformDataType(range: ReadonlyArray<OutputT>): Array<number | string> {
     return range.map(NativeAnimatedHelper.transformDataType);
   }
 
-  __getNativeConfig() /*: any */ {
+  __getNativeConfig(): Record<string, unknown> {
     if (__DEV__) {
       NativeAnimatedHelper.validateInterpolation(this._config);
     }
