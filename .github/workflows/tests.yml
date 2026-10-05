@@ -20,7 +20,7 @@ jobs:
       - run: pnpm install
       - run: pnpm format
 
-  type-check:
+  typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -30,7 +30,7 @@ jobs:
           node-version: 24
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm flow
+      - run: pnpm typecheck
 
   lint:
     runs-on: ubuntu-latest
