@@ -12,6 +12,7 @@ import { forwardRef, useContext, useEffect, useRef, useState } from 'react';
 
 import { getAssetByID } from '../../modules/AssetRegistry';
 import ImageLoader from '../../modules/ImageLoader';
+import useLayoutEffect from '../../modules/useLayoutEffect';
 import { warnOnce } from '../../modules/warnOnce';
 import type {
   ColorValue,
@@ -26,7 +27,6 @@ import PixelRatio from '../PixelRatio';
 import StyleSheet from '../StyleSheet';
 import { createBoxShadowValue } from '../StyleSheet/preprocess';
 import TextAncestorContext from '../Text/TextAncestorContext';
-import useLayoutEffect from '../../modules/useLayoutEffect';
 import View from '../View';
 import type { ImageProps, ImageStyle, ResizeMode, Source } from './types';
 
@@ -292,7 +292,7 @@ const Image = forwardRef<HTMLElement & PlatformMethods, ImageProps>(
     // Image loading
     // Read the load handlers through a ref, so that a new handler identity does
     // not abort and restart the request for the same uri.
-    const loadEventHandlersRef = React.useRef({
+    const loadEventHandlersRef = useRef({
       onError,
       onLoad,
       onLoadEnd,
