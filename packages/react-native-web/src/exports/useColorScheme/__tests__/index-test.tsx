@@ -13,7 +13,7 @@ describe('useColorScheme', () => {
 
     function Component({ label }: { label: string }): React.ReactNode {
       const colorScheme = useColorScheme();
-      return <div>{`${label}:${colorScheme}`}</div>;
+      return <div>{`${label}:${String(colorScheme)}`}</div>;
     }
 
     const { rerender, unmount } = render(<Component label="first" />);
