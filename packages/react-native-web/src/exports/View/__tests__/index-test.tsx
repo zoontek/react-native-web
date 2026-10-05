@@ -11,6 +11,7 @@ import {
   setPointerEvent
 } from 'dom-event-testing-library';
 import { createRef } from 'react';
+import type { MockInstance } from 'vitest';
 
 import View from '../';
 import type { Nullable, PlatformMethods } from '../../../types';
@@ -31,10 +32,10 @@ describe('components/View', () => {
   });
 
   describe('raw text nodes as children', () => {
-    let consoleError: jest.SpyInstance;
+    let consoleError: MockInstance;
 
     beforeEach(() => {
-      consoleError = jest.spyOn(console, 'error');
+      consoleError = vi.spyOn(console, 'error');
       consoleError.mockImplementation(() => {});
     });
 
@@ -197,7 +198,7 @@ describe('components/View', () => {
 
   describe('prop "onBlur"', () => {
     test('is called', () => {
-      const onBlur = jest.fn();
+      const onBlur = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onBlur={onBlur} ref={ref} />);
@@ -214,7 +215,7 @@ describe('components/View', () => {
 
   describe('prop "onClick"', () => {
     test('is called', () => {
-      const onClick = jest.fn();
+      const onClick = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onClick={onClick} ref={ref} />);
@@ -229,7 +230,7 @@ describe('components/View', () => {
 
   describe('prop "onFocus"', () => {
     test('is called', () => {
-      const onFocus = jest.fn();
+      const onFocus = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onFocus={onFocus} ref={ref} />);
@@ -252,7 +253,7 @@ describe('components/View', () => {
     });
 
     test('is called', () => {
-      const onPointerDown = jest.fn();
+      const onPointerDown = vi.fn();
       const ref = createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<View onPointerDown={onPointerDown} ref={ref} />);
@@ -267,13 +268,13 @@ describe('components/View', () => {
 
   describe('prop "ref"', () => {
     test('value is set', () => {
-      const ref = jest.fn();
+      const ref = vi.fn();
       render(<View ref={ref} />);
       expect(ref).toHaveBeenCalled();
     });
 
     test('is not called for prop changes', () => {
-      const ref = jest.fn();
+      const ref = vi.fn();
       let rerender!: RenderResult['rerender'];
       act(() => {
         ({ rerender } = render(

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AppRegistry runApplication styles roots in different documents 1`] = `
+exports[`AppRegistry > runApplication > styles roots in different documents 1`] = `
 [
   "[stylesheet-group="0"] {}",
   "body {margin: 0;}",
@@ -28,7 +28,7 @@ exports[`AppRegistry runApplication styles roots in different documents 1`] = `
 ]
 `;
 
-exports[`AppRegistry runApplication styles roots in different documents 2`] = `
+exports[`AppRegistry > runApplication > styles roots in different documents 2`] = `
 [
   "[stylesheet-group="0"] {}",
   "body {margin: 0;}",

@@ -28,7 +28,7 @@ describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
     });
 
     test('callback after render', () => {
-      const callback = jest.fn();
+      const callback = vi.fn();
       AppRegistry.registerComponent('App', () => NoopComponent);
       act(() => {
         AppRegistry.runApplication('App', {
@@ -42,7 +42,7 @@ describe.each([['concurrent'], ['legacy']])('AppRegistry', (mode) => {
     });
 
     test('unmount ran application', () => {
-      const setMountedState = jest.fn();
+      const setMountedState = vi.fn();
       const MountedStateComponent = () => {
         useEffect(() => {
           setMountedState(true);

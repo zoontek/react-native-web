@@ -13,6 +13,7 @@ import {
   setPointerEvent
 } from 'dom-event-testing-library';
 import { createRef, type RefObject } from 'react';
+import type { Mock } from 'vitest';
 
 import useHover from '..';
 import type { Nullable } from '../../../types';
@@ -33,18 +34,18 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('contain', () => {
-    let onHoverChange: jest.Mock,
-      onHoverStart: jest.Mock,
-      onHoverUpdate: jest.Mock,
-      onHoverEnd: jest.Mock,
+    let onHoverChange: Mock,
+      onHoverStart: Mock,
+      onHoverUpdate: Mock,
+      onHoverEnd: Mock,
       ref: RefObject<HTMLDivElement | null>,
       childRef: RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
-      onHoverChange = jest.fn();
-      onHoverStart = jest.fn();
-      onHoverUpdate = jest.fn();
-      onHoverEnd = jest.fn();
+      onHoverChange = vi.fn();
+      onHoverStart = vi.fn();
+      onHoverUpdate = vi.fn();
+      onHoverEnd = vi.fn();
       ref = createRef<HTMLDivElement>();
       childRef = createRef<HTMLDivElement>();
       const Component = () => {
@@ -82,17 +83,17 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('disabled', () => {
-    let onHoverChange: jest.Mock,
-      onHoverStart: jest.Mock,
-      onHoverUpdate: jest.Mock,
-      onHoverEnd: jest.Mock,
+    let onHoverChange: Mock,
+      onHoverStart: Mock,
+      onHoverUpdate: Mock,
+      onHoverEnd: Mock,
       ref: RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
-      onHoverChange = jest.fn();
-      onHoverStart = jest.fn();
-      onHoverUpdate = jest.fn();
-      onHoverEnd = jest.fn();
+      onHoverChange = vi.fn();
+      onHoverStart = vi.fn();
+      onHoverUpdate = vi.fn();
+      onHoverEnd = vi.fn();
       ref = createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, {
@@ -122,10 +123,10 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('onHoverStart', () => {
-    let onHoverStart: jest.Mock, ref: RefObject<HTMLDivElement | null>;
+    let onHoverStart: Mock, ref: RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
-      onHoverStart = jest.fn();
+      onHoverStart = vi.fn();
       ref = createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, { onHoverStart });
@@ -166,10 +167,10 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('onHoverChange', () => {
-    let onHoverChange: jest.Mock, ref: RefObject<HTMLDivElement | null>;
+    let onHoverChange: Mock, ref: RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
-      onHoverChange = jest.fn();
+      onHoverChange = vi.fn();
       ref = createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, { onHoverChange });
@@ -205,12 +206,12 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('onHoverEnd', () => {
-    let onHoverEnd: jest.Mock,
+    let onHoverEnd: Mock,
       ref: RefObject<HTMLDivElement | null>,
       childRef: RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
-      onHoverEnd = jest.fn();
+      onHoverEnd = vi.fn();
       ref = createRef<HTMLDivElement>();
       childRef = createRef<HTMLDivElement>();
       const Component = () => {
@@ -259,7 +260,7 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
 
   describe('onHoverUpdate', () => {
     test('is called after the active pointer moves"', () => {
-      const onHoverUpdate = jest.fn();
+      const onHoverUpdate = vi.fn();
       const ref = createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, { onHoverUpdate });
@@ -278,17 +279,17 @@ describeWithPointerEvent('useHover', (hasPointerEvents) => {
   });
 
   describe('repeat use', () => {
-    let onHoverChange: jest.Mock,
-      onHoverStart: jest.Mock,
-      onHoverUpdate: jest.Mock,
-      onHoverEnd: jest.Mock,
+    let onHoverChange: Mock,
+      onHoverStart: Mock,
+      onHoverUpdate: Mock,
+      onHoverEnd: Mock,
       ref: RefObject<HTMLDivElement | null>;
 
     const componentInit = () => {
-      onHoverChange = jest.fn();
-      onHoverStart = jest.fn();
-      onHoverUpdate = jest.fn();
-      onHoverEnd = jest.fn();
+      onHoverChange = vi.fn();
+      onHoverStart = vi.fn();
+      onHoverUpdate = vi.fn();
+      onHoverEnd = vi.fn();
       ref = createRef<HTMLDivElement>();
       const Component = () => {
         useHover(ref, {

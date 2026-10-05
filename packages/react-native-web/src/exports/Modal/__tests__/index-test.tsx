@@ -169,31 +169,31 @@ describe('components/Modal', () => {
   });
 
   test('executes onShow callback when initially showing', () => {
-    const onShowCallback = jest.fn();
+    const onShowCallback = vi.fn();
     render(<Modal onShow={onShowCallback} visible={true} />);
     expect(onShowCallback).toHaveBeenCalledTimes(1);
   });
 
   test('does not execute onShow callback when initially hidden', () => {
-    const onShowCallback = jest.fn();
+    const onShowCallback = vi.fn();
     render(<Modal onShow={onShowCallback} visible={false} />);
     expect(onShowCallback).toHaveBeenCalledTimes(0);
   });
 
   test('does not execute onDismiss callback when initially hidden', () => {
-    const onDismissCallback = jest.fn();
+    const onDismissCallback = vi.fn();
     render(<Modal onDismiss={onDismissCallback} visible={false} />);
     expect(onDismissCallback).toHaveBeenCalledTimes(0);
   });
 
   test('does not execute onDismiss callback when initially showing', () => {
-    const onDismissCallback = jest.fn();
+    const onDismissCallback = vi.fn();
     render(<Modal onDismiss={onDismissCallback} visible={true} />);
     expect(onDismissCallback).toHaveBeenCalledTimes(0);
   });
 
   test('executes onShow callback when visibility changes', () => {
-    const onShowCallback = jest.fn();
+    const onShowCallback = vi.fn();
     const { rerender } = render(
       <Modal onShow={onShowCallback} visible={false} />
     );
@@ -203,7 +203,7 @@ describe('components/Modal', () => {
   });
 
   test('executes onDismiss callback when visibility changes', () => {
-    const onDismissCallback = jest.fn();
+    const onDismissCallback = vi.fn();
     const { rerender } = render(
       <Modal onDismiss={onDismissCallback} visible={true} />
     );
@@ -341,7 +341,7 @@ describe('components/Modal', () => {
     const outsideElement = document.querySelector<HTMLElement>(
       '[data-testid="outside"]'
     );
-    const onDismissCallback = jest.fn(() => outsideElement?.focus());
+    const onDismissCallback = vi.fn(() => outsideElement?.focus());
 
     rerender(
       <>
@@ -640,7 +640,7 @@ describe('components/Modal', () => {
   });
 
   test('ref must be set before `mount` hook', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
 
     function TestComponent() {
       useEffect(() => spy('mount'), []);
@@ -658,7 +658,7 @@ describe('components/Modal', () => {
   });
 
   test('escape key fires onRequestClose', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
 
     render(<Modal onRequestClose={spy} visible={true} />);
 
@@ -668,8 +668,8 @@ describe('components/Modal', () => {
   });
 
   test('escape key fires onRequestClose for top modal only', () => {
-    const spyA = jest.fn();
-    const spyB = jest.fn();
+    const spyA = vi.fn();
+    const spyB = vi.fn();
 
     render(
       <>
@@ -685,8 +685,8 @@ describe('components/Modal', () => {
   });
 
   test('escape key fires onRequestClose for top modal only with animation', () => {
-    const spyA = jest.fn();
-    const spyB = jest.fn();
+    const spyA = vi.fn();
+    const spyB = vi.fn();
 
     const { getByTestId, rerender } = render(
       <>
