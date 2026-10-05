@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,7 +7,7 @@
 
 import processColor from '..';
 
-const platformSpecific = (x) => x;
+const platformSpecific = (x: number) => x;
 
 describe('processColor', () => {
   describe('predefined color names', () => {
