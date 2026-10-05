@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,30 +6,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ViewProps } from '../View'; */
+import type { ReactNode } from 'react';
+import type { Nullable, PlatformMethods } from '../../types';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import View from '../View';
 import StyleSheet from '../StyleSheet';
 import canUseDOM from '../../modules/canUseDom';
 
-/*:: export type ModalContentProps = {
-  ...ViewProps,
-  active?: ?(boolean | (() => boolean)),
-  children?: any,
-  onRequestClose?: ?() => void,
-  transparent?: ?boolean
-}; */
+export type ModalContentProps = ViewProps & {
+  active?: Nullable<boolean | (() => boolean)>;
+  children?: ReactNode;
+  onRequestClose?: Nullable<() => void>;
+  transparent?: Nullable<boolean>;
+};
 
-const ModalContent /*: React.AbstractComponent<
-  ModalContentProps,
-  React.ElementRef<typeof View>
-> */ = React.forwardRef((props, forwardedRef) => {
+const ModalContent = React.forwardRef<
+  HTMLElement & PlatformMethods,
+  ModalContentProps
+>((props, forwardedRef) => {
   const { active, children, onRequestClose, transparent, ...rest } = props;
 
   React.useEffect(() => {
     if (canUseDOM) {
-      const closeOnEscape = (e /*: KeyboardEvent */) => {
+      const closeOnEscape = (e: KeyboardEvent) => {
         if (active && e.key === 'Escape') {
           e.stopPropagation();
           if (onRequestClose) {

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,17 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { ReactNode } from 'react';
+
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import canUseDOM from '../../modules/canUseDom';
 
-/*:: export type ModalPortalProps = {|
-  children: any
-|}; */
+export type ModalPortalProps = {
+  children: ReactNode;
+};
 
-function ModalPortal(props /*: ModalPortalProps */) /*: React.Node */ {
+function ModalPortal(props: ModalPortalProps): ReactNode {
   const { children } = props;
-  const elementRef = React.useRef(null);
+  const elementRef = React.useRef<HTMLDivElement | null>(null);
 
   if (canUseDOM && !elementRef.current) {
     const element = document.createElement('div');
