@@ -1,12 +1,10 @@
-// @ts-nocheck
-
-import { Linking, StyleSheet, Text } from 'react-native';
+import { Linking, StyleSheet, Text } from 'react-native-web';
 import React from 'react';
 import Example from '../../shared/example';
 
 const url = 'https://mathiasbynens.github.io/rel-noopener/malicious.html';
 
-export default function LinkingPage(props) {
+export default function LinkingPage() {
   const [, setCount] = React.useState(0);
 
   React.useEffect(() => {
@@ -21,6 +19,7 @@ export default function LinkingPage(props) {
   });
 
   function handlePress() {
+    // @ts-expect-error correctly type canOpenURL
     Linking.canOpenURL(url).then((supported) => {
       setCount((x) => x + 1);
       const v = Linking.openURL(url);

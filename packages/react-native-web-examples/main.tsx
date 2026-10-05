@@ -1,6 +1,8 @@
-// @ts-nocheck
-
 import { createRoot } from 'react-dom/client';
 import App from './app';
 
-createRoot(document.getElementById('root')).render(<App />);
+const root = document.getElementById('root');
+
+if (root != null) {
+  createRoot(root).render(<App />);
+}

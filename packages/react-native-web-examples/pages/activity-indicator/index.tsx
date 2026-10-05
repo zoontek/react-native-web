@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native-web';
 import React from 'react';
 import Example from '../../shared/example';
 

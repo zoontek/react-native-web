@@ -1,17 +1,26 @@
-// @ts-nocheck
-
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, Pressable } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  Pressable
+} from 'react-native-web';
 import Button from '../../shared/button';
 import Example from '../../shared/example';
 
+type Event = {
+  id: number;
+  name: string;
+};
+
 export default function PressablePage() {
-  const [eventLog, updateEventLog] = React.useState([]);
+  const [eventLog, updateEventLog] = React.useState<Event[]>([]);
   const [disabled, setDisabled] = React.useState(false);
   const [delay, setDelay] = React.useState(0);
   const nextEventId = React.useRef(0);
 
-  const handleEvent = (name) => {
+  const handleEvent = (name: string) => {
     return () => {
       const limit = 10;
       const id = nextEventId.current++;
@@ -27,7 +36,7 @@ export default function PressablePage() {
     <Example title="Pressable">
       <View style={styles.container}>
         <Pressable
-          delayLongPress="750"
+          delayLongPress={750}
           delayPressIn={delay}
           delayPressOut={delay}
           disabled={disabled}
