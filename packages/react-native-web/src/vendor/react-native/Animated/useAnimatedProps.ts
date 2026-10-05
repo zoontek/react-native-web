@@ -12,16 +12,10 @@
 'use strict';
 
 import AnimatedProps from './nodes/AnimatedProps';
-import {AnimatedEvent} from './AnimatedEvent';
+import { AnimatedEvent } from './AnimatedEvent';
 import useRefEffect from '../Utilities/useRefEffect';
 import NativeAnimatedHelper from './NativeAnimatedHelper';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 
 import useLayoutEffect from '../../../modules/useLayoutEffect';
 
@@ -32,10 +26,11 @@ import useLayoutEffect from '../../../modules/useLayoutEffect';
 }; */
 /*:: type CallbackRef<T> = T => mixed; */
 
-export default function useAnimatedProps/*:: <TProps: {...}, TInstance> */(
-  props/*: TProps */,
-)/*: [ReducedProps<TProps>, CallbackRef<TInstance | null>] */ {
-  const [, scheduleUpdate] = useReducer(count => count + 1, 0);
+export default function useAnimatedProps /*:: <TProps: {...}, TInstance> */(
+  props /*: TProps */
+) /*: [ReducedProps<TProps>, CallbackRef<TInstance | null>] */ {
+  const [, scheduleUpdate] = useReducer((count) => count + 1, 0);
+  // prettier-ignore
   const onUpdateRef = useRef/*:: <?() => void> */(null);
 
   // TODO: Only invalidate `node` if animated props or `style` change. In the
@@ -44,7 +39,7 @@ export default function useAnimatedProps/*:: <TProps: {...}, TInstance> */(
   // The ordering of other props *should* not matter.
   const node = useMemo(
     () => new AnimatedProps(props, () => onUpdateRef.current?.()),
-    [props],
+    [props]
   );
   useAnimatedPropsLifecycle(node);
 
@@ -62,7 +57,7 @@ export default function useAnimatedProps/*:: <TProps: {...}, TInstance> */(
   // But there is no way to transparently compose three separate callback refs,
   // so we just combine them all into one for now.
   const refEffect = useCallback(
-    instance => {
+    (instance) => {
       // NOTE: This may be called more often than necessary (e.g. when `props`
       // changes), but `setNativeView` already optimizes for that.
       node.setNativeView(instance);
@@ -94,21 +89,23 @@ export default function useAnimatedProps/*:: <TProps: {...}, TInstance> */(
         }
       };
     },
-    [props, node],
+    [props, node]
   );
+  // prettier-ignore
   const callbackRef = useRefEffect/*:: <TInstance> */(refEffect);
 
+  // prettier-ignore
   return [reduceAnimatedProps/*:: <TProps> */(node), callbackRef];
 }
 
-function reduceAnimatedProps/*:: <TProps> */(
-  node/*: AnimatedProps */,
-)/*: ReducedProps<TProps> */ {
+function reduceAnimatedProps /*:: <TProps> */(
+  node /*: AnimatedProps */
+) /*: ReducedProps<TProps> */ {
   // Force `collapsable` to be false so that the native view is not flattened.
   // Flattened views cannot be accurately referenced by the native driver.
   return {
     ...node.__getValue(),
-    collapsable: false,
+    collapsable: false
   };
 }
 
@@ -119,8 +116,10 @@ function reduceAnimatedProps/*:: <TProps> */(
  * nodes. So in order to optimize this, we avoid detaching until the next attach
  * unless we are unmounting.
  */
-function useAnimatedPropsLifecycle(node/*: AnimatedProps */)/*: void */ {
+function useAnimatedPropsLifecycle(node /*: AnimatedProps */) /*: void */ {
+  // prettier-ignore
   const prevNodeRef = useRef/*:: <?AnimatedProps> */(null);
+  // prettier-ignore
   const isUnmountingRef = useRef/*:: <boolean> */(false);
 
   useEffect(() => {
@@ -157,7 +156,9 @@ function useAnimatedPropsLifecycle(node/*: AnimatedProps */)/*: void */ {
   }, [node]);
 }
 
-function getEventTarget/*:: <TInstance> */(instance/*: TInstance */)/*: TInstance */ {
+function getEventTarget /*:: <TInstance> */(
+  instance /*: TInstance */
+) /*: TInstance */ {
   return typeof instance === 'object' &&
     typeof instance?.getScrollableNode === 'function'
     ? // $FlowFixMe[incompatible-use] - Legacy instance assumptions.
@@ -166,7 +167,7 @@ function getEventTarget/*:: <TInstance> */(instance/*: TInstance */)/*: TInstanc
 }
 
 // $FlowFixMe[unclear-type] - Legacy instance assumptions.
-function isFabricInstance(instance/*: any */)/*: boolean */ {
+function isFabricInstance(instance /*: any */) /*: boolean */ {
   return (
     hasFabricHandle(instance) ||
     // Some components have a setNativeProps function but aren't a host component
@@ -183,7 +184,7 @@ function isFabricInstance(instance/*: any */)/*: boolean */ {
 }
 
 // $FlowFixMe[unclear-type] - Legacy instance assumptions.
-function hasFabricHandle(instance/*: any */)/*: boolean */ {
+function hasFabricHandle(instance /*: any */) /*: boolean */ {
   // eslint-disable-next-line dot-notation
   return instance?.['_internalInstanceHandle']?.stateNode?.canonical != null;
 }

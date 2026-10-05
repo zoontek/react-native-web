@@ -20,18 +20,16 @@ import StyleSheet from '../../../../exports/StyleSheet';
 
 const flattenStyle = StyleSheet.flatten;
 
-function createAnimatedStyle(inputStyle/*: any */)/*: Object */ {
+function createAnimatedStyle(inputStyle /*: any */) /*: Object */ {
   const style = flattenStyle(inputStyle);
-  const animatedStyles = {}
+  const animatedStyles = {};
   for (const key in style) {
     const value = style[key];
     if (key === 'transform' && Array.isArray(value)) {
       animatedStyles[key] = new AnimatedTransform(value);
-    }
-    else if (value instanceof AnimatedNode) {
+    } else if (value instanceof AnimatedNode) {
       animatedStyles[key] = value;
-    }
-    else if (value && !Array.isArray(value) && typeof value === 'object') {
+    } else if (value && !Array.isArray(value) && typeof value === 'object') {
       animatedStyles[key] = createAnimatedStyle(value);
     }
   }
@@ -39,10 +37,10 @@ function createAnimatedStyle(inputStyle/*: any */)/*: Object */ {
 }
 
 class AnimatedStyle extends AnimatedWithChildren {
-  _inputStyle/*: any */;
-  _style/*: Object */;
+  _inputStyle /*: any */;
+  _style /*: Object */;
 
-  constructor(style/*: any */) {
+  constructor(style /*: any */) {
     super();
     this._inputStyle = style;
     this._style = createAnimatedStyle(style);
@@ -69,11 +67,8 @@ class AnimatedStyle extends AnimatedWithChildren {
     return updatedStyle;
   }
 
-  __getValue()/*: Array<Object> */ {
-    return [
-      this._inputStyle,
-      this._walkStyleAndGetValues(this._style)
-    ];
+  __getValue() /*: Array<Object> */ {
+    return [this._inputStyle, this._walkStyleAndGetValues(this._style)];
   }
 
   // Recursively get animated values for nested styles (like iOS's shadowOffset)
@@ -91,11 +86,11 @@ class AnimatedStyle extends AnimatedWithChildren {
     return updatedStyle;
   }
 
-  __getAnimatedValue()/*: Object */ {
+  __getAnimatedValue() /*: Object */ {
     return this._walkStyleAndGetAnimatedValues(this._style);
   }
 
-  __attach()/*: void */ {
+  __attach() /*: void */ {
     for (const key in this._style) {
       const value = this._style[key];
       if (value instanceof AnimatedNode) {
@@ -104,7 +99,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     }
   }
 
-  __detach()/*: void */ {
+  __detach() /*: void */ {
     for (const key in this._style) {
       const value = this._style[key];
       if (value instanceof AnimatedNode) {
@@ -124,7 +119,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     super.__makeNative();
   }
 
-  __getNativeConfig()/*: Object */ {
+  __getNativeConfig() /*: Object */ {
     const styleConfig = {};
     for (const styleKey in this._style) {
       if (this._style[styleKey] instanceof AnimatedNode) {
@@ -136,7 +131,7 @@ class AnimatedStyle extends AnimatedWithChildren {
     NativeAnimatedHelper.validateStyles(styleConfig);
     return {
       type: 'style',
-      style: styleConfig,
+      style: styleConfig
     };
   }
 }

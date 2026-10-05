@@ -32,39 +32,39 @@ let startNativeAnimationNextId = 1;
 // Once an animation has been stopped or finished its course, it will
 // not be reused.
 class Animation {
-  __active/*: boolean */;
-  __isInteraction/*: boolean */;
-  __nativeId/*: number */;
-  __onEnd/*: ?EndCallback */;
-  __iterations/*: number */;
+  __active /*: boolean */;
+  __isInteraction /*: boolean */;
+  __nativeId /*: number */;
+  __onEnd /*: ?EndCallback */;
+  __iterations /*: number */;
   start(
-    fromValue/*: number */,
-    onUpdate/*: (value: number) => void */,
-    onEnd/*: ?EndCallback */,
-    previousAnimation/*: ?Animation */,
-    animatedValue/*: AnimatedValue */,
-  )/*: void */ {}
-  stop()/*: void */ {
+    fromValue /*: number */,
+    onUpdate /*: (value: number) => void */,
+    onEnd /*: ?EndCallback */,
+    previousAnimation /*: ?Animation */,
+    animatedValue /*: AnimatedValue */
+  ) /*: void */ {}
+  stop() /*: void */ {
     if (this.__nativeId) {
       NativeAnimatedHelper.API.stopAnimation(this.__nativeId);
     }
   }
-  __getNativeAnimationConfig()/*: any */ {
+  __getNativeAnimationConfig() /*: any */ {
     // Subclasses that have corresponding animation implementation done in native
     // should override this method
     throw new Error('This animation type cannot be offloaded to native');
   }
   // Helper function for subclasses to make sure onEnd is only called once.
-  __debouncedOnEnd(result/*: EndResult */)/*: void */ {
+  __debouncedOnEnd(result /*: EndResult */) /*: void */ {
     const onEnd = this.__onEnd;
     this.__onEnd = null;
     onEnd && onEnd(result);
   }
-  __startNativeAnimation(animatedValue/*: AnimatedValue */)/*: void */ {
+  __startNativeAnimation(animatedValue /*: AnimatedValue */) /*: void */ {
     const startNativeAnimationWaitId = `${startNativeAnimationNextId}:startAnimation`;
     startNativeAnimationNextId += 1;
     NativeAnimatedHelper.API.setWaitingForIdentifier(
-      startNativeAnimationWaitId,
+      startNativeAnimationWaitId
     );
     try {
       const config = this.__getNativeAnimationConfig();
@@ -75,13 +75,13 @@ class Animation {
         animatedValue.__getNativeTag(),
         config,
         // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-        this.__debouncedOnEnd.bind(this),
+        this.__debouncedOnEnd.bind(this)
       );
     } catch (e) {
       throw e;
     } finally {
       NativeAnimatedHelper.API.unsetWaitingForIdentifier(
-        startNativeAnimationWaitId,
+        startNativeAnimationWaitId
       );
     }
   }
