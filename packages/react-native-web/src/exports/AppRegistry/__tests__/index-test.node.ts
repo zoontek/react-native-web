@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -89,9 +87,9 @@ describe('AppRegistry', () => {
     });
 
     test('"getStyleElement" contains style updates', () => {
-      const getApplicationStyles = (appName) => {
+      const getApplicationStyles = (appName: string) => {
         const { getStyleElement } = AppRegistry.getApplication(appName, {});
-        return getStyleElement().props.dangerouslySetInnerHTML.__html;
+        return getStyleElement().props.dangerouslySetInnerHTML?.__html;
       };
 
       // First render "RootComponent"
