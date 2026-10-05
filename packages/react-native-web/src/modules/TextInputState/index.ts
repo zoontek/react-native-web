@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -9,36 +7,55 @@
  */
 
 import UIManager from '../../exports/UIManager';
+import type { Nullable } from '../../types';
 
-/**
- * This class is responsible for coordinating the "focused"
- * state for TextInputs. All calls relating to the keyboard
- * should be funneled through here
- */
-const TextInputState = {
+type TextInputStateStatic = {
   /**
    * Internal state
    */
-  _currentlyFocusedNode: null /*: ?Object */,
+  _currentlyFocusedNode: Nullable<HTMLElement>;
 
   /**
    * Returns the ID of the currently focused text field, if one exists
    * If no text field is focused it returns null
    */
-  currentlyFocusedField() /*: ?Object */ {
-    if (document.activeElement !== this._currentlyFocusedNode) {
-      this._currentlyFocusedNode = null;
-    }
-    return this._currentlyFocusedNode;
-  },
+  currentlyFocusedField(): Nullable<HTMLElement>;
 
   /**
    * @param {Object} TextInputID id of the text field to focus
    * Focuses the specified text field
    * noop if the text field was already focused
    */
-  focusTextInput(textFieldNode /*: ?Object */) {
-    if (textFieldNode !== null) {
+  focusTextInput(textFieldNode: Nullable<HTMLElement>): void;
+
+  /**
+   * @param {Object} textFieldNode id of the text field to focus
+   * Unfocuses the specified text field
+   * noop if it wasn't focused
+   */
+  blurTextInput(textFieldNode: Nullable<HTMLElement>): void;
+};
+
+/**
+ * This class is responsible for coordinating the "focused"
+ * state for TextInputs. All calls relating to the keyboard
+ * should be funneled through here
+ */
+const TextInputState: TextInputStateStatic = {
+  /**
+   * Internal state
+   */
+  _currentlyFocusedNode: null,
+
+  currentlyFocusedField() {
+    if (document.activeElement !== this._currentlyFocusedNode) {
+      this._currentlyFocusedNode = null;
+    }
+    return this._currentlyFocusedNode;
+  },
+
+  focusTextInput(textFieldNode) {
+    if (textFieldNode != null) {
       this._currentlyFocusedNode = textFieldNode;
       if (document.activeElement !== textFieldNode) {
         UIManager.focus(textFieldNode);
@@ -46,13 +63,8 @@ const TextInputState = {
     }
   },
 
-  /**
-   * @param {Object} textFieldNode id of the text field to focus
-   * Unfocuses the specified text field
-   * noop if it wasn't focused
-   */
-  blurTextInput(textFieldNode /*: ?Object */) {
-    if (textFieldNode !== null) {
+  blurTextInput(textFieldNode) {
+    if (textFieldNode != null) {
       this._currentlyFocusedNode = null;
       if (document.activeElement === textFieldNode) {
         UIManager.blur(textFieldNode);
