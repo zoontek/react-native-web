@@ -101,6 +101,9 @@ module.exports = function (eleventyConfig) {
   // PASSTHROUGH -----
 
   eleventyConfig.addPassthroughCopy('src/static');
+  eleventyConfig.addPassthroughCopy({
+    '../react-native-web-examples/dist': 'examples'
+  });
 
   // COLLECTIONS -----
 

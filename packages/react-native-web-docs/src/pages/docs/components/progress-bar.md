@@ -51,4 +51,4 @@ Customize the color of the track bar.
 
 Custom sizes can be created using style properties.
 
-{{ macro.codesandbox('progress-bar') }}
+{{ macro.example('progress-bar') }}
