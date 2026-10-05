@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,7 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default function unmountComponentAtNode(rootTag) {
+import type { Root } from 'react-dom/client';
+
+export default function unmountComponentAtNode(rootTag: Root) {
   rootTag.unmount();
   return true;
 }

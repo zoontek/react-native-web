@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,7 +7,7 @@
 
 const emptyFunction = () => {};
 
-function StatusBar() /*: null */ {
+function StatusBar(): null {
   return null;
 }
 
