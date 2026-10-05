@@ -17,7 +17,6 @@ export { default as Clipboard } from './exports/Clipboard';
 export { default as Dimensions } from './exports/Dimensions';
 export { default as Easing } from './exports/Easing';
 export { default as I18nManager } from './exports/I18nManager';
-export { default as InteractionManager } from './exports/InteractionManager';
 export { default as Keyboard } from './exports/Keyboard';
 export { default as LayoutAnimation } from './exports/LayoutAnimation';
 export { default as Linking } from './exports/Linking';
