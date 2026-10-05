@@ -409,17 +409,17 @@ describe('components/Image', () => {
   describe('load event handler identity', () => {
     test('load is not restarted on update if only the handler identities change', () => {
       const originalAbort = ImageLoader.abort;
-      ImageLoader.load = jest.fn();
-      ImageLoader.abort = jest.fn();
+      ImageLoader.load = vi.fn();
+      ImageLoader.abort = vi.fn();
       const firstStubs = {
-        onLoad: jest.fn(),
-        onLoadEnd: jest.fn(),
-        onLoadStart: jest.fn()
+        onLoad: vi.fn(),
+        onLoadEnd: vi.fn(),
+        onLoadStart: vi.fn()
       };
       const secondStubs = {
-        onLoad: jest.fn(),
-        onLoadEnd: jest.fn(),
-        onLoadStart: jest.fn()
+        onLoad: vi.fn(),
+        onLoadEnd: vi.fn(),
+        onLoadStart: vi.fn()
       };
       const { rerender } = render(
         <Image {...firstStubs} source={'https://test.com/img.jpg'} />
@@ -429,30 +429,30 @@ describe('components/Image', () => {
           <Image {...secondStubs} source={'https://test.com/img.jpg'} />
         );
       });
-      expect(jest.mocked(ImageLoader.load).mock.calls.length).toBe(1);
+      expect(vi.mocked(ImageLoader.load).mock.calls.length).toBe(1);
       expect(ImageLoader.abort).not.toHaveBeenCalled();
       expect(firstStubs.onLoadStart.mock.calls.length).toBe(1);
       expect(secondStubs.onLoadStart).not.toHaveBeenCalled();
       ImageLoader.abort = originalAbort;
-      ImageLoader.load = jest.fn().mockImplementation((_, onLoad, onError) => {
+      ImageLoader.load = vi.fn().mockImplementation((_, onLoad, onError) => {
         onLoad();
       });
     });
 
     test('most recent handlers are called when a load settles after an update', () => {
       let resolveLoad!: () => void;
-      ImageLoader.load = jest.fn().mockImplementation((_, onLoad, onError) => {
+      ImageLoader.load = vi.fn().mockImplementation((_, onLoad, onError) => {
         resolveLoad = onLoad;
       });
       const firstStubs = {
-        onLoad: jest.fn(),
-        onLoadEnd: jest.fn(),
-        onLoadStart: jest.fn()
+        onLoad: vi.fn(),
+        onLoadEnd: vi.fn(),
+        onLoadStart: vi.fn()
       };
       const secondStubs = {
-        onLoad: jest.fn(),
-        onLoadEnd: jest.fn(),
-        onLoadStart: jest.fn()
+        onLoad: vi.fn(),
+        onLoadEnd: vi.fn(),
+        onLoadStart: vi.fn()
       };
       const { rerender } = render(
         <Image {...firstStubs} source={'https://test.com/img.jpg'} />
@@ -468,7 +468,7 @@ describe('components/Image', () => {
       expect(firstStubs.onLoad).not.toHaveBeenCalled();
       expect(secondStubs.onLoad.mock.calls.length).toBe(1);
       expect(secondStubs.onLoadEnd.mock.calls.length).toBe(1);
-      ImageLoader.load = jest.fn().mockImplementation((_, onLoad, onError) => {
+      ImageLoader.load = vi.fn().mockImplementation((_, onLoad, onError) => {
         onLoad();
       });
     });

@@ -6,8 +6,8 @@ import Appearance from '../../Appearance';
 
 describe('useColorScheme', () => {
   test('keeps its subscription active across rerenders', () => {
-    const remove = jest.fn();
-    const addChangeListener = jest
+    const remove = vi.fn();
+    const addChangeListener = vi
       .spyOn(Appearance, 'addChangeListener')
       .mockReturnValue({ remove });
 
