@@ -17,7 +17,7 @@ git clone https://github.com/your-username/react-native-web.git
 Install dependencies (requires Node.js >= 16.0):
 
 ```
-npm install
+pnpm install
 ```
 
 ## Build
@@ -25,19 +25,19 @@ npm install
 Build a specific package:
 
 ```
-npm run build -w <package-name>
+pnpm --filter <package-name> build
 ```
 
 For example, this will build `react-native-web`:
 
 ```
-npm run build -w react-native-web
+pnpm --filter react-native-web build
 ```
 
 Build all packages that can be built:
 
 ```
-npm run build
+pnpm build
 ```
 
 ## Develop
@@ -45,19 +45,19 @@ npm run build
 Develop a specific package:
 
 ```
-npm run dev -w <package-name>
+pnpm --filter <package-name> dev
 ```
 
 For example, this command will watch and rebuild the `react-native-web` package:
 
 ```
-npm run dev -w react-native-web
+pnpm --filter react-native-web dev
 ```
 
 And this command will watch and rebuild the `react-native-web-examples` package:
 
 ```
-npm run dev -w react-native-web-examples
+pnpm --filter react-native-web-examples dev
 ```
 
 ## Test
@@ -65,25 +65,25 @@ npm run dev -w react-native-web-examples
 Run the monorepo linter:
 
 ```
-npm run lint
+pnpm lint
 ```
 
 Run the monorepo type checker:
 
 ```
-npm run flow
+pnpm flow
 ```
 
 Run the monorepo unit tests:
 
 ```
-npm run unit
+pnpm unit
 ```
 
 Run all the automated tests:
 
 ```
-npm run test
+pnpm test
 ```
 
 ## New Features
@@ -97,7 +97,7 @@ Please open an issue with a proposal for a new feature or refactoring before sta
 1. Fork the repository and create your branch from `master`.
 2. If you've added code that should be tested, add tests!
 3. If you've changed APIs, update the documentation.
-4. Ensure the tests pass (`npm run test`).
+4. Ensure the tests pass (`pnpm test`).
 
 You should see a pre-commit hook run before each commit.
 
@@ -114,11 +114,11 @@ Thank you for contributing!
 To commit, publish, and push a final version:
 
 ```
-npm run release -- <version> --otp=<otp-code>
+pnpm release <version> --otp=<otp-code>
 ```
 
 Release candidates or versions that you'd like to publish to npm, but do not want to produce a commit and push it to GitHub:
 
 ```
-npm run release -- <version> --skip-git
+pnpm release <version> --skip-git
 ```
