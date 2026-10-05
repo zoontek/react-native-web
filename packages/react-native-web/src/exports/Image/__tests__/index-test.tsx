@@ -433,7 +433,7 @@ describe('components/Image', () => {
           <Image {...secondStubs} source={'https://test.com/img.jpg'} />
         );
       });
-      expect(ImageLoader.load.mock.calls.length).toBe(1);
+      expect(jest.mocked(ImageLoader.load).mock.calls.length).toBe(1);
       expect(ImageLoader.abort).not.toHaveBeenCalled();
       expect(firstStubs.onLoadStart.mock.calls.length).toBe(1);
       expect(secondStubs.onLoadStart).not.toHaveBeenCalled();
@@ -444,7 +444,7 @@ describe('components/Image', () => {
     });
 
     test('most recent handlers are called when a load settles after an update', () => {
-      let resolveLoad;
+      let resolveLoad!: () => void;
       ImageLoader.load = jest.fn().mockImplementation((_, onLoad, onError) => {
         resolveLoad = onLoad;
       });
