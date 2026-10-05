@@ -11,7 +11,6 @@ import type { ViewProps } from '../View';
 import type { ReactNode } from 'react';
 
 import View from '../View';
-import React from 'react';
 
 type RefreshControlProps = ViewProps & {
   colors?: Array<ColorValue>;

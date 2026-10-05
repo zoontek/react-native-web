@@ -1,12 +1,11 @@
-import type { ComponentProps } from 'react';
+import { Component, type ComponentProps } from 'react';
 
 import classnames from 'classnames';
-import React from 'react';
 import styles from './view-styles.module.css';
 
 type Props = ComponentProps<'div'>;
 
-class View extends React.Component<Props> {
+class View extends Component<Props> {
   render() {
     const props = this.props;
     return (

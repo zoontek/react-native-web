@@ -1,8 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { DotProps } from '../../impl';
 
-import React from 'react';
-
 const Dot = ({ size, x, y, children, color }: DotProps) => (
   <div
     style={Object.assign({}, styles.root, {

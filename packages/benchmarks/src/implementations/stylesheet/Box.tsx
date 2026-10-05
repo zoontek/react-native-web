@@ -1,6 +1,5 @@
 import type { BoxProps } from '../../impl';
 
-import React from 'react';
 import View from './View';
 import { StyleSheet } from 'react-native-web';
 

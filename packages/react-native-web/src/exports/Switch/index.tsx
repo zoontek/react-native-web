@@ -7,11 +7,10 @@
 
 'use client';
 
-import type { ChangeEvent, FocusEvent } from 'react';
+import { forwardRef, useRef, type ChangeEvent, type FocusEvent } from 'react';
 import type { ColorValue, DimensionValue, PlatformMethods } from '../../types';
 import type { ViewProps } from '../View';
 
-import * as React from 'react';
 import createElement from '../createElement';
 import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
 import StyleSheet from '../StyleSheet';
@@ -39,7 +38,7 @@ const defaultActiveThumbColor = '#009688';
 const defaultThumbColor = '#FAFAFA';
 const defaultDisabledThumbColor = '#BDBDBD';
 
-const Switch = React.forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
+const Switch = forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
   (props, forwardedRef) => {
     const {
       'aria-label': ariaLabel,
@@ -55,7 +54,7 @@ const Switch = React.forwardRef<HTMLElement & PlatformMethods, SwitchProps>(
       ...other
     } = props;
 
-    const thumbRef = React.useRef<(HTMLElement & PlatformMethods) | null>(null);
+    const thumbRef = useRef<(HTMLElement & PlatformMethods) | null>(null);
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
       if (onValueChange != null) {

@@ -6,10 +6,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { AnimationEvent, ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type AnimationEvent,
+  type ReactNode
+} from 'react';
 import type { Nullable } from '../../types';
 
-import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import createElement from '../createElement';
 
@@ -39,13 +45,13 @@ export type ModalAnimationProps = {
 function ModalAnimation(props: ModalAnimationProps): ReactNode {
   const { animationType, children, onDismiss, onShow, visible } = props;
 
-  const [isRendering, setIsRendering] = React.useState(false);
-  const wasVisible = React.useRef<Nullable<boolean>>(false);
-  const wasRendering = React.useRef(false);
+  const [isRendering, setIsRendering] = useState(false);
+  const wasVisible = useRef<Nullable<boolean>>(false);
+  const wasRendering = useRef(false);
 
   const isAnimated = animationType && animationType !== 'none';
 
-  const animationEndCallback = React.useCallback(
+  const animationEndCallback = useCallback(
     (e?: AnimationEvent<HTMLElement>) => {
       if (e && e.currentTarget !== e.target) {
         // If the event was generated for something NOT this element we
@@ -64,14 +70,14 @@ function ModalAnimation(props: ModalAnimationProps): ReactNode {
     [onShow, visible]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (wasRendering.current && !isRendering && onDismiss) {
       onDismiss();
     }
     wasRendering.current = isRendering;
   }, [isRendering, onDismiss]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (visible) {
       setIsRendering(true);
     }
