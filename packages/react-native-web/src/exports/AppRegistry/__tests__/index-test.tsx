@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Application } from '../renderApplication';
-
-import AppRegistry from '..';
 import { act } from '@testing-library/react';
 import { createElement, useEffect } from 'react';
+
+import AppRegistry from '..';
+import type { Application } from '../renderApplication';
 
 const NoopComponent = () => createElement('div');
 

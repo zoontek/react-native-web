@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
-import type { DotProps } from '../../impl';
-
 import { StyleSheet } from 'react-native-web';
+
+import type { DotProps } from '../../impl';
 
 const Dot = ({ size, x, y, children, color }: DotProps) => {
   const [className, inlineStyle] = StyleSheet([

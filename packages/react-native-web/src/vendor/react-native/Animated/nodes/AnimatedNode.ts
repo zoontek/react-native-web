@@ -9,14 +9,15 @@
 
 'use strict';
 
+import invariant from 'fbjs/lib/invariant';
+
 import NativeAnimatedHelper from '../NativeAnimatedHelper';
 
 const NativeAnimatedAPI = NativeAnimatedHelper.API;
-import invariant from 'fbjs/lib/invariant';
 
-import type { PlatformConfig } from '../AnimatedPlatformConfig';
-import type { EventSubscription } from '../../vendor/emitter/EventEmitter';
 import type { Nullable } from '../../../../types';
+import type { EventSubscription } from '../../vendor/emitter/EventEmitter';
+import type { PlatformConfig } from '../AnimatedPlatformConfig';
 
 type ValueListenerCallback = (state: { value: number }) => unknown;
 

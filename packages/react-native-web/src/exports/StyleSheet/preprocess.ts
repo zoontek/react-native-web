@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { warnOnce } from '../../modules/warnOnce';
+import type { Nullable } from '../../types';
+import type { Style } from './compiler/createReactDOMStyle';
 import normalizeColor from './compiler/normalizeColor';
 import normalizeValueWithProperty from './compiler/normalizeValueWithProperty';
-import { warnOnce } from '../../modules/warnOnce';
-import type { Style } from './compiler/createReactDOMStyle';
-import type { Nullable } from '../../types';
 
 type ShadowOffset = {
   height?: Nullable<number | string>;

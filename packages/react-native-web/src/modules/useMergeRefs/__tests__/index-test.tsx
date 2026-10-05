@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { RenderResult } from '@testing-library/react';
-import { act, render } from '@testing-library/react';
-import useMergeRefs from '..';
+import { act, render, type RenderResult } from '@testing-library/react';
 import { createRef, type ComponentProps, type Ref } from 'react';
+
+import useMergeRefs from '..';
 
 describe('modules/useMergeRefs', () => {
   function TestComponent({

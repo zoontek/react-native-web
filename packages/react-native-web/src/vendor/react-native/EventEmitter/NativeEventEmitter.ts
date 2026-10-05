@@ -10,6 +10,7 @@
 'use strict';
 
 import invariant from 'fbjs/lib/invariant';
+
 import Platform from '../../../exports/Platform';
 import type { Nullable } from '../../../types';
 import type {
@@ -37,8 +38,7 @@ export type { EventSubscription };
  */
 export default class NativeEventEmitter<
   TEventToArgsMap extends Record<string, unknown[]>
-> implements IEventEmitter<TEventToArgsMap>
-{
+> implements IEventEmitter<TEventToArgsMap> {
   _nativeModule: Nullable<NativeModule>;
 
   constructor(nativeModule: Nullable<NativeModule>) {

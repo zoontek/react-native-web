@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native-web';
+
 import ladybug from '../../assets/image/ladybug.jpg';
 import placeholder from '../../assets/image/placeholder.svg';
 import smallflower from '../../assets/image/smallflower.jpg';

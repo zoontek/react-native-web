@@ -9,14 +9,13 @@
 
 'use strict';
 
-import { AnimatedEvent } from '../AnimatedEvent';
-import AnimatedNode from './AnimatedNode';
-import AnimatedStyle from './AnimatedStyle';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
-
 import invariant from 'fbjs/lib/invariant';
 
 import type { Nullable } from '../../../../types';
+import { AnimatedEvent } from '../AnimatedEvent';
+import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import AnimatedNode from './AnimatedNode';
+import AnimatedStyle from './AnimatedStyle';
 
 class AnimatedProps extends AnimatedNode {
   _props: Record<string, unknown>;

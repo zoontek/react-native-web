@@ -7,34 +7,30 @@
 
 'use client';
 
-import type {
-  FocusEvent,
-  ForwardedRef,
-  KeyboardEvent,
-  MouseEvent,
-  ReactNode
+import {
+  forwardRef,
+  memo,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  type FocusEvent,
+  type ForwardedRef,
+  type KeyboardEvent,
+  type MouseEvent,
+  type ReactNode
 } from 'react';
-import type { Nullable, PlatformMethods } from '../../types';
-import type { HoverEventsConfig } from '../../modules/useHover';
+
+import useHover, { type HoverEventsConfig } from '../../modules/useHover';
+import useMergeRefs from '../../modules/useMergeRefs';
+import usePressEvents from '../../modules/usePressEvents';
 import type {
   EventHandlers,
   PressResponderConfig
 } from '../../modules/usePressEvents/PressResponder';
-import type { ViewProps } from '../View';
-
-import {
-  forwardRef,
-  memo,
-  useMemo,
-  useState,
-  useRef,
-  useCallback
-} from 'react';
-import useMergeRefs from '../../modules/useMergeRefs';
-import useHover from '../../modules/useHover';
-import usePressEvents from '../../modules/usePressEvents';
+import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
-import View from '../View';
+import View, { type ViewProps } from '../View';
 
 export type StateCallbackType = Readonly<{
   focused: boolean;

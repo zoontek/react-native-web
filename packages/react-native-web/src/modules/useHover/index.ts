@@ -6,6 +6,7 @@
  */
 
 import type { RefObject } from 'react';
+
 import type { Nullable } from '../../types';
 import { getModality } from '../modality';
 import useEvent from '../useEvent';

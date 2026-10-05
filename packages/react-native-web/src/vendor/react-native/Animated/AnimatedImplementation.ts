@@ -9,8 +9,34 @@
 
 'use strict';
 
-import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent';
+import type { Nullable } from '../../../types';
+import {
+  AnimatedEvent,
+  attachNativeEvent,
+  type EventConfig,
+  type Mapping
+} from './AnimatedEvent';
+import type Animation from './animations/Animation';
+import type {
+  AnimationConfig,
+  EndCallback,
+  EndResult
+} from './animations/Animation';
+import DecayAnimation, {
+  type DecayAnimationConfig,
+  type DecayAnimationConfigSingle
+} from './animations/DecayAnimation';
+import SpringAnimation, {
+  type SpringAnimationConfig,
+  type SpringAnimationConfigSingle
+} from './animations/SpringAnimation';
+import TimingAnimation, {
+  type TimingAnimationConfig,
+  type TimingAnimationConfigSingle
+} from './animations/TimingAnimation';
+import createAnimatedComponent from './createAnimatedComponent';
 import AnimatedAddition from './nodes/AnimatedAddition';
+import AnimatedColor from './nodes/AnimatedColor';
 import AnimatedDiffClamp from './nodes/AnimatedDiffClamp';
 import AnimatedDivision from './nodes/AnimatedDivision';
 import AnimatedInterpolation from './nodes/AnimatedInterpolation';
@@ -21,34 +47,6 @@ import AnimatedSubtraction from './nodes/AnimatedSubtraction';
 import AnimatedTracking from './nodes/AnimatedTracking';
 import AnimatedValue from './nodes/AnimatedValue';
 import AnimatedValueXY from './nodes/AnimatedValueXY';
-import DecayAnimation from './animations/DecayAnimation';
-import SpringAnimation from './animations/SpringAnimation';
-import TimingAnimation from './animations/TimingAnimation';
-
-import createAnimatedComponent from './createAnimatedComponent';
-
-import type Animation from './animations/Animation';
-import type {
-  AnimationConfig,
-  EndCallback,
-  EndResult
-} from './animations/Animation';
-import type {
-  TimingAnimationConfig,
-  TimingAnimationConfigSingle
-} from './animations/TimingAnimation';
-import type {
-  DecayAnimationConfig,
-  DecayAnimationConfigSingle
-} from './animations/DecayAnimation';
-import type {
-  SpringAnimationConfig,
-  SpringAnimationConfigSingle
-} from './animations/SpringAnimation';
-import type { Mapping, EventConfig } from './AnimatedEvent';
-import type { Nullable } from '../../../types';
-
-import AnimatedColor from './nodes/AnimatedColor';
 
 export type CompositeAnimation = {
   start: (callback?: Nullable<EndCallback>) => void;

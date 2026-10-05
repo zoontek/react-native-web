@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import isWebColor from '../../../modules/isWebColor';
 import processColor from '../../../exports/processColor';
+import isWebColor from '../../../modules/isWebColor';
 import type { Nullable } from '../../../types';
 
 const normalizeColor = (

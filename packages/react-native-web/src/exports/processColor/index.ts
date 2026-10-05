@@ -7,6 +7,7 @@
  */
 
 import normalizeColor from '@react-native/normalize-colors';
+
 import type { Nullable } from '../../types';
 
 const processColor = (color?: Nullable<string | number>): Nullable<number> => {

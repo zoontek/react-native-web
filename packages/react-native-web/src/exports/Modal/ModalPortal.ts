@@ -7,8 +7,8 @@
  */
 
 import { useEffect, useRef, type ReactNode } from 'react';
-
 import { createPortal } from 'react-dom';
+
 import canUseDOM from '../../modules/canUseDom';
 
 export type ModalPortalProps = {

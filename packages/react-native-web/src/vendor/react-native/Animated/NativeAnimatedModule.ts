@@ -7,8 +7,8 @@
  * @format
  */
 
-import type { TurboModule } from '../TurboModule/RCTExport';
 import type { Nullable } from '../../../types';
+import type { TurboModule } from '../TurboModule/RCTExport';
 import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry';
 
 type EndResult = { finished: boolean };

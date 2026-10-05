@@ -1,6 +1,6 @@
+import classnames from 'classnames';
 import { Component, type ComponentProps } from 'react';
 
-import classnames from 'classnames';
 import styles from './view-styles.module.css';
 
 type Props = ComponentProps<'div'>;

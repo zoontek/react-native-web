@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import createElement from '..';
 import { render } from '@testing-library/react';
+
+import createElement from '..';
 
 function getAttribute(container: HTMLElement, attribute: string) {
   return (container.firstChild as Element).getAttribute(attribute);

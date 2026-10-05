@@ -9,9 +9,12 @@
 
 'use client';
 
-import Dimensions from '../Dimensions';
 import { useEffect, useState } from 'react';
-import type { DimensionsValue, DisplayMetrics } from '../Dimensions';
+
+import Dimensions, {
+  type DimensionsValue,
+  type DisplayMetrics
+} from '../Dimensions';
 
 export default function useWindowDimensions(): DisplayMetrics {
   const [dims, setDims] = useState(() => Dimensions.get('window'));

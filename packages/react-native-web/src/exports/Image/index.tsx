@@ -10,6 +10,10 @@
 
 import { forwardRef, useContext, useEffect, useRef, useState } from 'react';
 
+import { getAssetByID } from '../../modules/AssetRegistry';
+import ImageLoader from '../../modules/ImageLoader';
+import useLayoutEffect from '../../modules/useLayoutEffect';
+import { warnOnce } from '../../modules/warnOnce';
 import type {
   ColorValue,
   GenericStyleProp,
@@ -18,18 +22,13 @@ import type {
   Nullable,
   PlatformMethods
 } from '../../types';
-import type { ImageProps, ImageStyle, ResizeMode, Source } from './types';
-
 import createElement from '../createElement';
-import { getAssetByID } from '../../modules/AssetRegistry';
-import { createBoxShadowValue } from '../StyleSheet/preprocess';
-import ImageLoader from '../../modules/ImageLoader';
 import PixelRatio from '../PixelRatio';
 import StyleSheet from '../StyleSheet';
+import { createBoxShadowValue } from '../StyleSheet/preprocess';
 import TextAncestorContext from '../Text/TextAncestorContext';
-import useLayoutEffect from '../../modules/useLayoutEffect';
 import View from '../View';
-import { warnOnce } from '../../modules/warnOnce';
+import type { ImageProps, ImageStyle, ResizeMode, Source } from './types';
 
 export type { ImageProps };
 
@@ -293,7 +292,7 @@ const Image = forwardRef<HTMLElement & PlatformMethods, ImageProps>(
     // Image loading
     // Read the load handlers through a ref, so that a new handler identity does
     // not abort and restart the request for the same uri.
-    const loadEventHandlersRef = React.useRef({
+    const loadEventHandlersRef = useRef({
       onError,
       onLoad,
       onLoadEnd,

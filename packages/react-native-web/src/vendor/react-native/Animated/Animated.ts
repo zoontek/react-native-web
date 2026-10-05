@@ -8,16 +8,14 @@
  */
 
 import Platform from '../../../exports/Platform';
-
+import AnimatedImplementation from './AnimatedImplementation';
+import AnimatedMock from './AnimatedMock';
 import FlatList from './components/AnimatedFlatList';
 import Image from './components/AnimatedImage';
 import ScrollView from './components/AnimatedScrollView';
 import SectionList from './components/AnimatedSectionList';
 import Text from './components/AnimatedText';
 import View from './components/AnimatedView';
-
-import AnimatedMock from './AnimatedMock';
-import AnimatedImplementation from './AnimatedImplementation';
 
 const Animated: typeof AnimatedMock = Platform.isTesting
   ? AnimatedMock

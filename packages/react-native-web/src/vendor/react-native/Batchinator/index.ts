@@ -10,7 +10,6 @@
 'use strict';
 
 import InteractionManager from '../../../exports/InteractionManager';
-
 import type { Nullable } from '../../../types';
 
 /**
