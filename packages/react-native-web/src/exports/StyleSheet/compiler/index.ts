@@ -6,8 +6,8 @@
  */
 
 import type { Nullable } from '../../../types';
+import hash from '../../../vendor/hash';
 import createReactDOMStyle, { type Style } from './createReactDOMStyle';
-import hash from './hash';
 import hyphenateStyleName from './hyphenateStyleName';
 import normalizeValueWithProperty, {
   type StyleValue
