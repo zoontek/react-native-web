@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,42 +5,38 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { Node } from 'react'; */
+import type { ReactNode } from 'react';
 
 import React, { createContext, useContext, useMemo } from 'react';
 import { isLocaleRTL } from './isLocaleRTL';
+import type { Nullable } from '../../types';
 
-/*:: type Locale = string; */
-/*:: type WritingDirection = 'ltr' | 'rtl'; */
+type Locale = string;
+type WritingDirection = 'ltr' | 'rtl';
 
-/*:: type LocaleValue = {
+type LocaleValue = {
   // Locale writing direction.
-  direction: WritingDirection,
+  direction: WritingDirection;
   // Locale BCP47 language code: https://www.ietf.org/rfc/bcp/bcp47.txt
-  locale: ?Locale
-}; */
+  locale: Nullable<Locale>;
+};
 
-/*:: type ProviderProps = {
-  ...LocaleValue,
-  children: any
-}; */
+type ProviderProps = LocaleValue & {
+  children: ReactNode;
+};
 
-const defaultLocale = {
+const defaultLocale: LocaleValue = {
   direction: 'ltr',
   locale: 'en-US'
 };
 
-const LocaleContext =
-  /*:: <LocaleValue> */
-  createContext(defaultLocale);
+const LocaleContext = createContext<LocaleValue>(defaultLocale);
 
-export function getLocaleDirection(
-  locale /*: Locale */
-) /*: WritingDirection */ {
+export function getLocaleDirection(locale: Locale): WritingDirection {
   return isLocaleRTL(locale) ? 'rtl' : 'ltr';
 }
 
-export function LocaleProvider(props /*: ProviderProps */) /*: Node */ {
+export function LocaleProvider(props: ProviderProps): ReactNode {
   const { direction, locale, children } = props;
   const needsContext = direction || locale;
 
@@ -61,6 +55,6 @@ export function LocaleProvider(props /*: ProviderProps */) /*: Node */ {
   );
 }
 
-export function useLocaleContext() /*: LocaleValue */ {
+export function useLocaleContext(): LocaleValue {
   return useContext(LocaleContext);
 }

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,13 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: type Listener = (e: any) => void; */
+import type { Nullable } from '../../types';
 
-/*:: export type EventOptions = {
-  capture?: boolean,
-  passive?: boolean,
-  once?: boolean
-}; */
+type NormalizedEvent = Event & {
+  nativeEvent: Event;
+  persist: () => void;
+  isDefaultPrevented: () => boolean;
+  isPropagationStopped: () => boolean;
+};
+
+type Listener = (e: NormalizedEvent) => void;
+
+export type EventOptions = {
+  capture?: boolean;
+  passive?: boolean;
+  once?: boolean;
+};
 
 const emptyFunction = () => {};
 
@@ -22,28 +29,29 @@ const emptyFunction = () => {};
  * large amount of code ReactDOM uses to do this. Ideally we wouldn't use a synthetic
  * event wrapper at all.
  */
-function isPropagationStopped() {
+function isPropagationStopped(this: Event) {
   return this.cancelBubble;
 }
-function isDefaultPrevented() {
+function isDefaultPrevented(this: Event) {
   return this.defaultPrevented;
 }
-function normalizeEvent(event /*: any */) {
-  event.nativeEvent = event;
-  event.persist = emptyFunction;
-  event.isDefaultPrevented = isDefaultPrevented;
-  event.isPropagationStopped = isPropagationStopped;
-  return event;
+function normalizeEvent(event: Event): NormalizedEvent {
+  const normalized = event as NormalizedEvent;
+  normalized.nativeEvent = event;
+  normalized.persist = emptyFunction;
+  normalized.isDefaultPrevented = isDefaultPrevented;
+  normalized.isPropagationStopped = isPropagationStopped;
+  return normalized;
 }
 
 export function addEventListener(
-  target /*: EventTarget */,
-  type /*: any */,
-  listener /*: Listener */,
-  options /*: ?EventOptions */
-) /*: () => void */ {
+  target: EventTarget,
+  type: string,
+  listener: Listener,
+  options?: Nullable<EventOptions>
+): () => void {
   const opts = options ?? false;
-  const compatListener = (e /*: any */) => listener(normalizeEvent(e));
+  const compatListener = (e: Event) => listener(normalizeEvent(e));
   target.addEventListener(type, compatListener, opts);
 
   return function removeEventListener() {
