@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Appearance from '../../Appearance';
@@ -12,7 +10,7 @@ describe('useColorScheme', () => {
       .spyOn(Appearance, 'addChangeListener')
       .mockReturnValue({ remove });
 
-    function Component({ label }) /*: React.Node */ {
+    function Component({ label }: { label: string }): React.ReactNode {
       const colorScheme = useColorScheme();
       return <div>{`${label}:${colorScheme}`}</div>;
     }
