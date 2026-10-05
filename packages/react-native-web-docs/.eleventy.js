@@ -14,31 +14,6 @@ const markdownFootnote = require('markdown-it-footnote');
 const markdownTasks = require('markdown-it-task-lists');
 const UglifyJS = require('uglify-es');
 
-/**
- * Markdown plugin
- * Add classes to markdown elements by default
- */
-function markdownitTagToClass(md, mapping = {}) {
-  const toArray = (a) => (Array.isArray(a) ? a : [a]);
-  const splitWithSpace = (s) => (s ? s.split(' ') : []);
-
-  function parseTokens(tokens) {
-    tokens.forEach((token) => {
-      if (/(_open$|hr|image)/.test(token.type) && mapping[token.tag]) {
-        const orig = splitWithSpace(token.attrGet('class'));
-        const addition = toArray(mapping[token.tag]);
-        token.attrSet('class', [...orig, ...addition].join(' '));
-      }
-      if (token.children) {
-        parseTokens(token.children);
-      }
-    });
-  }
-  md.core.ruler.push('markdownit-tag-to-class', (state) =>
-    parseTokens(state.tokens)
-  );
-}
-
 module.exports = function (eleventyConfig) {
   // Merge data instead of overriding
   // https://www.11ty.dev/docs/data-deep-merge/

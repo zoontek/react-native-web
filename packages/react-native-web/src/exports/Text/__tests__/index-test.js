@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/* eslint-disable react/jsx-no-bind */
-
 import React from 'react';
 import Text from '../';
 import { createEventTarget, setPointerEvent } from 'dom-event-testing-library';
