@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -24,16 +22,16 @@ describe('createSheet', () => {
     // Iframe -----
     const iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
-    const iframeDoc = iframe.contentWindow.document;
+    const iframeDoc = iframe.contentWindow?.document;
     const iframeRootTag = document.createElement('div');
-    iframeDoc.body.appendChild(iframeRootTag);
+    iframeDoc?.body.appendChild(iframeRootTag);
     const iframeSheet = createSheet(iframeRootTag);
 
     // Did we generate a new sheet?
     expect(sheet).not.toBe(iframeSheet);
     expect(iframeSheet.id).toMatchInlineSnapshot(`"react-native-stylesheet"`);
     expect(typeof iframeSheet.insert).toBe('function');
-    expect(iframeDoc.getElementById('react-native-stylesheet')).not.toBe(null);
+    expect(iframeDoc?.getElementById('react-native-stylesheet')).not.toBe(null);
     // Does the content match existing sheets?
     expect(iframeSheet.getTextContent().includes('test-sheet')).toBe(true);
     // Does the content update when other sheets are updated?

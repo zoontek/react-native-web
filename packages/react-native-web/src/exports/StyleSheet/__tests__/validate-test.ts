@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -10,14 +8,16 @@
 import { validate } from '../validate';
 
 describe('validate', () => {
+  let consoleError: jest.SpyInstance;
+
   beforeAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
   afterAll(() => {
-    console.error.mockRestore();
+    consoleError.mockRestore();
   });
   afterEach(() => {
-    console.error.mockClear();
+    consoleError.mockClear();
   });
 
   test('invalid shortform properties', () => {
