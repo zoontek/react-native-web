@@ -34,16 +34,13 @@ export { default as Vibration } from './exports/Vibration';
 // components
 export { default as ActivityIndicator } from './exports/ActivityIndicator';
 export { default as Button } from './exports/Button';
-export { default as CheckBox } from './exports/CheckBox';
 export { default as FlatList } from './exports/FlatList';
 export { default as Image } from './exports/Image';
 export { default as ImageBackground } from './exports/ImageBackground';
 export { default as InputAccessoryView } from './exports/InputAccessoryView';
 export { default as KeyboardAvoidingView } from './exports/KeyboardAvoidingView';
 export { default as Modal } from './exports/Modal';
-export { default as Picker } from './exports/Picker';
 export { default as Pressable } from './exports/Pressable';
-export { default as ProgressBar } from './exports/ProgressBar';
 export { default as RefreshControl } from './exports/RefreshControl';
 export { default as SafeAreaView } from './exports/SafeAreaView';
 export { default as ScrollView } from './exports/ScrollView';
@@ -59,7 +56,6 @@ export { default as TouchableOpacity } from './exports/TouchableOpacity';
 export { default as TouchableWithoutFeedback } from './exports/TouchableWithoutFeedback';
 export { default as View } from './exports/View';
 export { default as VirtualizedList } from './exports/VirtualizedList';
-export { default as YellowBox } from './exports/YellowBox';
 export { default as LogBox } from './exports/LogBox';
 
 // plugins
