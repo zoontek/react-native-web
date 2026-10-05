@@ -11,9 +11,9 @@ import isWebColor from '../../../modules/isWebColor';
 import processColor from '../../../exports/processColor';
 
 const normalizeColor = (
-  color?: number | string,
-  opacity?: number = 1
-): void | string => {
+  color /*:: ?: number | string */,
+  opacity /*:: ?: number */ = 1
+) /*: void | string */ => {
   if (color == null) return;
 
   if (typeof color === 'string' && isWebColor(color)) {

@@ -31,7 +31,7 @@ const FocusBracket = () => {
   });
 };
 
-function attemptFocus(element: any) {
+function attemptFocus(element /*: any */) {
   if (!canUseDOM) {
     return false;
   }
@@ -45,7 +45,7 @@ function attemptFocus(element: any) {
   return document.activeElement === element;
 }
 
-function focusFirstDescendant(element: any) {
+function focusFirstDescendant(element /*: any */) {
   for (let i = 0; i < element.childNodes.length; i++) {
     const child = element.childNodes[i];
     if (attemptFocus(child) || focusFirstDescendant(child)) {
@@ -55,7 +55,7 @@ function focusFirstDescendant(element: any) {
   return false;
 }
 
-function focusLastDescendant(element: any) {
+function focusLastDescendant(element /*: any */) {
   for (let i = element.childNodes.length - 1; i >= 0; i--) {
     const child = element.childNodes[i];
     if (attemptFocus(child) || focusLastDescendant(child)) {
@@ -65,23 +65,26 @@ function focusLastDescendant(element: any) {
   return false;
 }
 
-export type ModalFocusTrapProps = {|
+/*:: export type ModalFocusTrapProps = {|
   active?: boolean | (() => boolean),
   children?: any
-|};
+|}; */
 
-const ModalFocusTrap = ({
-  active,
-  children
-}: ModalFocusTrapProps): React.Node => {
-  const trapElementRef = React.useRef<?HTMLElement>();
-  const focusRef = React.useRef<{
+const ModalFocusTrap = (
+  { active, children } /*: ModalFocusTrapProps */
+) /*: React.Node */ => {
+  // prettier-ignore
+  const trapElementRef = React.useRef/*:: <?HTMLElement> */();
+  /* eslint-disable no-unexpected-multiline */
+  // prettier-ignore
+  const focusRef = React.useRef/*:: <{
     trapFocusInProgress: boolean,
     lastFocusedElement: ?HTMLElement
-  }>({
+  }> */({
     trapFocusInProgress: false,
     lastFocusedElement: null
   });
+  /* eslint-enable no-unexpected-multiline */
 
   React.useEffect(() => {
     if (canUseDOM) {

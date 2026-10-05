@@ -10,7 +10,7 @@
 
 'use strict';
 
-import type {EndResult} from './animations/Animation';
+/*:: import type {EndResult} from './animations/Animation'; */
 
 import {AnimatedEvent, attachNativeEvent} from './AnimatedEvent';
 import AnimatedImplementation from './AnimatedImplementation';
@@ -21,11 +21,11 @@ import AnimatedValueXY from './nodes/AnimatedValueXY';
 
 import createAnimatedComponent from './createAnimatedComponent';
 
-import type {EndCallback} from './animations/Animation';
-import type {TimingAnimationConfig} from './animations/TimingAnimation';
-import type {DecayAnimationConfig} from './animations/DecayAnimation';
-import type {SpringAnimationConfig} from './animations/SpringAnimation';
-import type {Numeric as AnimatedNumeric} from './AnimatedImplementation';
+/*:: import type {EndCallback} from './animations/Animation'; */
+/*:: import type {TimingAnimationConfig} from './animations/TimingAnimation'; */
+/*:: import type {DecayAnimationConfig} from './animations/DecayAnimation'; */
+/*:: import type {SpringAnimationConfig} from './animations/SpringAnimation'; */
+/*:: import type {Numeric as AnimatedNumeric} from './AnimatedImplementation'; */
 import AnimatedColor from './nodes/AnimatedColor';
 
 /**
@@ -39,13 +39,13 @@ import AnimatedColor from './nodes/AnimatedColor';
 // callback, which may trigger another animation
 let inAnimationCallback = false;
 function mockAnimationStart(
-  start: (callback?: ?EndCallback) => void,
-): (callback?: ?EndCallback) => void {
+  start/*: (callback?: ?EndCallback) => void */,
+)/*: (callback?: ?EndCallback) => void */ {
   return callback => {
     const guardedCallback =
       callback == null
         ? callback
-        : (...args: Array<EndResult>) => {
+        : (...args/*: Array<EndResult> */) => {
             if (inAnimationCallback) {
               console.warn(
                 'Ignoring recursive animation callback when running mock animations',
@@ -63,14 +63,14 @@ function mockAnimationStart(
   };
 }
 
-export type CompositeAnimation = {
+/*:: export type CompositeAnimation = {
   start: (callback?: ?EndCallback) => void,
   stop: () => void,
   reset: () => void,
   _startNativeLoop: (iterations?: number) => void,
   _isUsingNativeDriver: () => boolean,
   ...
-};
+}; */
 
 const emptyAnimation = {
   start: () => {},
@@ -83,23 +83,23 @@ const emptyAnimation = {
 };
 
 const mockCompositeAnimation = (
-  animations: Array<CompositeAnimation>,
-): CompositeAnimation => ({
+  animations/*: Array<CompositeAnimation> */,
+)/*: CompositeAnimation */ => ({
   ...emptyAnimation,
-  start: mockAnimationStart((callback?: ?EndCallback): void => {
+  start: mockAnimationStart((callback/*:: ?: ?EndCallback */)/*: void */ => {
     animations.forEach(animation => animation.start());
     callback?.({finished: true});
   }),
 });
 
 const spring = function (
-  value: AnimatedValue | AnimatedValueXY | AnimatedColor,
-  config: SpringAnimationConfig,
-): CompositeAnimation {
-  const anyValue: any = value;
+  value/*: AnimatedValue | AnimatedValueXY | AnimatedColor */,
+  config/*: SpringAnimationConfig */,
+)/*: CompositeAnimation */ {
+  const anyValue/*: any */ = value;
   return {
     ...emptyAnimation,
-    start: mockAnimationStart((callback?: ?EndCallback): void => {
+    start: mockAnimationStart((callback/*:: ?: ?EndCallback */)/*: void */ => {
       anyValue.setValue(config.toValue);
       callback?.({finished: true});
     }),
@@ -107,13 +107,13 @@ const spring = function (
 };
 
 const timing = function (
-  value: AnimatedValue | AnimatedValueXY | AnimatedColor,
-  config: TimingAnimationConfig,
-): CompositeAnimation {
-  const anyValue: any = value;
+  value/*: AnimatedValue | AnimatedValueXY | AnimatedColor */,
+  config/*: TimingAnimationConfig */,
+)/*: CompositeAnimation */ {
+  const anyValue/*: any */ = value;
   return {
     ...emptyAnimation,
-    start: mockAnimationStart((callback?: ?EndCallback): void => {
+    start: mockAnimationStart((callback/*:: ?: ?EndCallback */)/*: void */ => {
       anyValue.setValue(config.toValue);
       callback?.({finished: true});
     }),
@@ -121,52 +121,52 @@ const timing = function (
 };
 
 const decay = function (
-  value: AnimatedValue | AnimatedValueXY | AnimatedColor,
-  config: DecayAnimationConfig,
-): CompositeAnimation {
+  value/*: AnimatedValue | AnimatedValueXY | AnimatedColor */,
+  config/*: DecayAnimationConfig */,
+)/*: CompositeAnimation */ {
   return emptyAnimation;
 };
 
 const sequence = function (
-  animations: Array<CompositeAnimation>,
-): CompositeAnimation {
+  animations/*: Array<CompositeAnimation> */,
+)/*: CompositeAnimation */ {
   return mockCompositeAnimation(animations);
 };
 
-type ParallelConfig = {stopTogether?: boolean, ...};
+/*:: type ParallelConfig = {stopTogether?: boolean, ...}; */
 const parallel = function (
-  animations: Array<CompositeAnimation>,
-  config?: ?ParallelConfig,
-): CompositeAnimation {
+  animations/*: Array<CompositeAnimation> */,
+  config/*:: ?: ?ParallelConfig */,
+)/*: CompositeAnimation */ {
   return mockCompositeAnimation(animations);
 };
 
-const delay = function (time: number): CompositeAnimation {
+const delay = function (time/*: number */)/*: CompositeAnimation */ {
   return emptyAnimation;
 };
 
 const stagger = function (
-  time: number,
-  animations: Array<CompositeAnimation>,
-): CompositeAnimation {
+  time/*: number */,
+  animations/*: Array<CompositeAnimation> */,
+)/*: CompositeAnimation */ {
   return mockCompositeAnimation(animations);
 };
 
-type LoopAnimationConfig = {
+/*:: type LoopAnimationConfig = {
   iterations: number,
   resetBeforeIteration?: boolean,
   ...
-};
+}; */
 
 const loop = function (
-  animation: CompositeAnimation,
+  animation/*: CompositeAnimation */,
   // $FlowFixMe[prop-missing]
-  {iterations = -1}: LoopAnimationConfig = {},
-): CompositeAnimation {
+  {iterations = -1}/*: LoopAnimationConfig */ = {},
+)/*: CompositeAnimation */ {
   return emptyAnimation;
 };
 
-export type {AnimatedNumeric as Numeric};
+/*:: export type {AnimatedNumeric as Numeric}; */
 
 export default {
   Value: AnimatedValue,

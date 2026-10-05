@@ -10,9 +10,9 @@
 
 'use client';
 
-import type { ColorValue } from '../../types';
-import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback';
-import type { ViewProps } from '../View';
+/*:: import type { ColorValue } from '../../types'; */
+/*:: import type { Props as TouchableWithoutFeedbackProps } from '../TouchableWithoutFeedback'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import { useCallback, useMemo, useState, useRef } from 'react';
@@ -22,9 +22,9 @@ import StyleSheet from '../StyleSheet';
 import View from '../View';
 //import { warnOnce } from '../../modules/warnOnce';
 
-type ViewStyle = $PropertyType<ViewProps, 'style'>;
+/*:: type ViewStyle = $PropertyType<ViewProps, 'style'>; */
 
-type Props = $ReadOnly<{|
+/*:: type Props = $ReadOnly<{|
   ...TouchableWithoutFeedbackProps,
   activeOpacity?: ?number,
   onHideUnderlay?: ?() => void,
@@ -32,14 +32,14 @@ type Props = $ReadOnly<{|
   style?: ViewStyle,
   testOnly_pressed?: ?boolean,
   underlayColor?: ?ColorValue
-|}>;
+|}>; */
 
-type ExtraStyles = $ReadOnly<{|
+/*:: type ExtraStyles = $ReadOnly<{|
   child: ViewStyle,
   underlay: ViewStyle
-|}>;
+|}>; */
 
-function createExtraStyles(activeOpacity, underlayColor): ExtraStyles {
+function createExtraStyles(activeOpacity, underlayColor) /*: ExtraStyles */ {
   return {
     child: { opacity: activeOpacity ?? 0.85 },
     underlay: {
@@ -48,7 +48,7 @@ function createExtraStyles(activeOpacity, underlayColor): ExtraStyles {
   };
 }
 
-function hasPressHandler(props): boolean {
+function hasPressHandler(props) /*: boolean */ {
   return (
     props.onPress != null ||
     props.onPressIn != null ||
@@ -70,7 +70,10 @@ function hasPressHandler(props): boolean {
  * TouchableHighlight must have one child (not zero or more than one).
  * If you wish to have several child components, wrap them in a View.
  */
-function TouchableHighlight(props: Props, forwardedRef): React.Node {
+function TouchableHighlight(
+  props /*: Props */,
+  forwardedRef
+) /*: React.Node */ {
   /*
   warnOnce(
     'TouchableHighlight',
@@ -208,7 +211,7 @@ const MemoedTouchableHighlight = React.memo(
 );
 MemoedTouchableHighlight.displayName = 'TouchableHighlight';
 
-export default (MemoedTouchableHighlight: React.AbstractComponent<
+export default (MemoedTouchableHighlight /*: React.AbstractComponent<
   Props,
   React.ElementRef<typeof View>
->);
+> */);

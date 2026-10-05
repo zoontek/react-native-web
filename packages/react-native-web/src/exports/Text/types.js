@@ -8,10 +8,10 @@
  * @flow
  */
 
-import type { ColorValue, GenericStyleProp } from '../../types';
-import type { ViewProps, ViewStyle } from '../View/types';
+/*:: import type { ColorValue, GenericStyleProp } from '../../types'; */
+/*:: import type { ViewProps, ViewStyle } from '../View/types'; */
 
-type FontWeightValue =
+/*:: type FontWeightValue =
   | 'normal'
   | 'bold'
   | '100'
@@ -22,11 +22,11 @@ type FontWeightValue =
   | '600'
   | '700'
   | '800'
-  | '900';
+  | '900'; */
 
-type NumberOrString = number | string;
+/*:: type NumberOrString = number | string; */
 
-export type TextStyle = {
+/*:: export type TextStyle = {
   ...ViewStyle,
   color?: ?ColorValue,
   fontFamily?: ?string,
@@ -84,14 +84,14 @@ export type TextStyle = {
   wordBreak?: 'normal' | 'break-all' | 'break-word' | 'keep-all',
   wordWrap?: ?string,
   writingDirection?: 'auto' | 'ltr' | 'rtl',
-  /* @platform web */
+  /* @platform web *-/
   MozOsxFontSmoothing?: ?string,
   WebkitFontSmoothing?: ?string,
   // deprecated
   textAlignVertical?: ?string
-};
+}; */
 
-export type TextProps = {
+/*:: export type TextProps = {
   ...ViewProps,
   dir?: 'auto' | 'ltr' | 'rtl',
   numberOfLines?: ?number,
@@ -118,4 +118,4 @@ export type TextProps = {
     | 'text',
   onPress?: (e: any) => void,
   selectable?: boolean
-};
+}; */

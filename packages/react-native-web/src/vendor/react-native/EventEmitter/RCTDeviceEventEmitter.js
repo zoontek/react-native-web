@@ -8,10 +8,11 @@
  * @format
  */
 
-import EventEmitter, {type IEventEmitter} from '../vendor/emitter/EventEmitter';
+import EventEmitter from '../vendor/emitter/EventEmitter';
+/*:: import type { IEventEmitter } from '../vendor/emitter/EventEmitter'; */
 
 // FIXME: use typed events
-type RCTDeviceEventDefinitions = $FlowFixMe;
+/*:: type RCTDeviceEventDefinitions = $FlowFixMe; */
 
 /**
  * Global EventEmitter used by the native platform to emit events to JavaScript.
@@ -19,4 +20,4 @@ type RCTDeviceEventDefinitions = $FlowFixMe;
  *
  * NativeModules that emit events should instead subclass `NativeEventEmitter`.
  */
-export default (new EventEmitter(): IEventEmitter<RCTDeviceEventDefinitions>);
+export default (new EventEmitter()/*: IEventEmitter<RCTDeviceEventDefinitions> */);

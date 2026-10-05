@@ -9,9 +9,9 @@
 
 'use client';
 
-import type { HoverEventsConfig } from '../../modules/useHover';
-import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder';
-import type { ViewProps } from '../View';
+/*:: import type { HoverEventsConfig } from '../../modules/useHover'; */
+/*:: import type { PressResponderConfig } from '../../modules/usePressEvents/PressResponder'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import { forwardRef, memo, useMemo, useState, useRef } from 'react';
@@ -21,15 +21,15 @@ import usePressEvents from '../../modules/usePressEvents';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-export type StateCallbackType = $ReadOnly<{|
+/*:: export type StateCallbackType = $ReadOnly<{|
   focused: boolean,
   hovered: boolean,
   pressed: boolean
-|}>;
+|}>; */
 
-type ViewStyleProp = $PropertyType<ViewProps, 'style'>;
+/*:: type ViewStyleProp = $PropertyType<ViewProps, 'style'>; */
 
-type Props = {
+/*:: type Props = {
   ...ViewProps,
   children: React.Node | ((state: StateCallbackType) => React.Node),
   // Duration (in milliseconds) from `onPressIn` before `onLongPress` is called.
@@ -59,16 +59,16 @@ type Props = {
   style?: ViewStyleProp | ((state: StateCallbackType) => ViewStyleProp),
   /**
    * Used only for documentation or testing (e.g. snapshot testing).
-   */
+   *-/
   testOnly_hovered?: ?boolean,
   testOnly_pressed?: ?boolean
-};
+}; */
 
 /**
  * Component used to build display components that should respond to whether the
  * component is currently pressed or not.
  */
-function Pressable(props: Props, forwardedRef): React.Node {
+function Pressable(props /*: Props */, forwardedRef) /*: React.Node */ {
   const {
     children,
     delayLongPress,
@@ -218,7 +218,9 @@ function Pressable(props: Props, forwardedRef): React.Node {
   );
 }
 
-function useForceableState(forced: boolean): [boolean, (boolean) => void] {
+function useForceableState(
+  forced /*: boolean */
+) /*: [boolean, (boolean) => void] */ {
   const [bool, setBool] = useState(false);
   return [bool || forced, setBool];
 }
@@ -236,7 +238,7 @@ const styles = StyleSheet.create({
 const MemoedPressable = memo(forwardRef(Pressable));
 MemoedPressable.displayName = 'Pressable';
 
-export default (MemoedPressable: React.AbstractComponent<
+export default (MemoedPressable /*: React.AbstractComponent<
   Props,
   React.ElementRef<typeof View>
->);
+> */);

@@ -12,17 +12,17 @@ import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-type Props = {
+/*:: type Props = {
   WrapperComponent?: ?React.ComponentType<*>,
   // $FlowFixMe
   children?: React.Children,
   rootTag: any
-};
+}; */
 
-const RootTagContext: React.Context<any> = React.createContext(null);
+const RootTagContext /*: React.Context<any> */ = React.createContext(null);
 
-const AppContainer: React.AbstractComponent<Props> = React.forwardRef(
-  (props: Props, forwardedRef?: React.Ref<any>) => {
+const AppContainer /*: React.AbstractComponent<Props> */ = React.forwardRef(
+  (props /*: Props */, forwardedRef /*:: ?: React.Ref<any> */) => {
     const { children, WrapperComponent } = props;
 
     let innerView = (

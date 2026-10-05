@@ -10,23 +10,23 @@
 
 'use client';
 
-import type { LayoutEvent, LayoutValue } from '../../types';
-import type { ViewProps } from '../View';
+/*:: import type { LayoutEvent, LayoutValue } from '../../types'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import View from '../View';
 
-type KeyboardAvoidingViewProps = {
+/*:: type KeyboardAvoidingViewProps = {
   ...ViewProps,
   behavior?: 'height' | 'padding' | 'position',
   contentContainerStyle?: $PropertyType<ViewProps, 'style'>,
   keyboardVerticalOffset: number
-};
+}; */
 
-class KeyboardAvoidingView extends React.Component<KeyboardAvoidingViewProps> {
-  frame: ?LayoutValue = null;
+class KeyboardAvoidingView extends React.Component /*:: <KeyboardAvoidingViewProps> */ {
+  frame /*: ?LayoutValue */ = null;
 
-  relativeKeyboardHeight(keyboardFrame: Object): number {
+  relativeKeyboardHeight(keyboardFrame /*: Object */) /*: number */ {
     const frame = this.frame;
     if (!frame || !keyboardFrame) {
       return 0;
@@ -36,13 +36,13 @@ class KeyboardAvoidingView extends React.Component<KeyboardAvoidingViewProps> {
     return Math.max(frame.y + frame.height - keyboardY, 0);
   }
 
-  onKeyboardChange(event: Object) {}
+  onKeyboardChange(event /*: Object */) {}
 
-  onLayout: (event: LayoutEvent) => void = (event: LayoutEvent) => {
+  onLayout /*: (event: LayoutEvent) => void */ = (event /*: LayoutEvent */) => {
     this.frame = event.nativeEvent.layout;
   };
 
-  render(): React.Node {
+  render() /*: React.Node */ {
     const {
       /* eslint-disable */
       behavior,

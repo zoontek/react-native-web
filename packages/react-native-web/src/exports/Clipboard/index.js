@@ -13,7 +13,7 @@
 let clipboardAvailable;
 
 export default class Clipboard {
-  static isAvailable(): boolean {
+  static isAvailable() /*: boolean */ {
     if (clipboardAvailable === undefined) {
       clipboardAvailable =
         typeof document.queryCommandSupported === 'function' &&
@@ -22,11 +22,11 @@ export default class Clipboard {
     return clipboardAvailable;
   }
 
-  static getString(): Promise<string> {
+  static getString() /*: Promise<string> */ {
     return Promise.resolve('');
   }
 
-  static setString(text: string): boolean {
+  static setString(text /*: string */) /*: boolean */ {
     let success = false;
     const body = document.body;
 

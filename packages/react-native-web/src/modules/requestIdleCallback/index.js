@@ -8,7 +8,10 @@
  */
 import canUseDOM from '../canUseDom';
 
-const _requestIdleCallback = function (cb: Function, options?: Object) {
+const _requestIdleCallback = function (
+  cb /*: Function */,
+  options /*:: ?: Object */
+) {
   return setTimeout(() => {
     const start = Date.now();
     cb({
@@ -27,10 +30,9 @@ const _cancelIdleCallback = function (id) {
 const isSupported =
   canUseDOM && typeof window.requestIdleCallback !== 'undefined';
 
-const requestIdleCallback: (cb: any, options?: any) => TimeoutID = isSupported
-  ? window.requestIdleCallback
-  : _requestIdleCallback;
-const cancelIdleCallback: (TimeoutID) => void = isSupported
+const requestIdleCallback /*: (cb: any, options?: any) => TimeoutID */ =
+  isSupported ? window.requestIdleCallback : _requestIdleCallback;
+const cancelIdleCallback /*: (TimeoutID) => void */ = isSupported
   ? window.cancelIdleCallback
   : _cancelIdleCallback;
 

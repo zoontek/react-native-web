@@ -8,14 +8,14 @@
  * @format
  */
 
-import typeof VirtualizedList from '../VirtualizedList';
+/*:: import typeof VirtualizedList from '../VirtualizedList'; */
 
 import * as React from 'react';
 import {useContext, useMemo} from 'react';
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
-type Context = $ReadOnly<{
+/*:: type Context = $ReadOnly<{
   cellKey: ?string,
   getScrollMetrics: () => {
     contentLength: number,
@@ -36,9 +36,9 @@ type Context = $ReadOnly<{
   unregisterAsNestedChild: ({
     ref: React.ElementRef<VirtualizedList>,
   }) => void,
-}>;
+}>; */
 
-export const VirtualizedListContext: React.Context<?Context> =
+export const VirtualizedListContext/*: React.Context<?Context> */ =
   React.createContext(null);
 if (__DEV__) {
   VirtualizedListContext.displayName = 'VirtualizedListContext';
@@ -49,9 +49,9 @@ if (__DEV__) {
  */
 export function VirtualizedListContextResetter({
   children,
-}: {
+}/*: {
   children: React.Node,
-}): React.Node {
+} */)/*: React.Node */ {
   return (
     <VirtualizedListContext.Provider value={null}>
       {children}
@@ -65,10 +65,10 @@ export function VirtualizedListContextResetter({
 export function VirtualizedListContextProvider({
   children,
   value,
-}: {
+}/*: {
   children: React.Node,
   value: Context,
-}): React.Node {
+} */)/*: React.Node */ {
   // Avoid setting a newly created context object if the values are identical.
   const context = useMemo(
     () => ({
@@ -100,10 +100,10 @@ export function VirtualizedListContextProvider({
 export function VirtualizedListCellContextProvider({
   cellKey,
   children,
-}: {
+}/*: {
   cellKey: string,
   children: React.Node,
-}): React.Node {
+} */)/*: React.Node */ {
   // Avoid setting a newly created context object if the values are identical.
   const currContext = useContext(VirtualizedListContext);
   const context = useMemo(

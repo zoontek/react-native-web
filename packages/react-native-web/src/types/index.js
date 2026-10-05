@@ -7,63 +7,63 @@
  * @flow
  */
 
-export type ColorValue = null | string;
+/*:: export type ColorValue = null | string; */
 
-export type DimensionValue = null | number | string;
+/*:: export type DimensionValue = null | number | string; */
 
-export type EdgeInsetsValue = {|
+/*:: export type EdgeInsetsValue = {|
   top: number,
   left: number,
   right: number,
   bottom: number
-|};
+|}; */
 
-export type GenericStyleProp<+T> =
+/*:: export type GenericStyleProp<+T> =
   | null
   | void
   | $ReadOnly<T>
   | false
   | ''
-  | $ReadOnlyArray<GenericStyleProp<T>>;
+  | $ReadOnlyArray<GenericStyleProp<T>>; */
 
-export type LayoutValue = {
+/*:: export type LayoutValue = {
   x: number,
   y: number,
   width: number,
   height: number
-};
+}; */
 
-export type LayoutEvent = {
+/*:: export type LayoutEvent = {
   nativeEvent: {
     layout: LayoutValue,
     target: any
   },
   timeStamp: number
-};
+}; */
 
-export type PointValue = {|
+/*:: export type PointValue = {|
   x: number,
   y: number
-|};
+|}; */
 
-type LayoutCallback = (
+/*:: type LayoutCallback = (
   x: number,
   y: number,
   width: number,
   height: number,
   left: number,
   top: number
-) => void;
+) => void; */
 
-type MeasureInWindowCallback = (
+/*:: type MeasureInWindowCallback = (
   left: number,
   top: number,
   width: number,
   height: number
-) => void;
+) => void; */
 
 // Mixin to HTMLElement that represents additions from the `usePlatformMethods` hook
-export interface PlatformMethods {
+/*:: export interface PlatformMethods {
   blur: () => void;
   focus: () => void;
   measure: (callback: LayoutCallback) => void;
@@ -73,4 +73,4 @@ export interface PlatformMethods {
     onSuccess: LayoutCallback,
     onFail: () => void
   ) => void;
-}
+} */

@@ -7,15 +7,15 @@
  * @flow
  */
 
-import type {
+/*:: import type {
   ResponderTouchHistoryStore,
   TouchHistory
-} from './ResponderTouchHistoryStore';
-import type { TouchEvent } from './ResponderEventTypes';
+} from './ResponderTouchHistoryStore'; */
+/*:: import type { TouchEvent } from './ResponderEventTypes'; */
 
 import getBoundingClientRect from '../../modules/getBoundingClientRect';
 
-export type ResponderEvent = {|
+/*:: export type ResponderEvent = {|
   bubbles: boolean,
   cancelable: boolean,
   currentTarget: any,
@@ -38,7 +38,7 @@ export type ResponderEvent = {|
   target: ?any,
   timeStamp: number,
   touchHistory: TouchHistory
-|};
+|}; */
 
 const emptyFunction = () => {};
 const emptyObject = {};
@@ -58,9 +58,9 @@ function normalizeIdentifier(identifier) {
  * Mouse events are transformed into fake touch events.
  */
 export default function createResponderEvent(
-  domEvent: any,
-  responderTouchHistoryStore: ResponderTouchHistoryStore
-): ResponderEvent {
+  domEvent /*: any */,
+  responderTouchHistoryStore /*: ResponderTouchHistoryStore */
+) /*: ResponderEvent */ {
   let rect;
   let propagationWasStopped = false;
   let changedTouches;

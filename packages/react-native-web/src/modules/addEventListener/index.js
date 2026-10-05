@@ -10,17 +10,17 @@
 'use strict';
 import canUseDOM from '../canUseDom';
 
-type Listener = (e: any) => void;
+/*:: type Listener = (e: any) => void; */
 
-export type EventOptions = {
+/*:: export type EventOptions = {
   capture?: boolean,
   passive?: boolean,
   once?: boolean
-};
+}; */
 
 const emptyFunction = () => {};
 
-function supportsPassiveEvents(): boolean {
+function supportsPassiveEvents() /*: boolean */ {
   let supported = false;
   // Check if browser supports event with passive listeners
   // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
@@ -42,7 +42,9 @@ function supportsPassiveEvents(): boolean {
 
 const canUsePassiveEvents = supportsPassiveEvents();
 
-function getOptions(options: ?EventOptions): EventOptions | boolean {
+function getOptions(
+  options /*: ?EventOptions */
+) /*: EventOptions | boolean */ {
   if (options == null) {
     return false;
   }
@@ -60,7 +62,7 @@ function isPropagationStopped() {
 function isDefaultPrevented() {
   return this.defaultPrevented;
 }
-function normalizeEvent(event: any) {
+function normalizeEvent(event /*: any */) {
   event.nativeEvent = event;
   event.persist = emptyFunction;
   event.isDefaultPrevented = isDefaultPrevented;
@@ -72,13 +74,13 @@ function normalizeEvent(event: any) {
  *
  */
 export function addEventListener(
-  target: EventTarget,
-  type: any,
-  listener: Listener,
-  options: ?EventOptions
-): () => void {
+  target /*: EventTarget */,
+  type /*: any */,
+  listener /*: Listener */,
+  options /*: ?EventOptions */
+) /*: () => void */ {
   const opts = getOptions(options);
-  const compatListener = (e: any) => listener(normalizeEvent(e));
+  const compatListener = (e /*: any */) => listener(normalizeEvent(e));
   target.addEventListener(type, compatListener, opts);
 
   return function removeEventListener() {

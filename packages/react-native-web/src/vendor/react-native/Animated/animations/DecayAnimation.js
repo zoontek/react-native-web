@@ -14,10 +14,10 @@ import Animation from './Animation';
 
 import {shouldUseNativeDriver} from '../NativeAnimatedHelper';
 
-import type AnimatedValue from '../nodes/AnimatedValue';
-import type {AnimationConfig, EndCallback} from './Animation';
+/*:: import type AnimatedValue from '../nodes/AnimatedValue'; */
+/*:: import type {AnimationConfig, EndCallback} from './Animation'; */
 
-export type DecayAnimationConfig = {
+/*:: export type DecayAnimationConfig = {
   ...AnimationConfig,
   velocity:
     | number
@@ -27,25 +27,25 @@ export type DecayAnimationConfig = {
         ...
       },
   deceleration?: number,
-};
+}; */
 
-export type DecayAnimationConfigSingle = {
+/*:: export type DecayAnimationConfigSingle = {
   ...AnimationConfig,
   velocity: number,
   deceleration?: number,
-};
+}; */
 
 class DecayAnimation extends Animation {
-  _startTime: number;
-  _lastValue: number;
-  _fromValue: number;
-  _deceleration: number;
-  _velocity: number;
-  _onUpdate: (value: number) => void;
-  _animationFrame: any;
-  _useNativeDriver: boolean;
+  _startTime/*: number */;
+  _lastValue/*: number */;
+  _fromValue/*: number */;
+  _deceleration/*: number */;
+  _velocity/*: number */;
+  _onUpdate/*: (value: number) => void */;
+  _animationFrame/*: any */;
+  _useNativeDriver/*: boolean */;
 
-  constructor(config: DecayAnimationConfigSingle) {
+  constructor(config/*: DecayAnimationConfigSingle */) {
     super();
     this._deceleration = config.deceleration ?? 0.998;
     this._velocity = config.velocity;
@@ -54,12 +54,12 @@ class DecayAnimation extends Animation {
     this.__iterations = config.iterations ?? 1;
   }
 
-  __getNativeAnimationConfig(): {|
+  __getNativeAnimationConfig()/*: {|
     deceleration: number,
     iterations: number,
     type: $TEMPORARY$string<'decay'>,
     velocity: number,
-  |} {
+  |} */ {
     return {
       type: 'decay',
       deceleration: this._deceleration,
@@ -69,12 +69,12 @@ class DecayAnimation extends Animation {
   }
 
   start(
-    fromValue: number,
-    onUpdate: (value: number) => void,
-    onEnd: ?EndCallback,
-    previousAnimation: ?Animation,
-    animatedValue: AnimatedValue,
-  ): void {
+    fromValue/*: number */,
+    onUpdate/*: (value: number) => void */,
+    onEnd/*: ?EndCallback */,
+    previousAnimation/*: ?Animation */,
+    animatedValue/*: AnimatedValue */,
+  )/*: void */ {
     this.__active = true;
     this._lastValue = fromValue;
     this._fromValue = fromValue;
@@ -88,7 +88,7 @@ class DecayAnimation extends Animation {
     }
   }
 
-  onUpdate(): void {
+  onUpdate()/*: void */ {
     const now = Date.now();
 
     const value =
@@ -109,7 +109,7 @@ class DecayAnimation extends Animation {
     }
   }
 
-  stop(): void {
+  stop()/*: void */ {
     super.stop();
     this.__active = false;
     global.cancelAnimationFrame(this._animationFrame);

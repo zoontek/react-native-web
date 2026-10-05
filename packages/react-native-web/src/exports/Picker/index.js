@@ -10,8 +10,8 @@
 
 'use client';
 
-import type { PlatformMethods } from '../../types';
-import type { ViewProps } from '../View';
+/*:: import type { PlatformMethods } from '../../types'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -20,23 +20,23 @@ import usePlatformMethods from '../../modules/usePlatformMethods';
 import PickerItem from './PickerItem';
 import StyleSheet from '../StyleSheet';
 
-type PickerProps = {
+/*:: type PickerProps = {
   ...ViewProps,
   children?: typeof PickerItem | Array<typeof PickerItem>,
   enabled?: boolean,
   onValueChange?: (number | string, number) => void,
   selectedValue?: number | string,
   style?: any,
-  /* compat */
+  /* compat *-/
   itemStyle?: any,
   mode?: string,
   prompt?: string
-};
+}; */
 
-const Picker: React.AbstractComponent<
+const Picker /*: React.AbstractComponent<
   PickerProps,
   HTMLElement & PlatformMethods
-> = React.forwardRef((props, forwardedRef) => {
+> */ = React.forwardRef((props, forwardedRef) => {
   const {
     children,
     enabled,
@@ -54,7 +54,7 @@ const Picker: React.AbstractComponent<
 
   const hostRef = React.useRef(null);
 
-  function handleChange(e: Object) {
+  function handleChange(e /*: Object */) {
     const { selectedIndex, value } = e.target;
     if (onValueChange) {
       onValueChange(value, selectedIndex);
@@ -62,7 +62,7 @@ const Picker: React.AbstractComponent<
   }
 
   // $FlowFixMe
-  const supportedProps: any = {
+  const supportedProps /*: any */ = {
     children,
     disabled: enabled === false ? true : undefined,
     onChange: handleChange,

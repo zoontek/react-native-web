@@ -19,7 +19,7 @@ describe('useColorScheme', () => {
       .spyOn(Appearance, 'addChangeListener')
       .mockReturnValue({ remove });
 
-    function Component({ label }): React.Node {
+    function Component({ label }) /*: React.Node */ {
       const colorScheme = useColorScheme();
       return <div>{`${label}:${colorScheme}`}</div>;
     }

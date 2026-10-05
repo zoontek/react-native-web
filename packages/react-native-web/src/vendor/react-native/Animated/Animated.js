@@ -9,12 +9,12 @@
  */
 
 import Platform from '../../../exports/Platform';
-import typeof AnimatedFlatList from './components/AnimatedFlatList';
-import typeof AnimatedImage from './components/AnimatedImage';
-import typeof AnimatedScrollView from './components/AnimatedScrollView';
-import typeof AnimatedSectionList from './components/AnimatedSectionList';
-import typeof AnimatedText from './components/AnimatedText';
-import typeof AnimatedView from './components/AnimatedView';
+/*:: import typeof AnimatedFlatList from './components/AnimatedFlatList'; */
+/*:: import typeof AnimatedImage from './components/AnimatedImage'; */
+/*:: import typeof AnimatedScrollView from './components/AnimatedScrollView'; */
+/*:: import typeof AnimatedSectionList from './components/AnimatedSectionList'; */
+/*:: import typeof AnimatedText from './components/AnimatedText'; */
+/*:: import typeof AnimatedView from './components/AnimatedView'; */
 
 import FlatList from './components/AnimatedFlatList';
 import Image from './components/AnimatedImage';
@@ -28,7 +28,7 @@ import AnimatedImplementation from './AnimatedImplementation';
 
 const Animated = ((Platform.isTesting
   ? AnimatedMock
-  : AnimatedImplementation): typeof AnimatedMock);
+  : AnimatedImplementation)/*: typeof AnimatedMock */);
 
 export default {
   FlatList,

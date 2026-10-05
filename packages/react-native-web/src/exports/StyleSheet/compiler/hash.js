@@ -62,6 +62,7 @@ function murmurhash2_32_gc(str, seed) {
   return h >>> 0;
 }
 
-const hash = (str: string): string => murmurhash2_32_gc(str, 1).toString(36);
+const hash = (str /*: string */) /*: string */ =>
+  murmurhash2_32_gc(str, 1).toString(36);
 
 export default hash;

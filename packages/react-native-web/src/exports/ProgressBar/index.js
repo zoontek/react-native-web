@@ -9,25 +9,25 @@
 
 'use client';
 
-import type { ColorValue } from '../../types';
-import type { ViewProps } from '../View';
+/*:: import type { ColorValue } from '../../types'; */
+/*:: import type { ViewProps } from '../View'; */
 
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-type ProgressBarProps = {
+/*:: type ProgressBarProps = {
   ...ViewProps,
   color?: ColorValue,
   indeterminate?: boolean,
   progress?: number,
   trackColor?: ColorValue
-};
+}; */
 
-const ProgressBar: React.AbstractComponent<
+const ProgressBar /*: React.AbstractComponent<
   ProgressBarProps,
   React.ElementRef<typeof View>
-> = React.forwardRef((props, ref) => {
+> */ = React.forwardRef((props, ref) => {
   const {
     color = '#1976D2',
     indeterminate = false,
