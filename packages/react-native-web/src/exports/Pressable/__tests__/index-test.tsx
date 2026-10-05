@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,8 +7,12 @@
 
 import React from 'react';
 import Pressable from '../';
-import { createEventTarget } from 'dom-event-testing-library';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
+import type { Nullable, PlatformMethods } from '../../../types';
+
+const createEventTarget = (node: Nullable<Node>) =>
+  createEventTargetImpl(node as Node);
 
 describe('components/Pressable', () => {
   test('default', () => {
@@ -69,10 +71,10 @@ describe('components/Pressable', () => {
   });
 
   test('focus interaction', () => {
-    let container;
+    let container!: HTMLElement;
     const onBlur = jest.fn();
     const onFocus = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
         <Pressable
@@ -82,7 +84,7 @@ describe('components/Pressable', () => {
           onBlur={onBlur}
           onFocus={onFocus}
           ref={ref}
-          style={({ focused }) => [focused && { outline: 'focus-ring' }]}
+          style={({ focused }) => [focused && { outlineStyle: 'focus-ring' }]}
         />
       ));
     });
@@ -104,7 +106,7 @@ describe('components/Pressable', () => {
   test('focus interaction (disabled)', () => {
     const onBlur = jest.fn();
     const onFocus = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<HTMLElement & PlatformMethods>();
     act(() => {
       render(
         <Pressable
@@ -128,10 +130,10 @@ describe('components/Pressable', () => {
   });
 
   test('hover interaction', () => {
-    let container;
+    let container!: HTMLElement;
     const onHoverIn = jest.fn();
     const onHoverOut = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
         <Pressable
@@ -141,7 +143,7 @@ describe('components/Pressable', () => {
           onHoverIn={onHoverIn}
           onHoverOut={onHoverOut}
           ref={ref}
-          style={({ hovered }) => [hovered && { outline: 'hover-ring' }]}
+          style={({ hovered }) => [hovered && { outlineStyle: 'hover-ring' }]}
         />
       ));
     });
@@ -160,12 +162,12 @@ describe('components/Pressable', () => {
   });
 
   test('press interaction (pointer)', () => {
-    let container;
+    let container!: HTMLElement;
     const onContextMenu = jest.fn();
     const onPress = jest.fn();
     const onPressIn = jest.fn();
     const onPressOut = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<HTMLElement & PlatformMethods>();
     act(() => {
       ({ container } = render(
         <Pressable
@@ -177,7 +179,7 @@ describe('components/Pressable', () => {
           onPressIn={onPressIn}
           onPressOut={onPressOut}
           ref={ref}
-          style={({ pressed }) => [pressed && { outline: 'press-ring' }]}
+          style={({ pressed }) => [pressed && { outlineStyle: 'press-ring' }]}
         />
       ));
     });
@@ -204,11 +206,11 @@ describe('components/Pressable', () => {
 
   describe('press interaction (keyboard)', () => {
     test('trigger press when keyup is on the same element', () => {
-      let container;
+      let container!: HTMLElement;
       const onPress = jest.fn();
       const onPressIn = jest.fn();
       const onPressOut = jest.fn();
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
 
       function TestCase() {
         const [shown, setShown] = React.useState(true);
@@ -224,7 +226,7 @@ describe('components/Pressable', () => {
             onPressIn={onPressIn}
             onPressOut={onPressOut}
             ref={ref}
-            style={({ pressed }) => [pressed && { outline: 'press-ring' }]}
+            style={({ pressed }) => [pressed && { outlineStyle: 'press-ring' }]}
           />
         ) : null;
       }
@@ -251,7 +253,7 @@ describe('components/Pressable', () => {
 
     test('ignore press when keyup is on a different element', () => {
       const onPress = jest.fn();
-      const firstRef = React.createRef();
+      const firstRef = React.createRef<HTMLElement & PlatformMethods>();
 
       function TestCase() {
         return (
@@ -281,7 +283,7 @@ describe('components/Pressable', () => {
   test('press interaction as button (keyboard)', () => {
     const onPress = jest.fn();
     const preventDefault = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<HTMLElement & PlatformMethods>();
 
     function TestCase() {
       return (
@@ -315,14 +317,14 @@ describe('components/Pressable', () => {
     });
 
     test('node has imperative methods', () => {
-      const ref = React.createRef();
+      const ref = React.createRef<HTMLElement & PlatformMethods>();
       act(() => {
         render(<Pressable ref={ref} />);
       });
       const node = ref.current;
-      expect(typeof node.measure === 'function');
-      expect(typeof node.measureLayout === 'function');
-      expect(typeof node.measureInWindow === 'function');
+      expect(typeof node?.measure === 'function');
+      expect(typeof node?.measureLayout === 'function');
+      expect(typeof node?.measureInWindow === 'function');
     });
   });
 

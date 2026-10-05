@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,19 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ViewProps } from '../View'; */
+import type { PlatformMethods } from '../../types';
+import type { ViewProps } from '../View';
 
 import * as React from 'react';
 import StyleSheet from '../StyleSheet';
 import View from '../View';
 
-const SafeAreaView /*: React.AbstractComponent<
-  ViewProps,
-  React.ElementRef<typeof View>
-> */ = React.forwardRef((props, ref) => {
-  const { style, ...rest } = props;
-  return <View {...rest} ref={ref} style={[styles.root, style]} />;
-});
+const SafeAreaView = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
+  (props, ref) => {
+    const { style, ...rest } = props;
+    return <View {...rest} ref={ref} style={[styles.root, style]} />;
+  }
+);
 
 SafeAreaView.displayName = 'SafeAreaView';
 
