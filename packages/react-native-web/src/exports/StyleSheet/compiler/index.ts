@@ -17,7 +17,7 @@ type Rule = string;
 type Rules = Array<Rule>;
 type RulesData = [Rules, number];
 
-type CompiledStyle = {
+export type CompiledStyle = {
   $$css: boolean;
   $$css$localize?: boolean;
   [key: string]: string | Array<string> | boolean | undefined;

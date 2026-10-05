@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -10,8 +8,10 @@
 
 'use client';
 
-/*:: import type { PlatformMethods } from '../../types'; */
-/*:: import type { TextProps } from './types'; */
+import type { ElementType, MouseEvent } from 'react';
+import type { PlatformMethods } from '../../types';
+import type { ElementProps } from '../../modules/createDOMProps';
+import type { TextProps } from './types';
 
 import * as React from 'react';
 import createElement from '../createElement';
@@ -42,10 +42,11 @@ const forwardPropsList = Object.assign(
   }
 );
 
-const pickProps = (props) => pick(props, forwardPropsList);
+const pickProps = (props: TextProps): ElementProps =>
+  pick(props, forwardPropsList);
 
-const Text /*: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods> */ =
-  React.forwardRef((props, forwardedRef) => {
+const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
+  (props, forwardedRef) => {
     const {
       hrefAttrs,
       numberOfLines,
@@ -73,7 +74,7 @@ const Text /*: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods>
     } = props;
 
     const hasTextAncestor = React.useContext(TextAncestorContext);
-    const hostRef = React.useRef(null);
+    const hostRef = React.useRef<(HTMLElement & PlatformMethods) | null>(null);
     const { direction: contextDirection } = useLocaleContext();
 
     useElementLayout(hostRef, onLayout);
@@ -97,7 +98,7 @@ const Text /*: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods>
     });
 
     const handleClick = React.useCallback(
-      (e) => {
+      (e: MouseEvent<HTMLElement>) => {
         if (onClick != null) {
           onClick(e);
         } else if (onPress != null) {
@@ -108,7 +109,7 @@ const Text /*: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods>
       [onClick, onPress]
     );
 
-    let component = hasTextAncestor ? 'span' : 'div';
+    let component: ElementType = hasTextAncestor ? 'span' : 'div';
 
     const langDirection =
       props.lang != null ? getLocaleDirection(props.lang) : null;
@@ -172,7 +173,8 @@ const Text /*: React.AbstractComponent<TextProps, HTMLElement & PlatformMethods>
         {element}
       </TextAncestorContext.Provider>
     );
-  });
+  }
+);
 
 Text.displayName = 'Text';
 
