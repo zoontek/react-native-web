@@ -48,7 +48,7 @@ const opts = { passive: true };
 const lockEventType = 'react-gui:hover:lock';
 const unlockEventType = 'react-gui:hover:unlock';
 const supportsPointerEvent = () =>
-  !!(typeof window !== 'undefined' && window.PointerEvent != null);
+  typeof window !== 'undefined' && window.PointerEvent != null;
 
 function dispatchCustomEvent(
   target: EventTarget,

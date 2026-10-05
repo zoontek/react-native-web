@@ -80,7 +80,7 @@ class TimingAnimation extends Animation {
     this.__isInteraction = config.isInteraction ?? !this._useNativeDriver;
   }
 
-  __getNativeAnimationConfig(): Record<string, unknown> {
+  override __getNativeAnimationConfig(): Record<string, unknown> {
     const frameDuration = 1000.0 / 60.0;
     const frames: Array<number> = [];
     const numFrames = Math.round(this._duration / frameDuration);
@@ -97,7 +97,7 @@ class TimingAnimation extends Animation {
     };
   }
 
-  start(
+  override start(
     fromValue: number,
     onUpdate: (value: number) => void,
     onEnd: Nullable<EndCallback>,
@@ -158,7 +158,7 @@ class TimingAnimation extends Animation {
     }
   }
 
-  stop(): void {
+  override stop(): void {
     super.stop();
     this.__active = false;
     clearTimeout(this._timeout);

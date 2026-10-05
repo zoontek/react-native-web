@@ -113,7 +113,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
   b: AnimatedValue;
   a: AnimatedValue;
   nativeColor: Nullable<NativeColorValue>;
-  _listeners: {
+  override _listeners: {
     [key: string]: {
       r: string;
       g: string;
@@ -239,9 +239,9 @@ export default class AnimatedColor extends AnimatedWithChildren {
    *
    * Returns a string that serves as an identifier for the listener.
    */
-  addListener(callback: (state: { value: number }) => unknown): string;
-  addListener(callback: ColorListenerCallback): string;
-  addListener(callback: Function): string {
+  override addListener(callback: (state: { value: number }) => unknown): string;
+  override addListener(callback: ColorListenerCallback): string;
+  override addListener(callback: Function): string {
     const id = String(_uniqueId++);
     const jointCallback = ({ value: number }: { value: number }) => {
       callback(this.__getValue());
@@ -259,7 +259,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
    * Unregister a listener. The `id` param shall match the identifier
    * previously returned by `addListener()`.
    */
-  removeListener(id: string): void {
+  override removeListener(id: string): void {
     this.r.removeListener(this._listeners[id]!.r);
     this.g.removeListener(this._listeners[id]!.g);
     this.b.removeListener(this._listeners[id]!.b);
@@ -270,7 +270,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
   /**
    * Remove all registered listeners.
    */
-  removeAllListeners(): void {
+  override removeAllListeners(): void {
     this.r.removeAllListeners();
     this.g.removeAllListeners();
     this.b.removeAllListeners();
@@ -302,7 +302,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
     callback && callback(this.__getValue());
   }
 
-  __getValue(): ColorValue {
+  override __getValue(): ColorValue {
     if (this.nativeColor != null) {
       return this.nativeColor;
     } else {
@@ -310,7 +310,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
     }
   }
 
-  __attach(): void {
+  override __attach(): void {
     this.r.__addChild(this);
     this.g.__addChild(this);
     this.b.__addChild(this);
@@ -318,7 +318,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
     super.__attach();
   }
 
-  __detach(): void {
+  override __detach(): void {
     this.r.__removeChild(this);
     this.g.__removeChild(this);
     this.b.__removeChild(this);
@@ -326,7 +326,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
     super.__detach();
   }
 
-  __makeNative(platformConfig?: Nullable<PlatformConfig>) {
+  override __makeNative(platformConfig?: Nullable<PlatformConfig>) {
     this.r.__makeNative(platformConfig);
     this.g.__makeNative(platformConfig);
     this.b.__makeNative(platformConfig);
@@ -334,7 +334,7 @@ export default class AnimatedColor extends AnimatedWithChildren {
     super.__makeNative(platformConfig);
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     return {
       type: 'color',
       r: this.r.__getNativeTag(),

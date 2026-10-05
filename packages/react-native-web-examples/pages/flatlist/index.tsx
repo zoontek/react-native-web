@@ -29,7 +29,7 @@ class MyListItem extends PureComponent<MyListItemProps> {
     this.props.onPressItem(this.props.id);
   };
 
-  render() {
+  override render() {
     const textColor = this.props.selected ? 'red' : 'black';
     return (
       <Pressable onPress={this._onPress}>
@@ -48,9 +48,9 @@ type MultiSelectListState = {
 };
 
 class MultiSelectList extends PureComponent<object, MultiSelectListState> {
-  state: MultiSelectListState = { selected: new Map() };
+  override state: MultiSelectListState = { selected: new Map() };
 
-  _keyExtractor = (item: MultiSelectItem, index: number) => String(item.id);
+  _keyExtractor = (item: MultiSelectItem) => String(item.id);
 
   _onPressItem = (id: number) => {
     // updater functions are preferred for transactional updates
@@ -71,7 +71,7 @@ class MultiSelectList extends PureComponent<object, MultiSelectListState> {
     />
   );
 
-  render() {
+  override render() {
     return (
       <FlatList
         data={multiSelectData}

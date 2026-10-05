@@ -46,18 +46,18 @@ class AnimatedTracking extends AnimatedNode {
     this.__attach();
   }
 
-  __makeNative() {
+  override __makeNative() {
     this.__isNative = true;
     this._parent.__makeNative();
     super.__makeNative();
     this._value.__makeNative();
   }
 
-  __getValue(): unknown {
+  override __getValue(): unknown {
     return this._parent.__getValue();
   }
 
-  __attach(): void {
+  override __attach(): void {
     this._parent.__addChild(this);
     if (this._useNativeDriver) {
       // when the tracking starts we need to convert this node to a "native node"
@@ -69,7 +69,7 @@ class AnimatedTracking extends AnimatedNode {
     }
   }
 
-  __detach(): void {
+  override __detach(): void {
     this._parent.__removeChild(this);
     super.__detach();
   }
@@ -84,7 +84,7 @@ class AnimatedTracking extends AnimatedNode {
     );
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     const animation = new this._animationClass({
       ...this._animationConfig,
       // remove toValue from the config as it's a ref to Animated.Value

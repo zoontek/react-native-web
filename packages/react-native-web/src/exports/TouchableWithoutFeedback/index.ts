@@ -121,7 +121,7 @@ function TouchableWithoutFeedback(
     ]
   );
 
-  const pressEventHandlers = usePressEvents(hostRef, pressConfig);
+  const pressEventHandlers = usePressEvents(pressConfig);
 
   const element = Children.only(props.children) as ReactElement<{
     children?: Nullable<ReactNode>;

@@ -161,7 +161,7 @@ class SpringAnimation extends Animation {
     invariant(this._mass > 0, 'Mass value must be greater than 0');
   }
 
-  __getNativeAnimationConfig(): {
+  override __getNativeAnimationConfig(): {
     damping: number;
     initialVelocity: number;
     iterations: number;
@@ -189,7 +189,7 @@ class SpringAnimation extends Animation {
     };
   }
 
-  start(
+  override start(
     fromValue: number,
     onUpdate: (value: number) => void,
     onEnd: Nullable<EndCallback>,
@@ -357,7 +357,7 @@ class SpringAnimation extends Animation {
     this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
   }
 
-  stop(): void {
+  override stop(): void {
     super.stop();
     this.__active = false;
     clearTimeout(this._timeout);

@@ -38,7 +38,7 @@ class KeyboardAvoidingView extends Component<KeyboardAvoidingViewProps> {
     this.frame = event.nativeEvent.layout;
   };
 
-  render(): ReactNode {
+  override render(): ReactNode {
     // oxlint-disable-next-line no-unused-vars
     const { behavior, contentContainerStyle, keyboardVerticalOffset, ...rest } =
       this.props;

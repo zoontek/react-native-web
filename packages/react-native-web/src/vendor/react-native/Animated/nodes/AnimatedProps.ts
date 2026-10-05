@@ -34,7 +34,7 @@ class AnimatedProps extends AnimatedNode {
     this._callback = callback;
   }
 
-  __getValue(): Record<string, unknown> {
+  override __getValue(): Record<string, unknown> {
     const props: Record<string, unknown> = {};
     for (const key in this._props) {
       const value = this._props[key];
@@ -53,7 +53,7 @@ class AnimatedProps extends AnimatedNode {
     return props;
   }
 
-  __getAnimatedValue(): Record<string, unknown> {
+  override __getAnimatedValue(): Record<string, unknown> {
     const props: Record<string, unknown> = {};
     for (const key in this._props) {
       const value = this._props[key];
@@ -64,7 +64,7 @@ class AnimatedProps extends AnimatedNode {
     return props;
   }
 
-  __attach(): void {
+  override __attach(): void {
     for (const key in this._props) {
       const value = this._props[key];
       if (value instanceof AnimatedNode) {
@@ -73,7 +73,7 @@ class AnimatedProps extends AnimatedNode {
     }
   }
 
-  __detach(): void {
+  override __detach(): void {
     if (this.__isNative && this._animatedView) {
       this.__disconnectAnimatedView();
     }
@@ -91,7 +91,7 @@ class AnimatedProps extends AnimatedNode {
     this._callback();
   }
 
-  __makeNative(): void {
+  override __makeNative(): void {
     if (!this.__isNative) {
       this.__isNative = true;
       for (const key in this._props) {
@@ -152,7 +152,7 @@ class AnimatedProps extends AnimatedNode {
     }
   }
 
-  __getNativeConfig(): Record<string, unknown> {
+  override __getNativeConfig(): Record<string, unknown> {
     const propsConfig: Record<string, number> = {};
     for (const propKey in this._props) {
       const value = this._props[propKey];
