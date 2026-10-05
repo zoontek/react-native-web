@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -8,8 +6,9 @@
  */
 
 import createDOMProps from '..';
+import type { ElementProps } from '..';
 
-const createProps = (props) => createDOMProps(null, props);
+const createProps = (props: ElementProps) => createDOMProps(null, props);
 
 describe('modules/createDOMProps', () => {
   test('web props', () => {
@@ -167,7 +166,7 @@ describe('modules/createDOMProps', () => {
       });
     });
 
-    const testFocusableRole = (accessibilityRole) => {
+    const testFocusableRole = (accessibilityRole: string) => {
       test('default case', () => {
         expect(createProps({ accessibilityRole })).toEqual(
           expect.objectContaining({ tabIndex: '0' })

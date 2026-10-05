@@ -18,7 +18,9 @@ import type { StyleValue } from './compiler/normalizeValueWithProperty';
 import type { Styles, StyleqResult } from 'styleq';
 import type { LocalizedStyle } from 'styleq/transform-localize-style';
 
-type StyleObject = { [key: string]: StyleValue | boolean | null | undefined };
+export type StyleObject = {
+  [key: string]: StyleValue | boolean | null | undefined;
+};
 
 const staticStyleMap = new WeakMap<object, LocalizedStyle>();
 const sheet = createSheet();
@@ -159,7 +161,7 @@ function getSheet(): { id: string; textContent: string } {
  */
 type StyleProps = [string, Style | null];
 
-type Options = {
+export type Options = {
   shadow?: boolean;
   textShadow?: boolean;
   writingDirection?: 'ltr' | 'rtl';
