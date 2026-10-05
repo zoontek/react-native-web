@@ -152,13 +152,13 @@ const stagger = function (
 };
 
 type LoopAnimationConfig = {
-  iterations: number;
+  iterations?: number;
   resetBeforeIteration?: boolean;
 };
 
 const loop = function (
   animation: CompositeAnimation,
-  { iterations = -1 }: LoopAnimationConfig = {} as LoopAnimationConfig
+  { iterations = -1 }: LoopAnimationConfig = {}
 ): CompositeAnimation {
   return emptyAnimation;
 };

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -9,69 +7,73 @@
  * @format
  */
 
-/*:: import type { LayoutEvent } from '../../../types'; */
-/*:: import type {
-  FocusEvent,
-} from '../Types/CoreEventTypes'; */
-/*:: import type {CellRendererProps, RenderItemType} from './VirtualizedListProps'; */
+import type { LayoutEvent, Nullable } from '../../../types';
+import type { FocusEvent } from '../Types/CoreEventTypes';
+import type {
+  CellRendererProps,
+  RenderItemProps,
+  RenderItemType
+} from './VirtualizedListProps';
 
 import View from '../../../exports/View';
-/*:: import type { ViewProps } from '../../../exports/View'; */
+import type { ViewProps } from '../../../exports/View';
 import StyleSheet from '../../../exports/StyleSheet';
 import { VirtualizedListCellContextProvider } from './VirtualizedListContext';
 import invariant from 'fbjs/lib/invariant';
 import * as React from 'react';
 
-/*:: type ViewStyleProp = $PropertyType<ViewProps, 'style'>; */
+type ViewStyleProp = ViewProps['style'];
 
-/*:: export type Props<ItemT> = {
-  CellRendererComponent?: ?React.ComponentType<CellRendererProps<ItemT>>,
-  ItemSeparatorComponent: ?React.ComponentType<
-    any | {highlighted: boolean, leadingItem: ?ItemT},
-  >,
-  ListItemComponent?: ?(React.ComponentType<any> | React.Element<any>),
-  cellKey: string,
-  horizontal: ?boolean,
-  index: number,
-  inversionStyle: ViewStyleProp,
-  item: ItemT,
-  onCellLayout?: (event: LayoutEvent, cellKey: string, index: number) => void,
-  onCellFocusCapture?: (event: FocusEvent) => void,
-  onUnmount: (cellKey: string) => void,
+export type Props<ItemT> = {
+  CellRendererComponent?: Nullable<
+    React.ComponentType<CellRendererProps<ItemT>>
+  >;
+  ItemSeparatorComponent: Nullable<
+    React.ComponentType<{ highlighted: boolean; leadingItem: Nullable<ItemT> }>
+  >;
+  ListItemComponent?: Nullable<
+    React.ComponentType<unknown> | React.ReactElement<unknown>
+  >;
+  cellKey: string;
+  horizontal: Nullable<boolean>;
+  index: number;
+  inversionStyle: ViewStyleProp;
+  item: ItemT;
+  onCellLayout?: (event: LayoutEvent, cellKey: string, index: number) => void;
+  onCellFocusCapture?: (event: FocusEvent) => void;
+  onUnmount: (cellKey: string) => void;
   onUpdateSeparators: (
-    cellKeys: Array<?string>,
-    props: $Shape<SeparatorProps<ItemT>>,
-  ) => void,
-  prevCellKey: ?string,
-  renderItem?: ?RenderItemType<ItemT>,
-  ...
-}; */
+    cellKeys: Array<Nullable<string>>,
+    props: Partial<SeparatorProps<ItemT>>
+  ) => void;
+  prevCellKey: Nullable<string>;
+  renderItem?: Nullable<RenderItemType<ItemT>>;
+};
 
-/*:: type SeparatorProps<ItemT> = $ReadOnly<{|
-  highlighted: boolean,
-  leadingItem: ?ItemT,
-|}>; */
+type SeparatorProps<ItemT> = Readonly<{
+  highlighted: boolean;
+  leadingItem: Nullable<ItemT>;
+}>;
 
-/*:: type State<ItemT> = {
-  separatorProps: SeparatorProps<ItemT>,
-  ...
-}; */
+type State<ItemT> = {
+  separatorProps: SeparatorProps<ItemT>;
+};
 
-export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
+export default class CellRenderer<ItemT> extends React.Component<
   Props<ItemT>,
-  State<ItemT>,
-> */ {
-  state /*: State<ItemT> */ = {
+  State<ItemT>
+> {
+  state: State<ItemT> = {
     separatorProps: {
       highlighted: false,
       leadingItem: this.props.item
     }
   };
 
-  static getDerivedStateFromProps(
-    props /*: Props<ItemT> */,
-    prevState /*: State<ItemT> */
-  ) /*: ?State<ItemT> */ {
+  static getDerivedStateFromProps<ItemT>(
+    props: Props<ItemT>,
+    prevState: State<ItemT>
+  ): Nullable<State<ItemT>> {
     return {
       separatorProps: {
         ...prevState.separatorProps,
@@ -96,19 +98,16 @@ export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
         highlighted: false
       });
     },
-    updateProps: (
-      select /*: 'leading' | 'trailing' */,
-      newProps /*: SeparatorProps<ItemT> */
-    ) => {
+    updateProps: (select: 'leading' | 'trailing', newProps: unknown) => {
       const { cellKey, prevCellKey } = this.props;
       this.props.onUpdateSeparators(
         [select === 'leading' ? prevCellKey : cellKey],
-        newProps
+        newProps as Partial<SeparatorProps<ItemT>>
       );
     }
   };
 
-  updateSeparatorProps(newProps /*: SeparatorProps<ItemT> */) {
+  updateSeparatorProps(newProps: Partial<SeparatorProps<ItemT>>) {
     this.setState((state) => ({
       separatorProps: { ...state.separatorProps, ...newProps }
     }));
@@ -118,7 +117,7 @@ export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
     this.props.onUnmount(this.props.cellKey);
   }
 
-  _onLayout = (nativeEvent /*: LayoutEvent */) /*: void */ => {
+  _onLayout = (nativeEvent: LayoutEvent): void => {
     this.props.onCellLayout &&
       this.props.onCellLayout(
         nativeEvent,
@@ -128,11 +127,11 @@ export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
   };
 
   _renderElement(
-    renderItem /*: ?RenderItemType<ItemT> */,
-    ListItemComponent /*: any */,
-    item /*: ItemT */,
-    index /*: number */
-  ) /*: React.Node */ {
+    renderItem: Nullable<RenderItemType<ItemT>>,
+    ListItemComponent: unknown,
+    item: ItemT,
+    index: number
+  ): React.ReactNode {
     if (renderItem && ListItemComponent) {
       console.warn(
         'VirtualizedList: Both ListItemComponent and renderItem props are present. ListItemComponent will take' +
@@ -147,11 +146,14 @@ export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
       /* $FlowFixMe[incompatible-type-arg] (>=0.108.0 site=react_native_fb)
        * This comment suppresses an error found when Flow v0.108 was deployed.
        * To see the error, delete this comment and run Flow. */
-      return React.createElement(ListItemComponent, {
-        item,
-        index,
-        separators: this._separators
-      });
+      return React.createElement(
+        ListItemComponent as React.ComponentType<RenderItemProps<ItemT>>,
+        {
+          item,
+          index,
+          separators: this._separators
+        }
+      );
     }
 
     if (renderItem) {
@@ -168,7 +170,7 @@ export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
     );
   }
 
-  render() /*: React.Node */ {
+  render(): React.ReactNode {
     const {
       CellRendererComponent,
       ItemSeparatorComponent,
@@ -191,7 +193,7 @@ export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
 
     // NOTE: that when this is a sticky header, `onLayout` will get automatically extracted and
     // called explicitly by `ScrollViewStickyHeader`.
-    const itemSeparator /*: React.Node */ = React.isValidElement(
+    const itemSeparator: React.ReactNode = React.isValidElement(
       ItemSeparatorComponent
     )
       ? // $FlowFixMe[incompatible-type]
@@ -210,7 +212,9 @@ export default class CellRenderer /*:: <ItemT> */ extends React.Component /*:: <
     const result = !CellRendererComponent ? (
       <View
         style={cellStyle}
-        onFocusCapture={onCellFocusCapture}
+        {...({
+          onFocusCapture: onCellFocusCapture
+        } as unknown as Partial<ViewProps>)}
         {...(onCellLayout && { onLayout: this._onLayout })}
       >
         {element}

@@ -14,7 +14,7 @@ const createConfig = ({ modules }) => {
         }
       ],
       '@babel/preset-react',
-      '@babel/preset-typescript'
+      ['@babel/preset-typescript', { allowDeclareFields: true }]
     ],
     plugins: ['@babel/plugin-transform-runtime'].concat(
       modules ? ['babel-plugin-add-module-exports'] : []
