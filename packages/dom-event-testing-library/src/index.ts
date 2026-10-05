@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -8,38 +6,54 @@
  */
 
 import { buttonType, buttonsType } from './constants';
+import type { EventPayload } from './createEvent';
+import type { Platform } from './domEnvironment';
+import { hasPointerEvent, platform, setPointerEvent } from './domEnvironment';
+import type {
+  FocusEventPayload,
+  KeyboardEventPayload,
+  MouseEventPayload,
+  PointerEventPayload,
+  PointerType
+} from './domEvents';
 import * as domEvents from './domEvents';
 import * as domEventSequences from './domEventSequences';
-import { hasPointerEvent, setPointerEvent, platform } from './domEnvironment';
 import { describeWithPointerEvent, testWithPointerType } from './testHelpers';
 
-const createEventTarget = (node) => ({
+type BoundingClientRectPayload = {
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+};
+
+const createEventTarget = <T extends Node>(node: T) => ({
   node,
   /**
    * Simple events abstraction.
    */
-  blur(payload) {
+  blur(payload?: FocusEventPayload) {
     node.dispatchEvent(domEvents.blur(payload));
   },
-  click(payload) {
+  click(payload?: MouseEventPayload) {
     node.dispatchEvent(domEvents.click(payload));
   },
-  contextmenu(payload) {
+  contextmenu(payload?: PointerEventPayload) {
     domEventSequences.contextmenu(node, payload);
   },
   error() {
     node.dispatchEvent(domEvents.error());
   },
-  focus(payload) {
+  focus(payload?: PointerEventPayload) {
     domEventSequences.focus(node, payload);
   },
-  keydown(payload) {
+  keydown(payload?: KeyboardEventPayload) {
     node.dispatchEvent(domEvents.keydown(payload));
   },
-  keyup(payload) {
+  keyup(payload?: KeyboardEventPayload) {
     node.dispatchEvent(domEvents.keyup(payload));
   },
-  load(payload) {
+  load(payload?: EventPayload) {
     node.dispatchEvent(domEvents.load(payload));
   },
   /**
@@ -48,41 +62,41 @@ const createEventTarget = (node) => ({
    * TouchEvents for a given environment.
    */
   // node no longer receives events for the pointer
-  pointercancel(payload) {
+  pointercancel(payload?: PointerEventPayload) {
     domEventSequences.pointercancel(node, payload);
   },
   // node dispatches down events
-  pointerdown(payload) {
+  pointerdown(payload?: PointerEventPayload) {
     domEventSequences.pointerdown(node, payload);
   },
   // node dispatches move events (pointer is not down)
-  pointerhover(payload) {
+  pointerhover(payload?: PointerEventPayload) {
     domEventSequences.pointerhover(node, payload);
   },
   // node dispatches move events (pointer is down)
-  pointermove(payload) {
+  pointermove(payload?: PointerEventPayload) {
     domEventSequences.pointermove(node, payload);
   },
   // node dispatches enter & over events
-  pointerover(payload) {
+  pointerover(payload?: PointerEventPayload) {
     domEventSequences.pointerover(node, payload);
   },
   // node dispatches exit & leave events
-  pointerout(payload) {
+  pointerout(payload?: PointerEventPayload) {
     domEventSequences.pointerout(node, payload);
   },
   // node dispatches up events
-  pointerup(payload) {
+  pointerup(payload?: PointerEventPayload) {
     domEventSequences.pointerup(node, payload);
   },
-  scroll(payload) {
+  scroll(payload?: EventPayload) {
     node.dispatchEvent(domEvents.scroll(payload));
   },
-  select(payload) {
+  select(payload?: EventPayload) {
     node.dispatchEvent(domEvents.select(payload));
   },
   // selectionchange is only dispatched on 'document'
-  selectionchange(payload) {
+  selectionchange(payload?: EventPayload) {
     document.dispatchEvent(domEvents.selectionchange(payload));
   },
   /**
@@ -90,18 +104,18 @@ const createEventTarget = (node) => ({
    * Helpers for event sequences expected in a gesture.
    * target.tap({ pointerType: 'touch' })
    */
-  tap(payload) {
-    domEventSequences.pointerdown(payload);
-    domEventSequences.pointerup(payload);
+  tap(payload?: PointerEventPayload) {
+    domEventSequences.pointerdown(node, payload);
+    domEventSequences.pointerup(node, payload);
   },
-  virtualclick(payload) {
+  virtualclick(payload?: MouseEventPayload) {
     node.dispatchEvent(domEvents.virtualclick(payload));
   },
   /**
    * Utilities
    */
-  setBoundingClientRect({ x, y, width, height }) {
-    node.getBoundingClientRect = function () {
+  setBoundingClientRect({ x, y, width, height }: BoundingClientRectPayload) {
+    Reflect.set(node, 'getBoundingClientRect', function () {
       return {
         width,
         height,
@@ -112,7 +126,7 @@ const createEventTarget = (node) => ({
         x,
         y
       };
-    };
+    });
   }
 });
 
@@ -124,8 +138,18 @@ export {
   clearPointers,
   createEventTarget,
   describeWithPointerEvent,
-  platform,
   hasPointerEvent,
+  platform,
   setPointerEvent,
   testWithPointerType
+};
+
+export type {
+  EventPayload,
+  FocusEventPayload,
+  KeyboardEventPayload,
+  MouseEventPayload,
+  Platform,
+  PointerEventPayload,
+  PointerType
 };

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -8,23 +6,30 @@
  */
 
 import { hasPointerEvent, setPointerEvent } from './domEnvironment';
+import type { PointerType } from './domEvents';
 
-export function describeWithPointerEvent(message, describeFn) {
+export function describeWithPointerEvent(
+  message: string,
+  describeFn: (hasPointerEvents: boolean) => void
+) {
   const pointerEvent = 'PointerEvent';
   const fallback = 'MouseEvent/TouchEvent';
   describe.each`
     value    | name
     ${true}  | ${pointerEvent}
     ${false} | ${fallback}
-  `(`${message}: $name`, (entry) => {
+  `(`${message}: $name`, (entry: { value: boolean }) => {
     const hasPointerEvents = entry.value;
     setPointerEvent(hasPointerEvents);
     describeFn(hasPointerEvents);
   });
 }
 
-export function testWithPointerType(message, testFn) {
-  const table = hasPointerEvent()
+export function testWithPointerType(
+  message: string,
+  testFn: (pointerType: PointerType) => void
+) {
+  const table: PointerType[] = hasPointerEvent()
     ? ['mouse', 'touch', 'pen']
     : ['mouse', 'touch'];
   test.each(table)(`${message}: %s`, (pointerType) => {
