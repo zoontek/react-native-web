@@ -8,7 +8,7 @@
 
 'use client';
 
-import { forwardRef, type CSSProperties } from 'react';
+import type { CSSProperties, Ref } from 'react';
 
 import type { Nullable, PlatformMethods } from '../../types';
 import StyleSheet from '../StyleSheet';
@@ -22,17 +22,16 @@ type ActivityIndicatorProps = ViewProps & {
   animating?: boolean;
   color?: Nullable<string>;
   hidesWhenStopped?: boolean;
+  ref?: Ref<HTMLElement & PlatformMethods>;
   size?: 'small' | 'large' | number;
 };
 
-const ActivityIndicator = forwardRef<
-  HTMLElement & PlatformMethods,
-  ActivityIndicatorProps
->((props, forwardedRef) => {
+const ActivityIndicator = (props: ActivityIndicatorProps) => {
   const {
     animating = true,
     color = '#1976D2',
     hidesWhenStopped = true,
+    ref,
     size = 'small',
     style,
     ...other
@@ -57,7 +56,7 @@ const ActivityIndicator = forwardRef<
       {...other}
       aria-valuemax={1}
       aria-valuemin={0}
-      ref={forwardedRef}
+      ref={ref}
       role="progressbar"
       style={[styles.container, style]}
     >
@@ -74,7 +73,7 @@ const ActivityIndicator = forwardRef<
       />
     </View>
   );
-});
+};
 
 ActivityIndicator.displayName = 'ActivityIndicator';
 

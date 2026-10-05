@@ -7,31 +7,26 @@
  * @format
  */
 
-import {
-  forwardRef,
-  type ComponentProps,
-  type ComponentType,
-  type ForwardRefExoticComponent,
-  type PropsWithoutRef,
-  type RefAttributes
+import type {
+  ComponentProps,
+  ComponentType,
+  PropsWithoutRef,
+  ReactNode,
+  Ref
 } from 'react';
 
 import View from '../../../exports/View';
 import useMergeRefs from '../Utilities/useMergeRefs';
 import useAnimatedProps from './useAnimatedProps';
 
-export type AnimatedComponentType<
-  Props extends object,
-  Instance = unknown
-> = ForwardRefExoticComponent<
-  PropsWithoutRef<
+export type AnimatedComponentType<Props extends object, Instance = unknown> = (
+  props: PropsWithoutRef<
     Props &
       Readonly<{
         passthroughAnimatedPropExplicitValues?: ComponentProps<typeof View>;
       }>
-  > &
-    RefAttributes<Instance>
->;
+  > & { ref?: Ref<Instance> }
+) => ReactNode;
 
 /**
  * Experimental implementation of `createAnimatedComponent` that is intended to
@@ -42,14 +37,12 @@ export default function createAnimatedComponent<
   TInstance
 >(
   Component: ComponentType<TProps>
-): ForwardRefExoticComponent<
-  PropsWithoutRef<TProps> & RefAttributes<TInstance>
-> {
-  return forwardRef<TInstance, TProps>((props, forwardedRef) => {
+): (props: PropsWithoutRef<TProps> & { ref?: Ref<TInstance> }) => ReactNode {
+  return (props) => {
     const [reducedProps, callbackRef] = useAnimatedProps<TProps, TInstance>(
       props as TProps
     );
-    const ref = useMergeRefs<TInstance | null>(callbackRef, forwardedRef);
+    const ref = useMergeRefs<TInstance | null>(callbackRef, props.ref);
 
     // Some components require explicit passthrough values for animation
     // to work properly. For example, if an animated component is
@@ -72,5 +65,5 @@ export default function createAnimatedComponent<
         {...({ style: mergedStyle, ref } as unknown as Partial<TProps>)}
       />
     );
-  });
+  };
 }

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { forwardRef, useEffect, useMemo, type ReactNode } from 'react';
+import { useEffect, useMemo, type ReactNode, type Ref } from 'react';
 
 import canUseDOM from '../../modules/canUseDom';
 import type { Nullable, PlatformMethods } from '../../types';
@@ -17,14 +17,12 @@ export type ModalContentProps = ViewProps & {
   active?: Nullable<boolean | (() => boolean)>;
   children?: ReactNode;
   onRequestClose?: Nullable<() => void>;
+  ref?: Ref<HTMLElement & PlatformMethods>;
   transparent?: Nullable<boolean>;
 };
 
-const ModalContent = forwardRef<
-  HTMLElement & PlatformMethods,
-  ModalContentProps
->((props, forwardedRef) => {
-  const { active, children, onRequestClose, transparent, ...rest } = props;
+const ModalContent = (props: ModalContentProps) => {
+  const { active, children, onRequestClose, ref, transparent, ...rest } = props;
 
   useEffect(() => {
     if (canUseDOM) {
@@ -52,14 +50,14 @@ const ModalContent = forwardRef<
     <View
       {...rest}
       aria-modal={true}
-      ref={forwardedRef}
+      ref={ref}
       role={active ? 'dialog' : null}
       style={style}
     >
       <View style={styles.container}>{children}</View>
     </View>
   );
-});
+};
 
 const styles = StyleSheet.create({
   modal: {
