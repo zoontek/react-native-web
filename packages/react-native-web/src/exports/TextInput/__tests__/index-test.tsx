@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -9,18 +7,22 @@
 
 import React from 'react';
 import TextInput from '..';
-import { createEventTarget } from 'dom-event-testing-library';
+import { createEventTarget as createEventTargetImpl } from 'dom-event-testing-library';
 import { act, render } from '@testing-library/react';
+import type { Nullable } from '../../../types';
 
-function findInput(container) {
-  return container.querySelector('input');
+const createEventTarget = <T extends Node>(node: Nullable<T>) =>
+  createEventTargetImpl(node as T);
+
+function findInput(container: HTMLElement) {
+  return container.querySelector('input') as HTMLInputElement;
 }
 
-function findTextArea(container) {
-  return container.querySelector('textarea');
+function findTextArea(container: HTMLElement) {
+  return container.querySelector('textarea') as HTMLTextAreaElement;
 }
 
-const testIfDocumentIsFocused = (message, fn) => {
+const testIfDocumentIsFocused = (message: string, fn: () => void) => {
   if (document.hasFocus && document.hasFocus()) {
     test(message, fn);
   } else {
@@ -28,7 +30,7 @@ const testIfDocumentIsFocused = (message, fn) => {
   }
 };
 
-function createEvent(type, data = {}) {
+function createEvent(type: string, data: Record<string, unknown> = {}) {
   const event = document.createEvent('CustomEvent');
   event.initCustomEvent(type, true, true);
   if (data != null) {
@@ -43,8 +45,19 @@ function createEvent(type, data = {}) {
   return event;
 }
 
+type KeyboardEventPayload = {
+  altKey?: boolean;
+  ctrlKey?: boolean;
+  isComposing?: boolean;
+  key?: string;
+  keyCode?: number;
+  metaKey?: boolean;
+  preventDefault?: () => void;
+  shiftKey?: boolean;
+};
+
 function createKeyboardEvent(
-  type,
+  type: string,
   {
     altKey = false,
     ctrlKey = false,
@@ -54,7 +67,7 @@ function createKeyboardEvent(
     metaKey = false,
     preventDefault = () => {},
     shiftKey = false
-  } = {}
+  }: KeyboardEventPayload = {}
 ) {
   return createEvent(type, {
     altKey,
@@ -68,7 +81,7 @@ function createKeyboardEvent(
   });
 }
 
-function keydown(payload) {
+function keydown(payload: KeyboardEventPayload) {
   return createKeyboardEvent('keydown', payload);
 }
 
@@ -110,7 +123,7 @@ describe('components/TextInput', () => {
   describe('prop "caretHidden"', () => {
     test('value "true"', () => {
       const { container } = render(<TextInput caretHidden />);
-      const style = window.getComputedStyle(container.firstChild);
+      const style = window.getComputedStyle(container.firstChild as Element);
       expect(style.caretColor).toEqual('rgba(0, 0, 0, 0)');
     });
   });
@@ -122,7 +135,9 @@ describe('components/TextInput', () => {
       const { container } = render(<TextInput defaultValue={defaultValue} />);
       const input = findInput(container);
       input.focus();
-      expect(input.node.value).toEqual(defaultValue);
+      expect(
+        (input as unknown as { node: HTMLInputElement }).node.value
+      ).toEqual(defaultValue);
     });
 
     testIfDocumentIsFocused('value "true"', () => {
@@ -131,7 +146,9 @@ describe('components/TextInput', () => {
       );
       const input = findInput(container);
       input.focus();
-      expect(input.node.value).toEqual('');
+      expect(
+        (input as unknown as { node: HTMLInputElement }).node.value
+      ).toEqual('');
     });
   });
 
@@ -312,7 +329,7 @@ describe('components/TextInput', () => {
 
   test('prop "onBlur"', () => {
     const onBlur = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
     act(() => {
       render(<TextInput onBlur={onBlur} ref={ref} />);
     });
@@ -348,7 +365,7 @@ describe('components/TextInput', () => {
 
   test('prop "onFocus"', () => {
     const onFocus = jest.fn();
-    const ref = React.createRef();
+    const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
     act(() => {
       render(<TextInput onFocus={onFocus} ref={ref} />);
     });
@@ -363,8 +380,8 @@ describe('components/TextInput', () => {
 
   describe('prop "onKeyPress"', () => {
     test('arrow key', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -385,8 +402,8 @@ describe('components/TextInput', () => {
     });
 
     test('backspace key', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -407,8 +424,8 @@ describe('components/TextInput', () => {
     });
 
     test('enter key', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -429,8 +446,8 @@ describe('components/TextInput', () => {
     });
 
     test('escape key', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -451,8 +468,8 @@ describe('components/TextInput', () => {
     });
 
     test('space key', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -473,8 +490,8 @@ describe('components/TextInput', () => {
     });
 
     test('tab key', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -495,8 +512,8 @@ describe('components/TextInput', () => {
     });
 
     test('text key', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -517,8 +534,8 @@ describe('components/TextInput', () => {
     });
 
     test('modifier keys are included', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -547,8 +564,8 @@ describe('components/TextInput', () => {
     });
 
     test('meta key + Enter calls "onKeyPress"', () => {
-      const onKeyPress = jest.fn((e) => {
-        e.persist();
+      const onKeyPress = jest.fn((e: unknown) => {
+        (e as React.SyntheticEvent).persist();
       });
       const { container } = render(<TextInput onKeyPress={onKeyPress} />);
       const input = findInput(container);
@@ -571,9 +588,12 @@ describe('components/TextInput', () => {
       input.selectionStart = 0;
       input.selectionEnd = 3;
       input.dispatchEvent(new window.Event('select', {}));
-      function onSelectionChange(e) {
-        expect(e.nativeEvent.selection.end).toEqual(3);
-        expect(e.nativeEvent.selection.start).toEqual(0);
+      function onSelectionChange(e: unknown) {
+        const event = e as {
+          nativeEvent: { selection: { start: number; end: number } };
+        };
+        expect(event.nativeEvent.selection.end).toEqual(3);
+        expect(event.nativeEvent.selection.start).toEqual(0);
       }
     });
 
@@ -596,9 +616,10 @@ describe('components/TextInput', () => {
       );
       const input = findInput(container);
       input.dispatchEvent(keydown({ key: 'Enter' }));
-      function onSubmitEditing(e) {
-        expect(e.nativeEvent.target).toBeDefined();
-        expect(e.nativeEvent.text).toBe('12345');
+      function onSubmitEditing(e: unknown) {
+        const event = e as { nativeEvent: { target: unknown; text: string } };
+        expect(event.nativeEvent.target).toBeDefined();
+        expect(event.nativeEvent.text).toBe('12345');
         done();
       }
     });
@@ -764,15 +785,15 @@ describe('components/TextInput', () => {
 
   describe('imperative methods', () => {
     test('node.clear()', () => {
-      const ref = React.createRef();
+      const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
       render(<TextInput ref={ref} />);
-      expect(typeof ref.current.clear).toBe('function');
+      expect(typeof ref.current?.clear).toBe('function');
     });
 
     test('node.isFocused()', () => {
-      const ref = React.createRef();
+      const ref = React.createRef<React.ComponentRef<typeof TextInput>>();
       render(<TextInput ref={ref} />);
-      expect(typeof ref.current.isFocused).toBe('function');
+      expect(typeof ref.current?.isFocused).toBe('function');
     });
   });
 });

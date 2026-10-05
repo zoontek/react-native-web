@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -7,29 +5,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/*:: import type { ColorValue, GenericStyleProp } from '../../types'; */
-/*:: import type { TextStyle } from '../Text/types'; */
-/*:: import type { ViewProps } from '../View/types'; */
+import type { ColorValue, GenericStyleProp, Nullable } from '../../types';
+import type { TextStyle } from '../Text/types';
+import type { ViewProps } from '../View/types';
 
-/*:: export type TextInputStyle = {
-  ...TextStyle,
-  caretColor?: ColorValue,
-  resize?: 'none' | 'vertical' | 'horizontal' | 'both'
-}; */
+export type TextInputStyle = TextStyle & {
+  caretColor?: ColorValue;
+  resize?: 'none' | 'vertical' | 'horizontal' | 'both';
+};
 
-/*:: export type TextInputProps = {
-  ...ViewProps,
-  autoCapitalize?: 'characters' | 'none' | 'sentences' | 'words',
-  autoComplete?: ?string,
-  autoCompleteType?: ?string, // Compat with React Native (Bug react-native#26003)
-  autoCorrect?: ?boolean,
-  autoFocus?: ?boolean,
-  blurOnSubmit?: ?boolean,
-  caretHidden?: ?boolean,
-  clearTextOnFocus?: ?boolean,
-  defaultValue?: ?string,
-  dir?: ?('auto' | 'ltr' | 'rtl'),
-  disabled?: ?boolean,
+export type TextInputProps = Omit<ViewProps, 'dir' | 'onScroll' | 'style'> & {
+  autoCapitalize?: 'characters' | 'none' | 'sentences' | 'words';
+  autoComplete?: Nullable<string>;
+  autoCompleteType?: Nullable<string>; // Compat with React Native (Bug react-native#26003)
+  autoCorrect?: Nullable<boolean>;
+  autoFocus?: Nullable<boolean>;
+  blurOnSubmit?: Nullable<boolean>;
+  caretHidden?: Nullable<boolean>;
+  clearTextOnFocus?: Nullable<boolean>;
+  defaultValue?: Nullable<string>;
+  dir?: Nullable<'auto' | 'ltr' | 'rtl'>;
+  disabled?: Nullable<boolean>;
   enterKeyHint?:
     | 'enter'
     | 'done'
@@ -37,8 +33,8 @@
     | 'next'
     | 'previous'
     | 'search'
-    | 'send',
-  inputAccessoryViewID?: ?string,
+    | 'send';
+  inputAccessoryViewID?: Nullable<string>;
   inputMode?:
     | 'decimal'
     | 'email'
@@ -47,36 +43,37 @@
     | 'search'
     | 'tel'
     | 'text'
-    | 'url',
-  maxLength?: ?number,
-  multiline?: ?boolean,
-  onChange?: (e: any) => void,
-  onChangeText?: (e: string) => void,
-  onContentSizeChange?: (e: any) => void,
-  onEndEditing?: (e: any) => void,
-  onKeyPress?: (e: any) => void,
-  onSelectionChange?: (e: any) => void,
-  onScroll?: (e: any) => void,
-  onSubmitEditing?: (e: any) => void,
-  placeholder?: ?string,
-  placeholderTextColor?: ?ColorValue,
-  readOnly?: ?boolean,
-  rows?: ?number,
-  secureTextEntry?: ?boolean,
-  selectTextOnFocus?: ?boolean,
-  selection?: {|
-    start: number,
-    end?: number
-  |},
-  selectionColor?: ?ColorValue,
-  showSoftInputOnFocus?: ?boolean,
-  spellCheck?: ?boolean,
-  style?: ?GenericStyleProp<TextInputStyle>,
-  value?: ?string,
+    | 'url';
+  maxLength?: Nullable<number>;
+  multiline?: Nullable<boolean>;
+  onChange?: (e: unknown) => void;
+  onChangeText?: (e: string) => void;
+  onContentSizeChange?: (e: unknown) => void;
+  onEndEditing?: (e: unknown) => void;
+  onKeyPress?: (e: unknown) => void;
+  onSelectionChange?: (e: unknown) => void;
+  onScroll?: (e: unknown) => void;
+  onSubmitEditing?: (e: unknown) => void;
+  placeholder?: Nullable<string>;
+  placeholderTextColor?: Nullable<ColorValue>;
+  readOnly?: Nullable<boolean>;
+  rows?: Nullable<number>;
+  secureTextEntry?: Nullable<boolean>;
+  selectTextOnFocus?: Nullable<boolean>;
+  selection?: {
+    start: number;
+    end?: number;
+  };
+  selectionColor?: Nullable<ColorValue>;
+  showSoftInputOnFocus?: Nullable<boolean>;
+  spellCheck?: Nullable<boolean>;
+  style?: GenericStyleProp<TextInputStyle>;
+  value?: Nullable<string>;
   // deprecated
-  editable?: ?boolean,
+  editable?: Nullable<boolean>;
   keyboardType?:
     | 'default'
+    | 'decimal-pad'
     | 'email-address'
     | 'number-pad'
     | 'numbers-and-punctuation'
@@ -84,8 +81,8 @@
     | 'phone-pad'
     | 'search'
     | 'url'
-    | 'web-search',
-  numberOfLines?: ?number,
+    | 'web-search';
+  numberOfLines?: Nullable<number>;
   returnKeyType?:
     | 'enter'
     | 'done'
@@ -93,5 +90,5 @@
     | 'next'
     | 'previous'
     | 'search'
-    | 'send'
-}; */
+    | 'send';
+};
