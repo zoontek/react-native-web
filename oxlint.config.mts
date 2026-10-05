@@ -6,7 +6,7 @@ export default defineConfig({
     jest: true,
     node: true
   },
-  ignorePatterns: ['flow-typed', 'packages/**/vendor/*'],
+  ignorePatterns: ['packages/**/vendor/*'],
   plugins: ['promise', 'react'],
   categories: {
     correctness: 'error',
