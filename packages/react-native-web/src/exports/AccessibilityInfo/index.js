@@ -17,10 +17,9 @@ function isScreenReaderEnabled() /*: Promise<*> */ {
   });
 }
 
-const prefersReducedMotionMedia =
-  canUseDOM && typeof window.matchMedia === 'function'
-    ? window.matchMedia('(prefers-reduced-motion: reduce)')
-    : null;
+const prefersReducedMotionMedia = canUseDOM
+  ? window.matchMedia('(prefers-reduced-motion: reduce)')
+  : null;
 
 function isReduceMotionEnabled() /*: Promise<*> */ {
   return new Promise((resolve, reject) => {
@@ -32,17 +31,13 @@ function isReduceMotionEnabled() /*: Promise<*> */ {
 
 function addChangeListener(fn) {
   if (prefersReducedMotionMedia != null) {
-    prefersReducedMotionMedia.addEventListener != null
-      ? prefersReducedMotionMedia.addEventListener('change', fn)
-      : prefersReducedMotionMedia.addListener(fn);
+    prefersReducedMotionMedia.addEventListener('change', fn);
   }
 }
 
 function removeChangeListener(fn) {
   if (prefersReducedMotionMedia != null) {
-    prefersReducedMotionMedia.removeEventListener != null
-      ? prefersReducedMotionMedia.removeEventListener('change', fn)
-      : prefersReducedMotionMedia.removeListener(fn);
+    prefersReducedMotionMedia.removeEventListener('change', fn);
   }
 }
 
