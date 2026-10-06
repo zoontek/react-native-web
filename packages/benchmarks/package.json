@@ -6,19 +6,22 @@
   "scripts": {
     "clean": "del-cli ./dist",
     "build": "vite build",
-    "dev": "vite",
+    "watch": "vite",
+    "predev": "pnpm --filter react-native-web build",
+    "dev": "pnpm --parallel --filter react-native-web --filter benchmarks watch",
     "preview": "vite preview"
   },
   "dependencies": {
     "classnames": "^2.5.1",
     "d3-scale-chromatic": "^3.1.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "react-native-web": "workspace:*"
   },
   "devDependencies": {
     "@types/d3-scale-chromatic": "^3.1.0",
-    "@vitejs/plugin-react": "^6.1.0",
-    "vite": "^8.2.2"
+    "@vitejs/plugin-react": "catalog:",
+    "del-cli": "catalog:",
+    "vite": "catalog:"
   }
 }
