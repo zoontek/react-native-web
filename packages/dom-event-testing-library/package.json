@@ -6,5 +6,6 @@
   "homepage": "https://github.com/necolas/react-native-web/tree/master/packages/dom-event-testing-library",
   "license": "MIT",
   "author": "Nicolas Gallagher",
+  "type": "module",
   "main": "index.ts"
 }
