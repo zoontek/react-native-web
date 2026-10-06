@@ -4,6 +4,7 @@ import { createRef, type ComponentRef } from 'react';
 
 import ScrollView from '../';
 import type { Nullable } from '../../../types';
+import View from '../../View';
 
 const createEventTarget = (node: Nullable<Node>) =>
   createEventTargetImpl(node as Node);
@@ -122,7 +123,7 @@ describe('components/ScrollView', () => {
     test('with', () => {
       const { container } = render(
         <ScrollView
-          refreshControl={<div id="refresh-control" />}
+          refreshControl={<View nativeID="refresh-control" />}
           style={{ backgroundColor: 'red' }}
         />
       );

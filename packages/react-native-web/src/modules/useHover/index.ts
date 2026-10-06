@@ -8,7 +8,6 @@
 import type { RefObject } from 'react';
 
 import type { Nullable } from '../../types';
-import { getModality } from '../modality';
 import useEvent from '../useEvent';
 import useLayoutEffect from '../useLayoutEffect';
 
@@ -26,10 +25,6 @@ export type HoverEventsConfig = {
 };
 
 type HoverEvent = Event & {
-  x?: number;
-  y?: number;
-  clientX?: number;
-  clientY?: number;
   pointerType?: string;
 };
 
@@ -47,24 +42,15 @@ const emptyObject: CustomEventPayload = {};
 const opts = { passive: true };
 const lockEventType = 'react-gui:hover:lock';
 const unlockEventType = 'react-gui:hover:unlock';
-const supportsPointerEvent = () =>
-  typeof window !== 'undefined' && window.PointerEvent != null;
 
 function dispatchCustomEvent(
   target: EventTarget,
   type: string,
   payload?: CustomEventPayload
 ) {
-  const event = document.createEvent('CustomEvent');
   const { bubbles = true, cancelable = true, detail } = payload || emptyObject;
-  event.initCustomEvent(type, bubbles, cancelable, detail);
+  const event = new CustomEvent(type, { bubbles, cancelable, detail });
   target.dispatchEvent(event);
-}
-
-// This accounts for the non-PointerEvent fallback events.
-function getPointerType(event: HoverEvent) {
-  const { pointerType } = event;
-  return pointerType != null ? pointerType : getModality();
 }
 
 export default function useHover(
@@ -80,20 +66,9 @@ export default function useHover(
     onHoverEnd
   } = config;
 
-  const canUsePE = supportsPointerEvent();
-
-  const addMoveListener = useEvent(
-    canUsePE ? 'pointermove' : 'mousemove',
-    opts
-  );
-  const addEnterListener = useEvent(
-    canUsePE ? 'pointerenter' : 'mouseenter',
-    opts
-  );
-  const addLeaveListener = useEvent(
-    canUsePE ? 'pointerleave' : 'mouseleave',
-    opts
-  );
+  const addMoveListener = useEvent('pointermove', opts);
+  const addEnterListener = useEvent('pointerenter', opts);
+  const addLeaveListener = useEvent('pointerleave', opts);
   // These custom events are used to implement the "contain" prop.
   const addLockListener = useEvent(lockEventType, opts);
   const addUnlockListener = useEvent(unlockEventType, opts);
@@ -121,7 +96,7 @@ export default function useHover(
        */
       const leaveListener = function (e: HoverEvent) {
         const target = targetRef.current;
-        if (target != null && getPointerType(e) !== 'touch') {
+        if (target != null && e.pointerType !== 'touch') {
           if (contain) {
             dispatchCustomEvent(target, unlockEventType);
           }
@@ -133,15 +108,8 @@ export default function useHover(
        * Move within element
        */
       const moveListener = function (e: HoverEvent) {
-        if (getPointerType(e) !== 'touch') {
+        if (e.pointerType !== 'touch') {
           if (onHoverUpdate != null) {
-            // Not all browsers have these properties
-            if (e.x == null) {
-              e.x = e.clientX;
-            }
-            if (e.y == null) {
-              e.y = e.clientY;
-            }
             onHoverUpdate(e);
           }
         }
@@ -169,7 +137,7 @@ export default function useHover(
        */
       const enterListener = function (e: HoverEvent) {
         const target = targetRef.current;
-        if (target != null && getPointerType(e) !== 'touch') {
+        if (target != null && e.pointerType !== 'touch') {
           if (contain) {
             dispatchCustomEvent(target, lockEventType);
           }

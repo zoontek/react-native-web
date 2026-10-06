@@ -85,7 +85,7 @@ describe('components/Pressable', () => {
           onBlur={onBlur}
           onFocus={onFocus}
           ref={ref}
-          style={({ focused }) => [focused && { outlineStyle: 'focus-ring' }]}
+          style={({ focused }) => [focused && { outlineStyle: 'dotted' }]}
         />
       ));
     });
@@ -144,7 +144,7 @@ describe('components/Pressable', () => {
           onHoverIn={onHoverIn}
           onHoverOut={onHoverOut}
           ref={ref}
-          style={({ hovered }) => [hovered && { outlineStyle: 'hover-ring' }]}
+          style={({ hovered }) => [hovered && { outlineStyle: 'dashed' }]}
         />
       ));
     });
@@ -180,7 +180,7 @@ describe('components/Pressable', () => {
           onPressIn={onPressIn}
           onPressOut={onPressOut}
           ref={ref}
-          style={({ pressed }) => [pressed && { outlineStyle: 'press-ring' }]}
+          style={({ pressed }) => [pressed && { outlineStyle: 'solid' }]}
         />
       ));
     });
@@ -227,7 +227,7 @@ describe('components/Pressable', () => {
             onPressIn={onPressIn}
             onPressOut={onPressOut}
             ref={ref}
-            style={({ pressed }) => [pressed && { outlineStyle: 'press-ring' }]}
+            style={({ pressed }) => [pressed && { outlineStyle: 'solid' }]}
           />
         ) : null;
       }
