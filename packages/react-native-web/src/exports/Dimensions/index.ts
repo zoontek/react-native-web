@@ -9,30 +9,16 @@
 'use client';
 
 import invariant from 'fbjs/lib/invariant';
+import type * as RN from 'react-native';
 
 import canUseDOM from '../../modules/canUseDom';
-import type { Nullable } from '../../types';
-import type { EventSubscription } from '../../vendor/react-native/vendor/emitter/EventEmitter';
-
-export type DisplayMetrics = {
-  fontScale: number;
-  height: number;
-  scale: number;
-  width: number;
-};
 
 export type DimensionsValue = {
-  window: DisplayMetrics;
-  screen: DisplayMetrics;
+  window: RN.DisplayMetrics;
+  screen: RN.DisplayMetrics;
 };
 
-type DimensionKey = 'window' | 'screen';
-
-type DimensionEventListenerType = 'change';
-
-type DimensionEventListener = (dimensions: DimensionsValue) => void;
-
-const dimensions = {
+const dimensions: DimensionsValue = {
   window: {
     fontScale: 1,
     height: 0,
@@ -46,9 +32,9 @@ const dimensions = {
     width: 0
   }
 };
-const listeners: {
-  [key in DimensionEventListenerType]?: Array<DimensionEventListener>;
-} = {};
+
+// Wrap each handler in an object so the same function can be registered twice
+const handlers: Record<string, Set<{ handler: Function }>> = {};
 
 let shouldInit = canUseDOM;
 
@@ -66,7 +52,7 @@ function update() {
    * window.visualViewport(https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport)
    * is used instead of document.documentElement.clientHeight (which remains as a fallback)
    */
-  if (win.visualViewport) {
+  if (win.visualViewport != null) {
     const visualViewport = win.visualViewport;
     /**
      * We are multiplying by scale because height and width from visual viewport
@@ -99,66 +85,55 @@ function update() {
 
 function handleResize() {
   update();
-  if (Array.isArray(listeners['change'])) {
-    listeners['change'].forEach((handler) => handler(dimensions));
-  }
+  handlers['change']?.forEach(({ handler }) => handler(dimensions));
 }
 
-export default class Dimensions {
-  static get(dimension: DimensionKey): DisplayMetrics {
+const Dimensions: typeof RN.Dimensions = class {
+  static get = (dim) => {
     if (shouldInit) {
       shouldInit = false;
       update();
     }
-    invariant(dimensions[dimension], `No dimension set for key ${dimension}`);
-    return dimensions[dimension];
-  }
 
-  static set(initialDimensions: Nullable<DimensionsValue>): void {
-    if (initialDimensions) {
-      if (canUseDOM) {
-        invariant(false, 'Dimensions cannot be set in the browser');
-      } else {
-        if (initialDimensions.screen != null) {
-          dimensions.screen = initialDimensions.screen;
-        }
-        if (initialDimensions.window != null) {
-          dimensions.window = initialDimensions.window;
-        }
-      }
+    invariant(
+      dim === 'window' || dim === 'screen',
+      `No dimension set for key ${dim}`
+    );
+
+    return dimensions[dim];
+  };
+
+  static set = (dims) => {
+    invariant(!canUseDOM, 'Dimensions cannot be set in the browser');
+
+    if (dims.screen != null) {
+      dimensions.screen = dims.screen;
     }
-  }
+    if (dims.window != null) {
+      dimensions.window = dims.window;
+    }
+  };
 
-  static addEventListener(
-    type: DimensionEventListenerType,
-    handler: DimensionEventListener
-  ): EventSubscription {
-    listeners[type] = listeners[type] || [];
-    listeners[type].push(handler);
+  static addEventListener = (type, handler) => {
+    const entry = { handler };
+
+    handlers[type] ??= new Set();
+    handlers[type].add(entry);
 
     return {
-      remove: () => {
-        this.removeEventListener(type, handler);
+      remove() {
+        handlers[type]?.delete(entry);
       }
     };
-  }
-
-  static removeEventListener(
-    type: DimensionEventListenerType,
-    handler: DimensionEventListener
-  ): void {
-    if (Array.isArray(listeners[type])) {
-      listeners[type] = listeners[type].filter(
-        (_handler) => _handler !== handler
-      );
-    }
-  }
-}
+  };
+};
 
 if (canUseDOM) {
-  if (window.visualViewport) {
+  if (window.visualViewport != null) {
     window.visualViewport.addEventListener('resize', handleResize, false);
   } else {
     window.addEventListener('resize', handleResize, false);
   }
 }
+
+export default Dimensions;

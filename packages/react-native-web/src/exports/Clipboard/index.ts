@@ -8,27 +8,27 @@
 
 'use client';
 
+import type * as RN from 'react-native';
+
 let clipboardAvailable: boolean | undefined;
 
-export default class Clipboard {
-  static isAvailable(): boolean {
-    if (clipboardAvailable === undefined) {
+const Clipboard: typeof RN.Clipboard = class {
+  static isAvailable = () => {
+    if (clipboardAvailable == null) {
       clipboardAvailable =
         typeof document.queryCommandSupported === 'function' &&
         document.queryCommandSupported('copy');
     }
+
     return clipboardAvailable;
-  }
+  };
 
-  static getString(): Promise<string> {
-    return Promise.resolve('');
-  }
+  static getString = () => Promise.resolve('');
 
-  static setString(text: string): boolean {
-    let success = false;
+  static setString = (text) => {
     const body = document.body;
 
-    if (body) {
+    if (body != null) {
       // add the text to a hidden node
       const node = document.createElement('span');
       node.textContent = text;
@@ -50,7 +50,6 @@ export default class Clipboard {
         // attempt to copy
         try {
           document.execCommand('copy');
-          success = true;
         } catch {}
 
         // remove selection
@@ -60,7 +59,7 @@ export default class Clipboard {
       // remove node
       body.removeChild(node);
     }
+  };
+};
 
-    return success;
-  }
-}
+export default Clipboard;

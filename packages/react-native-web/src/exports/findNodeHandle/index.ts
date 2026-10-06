@@ -6,7 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const findNodeHandle = (component: unknown) => {
+import type * as RN from 'react-native';
+
+const findNodeHandle: typeof RN.findNodeHandle = (componentOrHandle) => {
   throw new Error(
     'findNodeHandle is not supported on web. ' +
       'Use the ref property on the component instead.'

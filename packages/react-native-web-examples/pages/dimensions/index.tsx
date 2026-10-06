@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, Text } from 'react-native-web';
+import { Dimensions, Text, type DimensionsPayload } from 'react-native-web';
 
 import Example from '../../shared/example';
 
@@ -10,9 +10,13 @@ export default function DimensionsPage() {
   useEffect(() => {
     const subscription = Dimensions.addEventListener(
       'change',
-      ({ screen, window }) => {
-        setScreen(screen);
-        setWindow(window);
+      ({ screen, window }: DimensionsPayload) => {
+        if (screen != null) {
+          setScreen(screen);
+        }
+        if (window != null) {
+          setWindow(window);
+        }
       }
     );
 
@@ -26,6 +30,7 @@ export default function DimensionsPage() {
       <Text style={{ marginVertical: '1em' }} suppressHydrationWarning={true}>
         window: {JSON.stringify(windowDims, null, 2)}
       </Text>
+
       <Text suppressHydrationWarning={true}>
         screen: {JSON.stringify(screenDims, null, 2)}
       </Text>
